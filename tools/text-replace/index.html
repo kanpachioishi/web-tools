@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テキスト置換ツール | Web便利ツール集</title>
+  <meta name="description" content="テキストの一括置換ができる無料オンラインツール。正規表現対応、大文字小文字の区別、置換回数の表示機能付き。">
+  <meta property="og:title" content="テキスト置換ツール | Web便利ツール集">
+  <meta property="og:description" content="テキストの一括置換。正規表現対応、大文字小文字区別オプション付き。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>テキスト置換ツール</h1>
+    <p class="tool-description">テキスト中の文字列を一括置換します。正規表現や大文字小文字の区別にも対応しています。</p>
+
+    <div class="tool-area">
+      <label for="input-text">対象テキスト</label>
+      <textarea id="input-text" placeholder="置換対象のテキストを入力してください..." rows="8"></textarea>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+        <div>
+          <label for="search-str">検索文字列</label>
+          <input type="text" id="search-str" placeholder="検索する文字列">
+        </div>
+        <div>
+          <label for="replace-str">置換文字列</label>
+          <input type="text" id="replace-str" placeholder="置換後の文字列">
+        </div>
+      </div>
+
+      <div class="option-row" style="margin-top: 12px;">
+        <label><input type="checkbox" id="case-sensitive"> 大文字小文字を区別する</label>
+        <label><input type="checkbox" id="use-regex"> 正規表現を使用</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="doReplace()">置換実行</button>
+        <button class="btn btn-secondary" onclick="copyResult()">結果をコピー</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <div class="stats" id="stats" style="display: none;">
+        <div class="stat-item">
+          <div class="stat-value" id="replace-count">0</div>
+          <div class="stat-label">置換回数</div>
+        </div>
+      </div>
+
+      <label style="margin-top: 16px;">置換結果</label>
+      <div class="result-area">
+        <pre id="result"></pre>
+      </div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function doReplace() {
+      const text = document.getElementById('input-text').value;
+      const search = document.getElementById('search-str').value;
+      const replace = document.getElementById('replace-str').value;
+      const caseSensitive = document.getElementById('case-sensitive').checked;
+      const useRegex = document.getElementById('use-regex').checked;
+
+      if (!search) {
+        document.getElementById('result').textContent = text;
+        document.getElementById('stats').style.display = 'none';
+        return;
+      }
+
+      let count = 0;
+      let result;
+
+      try {
+        let regex;
+        if (useRegex) {
+          const flags = caseSensitive ? 'g' : 'gi';
+          regex = new RegExp(search, flags);
+        } else {
+          const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const flags = caseSensitive ? 'g' : 'gi';
+          regex = new RegExp(escaped, flags);
+        }
+
+        result = text.replace(regex, (match) => {
+          count++;
+          return replace;
+        });
+      } catch (e) {
+        document.getElementById('result').textContent = '正規表現エラー: ' + e.message;
+        document.getElementById('stats').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('result').textContent = result;
+      document.getElementById('replace-count').textContent = count;
+      document.getElementById('stats').style.display = 'flex';
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result').textContent;
+      navigator.clipboard.writeText(text);
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('search-str').value = '';
+      document.getElementById('replace-str').value = '';
+      document.getElementById('result').textContent = '';
+      document.getElementById('stats').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

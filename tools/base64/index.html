@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64エンコード・デコード変換 | Web便利ツール集</title>
+  <meta name="description" content="テキストをBase64にエンコード・デコードする無料オンラインツール。双方向変換対応、ワンクリックコピー機能付き。">
+  <meta property="og:title" content="Base64エンコード・デコード変換 | Web便利ツール集">
+  <meta property="og:description" content="テキストとBase64の相互変換ができる無料オンラインツール。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>Base64エンコード・デコード</h1>
+    <p class="tool-description">テキストとBase64を双方向に変換します。エンコード・デコードどちらにも対応。</p>
+
+    <div class="tool-area">
+      <label for="input-text">テキスト（平文）</label>
+      <textarea id="input-text" placeholder="エンコードしたいテキストを入力..." rows="5"></textarea>
+
+      <div class="btn-group" style="justify-content: center; margin: 16px 0;">
+        <button class="btn" onclick="encode()">エンコード &darr;</button>
+        <button class="btn" onclick="decode()">デコード &uarr;</button>
+      </div>
+
+      <label for="output-text">Base64</label>
+      <textarea id="output-text" placeholder="Base64文字列がここに表示されます..." rows="5"></textarea>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="copyResult('output-text')">Base64をコピー</button>
+        <button class="btn btn-secondary" onclick="copyResult('input-text')">テキストをコピー</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <div id="error-msg" style="color: #dc2626; margin-top: 12px; display: none;"></div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function encode() {
+      const input = document.getElementById('input-text').value;
+      const errorMsg = document.getElementById('error-msg');
+      try {
+        const encoded = btoa(unescape(encodeURIComponent(input)));
+        document.getElementById('output-text').value = encoded;
+        errorMsg.style.display = 'none';
+      } catch (e) {
+        errorMsg.textContent = 'エンコードに失敗しました: ' + e.message;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function decode() {
+      const input = document.getElementById('output-text').value;
+      const errorMsg = document.getElementById('error-msg');
+      try {
+        const decoded = decodeURIComponent(escape(atob(input)));
+        document.getElementById('input-text').value = decoded;
+        errorMsg.style.display = 'none';
+      } catch (e) {
+        errorMsg.textContent = 'デコードに失敗しました。正しいBase64文字列を入力してください。';
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function copyResult(id) {
+      const text = document.getElementById(id).value;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = 'コピーしました!';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('output-text').value = '';
+      document.getElementById('error-msg').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

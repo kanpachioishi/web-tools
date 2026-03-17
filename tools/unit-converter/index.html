@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>単位変換ツール | Web便利ツール集</title>
+  <meta name="description" content="長さ・重さ・温度の単位をかんたん変換。mm,cm,m,km,インチ,フィート,マイル,kg,ポンド,摂氏,華氏に対応した無料オンラインツール。">
+  <meta property="og:title" content="単位変換ツール | Web便利ツール集">
+  <meta property="og:description" content="長さ・重さ・温度の単位をかんたん変換。メートル法・ヤードポンド法に対応。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+    .tab-btn { padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .tab-btn:hover:not(.active) { background: var(--border); }
+    .convert-row { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 12px; flex-wrap: wrap; }
+    .convert-row > div { flex: 1; min-width: 140px; }
+    .result-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .result-table th, .result-table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; font-size: 0.9rem; }
+    .result-table th { background: var(--bg); font-weight: 600; }
+    .result-table td:last-child { font-family: "SF Mono", "Fira Code", monospace; text-align: right; }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>単位変換ツール</h1>
+    <p class="tool-description">長さ・重さ・温度の単位を相互変換します。値を入力すると全単位の換算結果を一覧表示します。</p>
+
+    <div class="tool-area">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('length')">長さ</button>
+        <button class="tab-btn" onclick="switchTab('weight')">重さ</button>
+        <button class="tab-btn" onclick="switchTab('temperature')">温度</button>
+      </div>
+
+      <div class="convert-row">
+        <div>
+          <label for="input-value">値</label>
+          <input type="number" id="input-value" placeholder="数値を入力" step="any" oninput="doConvert()">
+        </div>
+        <div>
+          <label for="input-unit">単位</label>
+          <select id="input-unit" onchange="doConvert()"></select>
+        </div>
+      </div>
+
+      <table class="result-table" id="result-table">
+        <thead><tr><th>単位</th><th>値</th></tr></thead>
+        <tbody id="result-body"></tbody>
+      </table>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    const units = {
+      length: {
+        mm:    { label: 'ミリメートル (mm)', factor: 0.001 },
+        cm:    { label: 'センチメートル (cm)', factor: 0.01 },
+        m:     { label: 'メートル (m)', factor: 1 },
+        km:    { label: 'キロメートル (km)', factor: 1000 },
+        inch:  { label: 'インチ (inch)', factor: 0.0254 },
+        feet:  { label: 'フィート (feet)', factor: 0.3048 },
+        yard:  { label: 'ヤード (yard)', factor: 0.9144 },
+        mile:  { label: 'マイル (mile)', factor: 1609.344 },
+      },
+      weight: {
+        mg: { label: 'ミリグラム (mg)', factor: 0.000001 },
+        g:  { label: 'グラム (g)', factor: 0.001 },
+        kg: { label: 'キログラム (kg)', factor: 1 },
+        oz: { label: 'オンス (oz)', factor: 0.0283495 },
+        lb: { label: 'ポンド (lb)', factor: 0.453592 },
+      },
+      temperature: {
+        c: { label: '摂氏 (\u2103)' },
+        f: { label: '華氏 (\u2109)' },
+        k: { label: 'ケルビン (K)' },
+      }
+    };
+
+    let currentTab = 'length';
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', ['length','weight','temperature'][i] === tab);
+      });
+      populateSelect();
+      doConvert();
+    }
+
+    function populateSelect() {
+      const sel = document.getElementById('input-unit');
+      sel.innerHTML = '';
+      for (const [key, u] of Object.entries(units[currentTab])) {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = u.label;
+        sel.appendChild(opt);
+      }
+    }
+
+    function convertTemp(value, from, to) {
+      let celsius;
+      if (from === 'c') celsius = value;
+      else if (from === 'f') celsius = (value - 32) * 5 / 9;
+      else celsius = value - 273.15;
+
+      if (to === 'c') return celsius;
+      if (to === 'f') return celsius * 9 / 5 + 32;
+      return celsius + 273.15;
+    }
+
+    function formatNum(n) {
+      if (Number.isInteger(n) && Math.abs(n) < 1e15) return n.toString();
+      if (Math.abs(n) < 0.0001 || Math.abs(n) >= 1e12) return n.toExponential(6);
+      return parseFloat(n.toPrecision(10)).toString();
+    }
+
+    function doConvert() {
+      const val = parseFloat(document.getElementById('input-value').value);
+      const from = document.getElementById('input-unit').value;
+      const tbody = document.getElementById('result-body');
+      tbody.innerHTML = '';
+
+      if (isNaN(val)) return;
+
+      for (const [key, u] of Object.entries(units[currentTab])) {
+        let result;
+        if (currentTab === 'temperature') {
+          result = convertTemp(val, from, key);
+        } else {
+          const baseVal = val * units[currentTab][from].factor;
+          result = baseVal / u.factor;
+        }
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${u.label}</td><td>${formatNum(result)}</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    populateSelect();
+  </script>
+</body>
+</html>

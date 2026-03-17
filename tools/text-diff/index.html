@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テキスト差分比較ツール | Web便利ツール集</title>
+  <meta name="description" content="2つのテキストを比較して差分をハイライト表示。行単位で追加・削除を色分け表示する無料オンラインツール。">
+  <meta property="og:title" content="テキスト差分比較ツール | Web便利ツール集">
+  <meta property="og:description" content="2つのテキストを比較して差分をハイライト表示。行単位の追加・削除を色分け。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .diff-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .diff-container { grid-template-columns: 1fr; } }
+    .diff-result { margin-top: 16px; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.85rem; line-height: 1.6; }
+    .diff-line { padding: 2px 8px; white-space: pre-wrap; word-break: break-all; }
+    .diff-add { background: #dcfce7; color: #166534; }
+    .diff-del { background: #fee2e2; color: #991b1b; }
+    .diff-same { background: transparent; color: var(--text-muted); }
+    .diff-legend { display: flex; gap: 16px; margin-top: 12px; font-size: 0.85rem; }
+    .diff-legend span { padding: 2px 8px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>テキスト差分比較ツール</h1>
+    <p class="tool-description">2つのテキストを比較し、差分を行単位でハイライト表示します。</p>
+
+    <div class="tool-area">
+      <div class="diff-container">
+        <div>
+          <label for="text-a">テキストA（変更前）</label>
+          <textarea id="text-a" placeholder="変更前のテキスト..." rows="10"></textarea>
+        </div>
+        <div>
+          <label for="text-b">テキストB（変更後）</label>
+          <textarea id="text-b" placeholder="変更後のテキスト..." rows="10"></textarea>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="compareDiff()">差分を比較</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <div class="diff-legend">
+        <span class="diff-add">+ 追加行</span>
+        <span class="diff-del">- 削除行</span>
+      </div>
+
+      <div id="diff-output" class="diff-result"></div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // Simple LCS-based diff
+    function lcs(a, b) {
+      const m = a.length, n = b.length;
+      const dp = Array.from({length: m + 1}, () => new Array(n + 1).fill(0));
+      for (let i = 1; i <= m; i++)
+        for (let j = 1; j <= n; j++)
+          dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] + 1 : Math.max(dp[i-1][j], dp[i][j-1]);
+
+      const result = [];
+      let i = m, j = n;
+      while (i > 0 && j > 0) {
+        if (a[i-1] === b[j-1]) { result.unshift({type: 'same', value: a[i-1]}); i--; j--; }
+        else if (dp[i-1][j] >= dp[i][j-1]) { result.unshift({type: 'del', value: a[i-1]}); i--; }
+        else { result.unshift({type: 'add', value: b[j-1]}); j--; }
+      }
+      while (i > 0) { result.unshift({type: 'del', value: a[--i]}); }
+      while (j > 0) { result.unshift({type: 'add', value: b[--j]}); }
+      return result;
+    }
+
+    function compareDiff() {
+      const a = document.getElementById('text-a').value.split('\n');
+      const b = document.getElementById('text-b').value.split('\n');
+      const diff = lcs(a, b);
+      const output = document.getElementById('diff-output');
+      output.innerHTML = '';
+
+      diff.forEach(d => {
+        const div = document.createElement('div');
+        div.className = 'diff-line diff-' + d.type;
+        const prefix = d.type === 'add' ? '+ ' : d.type === 'del' ? '- ' : '  ';
+        div.textContent = prefix + d.value;
+        output.appendChild(div);
+      });
+
+      if (diff.length === 0 || diff.every(d => d.type === 'same')) {
+        output.innerHTML = '<div class="diff-line diff-same">差分はありません。</div>';
+      }
+    }
+
+    function clearAll() {
+      document.getElementById('text-a').value = '';
+      document.getElementById('text-b').value = '';
+      document.getElementById('diff-output').innerHTML = '';
+    }
+  </script>
+</body>
+</html>

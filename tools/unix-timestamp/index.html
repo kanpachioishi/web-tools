@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unixタイムスタンプ変換 | Web便利ツール集</title>
+  <meta name="description" content="Unixタイムスタンプと日時を相互変換する無料オンラインツール。現在時刻のタイムスタンプもリアルタイム表示。">
+  <meta property="og:title" content="Unixタイムスタンプ変換 | Web便利ツール集">
+  <meta property="og:description" content="Unixタイムスタンプと日時の相互変換ツール。現在時刻もリアルタイム表示。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>Unixタイムスタンプ変換</h1>
+    <p class="tool-description">Unixタイムスタンプと日時を相互変換します。現在時刻のタイムスタンプもリアルタイムで表示。</p>
+
+    <div class="tool-area">
+      <div class="stats" style="margin-top: 0; margin-bottom: 20px;">
+        <div class="stat-item" style="flex: auto;">
+          <div class="stat-label">現在のUnixタイムスタンプ</div>
+          <div class="stat-value" id="current-ts" style="font-family: 'SF Mono', 'Fira Code', monospace;"></div>
+          <div class="stat-label" id="current-dt"></div>
+          <button class="btn btn-secondary" style="margin-top: 8px; padding: 4px 12px; font-size: 0.85rem;" onclick="copyText(document.getElementById('current-ts').textContent)">コピー</button>
+        </div>
+      </div>
+
+      <h2 style="font-size: 1.1rem; margin-bottom: 12px;">タイムスタンプ → 日時</h2>
+      <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px;">
+          <label for="ts-input">Unixタイムスタンプ</label>
+          <input type="text" id="ts-input" placeholder="例: 1700000000">
+        </div>
+        <button class="btn" onclick="tsToDate()">変換</button>
+      </div>
+      <div class="result-area" id="ts-result" style="margin-top: 12px;">
+        <pre>ここに変換結果が表示されます</pre>
+      </div>
+
+      <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);">
+
+      <h2 style="font-size: 1.1rem; margin-bottom: 12px;">日時 → タイムスタンプ</h2>
+      <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px;">
+          <label for="dt-input">日時</label>
+          <input type="datetime-local" id="dt-input" step="1">
+        </div>
+        <button class="btn" onclick="dateToTs()">変換</button>
+      </div>
+      <div class="result-area" id="dt-result" style="margin-top: 12px;">
+        <pre>ここに変換結果が表示されます</pre>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="setNow()">現在時刻をセット</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function updateCurrent() {
+      const now = Math.floor(Date.now() / 1000);
+      document.getElementById('current-ts').textContent = now;
+      document.getElementById('current-dt').textContent = formatDate(new Date());
+    }
+    updateCurrent();
+    setInterval(updateCurrent, 1000);
+
+    function formatDate(d) {
+      return d.getFullYear() + '/' +
+        String(d.getMonth() + 1).padStart(2, '0') + '/' +
+        String(d.getDate()).padStart(2, '0') + ' ' +
+        String(d.getHours()).padStart(2, '0') + ':' +
+        String(d.getMinutes()).padStart(2, '0') + ':' +
+        String(d.getSeconds()).padStart(2, '0');
+    }
+
+    function tsToDate() {
+      const input = document.getElementById('ts-input').value.trim();
+      if (!input) return;
+      let ts = Number(input);
+      if (isNaN(ts)) {
+        document.getElementById('ts-result').innerHTML = '<pre style="color:#dc2626;">無効なタイムスタンプです</pre>';
+        return;
+      }
+      // ミリ秒判定（13桁以上ならミリ秒とみなす）
+      const isMs = input.length >= 13;
+      const date = isMs ? new Date(ts) : new Date(ts * 1000);
+      if (isNaN(date.getTime())) {
+        document.getElementById('ts-result').innerHTML = '<pre style="color:#dc2626;">無効なタイムスタンプです</pre>';
+        return;
+      }
+      const result = `ローカル: ${formatDate(date)}\nUTC:     ${date.toUTCString()}\nISO:     ${date.toISOString()}${isMs ? '\n※ ミリ秒のタイムスタンプとして解釈しました' : ''}`;
+      document.getElementById('ts-result').innerHTML = '<pre>' + result + '</pre>';
+    }
+
+    function dateToTs() {
+      const input = document.getElementById('dt-input').value;
+      if (!input) return;
+      const date = new Date(input);
+      if (isNaN(date.getTime())) {
+        document.getElementById('dt-result').innerHTML = '<pre style="color:#dc2626;">無効な日時です</pre>';
+        return;
+      }
+      const ts = Math.floor(date.getTime() / 1000);
+      const tsMs = date.getTime();
+      const result = `秒:     ${ts}\nミリ秒: ${tsMs}`;
+      document.getElementById('dt-result').innerHTML = '<pre>' + result + '</pre>';
+    }
+
+    function setNow() {
+      const now = new Date();
+      const local = now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0') + 'T' +
+        String(now.getHours()).padStart(2, '0') + ':' +
+        String(now.getMinutes()).padStart(2, '0') + ':' +
+        String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('dt-input').value = local;
+      document.getElementById('ts-input').value = Math.floor(Date.now() / 1000);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = 'コピーしました!';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('ts-input').value = '';
+      document.getElementById('dt-input').value = '';
+      document.getElementById('ts-result').innerHTML = '<pre>ここに変換結果が表示されます</pre>';
+      document.getElementById('dt-result').innerHTML = '<pre>ここに変換結果が表示されます</pre>';
+    }
+  </script>
+</body>
+</html>

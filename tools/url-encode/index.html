@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URLエンコード・デコード変換 | Web便利ツール集</title>
+  <meta name="description" content="URLエンコード（パーセントエンコーディング）とデコードを行う無料オンラインツール。日本語URLの変換に便利。">
+  <meta property="og:title" content="URLエンコード・デコード変換 | Web便利ツール集">
+  <meta property="og:description" content="URLエンコード・デコードを簡単に行える無料オンラインツール。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>URLエンコード・デコード</h1>
+    <p class="tool-description">URLエンコード（パーセントエンコーディング）とデコードを双方向に変換します。</p>
+
+    <div class="tool-area">
+      <label for="input-text">テキスト（デコード済み）</label>
+      <textarea id="input-text" placeholder="エンコードしたいテキストやURLを入力..." rows="5"></textarea>
+
+      <div class="btn-group" style="justify-content: center; margin: 16px 0;">
+        <button class="btn" onclick="encode()">エンコード &darr;</button>
+        <button class="btn" onclick="decode()">デコード &uarr;</button>
+      </div>
+
+      <label for="output-text">URLエンコード済み</label>
+      <textarea id="output-text" placeholder="エンコード結果がここに表示されます..." rows="5"></textarea>
+
+      <div class="option-row" style="margin-top: 12px;">
+        <label><input type="checkbox" id="encode-component" checked> encodeURIComponent を使用（推奨）</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="copyResult('output-text')">エンコード結果をコピー</button>
+        <button class="btn btn-secondary" onclick="copyResult('input-text')">テキストをコピー</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <div id="error-msg" style="color: #dc2626; margin-top: 12px; display: none;"></div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function encode() {
+      const input = document.getElementById('input-text').value;
+      const useComponent = document.getElementById('encode-component').checked;
+      try {
+        const encoded = useComponent ? encodeURIComponent(input) : encodeURI(input);
+        document.getElementById('output-text').value = encoded;
+        document.getElementById('error-msg').style.display = 'none';
+      } catch (e) {
+        showError('エンコードに失敗しました: ' + e.message);
+      }
+    }
+
+    function decode() {
+      const input = document.getElementById('output-text').value;
+      const useComponent = document.getElementById('encode-component').checked;
+      try {
+        const decoded = useComponent ? decodeURIComponent(input) : decodeURI(input);
+        document.getElementById('input-text').value = decoded;
+        document.getElementById('error-msg').style.display = 'none';
+      } catch (e) {
+        showError('デコードに失敗しました。正しいURLエンコード文字列を入力してください。');
+      }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function copyResult(id) {
+      const text = document.getElementById(id).value;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = 'コピーしました!';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('output-text').value = '';
+      document.getElementById('error-msg').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

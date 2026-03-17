@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全角半角変換ツール | Web便利ツール集</title>
+  <meta name="description" content="全角⇔半角をワンクリックで変換。カタカナ・英数字・記号の変換オプション付き無料オンラインツール。">
+  <meta property="og:title" content="全角半角変換ツール | Web便利ツール集">
+  <meta property="og:description" content="全角⇔半角をワンクリックで変換。カタカナ・英数字・記号に対応。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>全角半角変換ツール</h1>
+    <p class="tool-description">テキスト中の全角・半角文字を相互変換します。カタカナ・英数字・記号を個別に指定できます。</p>
+
+    <div class="tool-area">
+      <label for="input-text">変換するテキスト</label>
+      <textarea id="input-text" placeholder="ここにテキストを入力してください..." rows="6"></textarea>
+
+      <div class="option-row" style="margin-top: 12px;">
+        <label><input type="checkbox" id="opt-kana" checked> カタカナ</label>
+        <label><input type="checkbox" id="opt-alpha" checked> 英数字</label>
+        <label><input type="checkbox" id="opt-symbol" checked> 記号</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="convert('toHankaku')">全角 → 半角</button>
+        <button class="btn" onclick="convert('toZenkaku')">半角 → 全角</button>
+        <button class="btn btn-secondary" onclick="copyResult()">結果をコピー</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <label style="margin-top: 16px;">変換結果</label>
+      <div class="result-area">
+        <pre id="result"></pre>
+      </div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    const KANA_MAP = {};
+    const ZEN_KANA = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンァィゥェォッャュョー・「」。、';
+    const HAN_KANA = ['ｱ','ｲ','ｳ','ｴ','ｵ','ｶ','ｷ','ｸ','ｹ','ｺ','ｻ','ｼ','ｽ','ｾ','ｿ','ﾀ','ﾁ','ﾂ','ﾃ','ﾄ','ﾅ','ﾆ','ﾇ','ﾈ','ﾉ','ﾊ','ﾋ','ﾌ','ﾍ','ﾎ','ﾏ','ﾐ','ﾑ','ﾒ','ﾓ','ﾔ','ﾕ','ﾖ','ﾗ','ﾘ','ﾙ','ﾚ','ﾛ','ﾜ','ｦ','ﾝ','ｧ','ｨ','ｩ','ｪ','ｫ','ｯ','ｬ','ｭ','ｮ','ｰ','･','｢','｣','｡','､'];
+
+    const DAKUTEN_MAP_ZEN = 'ガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポヴ';
+    const DAKUTEN_MAP_HAN = ['ｶﾞ','ｷﾞ','ｸﾞ','ｹﾞ','ｺﾞ','ｻﾞ','ｼﾞ','ｽﾞ','ｾﾞ','ｿﾞ','ﾀﾞ','ﾁﾞ','ﾂﾞ','ﾃﾞ','ﾄﾞ','ﾊﾞ','ﾋﾞ','ﾌﾞ','ﾍﾞ','ﾎﾞ','ﾊﾟ','ﾋﾟ','ﾌﾟ','ﾍﾟ','ﾎﾟ','ｳﾞ'];
+
+    function toHankakuKana(str) {
+      let result = '';
+      for (const ch of str) {
+        const di = DAKUTEN_MAP_ZEN.indexOf(ch);
+        if (di !== -1) { result += DAKUTEN_MAP_HAN[di]; continue; }
+        const ki = ZEN_KANA.indexOf(ch);
+        if (ki !== -1) { result += HAN_KANA[ki]; continue; }
+        result += ch;
+      }
+      return result;
+    }
+
+    function toZenkakuKana(str) {
+      let result = '';
+      let i = 0;
+      while (i < str.length) {
+        if (i + 1 < str.length) {
+          const pair = str[i] + str[i + 1];
+          const di = DAKUTEN_MAP_HAN.indexOf(pair);
+          if (di !== -1) { result += DAKUTEN_MAP_ZEN[di]; i += 2; continue; }
+        }
+        const ki = HAN_KANA.indexOf(str[i]);
+        if (ki !== -1) { result += ZEN_KANA[ki]; i++; continue; }
+        result += str[i]; i++;
+      }
+      return result;
+    }
+
+    function toHankakuAlpha(str) {
+      return str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, ch =>
+        String.fromCharCode(ch.charCodeAt(0) - 0xFEE0)
+      );
+    }
+
+    function toZenkakuAlpha(str) {
+      return str.replace(/[A-Za-z0-9]/g, ch =>
+        String.fromCharCode(ch.charCodeAt(0) + 0xFEE0)
+      );
+    }
+
+    const ZEN_SYM = '！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝～　';
+    const HAN_SYM = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ';
+
+    function toHankakuSymbol(str) {
+      return str.replace(/./g, ch => {
+        const i = ZEN_SYM.indexOf(ch);
+        return i !== -1 ? HAN_SYM[i] : ch;
+      });
+    }
+
+    function toZenkakuSymbol(str) {
+      return str.replace(/./g, ch => {
+        const i = HAN_SYM.indexOf(ch);
+        return i !== -1 ? ZEN_SYM[i] : ch;
+      });
+    }
+
+    function convert(direction) {
+      let text = document.getElementById('input-text').value;
+      const kana = document.getElementById('opt-kana').checked;
+      const alpha = document.getElementById('opt-alpha').checked;
+      const symbol = document.getElementById('opt-symbol').checked;
+
+      if (direction === 'toHankaku') {
+        if (kana) text = toHankakuKana(text);
+        if (alpha) text = toHankakuAlpha(text);
+        if (symbol) text = toHankakuSymbol(text);
+      } else {
+        if (kana) text = toZenkakuKana(text);
+        if (alpha) text = toZenkakuAlpha(text);
+        if (symbol) text = toZenkakuSymbol(text);
+      }
+
+      document.getElementById('result').textContent = text;
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result').textContent;
+      navigator.clipboard.writeText(text);
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('result').textContent = '';
+    }
+  </script>
+</body>
+</html>

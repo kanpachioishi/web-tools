@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正規表現テスター | Web便利ツール集</title>
+  <meta name="description" content="正規表現のパターンをリアルタイムでテストできる無料オンラインツール。マッチ結果のハイライト表示、フラグ選択対応。">
+  <meta property="og:title" content="正規表現テスター | Web便利ツール集">
+  <meta property="og:description" content="正規表現パターンをリアルタイムでテスト。マッチ結果をハイライト表示。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .match-highlight {
+      background: #fef08a;
+      border-radius: 2px;
+      padding: 1px 0;
+    }
+    .match-highlight:nth-of-type(even) {
+      background: #bbf7d0;
+    }
+    #highlight-area {
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      min-height: 80px;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .flag-group {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .flag-group label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    .match-info {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .match-info .stat-item {
+      flex: 0 1 auto;
+      min-width: 100px;
+    }
+    .match-list {
+      margin-top: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .match-list table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .match-list th, .match-list td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .match-list th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .match-list td {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>正規表現テスター</h1>
+    <p class="tool-description">正規表現パターンを入力してリアルタイムでテスト。マッチ結果をハイライト表示します。</p>
+
+    <div class="tool-area">
+      <label for="regex-input">正規表現パターン</label>
+      <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+        <span style="font-size: 1.2rem; color: var(--text-muted);">/</span>
+        <input type="text" id="regex-input" placeholder="例: \d{3}-\d{4}" style="flex: 1;">
+        <span style="font-size: 1.2rem; color: var(--text-muted);">/</span>
+        <input type="text" id="flags-input" value="g" style="width: 60px; text-align: center;">
+      </div>
+
+      <div class="flag-group" style="margin-bottom: 16px;">
+        <label><input type="checkbox" checked data-flag="g"> g（グローバル）</label>
+        <label><input type="checkbox" data-flag="i"> i（大文字小文字無視）</label>
+        <label><input type="checkbox" data-flag="m"> m（複数行）</label>
+      </div>
+
+      <label for="test-input">テスト文字列</label>
+      <textarea id="test-input" placeholder="テストしたい文字列を入力..." rows="5"></textarea>
+
+      <div id="error-msg" style="color: #dc2626; margin-top: 12px; display: none;"></div>
+
+      <div class="match-info" id="match-info" style="display: none;">
+        <div class="stat-item">
+          <div class="stat-value" id="match-count">0</div>
+          <div class="stat-label">マッチ数</div>
+        </div>
+      </div>
+
+      <label style="margin-top: 20px;">マッチ結果</label>
+      <div id="highlight-area">ここにマッチ結果がハイライト表示されます</div>
+
+      <div class="match-list" id="match-list" style="display: none;">
+        <table>
+          <thead>
+            <tr><th>#</th><th>マッチ</th><th>位置</th></tr>
+          </thead>
+          <tbody id="match-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    const regexInput = document.getElementById('regex-input');
+    const flagsInput = document.getElementById('flags-input');
+    const testInput = document.getElementById('test-input');
+    const highlightArea = document.getElementById('highlight-area');
+    const errorMsg = document.getElementById('error-msg');
+    const matchInfo = document.getElementById('match-info');
+    const matchList = document.getElementById('match-list');
+    const matchTableBody = document.getElementById('match-table-body');
+
+    // フラグチェックボックスとinputの同期
+    document.querySelectorAll('[data-flag]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        let flags = '';
+        document.querySelectorAll('[data-flag]').forEach(c => {
+          if (c.checked) flags += c.dataset.flag;
+        });
+        flagsInput.value = flags;
+        runTest();
+      });
+    });
+
+    flagsInput.addEventListener('input', () => {
+      document.querySelectorAll('[data-flag]').forEach(cb => {
+        cb.checked = flagsInput.value.includes(cb.dataset.flag);
+      });
+      runTest();
+    });
+
+    regexInput.addEventListener('input', runTest);
+    testInput.addEventListener('input', runTest);
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function runTest() {
+      const pattern = regexInput.value;
+      const flags = flagsInput.value;
+      const text = testInput.value;
+
+      if (!pattern || !text) {
+        highlightArea.textContent = text || 'ここにマッチ結果がハイライト表示されます';
+        matchInfo.style.display = 'none';
+        matchList.style.display = 'none';
+        errorMsg.style.display = 'none';
+        return;
+      }
+
+      let regex;
+      try {
+        regex = new RegExp(pattern, flags);
+        errorMsg.style.display = 'none';
+      } catch (e) {
+        errorMsg.textContent = '正規表現エラー: ' + e.message;
+        errorMsg.style.display = 'block';
+        highlightArea.textContent = text;
+        matchInfo.style.display = 'none';
+        matchList.style.display = 'none';
+        return;
+      }
+
+      // マッチ結果収集
+      const matches = [];
+      if (flags.includes('g')) {
+        let m;
+        while ((m = regex.exec(text)) !== null) {
+          matches.push({ value: m[0], index: m.index });
+          if (m[0].length === 0) { regex.lastIndex++; }
+        }
+      } else {
+        const m = regex.exec(text);
+        if (m) matches.push({ value: m[0], index: m.index });
+      }
+
+      // マッチ数表示
+      document.getElementById('match-count').textContent = matches.length;
+      matchInfo.style.display = 'flex';
+
+      // ハイライト表示
+      if (matches.length === 0) {
+        highlightArea.textContent = text;
+        matchList.style.display = 'none';
+        return;
+      }
+
+      let html = '';
+      let lastIndex = 0;
+      let colorIndex = 0;
+      matches.forEach(m => {
+        html += escapeHtml(text.substring(lastIndex, m.index));
+        html += '<span class="match-highlight" style="background:' + (colorIndex % 2 === 0 ? '#fef08a' : '#bbf7d0') + '">' + escapeHtml(m.value) + '</span>';
+        lastIndex = m.index + m.value.length;
+        colorIndex++;
+      });
+      html += escapeHtml(text.substring(lastIndex));
+      highlightArea.innerHTML = html;
+
+      // マッチ一覧テーブル
+      matchTableBody.innerHTML = '';
+      matches.forEach((m, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + escapeHtml(m.value) + '</td><td>' + m.index + '</td>';
+        matchTableBody.appendChild(tr);
+      });
+      matchList.style.display = 'block';
+    }
+
+    function clearAll() {
+      regexInput.value = '';
+      testInput.value = '';
+      flagsInput.value = 'g';
+      document.querySelectorAll('[data-flag]').forEach(cb => {
+        cb.checked = cb.dataset.flag === 'g';
+      });
+      highlightArea.textContent = 'ここにマッチ結果がハイライト表示されます';
+      matchInfo.style.display = 'none';
+      matchList.style.display = 'none';
+      errorMsg.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

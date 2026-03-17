@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSVテーブル変換ツール | Web便利ツール集</title>
+  <meta name="description" content="CSVデータをHTMLテーブルに変換してプレビュー表示。カンマ・タブ・セミコロン区切りに対応した無料オンラインツール。">
+  <meta property="og:title" content="CSVテーブル変換ツール | Web便利ツール集">
+  <meta property="og:description" content="CSVデータをHTMLテーブルに変換してプレビュー。区切り文字を選択可能。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .preview-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    .preview-table th, .preview-table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; font-size: 0.9rem; }
+    .preview-table th { background: var(--bg); font-weight: 600; }
+    .preview-table tr:hover td { background: #f1f5f9; }
+    .source-area { margin-top: 16px; }
+    .source-area pre { white-space: pre-wrap; word-break: break-all; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.8rem; max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>CSVテーブル変換ツール</h1>
+    <p class="tool-description">CSVデータを入力すると、HTMLテーブルとしてプレビュー表示し、HTMLソースコードも取得できます。</p>
+
+    <div class="tool-area">
+      <label for="csv-input">CSVデータを入力</label>
+      <textarea id="csv-input" placeholder="名前,年齢,職業&#10;田中太郎,30,エンジニア&#10;佐藤花子,25,デザイナー" rows="8"></textarea>
+
+      <div class="option-row" style="margin-top: 12px;">
+        <label>区切り文字:</label>
+        <label><input type="radio" name="delimiter" value="," checked> カンマ</label>
+        <label><input type="radio" name="delimiter" value="&#9;"> タブ</label>
+        <label><input type="radio" name="delimiter" value=";"> セミコロン</label>
+      </div>
+
+      <div class="option-row">
+        <label><input type="checkbox" id="has-header" checked> 1行目をヘッダーとして扱う</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="convertCSV()">変換</button>
+        <button class="btn btn-secondary" onclick="copyHTML()">HTMLをコピー</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <div id="table-preview" style="margin-top: 16px; overflow-x: auto;"></div>
+
+      <div class="source-area" id="source-area" style="display: none;">
+        <label>HTMLソース</label>
+        <div class="result-area">
+          <pre id="html-source"></pre>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function getDelimiter() {
+      return document.querySelector('input[name="delimiter"]:checked').value;
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function parseCSV(text, delimiter) {
+      return text.trim().split('\n').filter(l => l.trim()).map(line => {
+        const cells = [];
+        let current = '', inQuote = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (inQuote) {
+            if (ch === '"' && line[i+1] === '"') { current += '"'; i++; }
+            else if (ch === '"') inQuote = false;
+            else current += ch;
+          } else {
+            if (ch === '"') inQuote = true;
+            else if (ch === delimiter) { cells.push(current); current = ''; }
+            else current += ch;
+          }
+        }
+        cells.push(current);
+        return cells;
+      });
+    }
+
+    let generatedHTML = '';
+
+    function convertCSV() {
+      const text = document.getElementById('csv-input').value;
+      if (!text.trim()) return;
+
+      const delimiter = getDelimiter();
+      const hasHeader = document.getElementById('has-header').checked;
+      const rows = parseCSV(text, delimiter);
+
+      if (rows.length === 0) return;
+
+      let html = '<table>\n';
+      rows.forEach((row, i) => {
+        const tag = (hasHeader && i === 0) ? 'th' : 'td';
+        const wrap = (hasHeader && i === 0) ? 'thead' : (hasHeader && i === 1 ? 'tbody' : '');
+        if (wrap === 'thead') html += '  <thead>\n';
+        if (wrap === 'tbody') html += '  <tbody>\n';
+        html += '  <tr>\n';
+        row.forEach(cell => { html += `    <${tag}>${escapeHTML(cell.trim())}</${tag}>\n`; });
+        html += '  </tr>\n';
+        if (hasHeader && i === 0) html += '  </thead>\n';
+      });
+      if (hasHeader && rows.length > 1) html += '  </tbody>\n';
+      html += '</table>';
+
+      generatedHTML = html;
+
+      // Preview with styled class
+      const previewHTML = html.replace('<table>', '<table class="preview-table">');
+      document.getElementById('table-preview').innerHTML = previewHTML;
+
+      document.getElementById('source-area').style.display = 'block';
+      document.getElementById('html-source').textContent = html;
+    }
+
+    function copyHTML() {
+      if (generatedHTML) navigator.clipboard.writeText(generatedHTML);
+    }
+
+    function clearAll() {
+      document.getElementById('csv-input').value = '';
+      document.getElementById('table-preview').innerHTML = '';
+      document.getElementById('source-area').style.display = 'none';
+      document.getElementById('html-source').textContent = '';
+      generatedHTML = '';
+    }
+  </script>
+</body>
+</html>
