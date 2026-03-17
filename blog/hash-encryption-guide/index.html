@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ハッシュ関数とは？MD5・SHA-256の仕組みをわかりやすく解説 | Web便利ツール集</title>
+  <meta name="description" content="ハッシュ関数の基本概念からMD5・SHA-1・SHA-256・SHA-512の違い、パスワード保存やファイル検証での用途、MD5の脆弱性、ソルトの仕組みまで初心者にもわかりやすく解説。">
+  <meta property="og:title" content="ハッシュ関数とは？MD5・SHA-256の仕組みをわかりやすく解説">
+  <meta property="og:description" content="ハッシュ関数の基本からMD5・SHA-256の違い、実際の用途まで初心者向けに解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://kanpachioishi.github.io/web-tools/blog/hash-encryption-guide/">
+  <link rel="canonical" href="https://kanpachioishi.github.io/web-tools/blog/hash-encryption-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "ハッシュ関数とは？MD5・SHA-256の仕組みをわかりやすく解説",
+    "description": "ハッシュ関数の基本からMD5・SHA-256の違い、実際の用途まで初心者向けに解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2024-01-15",
+    "dateModified": "2024-01-15",
+    "mainEntityOfPage": "https://kanpachioishi.github.io/web-tools/blog/hash-encryption-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <article>
+      <h1>ハッシュ関数とは？MD5・SHA-256の仕組みをわかりやすく解説</h1>
+      <p class="article-meta">更新日: 2024年1月15日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-hash">ハッシュ関数とは</a></li>
+          <li><a href="#features">ハッシュ関数の3つの特徴</a></li>
+          <li><a href="#algorithms">MD5・SHA-1・SHA-256・SHA-512の違い</a></li>
+          <li><a href="#usage">ハッシュの用途</a></li>
+          <li><a href="#vulnerability">MD5の脆弱性と注意点</a></li>
+          <li><a href="#salt">ソルトとは</a></li>
+          <li><a href="#tool">ハッシュを生成してみよう</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>パスワードの安全な保存、ファイルの改ざん検知、ブロックチェーン技術の基盤など、ハッシュ関数はITセキュリティのあらゆる場面で活躍しています。この記事では、ハッシュ関数の基本的な仕組みから、MD5やSHA-256などの代表的なアルゴリズムの違い、実際の用途まで、初心者にもわかりやすく解説します。</p>
+
+        <h2 id="what-is-hash">ハッシュ関数とは</h2>
+        <p>ハッシュ関数とは、任意の長さのデータを入力すると、<strong>固定長の文字列（ハッシュ値）</strong>を出力する関数のことです。この出力されるハッシュ値は「ダイジェスト」や「フィンガープリント（指紋）」とも呼ばれます。</p>
+
+<pre><code>入力: "Hello"
+       ↓ ハッシュ関数（SHA-256）
+出力: "185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969"
+
+入力: "Hello!" （1文字追加しただけ）
+       ↓ ハッシュ関数（SHA-256）
+出力: "334d016f755cd6dc58c53a86e183882f8ec14f52fb05345887c8a5edd42c87b7"</code></pre>
+
+        <p>上の例のように、入力がたった1文字変わっただけでも、出力されるハッシュ値は全く異なるものになります。これが「雪崩効果」と呼ばれるハッシュ関数の重要な性質です。</p>
+
+        <h2 id="features">ハッシュ関数の3つの特徴</h2>
+
+        <h3>1. 一方向性</h3>
+        <p>ハッシュ値から元のデータを復元することはできません。暗号化とは異なり、「復号」の概念がないのがハッシュの大きな特徴です。</p>
+<pre><code>"password123" → "ef92b778..."  ✓ 変換できる
+"ef92b778..." → "password123"  ✗ 元に戻せない</code></pre>
+
+        <h3>2. 固定長の出力</h3>
+        <p>入力データの長さに関係なく、出力されるハッシュ値は常に同じ長さになります。</p>
+<pre><code>入力: "a"             → SHA-256で64文字の出力
+入力: "長い文章..."    → SHA-256で64文字の出力
+入力: 1GBのファイル    → SHA-256で64文字の出力</code></pre>
+
+        <h3>3. 衝突耐性</h3>
+        <p>異なる入力から同じハッシュ値が生成される（衝突）可能性が極めて低いことが求められます。安全なハッシュ関数では、同じハッシュ値を持つ2つの異なる入力を見つけることが事実上不可能です。</p>
+
+        <h2 id="algorithms">MD5・SHA-1・SHA-256・SHA-512の違い</h2>
+
+        <table>
+          <thead>
+            <tr><th>アルゴリズム</th><th>出力長</th><th>安全性</th><th>用途</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>MD5</td><td>128ビット（32文字）</td><td>非推奨</td><td>ファイル検証（非セキュリティ用途）</td></tr>
+            <tr><td>SHA-1</td><td>160ビット（40文字）</td><td>非推奨</td><td>レガシーシステム</td></tr>
+            <tr><td>SHA-256</td><td>256ビット（64文字）</td><td>安全</td><td>パスワード、電子署名、ブロックチェーン</td></tr>
+            <tr><td>SHA-512</td><td>512ビット（128文字）</td><td>安全</td><td>高セキュリティが要求される場面</td></tr>
+          </tbody>
+        </table>
+
+        <p>同じ「Hello」を各アルゴリズムでハッシュ化すると、以下のようになります。</p>
+<pre><code>MD5:     8b1a9953c4611296a827abf8c47804d7
+SHA-1:   f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0
+SHA-256: 185f8db32271fe25f561a6fc938b2e
+         264306ec304eda518007d1764826381969
+SHA-512: 3615f80c9d293ed7402687f94b22d58e
+         529b8cc7916f8fac7fddf7fbd5af4cf777d3
+         ...（非常に長い）</code></pre>
+
+        <h2 id="usage">ハッシュの用途</h2>
+
+        <h3>1. パスワードの保存</h3>
+        <p>Webサービスでは、ユーザーのパスワードをそのまま保存するのは危険です。代わりにハッシュ値を保存し、ログイン時に入力されたパスワードのハッシュ値と比較します。</p>
+<pre><code>【登録時】
+パスワード "mySecret123" → ハッシュ化 → "a1b2c3..." をDBに保存
+
+【ログイン時】
+入力 "mySecret123" → ハッシュ化 → "a1b2c3..."
+DBの値 "a1b2c3..." と一致 → ログイン成功</code></pre>
+        <p>この方法なら、万が一データベースが流出しても、元のパスワードは漏れません。</p>
+
+        <h3>2. ファイルの改ざん検知</h3>
+        <p>ソフトウェアのダウンロードページでよく見る「SHA-256チェックサム」は、ファイルが改ざんされていないことを確認するためのものです。</p>
+<pre><code>公式サイトのハッシュ値: a1b2c3d4e5f6...
+ダウンロードしたファイルのハッシュ値: a1b2c3d4e5f6...
+→ 一致 = ファイルは正常</code></pre>
+
+        <h3>3. ブロックチェーン</h3>
+        <p>ビットコインをはじめとする暗号通貨では、SHA-256がブロックの連鎖に使われています。前のブロックのハッシュ値を次のブロックに含めることで、データの改ざんを事実上不可能にしています。</p>
+
+        <h3>4. デジタル署名</h3>
+        <p>電子文書の署名では、まず文書全体のハッシュ値を計算し、そのハッシュ値に対して暗号化を行います。文書が少しでも変更されればハッシュ値が変わるため、改ざんを検知できます。</p>
+
+        <h2 id="vulnerability">MD5の脆弱性と注意点</h2>
+        <p>MD5は1991年に開発された古いアルゴリズムで、現在ではセキュリティ用途に使うべきではありません。その理由は以下の通りです。</p>
+        <ul>
+          <li><strong>衝突攻撃が可能</strong> - 2004年に、異なる入力から同じMD5ハッシュ値を生成できることが実証された</li>
+          <li><strong>レインボーテーブル攻撃</strong> - 事前に計算されたハッシュ値のデータベースで、よく使われるパスワードのMD5は瞬時に逆引きできる</li>
+          <li><strong>計算が高速すぎる</strong> - パスワード用途では計算が速いことが逆にデメリット。攻撃者が大量の候補を高速に試せる</li>
+        </ul>
+        <p>SHA-1も2017年にGoogleが衝突を実証しており、セキュリティ用途では<strong>SHA-256以上</strong>を使用することが推奨されています。</p>
+        <p>なお、パスワードのハッシュ化には、SHA-256よりもさらに専用のアルゴリズム（bcrypt、Argon2など）を使うのがベストプラクティスです。これらは意図的に計算を遅くすることで、ブルートフォース攻撃への耐性を高めています。</p>
+
+        <h2 id="salt">ソルトとは</h2>
+        <p>ソルト（Salt）とは、パスワードをハッシュ化する前に付加するランダムな文字列のことです。同じパスワードでも、ソルトが異なればハッシュ値も異なります。</p>
+<pre><code>【ソルトなし】
+"password123" → ハッシュ化 → "ef92b778..."
+全ユーザーが同じパスワードなら同じハッシュ値になる
+
+【ソルトあり】
+"password123" + "x7kQ9m" → ハッシュ化 → "3a5f1b..."
+"password123" + "pR2wYn" → ハッシュ化 → "8c4d2e..."
+同じパスワードでも異なるハッシュ値になる</code></pre>
+
+        <p>ソルトを使うことで、以下の攻撃を防げます。</p>
+        <ul>
+          <li><strong>レインボーテーブル攻撃</strong> - 事前計算されたハッシュ値が使えなくなる</li>
+          <li><strong>同一パスワードの検出</strong> - 複数ユーザーが同じパスワードを使っていても、ハッシュ値からはわからない</li>
+        </ul>
+        <p>ソルトはユーザーごとにランダムに生成し、ハッシュ値と一緒に保存します。秘密にする必要はありませんが、十分な長さ（16バイト以上推奨）が必要です。</p>
+
+        <div class="cta-box">
+          <p>実際にハッシュを生成してみましょう</p>
+          <a href="../../tools/hash-generator/" class="btn">ハッシュ生成ツールを使ってみる</a>
+        </div>
+
+        <h2 id="tool">まとめ</h2>
+        <p>ハッシュ関数は、セキュリティの基盤となる重要な技術です。一方向性、固定長出力、衝突耐性という3つの特徴を持ち、パスワード保存、ファイル検証、ブロックチェーンなど幅広い分野で活用されています。</p>
+        <p>現在ではMD5やSHA-1はセキュリティ用途には不十分とされており、SHA-256以上のアルゴリズムを使用することが推奨されています。当サイトのハッシュ生成ツールで、実際に文字列がどのようなハッシュ値に変換されるか、ぜひ体験してみてください。</p>
+      </div>
+    </article>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

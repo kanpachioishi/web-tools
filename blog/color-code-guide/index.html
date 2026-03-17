@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カラーコード完全ガイド - HEX・RGB・HSLの違いと使い分け | Web便利ツール集</title>
+  <meta name="description" content="Web制作で使うカラーコードを徹底解説。HEX（16進数）、RGB（光の三原色）、HSL（色相・彩度・明度）の仕組みと違い、CSSでの使い方、配色のコツまで初心者にもわかりやすく紹介。">
+  <meta property="og:title" content="カラーコード完全ガイド - HEX・RGB・HSLの違いと使い分け">
+  <meta property="og:description" content="HEX・RGB・HSLの仕組みと違い、CSSでの使い方、配色のコツを初心者向けに解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://kanpachioishi.github.io/web-tools/blog/color-code-guide/">
+  <link rel="canonical" href="https://kanpachioishi.github.io/web-tools/blog/color-code-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "カラーコード完全ガイド - HEX・RGB・HSLの違いと使い分け",
+    "description": "HEX・RGB・HSLの仕組みと違い、CSSでの使い方、配色のコツを初心者向けに解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2024-01-15",
+    "dateModified": "2024-01-15",
+    "mainEntityOfPage": "https://kanpachioishi.github.io/web-tools/blog/color-code-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <article>
+      <h1>カラーコード完全ガイド - HEX・RGB・HSLの違いと使い分け</h1>
+      <p class="article-meta">更新日: 2024年1月15日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#overview">Webで使われるカラーコードの種類</a></li>
+          <li><a href="#hex">HEXカラーコードの仕組み</a></li>
+          <li><a href="#rgb">RGBの仕組み</a></li>
+          <li><a href="#hsl">HSLの仕組み</a></li>
+          <li><a href="#css">CSSでの使い方</a></li>
+          <li><a href="#tips">配色のコツ</a></li>
+          <li><a href="#tool">カラーコードを変換してみよう</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>Webサイトやアプリのデザインにおいて、色の指定は欠かせない作業です。CSSで色を指定する方法にはHEX、RGB、HSLなど複数の形式があり、それぞれに特徴と適した使い方があります。この記事では、各カラーコードの仕組みと違い、実際のCSSでの使い方まで詳しく解説します。</p>
+
+        <h2 id="overview">Webで使われるカラーコードの種類</h2>
+        <p>Webで色を指定する方法は主に以下の4種類があります。</p>
+
+        <table>
+          <thead>
+            <tr><th>形式</th><th>記述例</th><th>特徴</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>カラーネーム</td><td><code>red</code>, <code>blue</code></td><td>英語名で直感的。約140色が定義済み</td></tr>
+            <tr><td>HEX</td><td><code>#ff6600</code></td><td>最も広く使われる。16進数で表現</td></tr>
+            <tr><td>RGB</td><td><code>rgb(255, 102, 0)</code></td><td>光の三原色。0〜255の整数で指定</td></tr>
+            <tr><td>HSL</td><td><code>hsl(24, 100%, 50%)</code></td><td>人間の感覚に近い。色の調整が直感的</td></tr>
+          </tbody>
+        </table>
+
+        <p>それぞれ同じ色を表現できますが、用途や状況によって使い分けると効率的です。</p>
+
+        <h2 id="hex">HEXカラーコードの仕組み</h2>
+        <p>HEX（ヘックス）は16進数（Hexadecimal）の略で、<code>#</code>記号に続く6桁の16進数で色を表現します。</p>
+
+        <h3>構造</h3>
+<pre><code>#RRGGBB
+
+R（赤）: 00〜FF
+G（緑）: 00〜FF
+B（青）: 00〜FF
+
+例: #FF6600
+  FF = 赤 (255)
+  66 = 緑 (102)
+  00 = 青 (0)
+  → オレンジ色</code></pre>
+
+        <p>16進数では0〜9の数字とA〜Fのアルファベットを使い、00（0）からFF（255）の256段階で各色の強さを表します。</p>
+
+        <h3>短縮形</h3>
+        <p>各色が同じ文字の繰り返しの場合、3桁に短縮できます。</p>
+<pre><code>#FF6600 → #F60
+#FFFFFF → #FFF（白）
+#000000 → #000（黒）
+#CC3399 → #C39</code></pre>
+
+        <h3>8桁HEX（透明度付き）</h3>
+        <p>末尾に2桁を追加することで、透明度（アルファ値）も指定できます。</p>
+<pre><code>#FF660080
+         ↑ アルファ値（80 = 約50%の不透明度）</code></pre>
+
+        <h2 id="rgb">RGBの仕組み</h2>
+        <p>RGB（アールジービー）は、光の三原色である赤（Red）、緑（Green）、青（Blue）の組み合わせで色を表現します。各色を0〜255の整数値で指定します。</p>
+
+<pre><code>rgb(255, 0, 0)     → 赤（赤が最大、緑と青が0）
+rgb(0, 255, 0)     → 緑
+rgb(0, 0, 255)     → 青
+rgb(255, 255, 0)   → 黄色（赤+緑）
+rgb(255, 255, 255) → 白（すべて最大）
+rgb(0, 0, 0)       → 黒（すべて0）</code></pre>
+
+        <h3>RGBA（透明度付き）</h3>
+        <p>RGBにアルファ値（透明度）を加えたのがRGBAです。アルファ値は0（完全に透明）から1（完全に不透明）の範囲で指定します。</p>
+<pre><code>rgba(255, 102, 0, 0.5)  → 50%の不透明度のオレンジ
+rgba(0, 0, 0, 0.3)      → 30%の不透明度の黒（薄い影に便利）</code></pre>
+        <p>半透明のオーバーレイや影の表現によく使われます。</p>
+
+        <h2 id="hsl">HSLの仕組み</h2>
+        <p>HSL（エイチエスエル）は、色相（Hue）、彩度（Saturation）、明度（Lightness）の3つの要素で色を指定します。人間の色の認識に最も近い表現方法です。</p>
+
+        <h3>色相（Hue）: 0〜360度</h3>
+        <p>色相は色の種類を角度（0〜360度）で表します。色相環をイメージすると理解しやすいです。</p>
+<pre><code>0°（360°） → 赤
+60°         → 黄色
+120°        → 緑
+180°        → シアン
+240°        → 青
+300°        → マゼンタ</code></pre>
+
+        <h3>彩度（Saturation）: 0〜100%</h3>
+        <p>色の鮮やかさを表します。100%が最も鮮やかで、0%はグレーになります。</p>
+
+        <h3>明度（Lightness）: 0〜100%</h3>
+        <p>色の明るさを表します。0%は黒、50%が純色、100%は白になります。</p>
+
+<pre><code>hsl(0, 100%, 50%)   → 純粋な赤
+hsl(0, 100%, 75%)   → 明るい赤（ピンクっぽい）
+hsl(0, 100%, 25%)   → 暗い赤
+hsl(0, 50%, 50%)    → くすんだ赤
+hsl(0, 0%, 50%)     → グレー</code></pre>
+
+        <p>HSLの大きな利点は、<strong>色の調整が直感的</strong>であることです。「もう少し明るく」なら明度を上げ、「もう少し鮮やかに」なら彩度を上げるだけです。RGBやHEXでは同じ調整をするのが難しく、HSLが配色作業に適している理由です。</p>
+
+        <h2 id="css">CSSでの使い方</h2>
+        <p>CSSではすべての形式が使用可能です。以下に実際のコード例を示します。</p>
+
+<pre><code>/* カラーネーム */
+.element { color: tomato; }
+
+/* HEX */
+.element { color: #ff6347; }
+
+/* HEX短縮形 */
+.element { background: #f00; }
+
+/* RGB */
+.element { color: rgb(255, 99, 71); }
+
+/* RGBA（透明度付き） */
+.overlay { background: rgba(0, 0, 0, 0.5); }
+
+/* HSL */
+.element { color: hsl(9, 100%, 64%); }
+
+/* HSLA（透明度付き） */
+.element { color: hsla(9, 100%, 64%, 0.8); }
+
+/* 最新のCSS記法（スペース区切り） */
+.element { color: rgb(255 99 71 / 0.8); }
+.element { color: hsl(9 100% 64% / 0.8); }</code></pre>
+
+        <h3>使い分けの指針</h3>
+        <ul>
+          <li><strong>HEX</strong> - デザインツールからのコピペ、色の共有に便利。最も一般的</li>
+          <li><strong>RGB/RGBA</strong> - 透明度を使いたい場面。JavaScriptで色を動的に変更する場合</li>
+          <li><strong>HSL/HSLA</strong> - 配色を調整する場面。同系色のバリエーションを作る場合</li>
+        </ul>
+
+        <h2 id="tips">配色のコツ</h2>
+
+        <h3>メインカラーの選び方</h3>
+        <p>サイトの印象を決めるメインカラーは1〜2色に絞りましょう。色が多すぎるとごちゃごちゃした印象になります。</p>
+
+        <h3>HSLを活用した同系色の作り方</h3>
+        <p>HSLを使えば、メインカラーから統一感のある配色を簡単に作れます。</p>
+<pre><code>/* メインカラー */
+--primary: hsl(220, 80%, 50%);
+
+/* 明るいバリエーション（明度を上げる） */
+--primary-light: hsl(220, 80%, 70%);
+
+/* 暗いバリエーション（明度を下げる） */
+--primary-dark: hsl(220, 80%, 35%);
+
+/* 薄いバリエーション（彩度を下げる） */
+--primary-muted: hsl(220, 30%, 60%);</code></pre>
+
+        <h3>コントラスト比に注意</h3>
+        <p>文字色と背景色のコントラスト比は、アクセシビリティ基準（WCAG）で4.5:1以上が推奨されています。薄い色の背景に薄い色の文字を置くと読みにくくなるため注意しましょう。</p>
+
+        <div class="cta-box">
+          <p>カラーコードを変換してみましょう</p>
+          <a href="../../tools/color-converter/" class="btn">カラーコード変換ツールを使ってみる</a>
+        </div>
+
+        <h2 id="tool">まとめ</h2>
+        <p>カラーコードには複数の形式がありますが、それぞれに適した場面があります。HEXは汎用的に使え、RGBは透明度の制御に便利、HSLは配色の調整に最適です。</p>
+        <p>まずはHEXとRGBの基本を押さえた上で、配色作業ではHSLを活用してみてください。当サイトのカラーコード変換ツールを使えば、3つの形式を瞬時に相互変換できますので、ぜひ試してみてください。</p>
+      </div>
+    </article>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

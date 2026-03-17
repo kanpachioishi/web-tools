@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正規表現入門 - よく使うパターン一覧と実践例 | Web便利ツール集</title>
+  <meta name="description" content="正規表現の基本メタ文字から、メールアドレス・電話番号・郵便番号などよく使うパターン10選を実践的に解説。初心者でもすぐに使える正規表現入門ガイド。">
+  <meta property="og:title" content="正規表現入門 - よく使うパターン一覧と実践例">
+  <meta property="og:description" content="正規表現の基本から、よく使うパターン10選を実践的に解説。初心者でもすぐに使える入門ガイド。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://kanpachioishi.github.io/web-tools/blog/regex-basics/">
+  <link rel="canonical" href="https://kanpachioishi.github.io/web-tools/blog/regex-basics/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "正規表現入門 - よく使うパターン一覧と実践例",
+    "description": "正規表現の基本メタ文字から、よく使うパターン10選を実践的に解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2024-01-15",
+    "dateModified": "2024-01-15",
+    "mainEntityOfPage": "https://kanpachioishi.github.io/web-tools/blog/regex-basics/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <article>
+      <h1>正規表現入門 - よく使うパターン一覧と実践例</h1>
+      <p class="article-meta">更新日: 2024年1月15日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-regex">正規表現とは</a></li>
+          <li><a href="#meta-chars">基本メタ文字一覧</a></li>
+          <li><a href="#patterns">よく使うパターン10選</a></li>
+          <li><a href="#flags">フラグの意味と使い方</a></li>
+          <li><a href="#tips">正規表現を書くコツ</a></li>
+          <li><a href="#tool">正規表現をテストしてみよう</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>正規表現（Regular Expression、略してRegex）は、文字列のパターンを表現するための特殊な記法です。テキストの検索、置換、バリデーションなど、プログラミングのあらゆる場面で活躍します。最初は記号の羅列に見えて難しく感じますが、基本を押さえれば強力な武器になります。</p>
+
+        <h2 id="what-is-regex">正規表現とは</h2>
+        <p>正規表現は「文字列のパターンマッチング」を行うための記法です。例えば「3桁の数字の後にハイフンがあり、その後に4桁の数字が続く」というパターンを<code>\d{3}-\d{4}</code>と表現できます。</p>
+        <p>正規表現が使える場面は非常に多岐にわたります。</p>
+        <ul>
+          <li><strong>入力チェック</strong> - メールアドレスや電話番号の形式を検証</li>
+          <li><strong>テキスト検索</strong> - 特定のパターンに一致する文字列を検索</li>
+          <li><strong>テキスト置換</strong> - パターンに一致する部分をまとめて置換</li>
+          <li><strong>データ抽出</strong> - ログファイルから特定の情報を抽出</li>
+        </ul>
+
+        <h2 id="meta-chars">基本メタ文字一覧</h2>
+        <p>正規表現で特別な意味を持つ文字（メタ文字）を覚えましょう。</p>
+
+        <table>
+          <thead>
+            <tr><th>メタ文字</th><th>意味</th><th>例</th><th>マッチする文字列</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>.</code></td><td>任意の1文字</td><td><code>a.c</code></td><td>abc, aXc, a1c</td></tr>
+            <tr><td><code>*</code></td><td>直前の文字が0回以上</td><td><code>ab*c</code></td><td>ac, abc, abbc</td></tr>
+            <tr><td><code>+</code></td><td>直前の文字が1回以上</td><td><code>ab+c</code></td><td>abc, abbc（acは不可）</td></tr>
+            <tr><td><code>?</code></td><td>直前の文字が0回または1回</td><td><code>colou?r</code></td><td>color, colour</td></tr>
+            <tr><td><code>[]</code></td><td>文字クラス（いずれか1文字）</td><td><code>[abc]</code></td><td>a, b, c</td></tr>
+            <tr><td><code>()</code></td><td>グループ化</td><td><code>(ab)+</code></td><td>ab, abab</td></tr>
+            <tr><td><code>{n}</code></td><td>直前の文字がちょうどn回</td><td><code>a{3}</code></td><td>aaa</td></tr>
+            <tr><td><code>{n,m}</code></td><td>直前の文字がn回以上m回以下</td><td><code>a{2,4}</code></td><td>aa, aaa, aaaa</td></tr>
+            <tr><td><code>^</code></td><td>行の先頭</td><td><code>^Hello</code></td><td>行頭のHello</td></tr>
+            <tr><td><code>$</code></td><td>行の末尾</td><td><code>world$</code></td><td>行末のworld</td></tr>
+            <tr><td><code>\d</code></td><td>数字（[0-9]と同じ）</td><td><code>\d+</code></td><td>123, 45</td></tr>
+            <tr><td><code>\w</code></td><td>英数字とアンダースコア</td><td><code>\w+</code></td><td>hello, user_1</td></tr>
+            <tr><td><code>\s</code></td><td>空白文字</td><td><code>\s+</code></td><td>スペース、タブ</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="patterns">よく使うパターン10選</h2>
+        <p>実務でよく使われる正規表現パターンを厳選して紹介します。コピペしてそのまま使えます。</p>
+
+        <h3>1. メールアドレス</h3>
+<pre><code>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}</code></pre>
+        <p>一般的なメールアドレスの形式にマッチします。<code>user@example.com</code>のようなパターンを検証できます。</p>
+
+        <h3>2. 電話番号（日本の形式）</h3>
+<pre><code>0\d{1,4}-\d{1,4}-\d{3,4}</code></pre>
+        <p><code>03-1234-5678</code>や<code>090-1234-5678</code>などの日本の電話番号形式にマッチします。</p>
+
+        <h3>3. 郵便番号</h3>
+<pre><code>\d{3}-\d{4}</code></pre>
+        <p><code>100-0001</code>のような日本の郵便番号形式にマッチします。シンプルですが実用的です。</p>
+
+        <h3>4. URL</h3>
+<pre><code>https?://[\w!?/+\-_~;.,*&@#$%()='[\]]+</code></pre>
+        <p><code>http://</code>または<code>https://</code>で始まるURLにマッチします。</p>
+
+        <h3>5. IPアドレス（IPv4）</h3>
+<pre><code>\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b</code></pre>
+        <p><code>192.168.1.1</code>のようなIPv4アドレスの形式にマッチします。</p>
+
+        <h3>6. 日付（YYYY-MM-DD）</h3>
+<pre><code>\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])</code></pre>
+        <p><code>2024-01-15</code>のようなISO 8601形式の日付にマッチします。</p>
+
+        <h3>7. 全角カタカナのみ</h3>
+<pre><code>^[\u30A0-\u30FF]+$</code></pre>
+        <p>フォームのフリガナ入力チェックなどに使えます。</p>
+
+        <h3>8. 全角ひらがなのみ</h3>
+<pre><code>^[\u3040-\u309F]+$</code></pre>
+        <p>ひらがなのみの入力を検証したい場合に使います。</p>
+
+        <h3>9. HTMLタグ</h3>
+<pre><code>&lt;("[^"]*"|'[^']*'|[^'"&gt;])*&gt;</code></pre>
+        <p>HTMLタグにマッチします。タグの除去などに使えますが、複雑なHTMLの解析にはパーサーを使うことを推奨します。</p>
+
+        <h3>10. 半角英数字のみ</h3>
+<pre><code>^[a-zA-Z0-9]+$</code></pre>
+        <p>ユーザーIDやパスワードの形式チェックに使えるシンプルなパターンです。</p>
+
+        <h2 id="flags">フラグの意味と使い方</h2>
+        <p>正規表現にはフラグ（修飾子）を付けることで、マッチの挙動を変更できます。</p>
+
+        <table>
+          <thead>
+            <tr><th>フラグ</th><th>名前</th><th>効果</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>g</code></td><td>global</td><td>最初のマッチだけでなく、すべてのマッチを検索</td></tr>
+            <tr><td><code>i</code></td><td>case-insensitive</td><td>大文字・小文字を区別しない</td></tr>
+            <tr><td><code>m</code></td><td>multiline</td><td><code>^</code>と<code>$</code>が各行の先頭・末尾にマッチ</td></tr>
+          </tbody>
+        </table>
+
+        <p>JavaScriptでの使用例を見てみましょう。</p>
+<pre><code>// gフラグ: すべてのマッチを取得
+const text = "apple banana apple cherry";
+const matches = text.match(/apple/g);
+// → ["apple", "apple"]
+
+// iフラグ: 大文字小文字を無視
+"Hello".match(/hello/i);
+// → ["Hello"]
+
+// mフラグ: 複数行モード
+const multiline = "line1\nline2\nline3";
+multiline.match(/^line/gm);
+// → ["line", "line", "line"]</code></pre>
+
+        <h2 id="tips">正規表現を書くコツ</h2>
+        <ul>
+          <li><strong>シンプルに始める</strong> - まずは大まかなパターンを書き、徐々に厳密にしていく</li>
+          <li><strong>テスターを活用する</strong> - いきなりコードに書くのではなく、テスターで動作確認する</li>
+          <li><strong>コメントを残す</strong> - 複雑な正規表現にはコメントで意図を説明する</li>
+          <li><strong>完璧を求めすぎない</strong> - 100%のバリデーションは正規表現だけでは難しい。ある程度の精度で十分な場合も多い</li>
+        </ul>
+
+        <div class="cta-box">
+          <p>正規表現テスターで試してみましょう</p>
+          <a href="../../tools/regex-tester/" class="btn">正規表現テスターを使ってみる</a>
+        </div>
+
+        <h2>まとめ</h2>
+        <p>正規表現は最初こそ取っつきにくいですが、基本メタ文字とよく使うパターンを覚えるだけで実務で大いに役立ちます。この記事で紹介したパターン10選をベースに、実際にテスターで動作を確認しながら理解を深めてみてください。</p>
+        <p>特にメールアドレスや電話番号のバリデーションは、Webフォームの開発で頻繁に使うパターンです。まずはこれらをマスターして、正規表現に慣れていきましょう。</p>
+      </div>
+    </article>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSONとは？初心者にもわかる書き方・使い方を徹底解説 | Web便利ツール集</title>
+  <meta name="description" content="JSONの基本概念から書き方、データ型、実際の使用例まで初心者にもわかりやすく解説。API通信や設定ファイルでの活用法、よくあるエラーと対処法も紹介します。">
+  <meta property="og:title" content="JSONとは？初心者にもわかる書き方・使い方を徹底解説">
+  <meta property="og:description" content="JSONの基本概念から書き方、データ型、実際の使用例まで初心者にもわかりやすく解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://kanpachioishi.github.io/web-tools/blog/what-is-json/">
+  <link rel="canonical" href="https://kanpachioishi.github.io/web-tools/blog/what-is-json/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "JSONとは？初心者にもわかる書き方・使い方を徹底解説",
+    "description": "JSONの基本概念から書き方、データ型、実際の使用例まで初心者にもわかりやすく解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2024-01-15",
+    "dateModified": "2024-01-15",
+    "mainEntityOfPage": "https://kanpachioishi.github.io/web-tools/blog/what-is-json/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <article>
+      <h1>JSONとは？初心者にもわかる書き方・使い方を徹底解説</h1>
+      <p class="article-meta">更新日: 2024年1月15日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-json">JSONとは何か</a></li>
+          <li><a href="#syntax">JSONの基本構文ルール</a></li>
+          <li><a href="#data-types">JSONで使えるデータ型</a></li>
+          <li><a href="#examples">実際の使用例</a></li>
+          <li><a href="#errors">よくあるエラーと対処法</a></li>
+          <li><a href="#tool">JSONを整形してみよう</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>Web開発やプログラミングを学び始めると、必ず目にするのが「JSON」という言葉です。APIのレスポンス、設定ファイル、データのやり取りなど、あらゆる場面で使われています。この記事では、JSONの基本概念から書き方、よくあるエラーまで、初心者の方にもわかりやすく解説します。</p>
+
+        <h2 id="what-is-json">JSONとは何か</h2>
+        <p>JSON（ジェイソン）は「JavaScript Object Notation」の略で、データを記述するためのテキストフォーマットです。もともとJavaScriptのオブジェクト表記から派生しましたが、現在ではほぼすべてのプログラミング言語で利用できる汎用的なデータ形式となっています。</p>
+        <p>JSONが広く使われている理由は主に3つあります。</p>
+        <ul>
+          <li><strong>人間が読みやすい</strong> - テキスト形式なので、目で見て内容を理解できる</li>
+          <li><strong>機械が処理しやすい</strong> - パース（解析）が高速で、どの言語でも簡単に扱える</li>
+          <li><strong>軽量</strong> - XMLと比べてデータ量が少なく、通信の効率が良い</li>
+        </ul>
+
+        <h2 id="syntax">JSONの基本構文ルール</h2>
+        <p>JSONにはいくつかの重要なルールがあります。これらを覚えておけば、JSONの読み書きで困ることはありません。</p>
+
+        <h3>ルール1: キーと値のペアで記述する</h3>
+        <p>JSONの基本形は「キー: 値」のペアです。キーは必ず<strong>ダブルクォーテーション</strong>で囲みます。</p>
+<pre><code>{
+  "name": "田中太郎",
+  "age": 30,
+  "email": "tanaka@example.com"
+}</code></pre>
+
+        <h3>ルール2: シングルクォーテーションは使えない</h3>
+        <p>JavaScriptではシングルクォーテーションも使えますが、JSONでは<strong>ダブルクォーテーションのみ</strong>が有効です。</p>
+<pre><code>// NG（JSONとして無効）
+{ 'name': '田中太郎' }
+
+// OK（正しいJSON）
+{ "name": "田中太郎" }</code></pre>
+
+        <h3>ルール3: 末尾カンマは禁止</h3>
+        <p>配列やオブジェクトの最後の要素の後にカンマを付けるとエラーになります。</p>
+<pre><code>// NG
+{ "name": "田中太郎", "age": 30, }
+
+// OK
+{ "name": "田中太郎", "age": 30 }</code></pre>
+
+        <h2 id="data-types">JSONで使えるデータ型</h2>
+        <p>JSONで使用できるデータ型は以下の6種類です。</p>
+
+        <table>
+          <thead>
+            <tr><th>データ型</th><th>説明</th><th>例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>文字列</td><td>ダブルクォーテーションで囲んだテキスト</td><td><code>"Hello"</code></td></tr>
+            <tr><td>数値</td><td>整数または小数</td><td><code>42</code>, <code>3.14</code></td></tr>
+            <tr><td>真偽値</td><td>trueまたはfalse</td><td><code>true</code></td></tr>
+            <tr><td>null</td><td>値がないことを示す</td><td><code>null</code></td></tr>
+            <tr><td>配列</td><td>値の順序付きリスト</td><td><code>[1, 2, 3]</code></td></tr>
+            <tr><td>オブジェクト</td><td>キーと値のペアの集合</td><td><code>{"key": "value"}</code></td></tr>
+          </tbody>
+        </table>
+
+        <p>これらを組み合わせることで、複雑なデータ構造も表現できます。</p>
+<pre><code>{
+  "user": {
+    "name": "田中太郎",
+    "age": 30,
+    "isPremium": true,
+    "address": null,
+    "hobbies": ["読書", "プログラミング", "映画鑑賞"],
+    "scores": {
+      "math": 85,
+      "english": 72
+    }
+  }
+}</code></pre>
+
+        <h2 id="examples">実際の使用例</h2>
+
+        <h3>Web APIのレスポンス</h3>
+        <p>Web APIからのレスポンスデータは、ほとんどがJSON形式です。例えば天気APIのレスポンスは以下のようになります。</p>
+<pre><code>{
+  "city": "東京",
+  "temperature": 22.5,
+  "humidity": 60,
+  "weather": "晴れ",
+  "forecast": [
+    { "date": "2024-01-16", "weather": "曇り", "high": 18 },
+    { "date": "2024-01-17", "weather": "雨", "high": 12 }
+  ]
+}</code></pre>
+
+        <h3>設定ファイル（package.json）</h3>
+        <p>Node.jsプロジェクトではpackage.jsonという設定ファイルが使われます。</p>
+<pre><code>{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "サンプルプロジェクト",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.0"
+  }
+}</code></pre>
+
+        <h3>JavaScriptでのJSON操作</h3>
+        <p>JavaScriptでは<code>JSON.parse()</code>と<code>JSON.stringify()</code>でJSONを扱います。</p>
+<pre><code>// JSON文字列 → オブジェクトに変換
+const data = JSON.parse('{"name": "田中", "age": 30}');
+console.log(data.name); // "田中"
+
+// オブジェクト → JSON文字列に変換
+const json = JSON.stringify({ name: "田中", age: 30 });
+console.log(json); // '{"name":"田中","age":30}'
+
+// 整形して出力（インデント2スペース）
+const pretty = JSON.stringify(data, null, 2);
+console.log(pretty);</code></pre>
+
+        <h2 id="errors">よくあるエラーと対処法</h2>
+        <p>JSONを扱う際によく発生するエラーとその解決方法をまとめました。</p>
+
+        <h3>SyntaxError: Unexpected token</h3>
+        <p>最も多いエラーです。以下の原因が考えられます。</p>
+        <ul>
+          <li>シングルクォーテーションを使っている</li>
+          <li>末尾にカンマがある（トレーリングカンマ）</li>
+          <li>コメントが含まれている（JSONはコメント非対応）</li>
+          <li>キーがダブルクォーテーションで囲まれていない</li>
+        </ul>
+
+        <h3>文字化けする</h3>
+        <p>ファイルの文字コードがUTF-8になっていない場合に発生します。JSONファイルは必ずUTF-8で保存しましょう。</p>
+
+        <h3>ネストが深すぎて読みにくい</h3>
+        <p>APIから返ってきたJSONが一行に圧縮されていて読みにくい場合は、JSON整形ツールを使うと一発で見やすくなります。</p>
+
+        <div class="cta-box">
+          <p>実際にJSONを整形してみましょう</p>
+          <a href="../../tools/json-formatter/" class="btn">JSON整形ツールを使ってみる</a>
+        </div>
+
+        <h2 id="tool">まとめ</h2>
+        <p>JSONはWeb開発において最も重要なデータ形式の一つです。基本ルールはシンプルで、ダブルクォーテーションの使用、末尾カンマの禁止、コメント非対応の3点を押さえておけば、ほとんどのケースに対応できます。</p>
+        <p>実際にJSONを書いたり整形したりしながら慣れていくのが上達への近道です。当サイトのJSON整形ツールを活用して、ぜひ実践してみてください。</p>
+      </div>
+    </article>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>
