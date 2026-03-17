@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>パスワード生成ツール | Web便利ツール集</title>
+  <meta name="description" content="安全なランダムパスワードをワンクリックで生成。文字数・記号の有無を自由にカスタマイズできる無料ツール。">
+  <meta property="og:title" content="パスワード生成ツール | Web便利ツール集">
+  <meta property="og:description" content="安全なランダムパスワードをワンクリックで生成。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>パスワード生成ツール</h1>
+    <p class="tool-description">安全なランダムパスワードを生成します。長さや含める文字種を選択できます。</p>
+
+    <div class="tool-area">
+      <div class="option-row">
+        <label for="pw-length">文字数:</label>
+        <input type="number" id="pw-length" value="16" min="4" max="128" style="width:80px;">
+      </div>
+      <div class="option-row">
+        <label><input type="checkbox" id="pw-upper" checked> 大文字 (A-Z)</label>
+        <label><input type="checkbox" id="pw-lower" checked> 小文字 (a-z)</label>
+        <label><input type="checkbox" id="pw-digits" checked> 数字 (0-9)</label>
+        <label><input type="checkbox" id="pw-symbols" checked> 記号 (!@#$...)</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="generate()">生成する</button>
+        <button class="btn btn-secondary" onclick="copyPw()">コピー</button>
+      </div>
+
+      <div class="result-area" style="margin-top:16px;">
+        <pre id="pw-output" style="font-size:1.2rem;letter-spacing:1px;text-align:center;min-height:1.5em;">ここにパスワードが表示されます</pre>
+      </div>
+
+      <div id="pw-strength" style="margin-top:12px;text-align:center;font-weight:600;"></div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function generate() {
+      const length = Math.min(128, Math.max(4, parseInt(document.getElementById('pw-length').value) || 16));
+      let chars = '';
+      if (document.getElementById('pw-upper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if (document.getElementById('pw-lower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+      if (document.getElementById('pw-digits').checked) chars += '0123456789';
+      if (document.getElementById('pw-symbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+      if (!chars) { chars = 'abcdefghijklmnopqrstuvwxyz'; }
+
+      const array = new Uint32Array(length);
+      crypto.getRandomValues(array);
+      let password = '';
+      for (let i = 0; i < length; i++) {
+        password += chars[array[i] % chars.length];
+      }
+
+      document.getElementById('pw-output').textContent = password;
+
+      // 強度表示
+      const entropy = Math.log2(Math.pow(chars.length, length));
+      const el = document.getElementById('pw-strength');
+      if (entropy >= 128) { el.textContent = '強度: 非常に強い'; el.style.color = '#16a34a'; }
+      else if (entropy >= 60) { el.textContent = '強度: 強い'; el.style.color = '#2563eb'; }
+      else if (entropy >= 36) { el.textContent = '強度: 普通'; el.style.color = '#d97706'; }
+      else { el.textContent = '強度: 弱い'; el.style.color = '#dc2626'; }
+    }
+
+    function copyPw() {
+      const text = document.getElementById('pw-output').textContent;
+      if (text && text !== 'ここにパスワードが表示されます') navigator.clipboard.writeText(text);
+    }
+
+    generate();
+  </script>
+</body>
+</html>

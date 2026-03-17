@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON整形ツール | Web便利ツール集</title>
+  <meta name="description" content="JSONデータを見やすく整形・フォーマット。圧縮（minify）機能も搭載した無料オンラインツール。">
+  <meta property="og:title" content="JSON整形ツール | Web便利ツール集">
+  <meta property="og:description" content="JSONデータを見やすく整形・フォーマット。圧縮機能も搭載。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>JSON整形ツール</h1>
+    <p class="tool-description">JSONデータを見やすく整形（Pretty Print）または圧縮（Minify）します。</p>
+
+    <div class="tool-area">
+      <label for="json-input">JSONを入力</label>
+      <textarea id="json-input" placeholder='{"name":"太郎","age":25}' rows="8" style="font-family:'SF Mono','Fira Code',monospace;font-size:0.9rem;"></textarea>
+
+      <div class="btn-group">
+        <button class="btn" onclick="formatJSON()">整形する</button>
+        <button class="btn btn-secondary" onclick="minifyJSON()">圧縮する</button>
+        <button class="btn btn-secondary" onclick="copyResult()">コピー</button>
+      </div>
+
+      <div id="error-msg" style="color:#dc2626;margin-top:12px;display:none;"></div>
+
+      <div class="result-area" id="result" style="display:none;">
+        <pre id="json-output"></pre>
+      </div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function parseInput() {
+      const input = document.getElementById('json-input').value.trim();
+      const errorEl = document.getElementById('error-msg');
+      errorEl.style.display = 'none';
+      if (!input) return null;
+      try {
+        return JSON.parse(input);
+      } catch (e) {
+        errorEl.textContent = 'JSONの形式が正しくありません: ' + e.message;
+        errorEl.style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+        return null;
+      }
+    }
+
+    function showResult(text) {
+      document.getElementById('json-output').textContent = text;
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function formatJSON() {
+      const obj = parseInput();
+      if (obj !== null) showResult(JSON.stringify(obj, null, 2));
+    }
+
+    function minifyJSON() {
+      const obj = parseInput();
+      if (obj !== null) showResult(JSON.stringify(obj));
+    }
+
+    function copyResult() {
+      const text = document.getElementById('json-output').textContent;
+      if (text) navigator.clipboard.writeText(text);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRコード生成ツール | Web便利ツール集</title>
+  <meta name="description" content="テキストやURLからQRコードを無料で生成。ダウンロードも可能なオンラインQRコード作成ツール。">
+  <meta property="og:title" content="QRコード生成ツール | Web便利ツール集">
+  <meta property="og:description" content="テキストやURLからQRコードを無料で生成。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>QRコード生成ツール</h1>
+    <p class="tool-description">テキストやURLを入力してQRコードを生成します。画像としてダウンロードできます。</p>
+
+    <div class="tool-area">
+      <label for="qr-input">テキストまたはURLを入力</label>
+      <input type="text" id="qr-input" placeholder="https://example.com">
+
+      <div class="btn-group">
+        <button class="btn" onclick="generateQR()">QRコードを生成</button>
+        <button class="btn btn-secondary" onclick="downloadQR()">ダウンロード</button>
+      </div>
+
+      <div id="qr-result" style="margin-top:20px;text-align:center;"></div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // QRコード生成（Canvas直接描画、外部ライブラリ不要の簡易版）
+    // Google Charts APIを利用
+    function generateQR() {
+      const text = document.getElementById('qr-input').value.trim();
+      if (!text) return;
+      const container = document.getElementById('qr-result');
+      const size = 300;
+      const url = 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + 'x' + size + '&data=' + encodeURIComponent(text);
+      container.innerHTML = '<img id="qr-img" src="' + url + '" alt="QRコード" style="max-width:100%;border-radius:8px;">';
+    }
+
+    function downloadQR() {
+      const img = document.getElementById('qr-img');
+      if (!img) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = 'qrcode.png';
+      a.click();
+    }
+  </script>
+</body>
+</html>

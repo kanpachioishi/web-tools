@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文字数カウンター | Web便利ツール集</title>
+  <meta name="description" content="テキストの文字数・単語数・行数をリアルタイムでカウント。スペースの有無も選択可能な無料オンラインツール。">
+  <meta property="og:title" content="文字数カウンター | Web便利ツール集">
+  <meta property="og:description" content="テキストの文字数・単語数・行数をリアルタイムでカウント。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <main>
+    <h1>文字数カウンター</h1>
+    <p class="tool-description">テキストを入力すると、文字数・単語数・行数をリアルタイムでカウントします。</p>
+
+    <div class="tool-area">
+      <label for="input-text">テキストを入力</label>
+      <textarea id="input-text" placeholder="ここにテキストを入力してください..." rows="8"></textarea>
+
+      <div class="stats" id="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="char-count">0</div>
+          <div class="stat-label">文字数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="char-no-space">0</div>
+          <div class="stat-label">文字数（空白なし）</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="word-count">0</div>
+          <div class="stat-label">単語数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="line-count">0</div>
+          <div class="stat-label">行数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="byte-count">0</div>
+          <div class="stat-label">バイト数</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="document.getElementById('input-text').value=''; updateCount();">クリア</button>
+      </div>
+    </div>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    const input = document.getElementById('input-text');
+
+    function updateCount() {
+      const text = input.value;
+      document.getElementById('char-count').textContent = text.length;
+      document.getElementById('char-no-space').textContent = text.replace(/\s/g, '').length;
+      document.getElementById('word-count').textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+      document.getElementById('line-count').textContent = text === '' ? 0 : text.split('\n').length;
+      document.getElementById('byte-count').textContent = new Blob([text]).size;
+    }
+
+    input.addEventListener('input', updateCount);
+  </script>
+</body>
+</html>
