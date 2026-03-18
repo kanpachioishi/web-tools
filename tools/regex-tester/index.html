@@ -76,9 +76,34 @@
       font-family: 'SF Mono', 'Fira Code', monospace;
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "正規表現テスターは無料ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料で登録不要です。ブラウザ内で動作するので、テストデータが外部に送信されることもありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのフラグに対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "g（グローバル）、i（大文字小文字無視）、m（複数行）フラグに対応しています。"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>正規表現テスター</h1>
     <p class="tool-description">正規表現パターンを入力してリアルタイムでテスト。マッチ結果をハイライト表示します。</p>
@@ -126,6 +151,28 @@
         <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">関連記事</h2>
+      <a href="../../blog/regex-basics/" class="tool-card" style="display:block;margin-bottom:8px;">
+        <h3 style="font-size:1rem;margin:0;">正規表現入門 - よく使うパターン一覧</h3>
+        <p>基本メタ文字からよく使うパターン10選を実践的に解説</p>
+      </a>
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト差分比較ツール</h3>
+          <p>2つのテキストの差分をハイライト表示</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

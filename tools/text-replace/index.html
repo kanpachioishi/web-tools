@@ -8,10 +8,35 @@
   <meta property="og:title" content="テキスト置換ツール | Web便利ツール集">
   <meta property="og:description" content="テキストの一括置換。正規表現対応、大文字小文字区別オプション付き。">
   <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "正規表現での置換に対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、正規表現モードをONにすることで、高度なパターンマッチによる置換が可能です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "大文字と小文字を区別せずに置換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、「大文字小文字を区別しない」オプションをONにすることで、区別なく置換できます。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>テキスト置換ツール</h1>
     <p class="tool-description">テキスト中の文字列を一括置換します。正規表現や大文字小文字の区別にも対応しています。</p>
@@ -54,6 +79,28 @@
         <pre id="result"></pre>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">関連記事</h2>
+      <a href="../../blog/regex-basics/" class="tool-card" style="display:block;margin-bottom:8px;">
+        <h3 style="font-size:1rem;margin:0;">正規表現入門 - よく使うパターン一覧</h3>
+        <p>基本メタ文字からよく使うパターン10選を実践的に解説</p>
+      </a>
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../regex-tester/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">正規表現テスター</h3>
+          <p>正規表現をリアルタイムでテスト</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト差分比較ツール</h3>
+          <p>2つのテキストの差分をハイライト表示</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

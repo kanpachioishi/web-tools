@@ -21,10 +21,43 @@
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "QRコードの生成は無料ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料で何度でもQRコードを生成できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "生成したQRコードは商用利用できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、生成したQRコードは自由にご利用いただけます。名刺やチラシなどにもお使いください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本語のテキストでもQRコードを作成できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、日本語を含むテキストやURLからQRコードを生成できます。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>QRコード生成ツール</h1>
     <h2>無料オンラインQRコード作成ツール</h2>
@@ -41,6 +74,23 @@
 
       <div id="qr-result" style="margin-top:20px;text-align:center;"></div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なランダムパスワードを自動作成</p>
+        </a>
+        <a href="../url-encode/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URLエンコード・デコード</h3>
+          <p>URLエンコードとデコードを相互変換</p>
+        </a>
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>テキストをBase64に変換・逆変換</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

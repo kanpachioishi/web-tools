@@ -8,10 +8,35 @@
   <meta property="og:title" content="ハッシュ値生成ツール | Web便利ツール集">
   <meta property="og:description" content="テキストからMD5・SHA-1・SHA-256・SHA-512ハッシュを一括生成。">
   <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "ハッシュ生成は安全ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、Web Crypto APIを使用してブラウザ内で処理され、データが外部に送信されることはありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "MD5とSHA-256の違いは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MD5は128ビット、SHA-256は256ビットのハッシュ値を生成します。SHA-256の方がセキュリティ的に安全です。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>ハッシュ値生成ツール</h1>
     <p class="tool-description">テキストを入力すると、MD5・SHA-1・SHA-256・SHA-512のハッシュ値を一括生成します。</p>
@@ -56,6 +81,28 @@
         </div>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">関連記事</h2>
+      <a href="../../blog/hash-encryption-guide/" class="tool-card" style="display:block;margin-bottom:8px;">
+        <h3 style="font-size:1rem;margin:0;">ハッシュ関数とは？仕組みをわかりやすく解説</h3>
+        <p>MD5・SHA-256の違いやソルトの仕組みまで解説</p>
+      </a>
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なランダムパスワードを自動作成</p>
+        </a>
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>テキストをBase64に変換・逆変換</p>
+        </a>
+        <a href="../regex-tester/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">正規表現テスター</h3>
+          <p>正規表現をリアルタイムでテスト</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

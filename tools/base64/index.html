@@ -8,10 +8,35 @@
   <meta property="og:title" content="Base64エンコード・デコード変換 | Web便利ツール集">
   <meta property="og:description" content="テキストとBase64の相互変換ができる無料オンラインツール。">
   <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Base64エンコードとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "バイナリデータをASCII文字列に変換する方式です。メール添付やAPIでのデータ送信に広く使われています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本語テキストもBase64に変換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、UTF-8エンコーディングに対応しており、日本語テキストも正しくBase64に変換・復元できます。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>Base64エンコード・デコード</h1>
     <p class="tool-description">テキストとBase64を双方向に変換します。エンコード・デコードどちらにも対応。</p>
@@ -36,6 +61,23 @@
 
       <div id="error-msg" style="color: #dc2626; margin-top: 12px; display: none;"></div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../url-encode/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URLエンコード・デコード</h3>
+          <p>URLエンコードとデコードを相互変換</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ値生成ツール</h3>
+          <p>MD5・SHA-256等のハッシュ値を一括生成</p>
+        </a>
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONを見やすく整形・圧縮</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

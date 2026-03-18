@@ -21,10 +21,43 @@
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "JSON整形ツールは無料ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料です。登録不要でブラウザだけで使えます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "JSONのエラーを検出できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、不正なJSON形式を入力するとエラーメッセージが表示され、問題箇所を特定できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "大きなJSONファイルも処理できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ブラウザのメモリ内で処理するため、数MB程度のJSONであれば問題なく整形できます。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>JSON整形ツール</h1>
     <h2>無料オンラインJSON整形・圧縮ツール</h2>
@@ -46,6 +79,28 @@
         <pre id="json-output"></pre>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">関連記事</h2>
+      <a href="../../blog/what-is-json/" class="tool-card" style="display:block;margin-bottom:8px;">
+        <h3 style="font-size:1rem;margin:0;">JSONとは？書き方・使い方を徹底解説</h3>
+        <p>JSONの基本概念から実際の使用例まで初心者向けに解説</p>
+      </a>
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>テキストをBase64に変換・逆変換</p>
+        </a>
+        <a href="../csv-to-table/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">CSVテーブル変換ツール</h3>
+          <p>CSVデータをHTMLテーブルに変換</p>
+        </a>
+        <a href="../url-encode/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URLエンコード・デコード</h3>
+          <p>URLエンコードとデコードを相互変換</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

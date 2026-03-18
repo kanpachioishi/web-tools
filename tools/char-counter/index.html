@@ -21,10 +21,43 @@
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "文字数カウンターは無料で使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料でご利用いただけます。登録も不要で、ブラウザだけで動作します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スペースや改行は文字数に含まれますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "「文字数」にはスペースや改行が含まれます。「文字数（空白なし）」ではスペースを除いた純粋な文字数を確認できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したテキストはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。テキストが外部に送信されることはありません。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>文字数カウンター</h1>
     <h2>無料オンライン文字数チェッカー</h2>
@@ -61,6 +94,23 @@
         <button class="btn btn-secondary" onclick="document.getElementById('input-text').value=''; updateCount();">クリア</button>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト差分比較ツール</h3>
+          <p>2つのテキストの差分をハイライト表示</p>
+        </a>
+        <a href="../zenkaku-hankaku/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">全角半角変換ツール</h3>
+          <p>全角⇔半角をワンクリックで変換</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

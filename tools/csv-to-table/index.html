@@ -17,9 +17,34 @@
     .source-area { margin-top: 16px; }
     .source-area pre { white-space: pre-wrap; word-break: break-all; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.8rem; max-height: 200px; overflow-y: auto; }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "どの区切り文字に対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "カンマ（CSV）、タブ（TSV）、セミコロンの3種類に対応しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "変換したHTMLテーブルをコピーできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、生成されたHTMLソースコードをワンクリックでコピーできます。"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>CSVテーブル変換ツール</h1>
     <p class="tool-description">CSVデータを入力すると、HTMLテーブルとしてプレビュー表示し、HTMLソースコードも取得できます。</p>
@@ -54,6 +79,23 @@
         </div>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONを見やすく整形・圧縮</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度の単位を変換</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

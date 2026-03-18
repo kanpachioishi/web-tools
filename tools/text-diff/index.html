@@ -20,9 +20,34 @@
     .diff-legend { display: flex; gap: 16px; margin-top: 12px; font-size: 0.85rem; }
     .diff-legend span { padding: 2px 8px; border-radius: 4px; }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "テキスト差分比較は無料ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料で何度でもご利用いただけます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのように差分が表示されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "追加された行は緑色、削除された行は赤色でハイライト表示されます。"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>テキスト差分比較ツール</h1>
     <p class="tool-description">2つのテキストを比較し、差分を行単位でハイライト表示します。</p>
@@ -51,6 +76,23 @@
 
       <div id="diff-output" class="diff-result"></div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
+        </a>
+        <a href="../regex-tester/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">正規表現テスター</h3>
+          <p>正規表現をリアルタイムでテスト</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

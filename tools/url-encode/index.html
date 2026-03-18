@@ -8,10 +8,35 @@
   <meta property="og:title" content="URLエンコード・デコード変換 | Web便利ツール集">
   <meta property="og:description" content="URLエンコード・デコードを簡単に行える無料オンラインツール。">
   <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "URLエンコードとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "URL内で使用できない文字（日本語やスペースなど）を%XX形式に変換することです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "encodeURIとencodeURIComponentの違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "encodeURIはURL全体をエンコードし、encodeURIComponentはパラメータ値など部分的なエンコードに使います。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>URLエンコード・デコード</h1>
     <p class="tool-description">URLエンコード（パーセントエンコーディング）とデコードを双方向に変換します。</p>
@@ -40,6 +65,23 @@
 
       <div id="error-msg" style="color: #dc2626; margin-top: 12px; display: none;"></div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>テキストをBase64に変換・逆変換</p>
+        </a>
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONを見やすく整形・圧縮</p>
+        </a>
+        <a href="../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QRコード生成ツール</h3>
+          <p>URLやテキストからQRコードを生成</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

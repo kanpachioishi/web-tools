@@ -21,10 +21,35 @@
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "HEX、RGB、HSLの違いは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "HEXは16進数表記（#FF0000）、RGBは赤・緑・青の値（255,0,0）、HSLは色相・彩度・明度で色を表現する形式です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "CSSではどのカラーコードを使うべきですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "どの形式でもCSSで使えますが、HEXが最も一般的です。透明度が必要な場合はRGBAやHSLAが便利です。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>カラーコード変換ツール</h1>
     <h2>HEX・RGB・HSL無料オンライン変換</h2>
@@ -61,6 +86,28 @@
         <input type="color" id="color-picker" value="#2563eb" style="width:60px;height:40px;padding:2px;cursor:pointer;">
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">関連記事</h2>
+      <a href="../../blog/color-code-guide/" class="tool-card" style="display:block;margin-bottom:8px;">
+        <h3 style="font-size:1rem;margin:0;">カラーコード完全ガイド</h3>
+        <p>HEX・RGB・HSLの違いと使い分けを解説</p>
+      </a>
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度の単位を変換</p>
+        </a>
+        <a href="../csv-to-table/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">CSVテーブル変換ツール</h3>
+          <p>CSVデータをHTMLテーブルに変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

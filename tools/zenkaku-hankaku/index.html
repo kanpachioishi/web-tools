@@ -8,10 +8,35 @@
   <meta property="og:title" content="全角半角変換ツール | Web便利ツール集">
   <meta property="og:description" content="全角⇔半角をワンクリックで変換。カタカナ・英数字・記号に対応。">
   <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "どの文字種に対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "カタカナ（濁音・半濁音含む）、英数字、記号の全角⇔半角変換に対応しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "変換する文字種を選べますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、カタカナ・英数字・記号ごとに変換するかどうかを個別に選択できます。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>全角半角変換ツール</h1>
     <p class="tool-description">テキスト中の全角・半角文字を相互変換します。カタカナ・英数字・記号を個別に指定できます。</p>
@@ -38,6 +63,23 @@
         <pre id="result"></pre>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト差分比較ツール</h3>
+          <p>2つのテキストの差分をハイライト表示</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

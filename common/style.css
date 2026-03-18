@@ -397,6 +397,23 @@ textarea {
   text-decoration: underline;
 }
 
+/* === Breadcrumb === */
+.breadcrumb {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  color: var(--primary);
+}
+.breadcrumb span {
+  margin: 0 6px;
+}
+
 /* === Responsive === */
 @media (max-width: 600px) {
   main { padding: 20px 16px; }

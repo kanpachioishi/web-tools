@@ -8,10 +8,35 @@
   <meta property="og:title" content="Unixタイムスタンプ変換 | Web便利ツール集">
   <meta property="og:description" content="Unixタイムスタンプと日時の相互変換ツール。現在時刻もリアルタイム表示。">
   <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Unixタイムスタンプとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "1970年1月1日0時0分0秒（UTC）からの経過秒数で時刻を表す形式です。プログラミングで広く使われています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ミリ秒のタイムスタンプにも対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、13桁のミリ秒タイムスタンプも自動的に判定して正しく変換します。"
+        }
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>Unixタイムスタンプ変換</h1>
     <p class="tool-description">Unixタイムスタンプと日時を相互変換します。現在時刻のタイムスタンプもリアルタイムで表示。</p>
@@ -57,6 +82,23 @@
         <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
       </div>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度の単位を変換</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ値生成ツール</h3>
+          <p>MD5・SHA-256等のハッシュ値を一括生成</p>
+        </a>
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONを見やすく整形・圧縮</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

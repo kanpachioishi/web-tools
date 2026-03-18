@@ -21,9 +21,34 @@
     .result-table th { background: var(--bg); font-weight: 600; }
     .result-table td:last-child { font-family: "SF Mono", "Fira Code", monospace; text-align: right; }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "どの単位に対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "長さ（mm〜mile）、重さ（mg〜lb）、温度（℃・℉・K）の変換に対応しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "計算結果は正確ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、標準的な変換係数を使用して正確に計算されます。"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
   <main>
     <h1>単位変換ツール</h1>
     <p class="tool-description">長さ・重さ・温度の単位を相互変換します。値を入力すると全単位の換算結果を一覧表示します。</p>
@@ -51,6 +76,23 @@
         <tbody id="result-body"></tbody>
       </table>
     </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../color-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">カラーコード変換ツール</h3>
+          <p>HEX・RGB・HSLを相互変換</p>
+        </a>
+        <a href="../unix-timestamp/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unixタイムスタンプ変換</h3>
+          <p>タイムスタンプと日時を相互変換</p>
+        </a>
+        <a href="../csv-to-table/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">CSVテーブル変換ツール</h3>
+          <p>CSVデータをHTMLテーブルに変換</p>
+        </a>
+      </div>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>
