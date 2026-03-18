@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV to Table Converter - Free Online CSV to HTML Table Tool | Simple Toolkit</title>
+  <meta name="description" content="Free CSV to HTML table converter. Preview CSV data as a table and get the HTML source code. Supports comma, tab, and semicolon delimiters. No registration required.">
+  <meta property="og:title" content="CSV to Table Converter - Free Online CSV to HTML Table Tool | Simple Toolkit">
+  <meta property="og:description" content="Convert CSV data to HTML tables with preview. Choose from comma, tab, or semicolon delimiters.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/csv-to-table/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/csv-to-table/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/csv-to-table/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CSV to Table Converter - Free Online CSV to HTML Table Tool",
+    "description": "Free CSV to HTML table converter. Preview CSV data as a table and get the HTML source code. Supports comma, tab, and semicolon delimiters.",
+    "url": "https://simpletoolkit.net/tools/csv-to-table/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What delimiters are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Three types of delimiters are supported: comma (CSV), tab (TSV), and semicolon."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I copy the generated HTML table?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can copy the generated HTML source code with one click."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .preview-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    .preview-table th, .preview-table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; font-size: 0.9rem; }
+    .preview-table th { background: var(--bg); font-weight: 600; }
+    .preview-table tr:hover td { background: #f1f5f9; }
+    .source-area { margin-top: 16px; }
+    .source-area pre { white-space: pre-wrap; word-break: break-all; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.8rem; max-height: 200px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>CSV to Table Converter</h1>
+    <h2>Free Online CSV to HTML Table Tool</h2>
+    <p class="tool-description">Enter CSV data to preview it as an HTML table and get the HTML source code.</p>
+
+    <div class="tool-area">
+      <label for="csv-input">Enter CSV data</label>
+      <textarea id="csv-input" placeholder="Name,Age,Occupation&#10;John Doe,30,Engineer&#10;Jane Smith,25,Designer" rows="8"></textarea>
+
+      <div class="option-row" style="margin-top: 12px;">
+        <label>Delimiter:</label>
+        <label><input type="radio" name="delimiter" value="," checked> Comma</label>
+        <label><input type="radio" name="delimiter" value="&#9;"> Tab</label>
+        <label><input type="radio" name="delimiter" value=";"> Semicolon</label>
+      </div>
+
+      <div class="option-row">
+        <label><input type="checkbox" id="has-header" checked> Treat first row as header</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="convertCSV()">Convert</button>
+        <button class="btn btn-secondary" onclick="copyHTML()">Copy HTML</button>
+        <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+
+      <div id="table-preview" style="margin-top: 16px; overflow-x: auto;"></div>
+
+      <div class="source-area" id="source-area" style="display: none;">
+        <label>HTML Source</label>
+        <div class="result-area">
+          <pre id="html-source"></pre>
+        </div>
+      </div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../json-formatter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON Formatter</h3>
+          <p>Format and minify JSON data</p>
+        </a>
+        <a href="../text-replace/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Text Replace Tool</h3>
+          <p>Bulk text replacement with regex support</p>
+        </a>
+        <a href="../unit-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, and temperature units</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function getDelimiter() {
+      return document.querySelector('input[name="delimiter"]:checked').value;
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function parseCSV(text, delimiter) {
+      return text.trim().split('\n').filter(l => l.trim()).map(line => {
+        const cells = [];
+        let current = '', inQuote = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (inQuote) {
+            if (ch === '"' && line[i+1] === '"') { current += '"'; i++; }
+            else if (ch === '"') inQuote = false;
+            else current += ch;
+          } else {
+            if (ch === '"') inQuote = true;
+            else if (ch === delimiter) { cells.push(current); current = ''; }
+            else current += ch;
+          }
+        }
+        cells.push(current);
+        return cells;
+      });
+    }
+
+    let generatedHTML = '';
+
+    function convertCSV() {
+      const text = document.getElementById('csv-input').value;
+      if (!text.trim()) return;
+
+      const delimiter = getDelimiter();
+      const hasHeader = document.getElementById('has-header').checked;
+      const rows = parseCSV(text, delimiter);
+
+      if (rows.length === 0) return;
+
+      let html = '<table>\n';
+      rows.forEach((row, i) => {
+        const tag = (hasHeader && i === 0) ? 'th' : 'td';
+        const wrap = (hasHeader && i === 0) ? 'thead' : (hasHeader && i === 1 ? 'tbody' : '');
+        if (wrap === 'thead') html += '  <thead>\n';
+        if (wrap === 'tbody') html += '  <tbody>\n';
+        html += '  <tr>\n';
+        row.forEach(cell => { html += `    <${tag}>${escapeHTML(cell.trim())}</${tag}>\n`; });
+        html += '  </tr>\n';
+        if (hasHeader && i === 0) html += '  </thead>\n';
+      });
+      if (hasHeader && rows.length > 1) html += '  </tbody>\n';
+      html += '</table>';
+
+      generatedHTML = html;
+
+      // Preview with styled class
+      const previewHTML = html.replace('<table>', '<table class="preview-table">');
+      document.getElementById('table-preview').innerHTML = previewHTML;
+
+      document.getElementById('source-area').style.display = 'block';
+      document.getElementById('html-source').textContent = html;
+    }
+
+    function copyHTML() {
+      if (generatedHTML) navigator.clipboard.writeText(generatedHTML);
+    }
+
+    function clearAll() {
+      document.getElementById('csv-input').value = '';
+      document.getElementById('table-preview').innerHTML = '';
+      document.getElementById('source-area').style.display = 'none';
+      document.getElementById('html-source').textContent = '';
+      generatedHTML = '';
+    }
+  </script>
+</body>
+</html>

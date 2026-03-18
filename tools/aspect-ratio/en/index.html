@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aspect Ratio Calculator - Free Online Screen Ratio Tool | Simple Toolkit</title>
+  <meta name="description" content="Free aspect ratio calculator. Calculate aspect ratio from width and height, resize dimensions, and use presets like 16:9 and 4:3. Perfect for video and image production. No registration required.">
+  <meta property="og:title" content="Aspect Ratio Calculator - Free Online Screen Ratio Tool | Simple Toolkit">
+  <meta property="og:description" content="Calculate aspect ratio from width and height. Resize calculator and preset ratios included.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/aspect-ratio/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/aspect-ratio/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/aspect-ratio/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Aspect Ratio Calculator - Free Online Screen Ratio Tool",
+    "description": "Free aspect ratio calculator. Calculate aspect ratio from width and height, resize dimensions, and use presets. No registration required.",
+    "url": "https://simpletoolkit.net/tools/aspect-ratio/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an aspect ratio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An aspect ratio is the proportional relationship between the width and height of an image or screen. For example, 16:9 is the standard widescreen ratio, and 4:3 is the traditional display ratio."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the recommended aspect ratio for YouTube?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The standard for YouTube is 16:9 (e.g., 1920x1080). For YouTube Shorts, the recommended ratio is 9:16 (1080x1920)."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Aspect Ratio Calculator</h1>
+    <h2>Free Online Screen Ratio Tool</h2>
+    <p class="tool-description">Calculate aspect ratio from width and height. Select from presets and calculate resize dimensions. Useful for video and image production.</p>
+
+    <div class="tool-area">
+      <h3 style="margin-bottom:12px;">Calculate Aspect Ratio</h3>
+      <div class="option-row">
+        <label>Width: <input type="number" id="w" value="1920" style="width:100px;"></label>
+        <label>Height: <input type="number" id="h" value="1080" style="width:100px;"></label>
+      </div>
+      <div class="stats" style="margin-top:12px;">
+        <div class="stat-item"><div class="stat-value" id="ratio">16:9</div><div class="stat-label">Aspect Ratio</div></div>
+        <div class="stat-item"><div class="stat-value" id="decimal">1.778</div><div class="stat-label">Decimal Ratio</div></div>
+      </div>
+
+      <h3 style="margin-top:28px;margin-bottom:12px;">Presets</h3>
+      <div class="btn-group" id="presets">
+        <button class="btn btn-secondary" onclick="setPreset(16,9)">16:9</button>
+        <button class="btn btn-secondary" onclick="setPreset(4,3)">4:3</button>
+        <button class="btn btn-secondary" onclick="setPreset(1,1)">1:1</button>
+        <button class="btn btn-secondary" onclick="setPreset(9,16)">9:16</button>
+        <button class="btn btn-secondary" onclick="setPreset(21,9)">21:9</button>
+        <button class="btn btn-secondary" onclick="setPreset(3,2)">3:2</button>
+      </div>
+
+      <h3 style="margin-top:28px;margin-bottom:12px;">Resize Calculator</h3>
+      <div class="option-row">
+        <label>New width: <input type="number" id="nw" value="1280" style="width:100px;"></label>
+        <span>= Height: <strong id="nh">720</strong></span>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../percent-calc/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Percentage Calculator</h3><p>Calculate percentages easily</p></a>
+        <a href="../unit-converter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Unit Converter</h3><p>Convert length, weight, and temperature</p></a>
+        <a href="../color-converter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Color Code Converter</h3><p>Convert HEX/RGB/HSL colors</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+    function calc() {
+      const w = parseInt(document.getElementById('w').value) || 0;
+      const h = parseInt(document.getElementById('h').value) || 0;
+      if (w <= 0 || h <= 0) return;
+      const g = gcd(w, h);
+      document.getElementById('ratio').textContent = (w / g) + ':' + (h / g);
+      document.getElementById('decimal').textContent = (w / h).toFixed(3);
+      resize();
+    }
+
+    function resize() {
+      const w = parseInt(document.getElementById('w').value) || 0;
+      const h = parseInt(document.getElementById('h').value) || 0;
+      const nw = parseInt(document.getElementById('nw').value) || 0;
+      if (w > 0 && h > 0 && nw > 0) {
+        document.getElementById('nh').textContent = Math.round(nw * h / w);
+      }
+    }
+
+    function setPreset(rw, rh) {
+      const currentW = parseInt(document.getElementById('w').value) || 1920;
+      document.getElementById('w').value = currentW;
+      document.getElementById('h').value = Math.round(currentW * rh / rw);
+      calc();
+    }
+
+    document.getElementById('w').addEventListener('input', calc);
+    document.getElementById('h').addEventListener('input', calc);
+    document.getElementById('nw').addEventListener('input', resize);
+    calc();
+  </script>
+</body>
+</html>

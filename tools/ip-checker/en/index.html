@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Address Checker - Free Online IP Lookup Tool | Simple Toolkit</title>
+  <meta name="description" content="Free IP address checker. Instantly view your public IP address with detailed analysis including IP version, class, type, binary, hex, and decimal representations. No registration required.">
+  <meta property="og:title" content="IP Address Checker - Free Online IP Lookup Tool | Simple Toolkit">
+  <meta property="og:description" content="Instantly view your public IP address with detailed analysis. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/ip-checker/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/ip-checker/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/ip-checker/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "IP Address Checker - Free Online IP Lookup Tool",
+    "description": "Free IP address checker. Instantly view your public IP address with detailed analysis. No registration required.",
+    "url": "https://simpletoolkit.net/tools/ip-checker/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an IP address?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An IP address is an identification number assigned to devices on the Internet. A public (global) IP address uniquely identifies you on the Internet and is assigned by your Internet Service Provider."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can someone identify me personally from my IP address?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An IP address alone cannot directly identify a person. However, it can reveal approximate location and ISP information, so using a VPN for protection may be recommended."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I check if my VPN is working?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. When connected to a VPN, the VPN server's IP address will be displayed. If the IP shown is different from your usual IP, your VPN is working correctly."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>IP Address Checker</h1>
+    <h2>Free Online IP Lookup Tool</h2>
+    <p class="tool-description">Check your current public IP address instantly. Useful for VPN verification and network configuration checks. Free, no registration required.</p>
+
+    <div class="tool-area">
+      <div style="text-align:center;padding:20px 0;">
+        <div style="font-size:0.9rem;color:#666;margin-bottom:8px;">Your IP Address</div>
+        <div id="ip-address" style="font-size:2.2rem;font-weight:bold;color:#2563eb;font-family:monospace;letter-spacing:2px;">Loading...</div>
+        <button class="btn btn-secondary" style="margin-top:12px;font-size:0.85rem;padding:6px 16px;" onclick="copyIP()">Copy IP</button>
+      </div>
+
+      <div class="stats" id="ip-info" style="margin-top:20px;">
+        <div class="stat-item">
+          <div class="stat-label">IP Version</div>
+          <div class="stat-value" id="ip-version" style="font-size:1rem;">-</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">IP Class</div>
+          <div class="stat-value" id="ip-class" style="font-size:1rem;">-</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">IP Type</div>
+          <div class="stat-value" id="ip-type" style="font-size:1rem;">-</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <h3 style="font-size:1.1rem;margin-bottom:12px;">IP Address Details</h3>
+        <div id="ip-details" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <table style="width:100%;border-collapse:collapse;">
+            <tr><td style="padding:8px;font-weight:bold;width:40%;">Binary</td><td id="ip-binary" style="padding:8px;font-family:monospace;">-</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;border-top:1px solid #dee2e6;">Hexadecimal</td><td id="ip-hex" style="padding:8px;font-family:monospace;border-top:1px solid #dee2e6;">-</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;border-top:1px solid #dee2e6;">Decimal</td><td id="ip-decimal" style="padding:8px;font-family:monospace;border-top:1px solid #dee2e6;">-</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="fetchIP()">Refresh</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../password-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Password Generator</h3>
+          <p>Generate secure random passwords</p>
+        </a>
+        <a href="../hash-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Hash Generator</h3>
+          <p>Generate MD5/SHA-1/SHA-256 hashes</p>
+        </a>
+        <a href="../url-encode/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URL Encode/Decode</h3>
+          <p>Encode and decode URL special characters</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function analyzeIPv4(ip) {
+      const parts = ip.split('.').map(Number);
+      // Class
+      let ipClass = '-';
+      if (parts[0] <= 127) ipClass = 'Class A';
+      else if (parts[0] <= 191) ipClass = 'Class B';
+      else if (parts[0] <= 223) ipClass = 'Class C';
+      else if (parts[0] <= 239) ipClass = 'Class D (Multicast)';
+      else ipClass = 'Class E (Experimental)';
+
+      // Type
+      let ipType = 'Global (Public)';
+      if (parts[0] === 10) ipType = 'Private';
+      else if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ipType = 'Private';
+      else if (parts[0] === 192 && parts[1] === 168) ipType = 'Private';
+      else if (parts[0] === 127) ipType = 'Loopback';
+
+      // Binary
+      const binary = parts.map(p => p.toString(2).padStart(8, '0')).join('.');
+      // Hex
+      const hex = parts.map(p => p.toString(16).padStart(2, '0').toUpperCase()).join('.');
+      // Decimal
+      const decimal = ((parts[0] << 24) + (parts[1] << 16) + (parts[2] << 8) + parts[3]) >>> 0;
+
+      document.getElementById('ip-version').textContent = 'IPv4';
+      document.getElementById('ip-class').textContent = ipClass;
+      document.getElementById('ip-type').textContent = ipType;
+      document.getElementById('ip-binary').textContent = binary;
+      document.getElementById('ip-hex').textContent = hex;
+      document.getElementById('ip-decimal').textContent = decimal.toLocaleString();
+    }
+
+    function analyzeIPv6(ip) {
+      document.getElementById('ip-version').textContent = 'IPv6';
+      document.getElementById('ip-class').textContent = 'N/A';
+      document.getElementById('ip-type').textContent = ip.startsWith('fe80') ? 'Link-local' : 'Global';
+      document.getElementById('ip-binary').textContent = '(IPv6)';
+      document.getElementById('ip-hex').textContent = ip;
+      document.getElementById('ip-decimal').textContent = '-';
+    }
+
+    function fetchIP() {
+      document.getElementById('ip-address').textContent = 'Loading...';
+      fetch('https://api.ipify.org?format=json')
+        .then(r => r.json())
+        .then(data => {
+          const ip = data.ip;
+          document.getElementById('ip-address').textContent = ip;
+          if (ip.includes(':')) {
+            analyzeIPv6(ip);
+          } else {
+            analyzeIPv4(ip);
+          }
+        })
+        .catch(() => {
+          document.getElementById('ip-address').textContent = 'Failed to retrieve';
+        });
+    }
+
+    function copyIP() {
+      const ip = document.getElementById('ip-address').textContent;
+      if (ip === 'Loading...' || ip === 'Failed to retrieve') return;
+      navigator.clipboard.writeText(ip).then(() => {
+        const btn = event.target;
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+
+    fetchIP();
+  </script>
+</body>
+</html>

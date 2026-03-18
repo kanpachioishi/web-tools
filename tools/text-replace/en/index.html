@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Replace Tool - Free Online Find and Replace | Simple Toolkit</title>
+  <meta name="description" content="Free online text replace tool. Bulk find and replace with regex support, case sensitivity options, and replacement count display. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="Text Replace Tool - Free Online Find and Replace | Simple Toolkit">
+  <meta property="og:description" content="Bulk find and replace text. Regex support with case sensitivity options.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/text-replace/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/text-replace/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/text-replace/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Text Replace Tool - Free Online Find and Replace",
+    "description": "Free online text replace tool. Bulk find and replace with regex support, case sensitivity options. No registration required.",
+    "url": "https://simpletoolkit.net/tools/text-replace/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does it support regular expressions?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, by enabling regex mode, you can use advanced pattern matching for replacements."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I replace text without case sensitivity?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can toggle the 'Case sensitive' option to control whether case is considered during replacement."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Text Replace Tool</h1>
+    <h2>Free Online Find and Replace</h2>
+    <p class="tool-description">Bulk find and replace text strings. Supports regular expressions and case sensitivity options.</p>
+
+    <div class="tool-area">
+      <label for="input-text">Source text</label>
+      <textarea id="input-text" placeholder="Enter the text you want to modify..." rows="8"></textarea>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+        <div>
+          <label for="search-str">Search string</label>
+          <input type="text" id="search-str" placeholder="Text to find">
+        </div>
+        <div>
+          <label for="replace-str">Replace string</label>
+          <input type="text" id="replace-str" placeholder="Replacement text">
+        </div>
+      </div>
+
+      <div class="option-row" style="margin-top: 12px;">
+        <label><input type="checkbox" id="case-sensitive"> Case sensitive</label>
+        <label><input type="checkbox" id="use-regex"> Use regex</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="doReplace()">Replace</button>
+        <button class="btn btn-secondary" onclick="copyResult()">Copy Result</button>
+        <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+
+      <div class="stats" id="stats" style="display: none;">
+        <div class="stat-item">
+          <div class="stat-value" id="replace-count">0</div>
+          <div class="stat-label">Replacements</div>
+        </div>
+      </div>
+
+      <label style="margin-top: 16px;">Result</label>
+      <div class="result-area">
+        <pre id="result"></pre>
+      </div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../regex-tester/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Regex Tester</h3>
+          <p>Test regular expressions in real time</p>
+        </a>
+        <a href="../char-counter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and bytes in real time</p>
+        </a>
+        <a href="../text-diff/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Text Diff Checker</h3>
+          <p>Highlight differences between two texts</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function doReplace() {
+      const text = document.getElementById('input-text').value;
+      const search = document.getElementById('search-str').value;
+      const replace = document.getElementById('replace-str').value;
+      const caseSensitive = document.getElementById('case-sensitive').checked;
+      const useRegex = document.getElementById('use-regex').checked;
+
+      if (!search) {
+        document.getElementById('result').textContent = text;
+        document.getElementById('stats').style.display = 'none';
+        return;
+      }
+
+      let count = 0;
+      let result;
+
+      try {
+        let regex;
+        if (useRegex) {
+          const flags = caseSensitive ? 'g' : 'gi';
+          regex = new RegExp(search, flags);
+        } else {
+          const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const flags = caseSensitive ? 'g' : 'gi';
+          regex = new RegExp(escaped, flags);
+        }
+
+        result = text.replace(regex, (match) => {
+          count++;
+          return replace;
+        });
+      } catch (e) {
+        document.getElementById('result').textContent = 'Regex error: ' + e.message;
+        document.getElementById('stats').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('result').textContent = result;
+      document.getElementById('replace-count').textContent = count;
+      document.getElementById('stats').style.display = 'flex';
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result').textContent;
+      navigator.clipboard.writeText(text);
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('search-str').value = '';
+      document.getElementById('replace-str').value = '';
+      document.getElementById('result').textContent = '';
+      document.getElementById('stats').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

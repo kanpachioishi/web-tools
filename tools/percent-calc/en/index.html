@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Percentage Calculator - Free Online % Calculator | Simple Toolkit</title>
+  <meta name="description" content="Free percentage calculator. Calculate 'What % is A of B?', 'What is X% of A?', and 'What is the % change?' in real time. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="Percentage Calculator - Free Online % Calculator | Simple Toolkit">
+  <meta property="og:description" content="Free percentage calculator. Three calculation patterns for all your percentage needs. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/percent-calc/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/percent-calc/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/percent-calc/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Percentage Calculator - Free Online % Calculator",
+    "description": "Free percentage calculator. Calculate 'What % is A of B?', 'What is X% of A?', and 'What is the % change?' in real time. No registration required.",
+    "url": "https://simpletoolkit.net/tools/percent-calc/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the percentage calculator free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free. No registration required, and it works entirely in your browser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What types of calculations are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Three patterns are supported: 'What % is A of B?', 'What is X% of A?', and 'What is the % change from A to B?'."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it support decimal numbers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can enter and calculate decimal values. Results are displayed up to 2 decimal places."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Percentage Calculator</h1>
+    <h2>Free Online % Calculator</h2>
+    <p class="tool-description">Three percentage calculation patterns. Just enter the numbers to see results in real time. Free, no registration required, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <h3 style="margin-top:0;">1. What % is A of B?</h3>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <input type="number" id="p1-a" placeholder="A" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern1()">
+        <span>is</span>
+        <strong id="p1-result">?</strong>
+        <span>% of</span>
+        <input type="number" id="p1-b" placeholder="B" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern1()">
+      </div>
+
+      <h3>2. What is X% of A?</h3>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <input type="number" id="p2-percent" placeholder="%" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern2()">
+        <span>% of</span>
+        <input type="number" id="p2-a" placeholder="A" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern2()">
+        <span>is</span>
+        <strong id="p2-result">?</strong>
+      </div>
+
+      <h3>3. % Change</h3>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <span>From</span>
+        <input type="number" id="p3-from" placeholder="Original" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern3()">
+        <span>to</span>
+        <input type="number" id="p3-to" placeholder="New value" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern3()">
+        <span>=</span>
+        <strong id="p3-result">?</strong>
+        <span>% change</span>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, and temperature units</p>
+        </a>
+        <a href="../char-counter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and lines in real time</p>
+        </a>
+        <a href="../aspect-ratio/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Aspect Ratio Calculator</h3>
+          <p>Calculate aspect ratio from width and height</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function calcPattern1() {
+      const a = parseFloat(document.getElementById('p1-a').value);
+      const b = parseFloat(document.getElementById('p1-b').value);
+      if (!isNaN(a) && !isNaN(b) && b !== 0) {
+        document.getElementById('p1-result').textContent = (a / b * 100).toFixed(2);
+      } else {
+        document.getElementById('p1-result').textContent = '?';
+      }
+    }
+    function calcPattern2() {
+      const a = parseFloat(document.getElementById('p2-a').value);
+      const p = parseFloat(document.getElementById('p2-percent').value);
+      if (!isNaN(a) && !isNaN(p)) {
+        document.getElementById('p2-result').textContent = (a * p / 100).toFixed(2);
+      } else {
+        document.getElementById('p2-result').textContent = '?';
+      }
+    }
+    function calcPattern3() {
+      const from = parseFloat(document.getElementById('p3-from').value);
+      const to = parseFloat(document.getElementById('p3-to').value);
+      if (!isNaN(from) && !isNaN(to) && from !== 0) {
+        document.getElementById('p3-result').textContent = ((to - from) / from * 100).toFixed(2);
+      } else {
+        document.getElementById('p3-result').textContent = '?';
+      }
+    }
+  </script>
+</body>
+</html>

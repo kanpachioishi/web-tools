@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript 基礎練習問題 - 全10問で基本をマスター | Web便利ツール集</title>
+  <meta name="description" content="JavaScript基礎の練習問題10問。変数宣言、配列操作、文字列処理、FizzBuzzなど実践的な問題をブラウザ上で解いて即時判定。初心者の学習に最適。">
+  <meta property="og:title" content="JavaScript 基礎練習問題 - 全10問で基本をマスター | Web便利ツール集">
+  <meta property="og:description" content="JavaScript基礎の練習問題10問。ブラウザ上でコードを書いて即時判定。初心者の学習に最適。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/exercises/javascript-basics/">
+  <link rel="canonical" href="https://simpletoolkit.net/exercises/javascript-basics/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .progress-bar {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .progress-bar .bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar .bar-fill {
+      height: 100%;
+      background: #22c55e;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .progress-text {
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .exercise {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .exercise.correct {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+    .exercise.wrong {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+    .exercise-number {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .exercise h3 {
+      display: inline;
+      font-size: 1.05rem;
+    }
+    .exercise-desc {
+      margin: 12px 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .exercise textarea {
+      font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+      font-size: 0.9rem;
+      min-height: 100px;
+      tab-size: 2;
+    }
+    .exercise .btn-group {
+      margin-top: 12px;
+    }
+    .feedback {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    .hint {
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: #fef9c3;
+      border: 1px solid #fde047;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #854d0e;
+      display: none;
+    }
+    .hint.show { display: block; }
+
+    .related-links {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .related-links h2 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .related-links a {
+      color: var(--primary);
+      text-decoration: none;
+      display: block;
+      padding: 4px 0;
+      font-size: 0.9rem;
+    }
+    .related-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+
+  <main>
+    <h1>JavaScript 基礎練習問題</h1>
+    <p class="tool-description">全10問のJavaScript基礎問題をブラウザ上で解いて即時判定。関数を完成させて正解を目指しましょう。</p>
+
+    <div class="ad-placeholder"></div>
+
+    <div class="progress-bar">
+      <span class="progress-text" id="progressText">0 / 10 問正解</span>
+      <div class="bar-track"><div class="bar-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div id="exercises"></div>
+
+    <div class="ad-placeholder"></div>
+
+    <div class="related-links">
+      <h2>関連ツール・コンテンツ</h2>
+      <a href="/tools/json-formatter/">JSONフォーマッター</a>
+      <a href="/tools/base64/">Base64 エンコード/デコード</a>
+      <a href="/exercises/html-css-basics/">HTML/CSS 基礎クイズ</a>
+      <a href="/exercises/regex-practice/">正規表現 練習問題</a>
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+  <script>
+  (function() {
+    const exercises = [
+      {
+        title: '変数を宣言して値を代入',
+        desc: '変数 <code>greeting</code> を宣言し、文字列 <code>"Hello"</code> を代入して返す関数を完成させてください。',
+        template: 'function solve() {\n  // ここにコードを書く\n  \n  return greeting;\n}',
+        test: function(fn) {
+          return fn() === "Hello";
+        },
+        hint: 'let または const を使って変数を宣言し、"Hello" を代入しましょう。'
+      },
+      {
+        title: '配列の要素数を返す',
+        desc: '引数で受け取った配列の要素数を返す関数を完成させてください。',
+        template: 'function solve(arr) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          return fn([1,2,3]) === 3 && fn([]) === 0 && fn([1,2,3,4,5]) === 5;
+        },
+        hint: '配列の .length プロパティを使いましょう。'
+      },
+      {
+        title: '文字列を逆順にする',
+        desc: '引数で受け取った文字列を逆順にして返す関数を完成させてください。例: <code>"abc"</code> → <code>"cba"</code>',
+        template: 'function solve(str) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          return fn("abc") === "cba" && fn("hello") === "olleh" && fn("") === "";
+        },
+        hint: 'split("") で配列に変換 → reverse() → join("") で結合する方法があります。'
+      },
+      {
+        title: '偶数だけフィルタする',
+        desc: '数値の配列から偶数だけを含む新しい配列を返す関数を完成させてください。',
+        template: 'function solve(arr) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          var r1 = fn([1,2,3,4,5,6]);
+          var r2 = fn([1,3,5]);
+          return JSON.stringify(r1) === JSON.stringify([2,4,6]) && JSON.stringify(r2) === JSON.stringify([]);
+        },
+        hint: 'filter() メソッドと剰余演算子 % を使いましょう。'
+      },
+      {
+        title: 'オブジェクトのキー一覧を返す',
+        desc: 'オブジェクトのすべてのキーを配列で返す関数を完成させてください。',
+        template: 'function solve(obj) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          var r = fn({name:"太郎", age:20, city:"東京"});
+          return JSON.stringify(r.sort()) === JSON.stringify(["age","city","name"]);
+        },
+        hint: 'Object.keys() を使いましょう。'
+      },
+      {
+        title: 'FizzBuzz',
+        desc: '1からnまでの配列を返す関数を完成させてください。ただし3の倍数は<code>"Fizz"</code>、5の倍数は<code>"Buzz"</code>、15の倍数は<code>"FizzBuzz"</code>に置き換えてください。',
+        template: 'function solve(n) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          var r = fn(15);
+          return r[0] === 1 && r[2] === "Fizz" && r[4] === "Buzz" && r[14] === "FizzBuzz" && r.length === 15 && r[1] === 2;
+        },
+        hint: 'for ループで1からnまで回し、条件分岐で値を配列に追加しましょう。15の倍数を最初に判定するのがポイントです。'
+      },
+      {
+        title: '配列の合計を計算',
+        desc: '数値の配列の全要素の合計を返す関数を完成させてください。',
+        template: 'function solve(arr) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          return fn([1,2,3,4,5]) === 15 && fn([]) === 0 && fn([10]) === 10;
+        },
+        hint: 'reduce() メソッドやfor文で合計を計算しましょう。'
+      },
+      {
+        title: '配列の重複を除去',
+        desc: '配列から重複する要素を除去した新しい配列を返す関数を完成させてください。順序は保持してください。',
+        template: 'function solve(arr) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          var r1 = fn([1,2,2,3,3,3,4]);
+          var r2 = fn(["a","b","a","c","b"]);
+          return JSON.stringify(r1) === JSON.stringify([1,2,3,4]) && JSON.stringify(r2) === JSON.stringify(["a","b","c"]);
+        },
+        hint: 'Set を使う方法: [...new Set(arr)] や filter + indexOf を使う方法があります。'
+      },
+      {
+        title: '文字列内の文字出現回数をカウント',
+        desc: '文字列と対象文字を受け取り、その文字が文字列中に何回出現するかを返す関数を完成させてください。',
+        template: 'function solve(str, char) {\n  // ここにコードを書く\n  \n}',
+        test: function(fn) {
+          return fn("hello", "l") === 2 && fn("banana", "a") === 3 && fn("test", "x") === 0;
+        },
+        hint: 'split() で分割して長さを数える方法や、for文で1文字ずつ比較する方法があります。'
+      },
+      {
+        title: '再帰で階乗を計算',
+        desc: '再帰関数を使って n の階乗（n!）を計算して返す関数を完成させてください。0! = 1 です。',
+        template: 'function solve(n) {\n  // 再帰を使って実装\n  \n}',
+        test: function(fn) {
+          return fn(0) === 1 && fn(1) === 1 && fn(5) === 120 && fn(10) === 3628800;
+        },
+        hint: 'n === 0 のとき 1 を返し、それ以外は n * solve(n-1) を返しましょう。'
+      }
+    ];
+
+    let correctSet = new Set();
+
+    function updateProgress() {
+      const count = correctSet.size;
+      document.getElementById('progressText').textContent = count + ' / 10 問正解';
+      document.getElementById('progressFill').style.width = (count * 10) + '%';
+    }
+
+    function runCode(index) {
+      const ex = exercises[index];
+      const textarea = document.getElementById('code-' + index);
+      const feedback = document.getElementById('feedback-' + index);
+      const card = document.getElementById('exercise-' + index);
+      const code = textarea.value;
+
+      feedback.className = 'feedback show';
+      card.classList.remove('correct', 'wrong');
+
+      try {
+        const fn = new Function('return (' + code + ')')();
+        if (typeof fn !== 'function') {
+          feedback.textContent = 'solve という関数を定義してください。';
+          feedback.classList.add('wrong');
+          card.classList.add('wrong');
+          return;
+        }
+        if (ex.test(fn)) {
+          feedback.textContent = '正解です！';
+          feedback.classList.add('correct');
+          card.classList.add('correct');
+          correctSet.add(index);
+        } else {
+          feedback.textContent = '不正解です。出力結果が期待値と一致しません。';
+          feedback.classList.add('wrong');
+          card.classList.add('wrong');
+          correctSet.delete(index);
+        }
+      } catch (e) {
+        feedback.textContent = 'エラー: ' + e.message;
+        feedback.classList.add('wrong');
+        card.classList.add('wrong');
+        correctSet.delete(index);
+      }
+      updateProgress();
+    }
+
+    function showHint(index) {
+      const hint = document.getElementById('hint-' + index);
+      hint.classList.toggle('show');
+    }
+
+    function resetCode(index) {
+      document.getElementById('code-' + index).value = exercises[index].template;
+      document.getElementById('feedback-' + index).className = 'feedback';
+      document.getElementById('exercise-' + index).classList.remove('correct', 'wrong');
+      correctSet.delete(index);
+      updateProgress();
+    }
+
+    const container = document.getElementById('exercises');
+    exercises.forEach(function(ex, i) {
+      const div = document.createElement('div');
+      div.className = 'exercise';
+      div.id = 'exercise-' + i;
+      div.innerHTML =
+        '<div><span class="exercise-number">' + (i + 1) + '</span><h3>' + ex.title + '</h3></div>' +
+        '<p class="exercise-desc">' + ex.desc + '</p>' +
+        '<textarea id="code-' + i + '">' + ex.template.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</textarea>' +
+        '<div class="btn-group">' +
+          '<button class="btn" onclick="window._run(' + i + ')">実行して判定</button>' +
+          '<button class="btn btn-secondary" onclick="window._hint(' + i + ')">ヒント</button>' +
+          '<button class="btn btn-secondary" onclick="window._reset(' + i + ')">リセット</button>' +
+        '</div>' +
+        '<div class="feedback" id="feedback-' + i + '"></div>' +
+        '<div class="hint" id="hint-' + i + '">' + ex.hint + '</div>';
+      container.appendChild(div);
+    });
+
+    // Expose functions to global
+    window._run = runCode;
+    window._hint = showHint;
+    window._reset = resetCode;
+
+    // Tab key support in textareas
+    container.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab' && e.target.tagName === 'TEXTAREA') {
+        e.preventDefault();
+        var start = e.target.selectionStart;
+        var end = e.target.selectionEnd;
+        e.target.value = e.target.value.substring(0, start) + '  ' + e.target.value.substring(end);
+        e.target.selectionStart = e.target.selectionEnd = start + 2;
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

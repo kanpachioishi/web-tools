@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number to Kanji Converter - Free Online Kanji Number Tool | Simple Toolkit</title>
+  <meta name="description" content="Free number to kanji converter. Convert numbers to standard kanji numerals and formal kanji (daiji). Reverse conversion from kanji to numbers also supported. No registration required.">
+  <meta property="og:title" content="Number to Kanji Converter - Free Online Kanji Number Tool | Simple Toolkit">
+  <meta property="og:description" content="Convert numbers to kanji numerals and formal kanji (daiji). Reverse conversion also supported. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/number-to-kanji/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/number-to-kanji/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/number-to-kanji/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Number to Kanji Converter - Free Online Kanji Number Tool",
+    "description": "Free number to kanji converter. Convert numbers to standard kanji numerals and formal kanji (daiji). Reverse conversion also supported. No registration required.",
+    "url": "https://simpletoolkit.net/tools/number-to-kanji/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is kanji daiji (formal kanji numerals)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Daiji are formal kanji numerals used to prevent tampering. Examples include 壱 (1), 弐 (2), 参 (3). They are commonly used in contracts and receipts in Japan."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the maximum number that can be converted?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Numbers up to 京 (10^16) are supported. This covers virtually all numbers used in everyday life."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I convert kanji back to numbers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, the tool includes a reverse conversion feature that converts kanji numerals back to Arabic numbers."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Number to Kanji Converter</h1>
+    <h2>Free Online Kanji Number Tool</h2>
+    <p class="tool-description">Convert numbers to kanji numerals (一二三...) and formal kanji daiji (壱弐参...). Also supports reverse conversion from kanji to numbers. Useful for contracts, receipts, and formal Japanese documents. Free, no registration required.</p>
+
+    <div class="tool-area">
+      <h3 style="font-size:1.1rem;margin-bottom:12px;">Number → Kanji</h3>
+      <label for="number-input">Enter a number</label>
+      <input type="text" id="number-input" placeholder="e.g. 123456" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+
+      <div class="stats" id="result-number" style="margin-top:16px;">
+        <div class="stat-item" style="flex:1;min-width:200px;">
+          <div class="stat-label">Standard Kanji</div>
+          <div class="stat-value" id="kanji-normal" style="font-size:1.2rem;word-break:break-all;">-</div>
+        </div>
+        <div class="stat-item" style="flex:1;min-width:200px;">
+          <div class="stat-label">Formal Kanji (Daiji)</div>
+          <div class="stat-value" id="kanji-daiji" style="font-size:1.2rem;word-break:break-all;">-</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.1rem;margin-top:32px;margin-bottom:12px;">Kanji → Number</h3>
+      <label for="kanji-input">Enter kanji numerals</label>
+      <input type="text" id="kanji-input" placeholder="e.g. 十二万三千四百五十六" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+
+      <div class="stats" id="result-kanji" style="margin-top:16px;">
+        <div class="stat-item" style="flex:1;min-width:200px;">
+          <div class="stat-label">Number</div>
+          <div class="stat-value" id="number-result" style="font-size:1.2rem;">-</div>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="document.getElementById('number-input').value='';document.getElementById('kanji-input').value='';document.getElementById('kanji-normal').textContent='-';document.getElementById('kanji-daiji').textContent='-';document.getElementById('number-result').textContent='-';">Clear</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and bytes in real time</p>
+        </a>
+        <a href="../zenkaku-hankaku/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Fullwidth/Halfwidth Converter</h3>
+          <p>Convert fullwidth and halfwidth characters</p>
+        </a>
+        <a href="../unit-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, and temperature units</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    const KANJI_DIGITS = ['〇','一','二','三','四','五','六','七','八','九'];
+    const DAIJI_DIGITS = ['零','壱','弐','参','肆','伍','陸','漆','捌','玖'];
+    const UNITS = ['', '万', '億', '兆', '京'];
+    const SMALL_UNITS = ['', '十', '百', '千'];
+    const DAIJI_UNITS = ['', '拾', '佰', '仟'];
+    const DAIJI_BIG_UNITS = ['', '萬', '億', '兆', '京'];
+
+    function numberToKanji(num, useDaiji) {
+      if (num === 0) return useDaiji ? '零' : '〇';
+      const digits = useDaiji ? DAIJI_DIGITS : KANJI_DIGITS;
+      const smallUnits = useDaiji ? DAIJI_UNITS : SMALL_UNITS;
+      const bigUnits = useDaiji ? DAIJI_BIG_UNITS : UNITS;
+      let str = String(num);
+      let isNegative = false;
+      if (str.startsWith('-')) { isNegative = true; str = str.slice(1); }
+
+      // Split into groups of 4 from right
+      const groups = [];
+      while (str.length > 0) {
+        groups.unshift(str.slice(-4));
+        str = str.slice(0, -4);
+      }
+
+      let result = '';
+      for (let i = 0; i < groups.length; i++) {
+        const groupIndex = groups.length - 1 - i;
+        const g = parseInt(groups[i], 10);
+        if (g === 0) continue;
+        const gStr = String(g).padStart(4, '0');
+        let groupResult = '';
+        for (let j = 0; j < 4; j++) {
+          const d = parseInt(gStr[j], 10);
+          const unitIndex = 3 - j;
+          if (d === 0) continue;
+          if (d === 1 && unitIndex > 0) {
+            groupResult += smallUnits[unitIndex];
+          } else {
+            groupResult += digits[d] + smallUnits[unitIndex];
+          }
+        }
+        result += groupResult + bigUnits[groupIndex];
+      }
+      return (isNegative ? 'Minus ' : '') + result;
+    }
+
+    function kanjiToNumber(kanjiStr) {
+      if (!kanjiStr) return NaN;
+      let s = kanjiStr.trim();
+      let negative = false;
+      if (s.startsWith('マイナス')) { negative = true; s = s.slice(4); }
+
+      // Map all kanji digits and daiji to numbers
+      const digitMap = {'〇':0,'零':0,'一':1,'壱':1,'二':2,'弐':2,'三':3,'参':3,'四':4,'肆':4,'五':5,'伍':5,'六':6,'陸':6,'七':7,'漆':7,'八':8,'捌':8,'九':9,'玖':9};
+      const smallUnitMap = {'十':10,'拾':10,'百':100,'佰':100,'千':1000,'仟':1000};
+      const bigUnitMap = {'万':10000,'萬':10000,'億':100000000,'兆':1000000000000,'京':10000000000000000};
+
+      // Simple digit-only string (e.g. 一二三)
+      const allDigits = [...s].every(c => c in digitMap);
+      if (allDigits && s.length > 0) {
+        return (negative ? -1 : 1) * parseInt([...s].map(c => digitMap[c]).join(''), 10);
+      }
+
+      let total = 0;
+      let currentGroup = 0;
+      let currentNum = 0;
+
+      for (const ch of s) {
+        if (ch in digitMap) {
+          currentNum = digitMap[ch];
+        } else if (ch in smallUnitMap) {
+          if (currentNum === 0) currentNum = 1;
+          currentGroup += currentNum * smallUnitMap[ch];
+          currentNum = 0;
+        } else if (ch in bigUnitMap) {
+          currentGroup += currentNum;
+          if (currentGroup === 0) currentGroup = 1;
+          total += currentGroup * bigUnitMap[ch];
+          currentGroup = 0;
+          currentNum = 0;
+        }
+      }
+      total += currentGroup + currentNum;
+      return (negative ? -1 : 1) * total;
+    }
+
+    document.getElementById('number-input').addEventListener('input', function() {
+      const val = this.value.replace(/[,\s]/g, '');
+      if (val === '' || isNaN(Number(val))) {
+        document.getElementById('kanji-normal').textContent = val === '' ? '-' : 'Please enter a valid number';
+        document.getElementById('kanji-daiji').textContent = val === '' ? '-' : 'Please enter a valid number';
+        return;
+      }
+      const num = parseInt(val, 10);
+      document.getElementById('kanji-normal').textContent = numberToKanji(num, false);
+      document.getElementById('kanji-daiji').textContent = numberToKanji(num, true);
+    });
+
+    document.getElementById('kanji-input').addEventListener('input', function() {
+      const val = this.value.trim();
+      if (val === '') {
+        document.getElementById('number-result').textContent = '-';
+        return;
+      }
+      const num = kanjiToNumber(val);
+      document.getElementById('number-result').textContent = isNaN(num) ? 'Cannot convert' : num.toLocaleString();
+    });
+  </script>
+</body>
+</html>

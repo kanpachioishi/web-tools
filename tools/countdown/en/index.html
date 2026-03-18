@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer - Free Online Day Counter | Simple Toolkit</title>
+  <meta name="description" content="Free countdown timer. Track remaining days, hours, minutes, and seconds to your target date in real time. Also calculates elapsed time for past dates. No registration required.">
+  <meta property="og:title" content="Countdown Timer - Free Online Day Counter | Simple Toolkit">
+  <meta property="og:description" content="Track remaining days to your target date in real time. Elapsed time calculation for past dates. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/countdown/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/countdown/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/countdown/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Countdown Timer - Free Online Day Counter",
+    "description": "Free countdown timer. Track remaining days, hours, minutes, and seconds to your target date in real time. No registration required.",
+    "url": "https://simpletoolkit.net/tools/countdown/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does the countdown update in real time?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it updates every second in real time, showing the exact remaining days, hours, minutes, and seconds."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if I set a past date?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Setting a past date will show the elapsed time since that date. This is useful for tracking how long since an anniversary or event."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the target date saved?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, your target date is saved in your browser's local storage, so it will be restored on your next visit."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Countdown Timer</h1>
+    <h2>Free Online Day Counter</h2>
+    <p class="tool-description">Set a target date to see the remaining days, hours, minutes, and seconds in real time. Perfect for tracking deadlines, events, and milestones. Set a past date to see elapsed time. Free, no registration required.</p>
+
+    <div class="tool-area">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;">
+        <div style="flex:1;min-width:200px;">
+          <label for="target-date">Target Date</label>
+          <input type="date" id="target-date" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+        </div>
+        <div style="flex:1;min-width:150px;">
+          <label for="target-time">Time (optional)</label>
+          <input type="time" id="target-time" value="00:00" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+        </div>
+        <div style="min-width:100px;">
+          <label for="event-name">Event Name (optional)</label>
+          <input type="text" id="event-name" placeholder="e.g. Birthday" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+        </div>
+      </div>
+
+      <div id="countdown-display" style="text-align:center;padding:30px 0;display:none;">
+        <div id="event-label" style="font-size:1.1rem;color:#666;margin-bottom:16px;"></div>
+        <div id="direction-label" style="font-size:0.95rem;color:#888;margin-bottom:8px;"></div>
+        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+          <div style="text-align:center;">
+            <div id="cd-days" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">0</div>
+            <div style="font-size:0.85rem;color:#666;">Days</div>
+          </div>
+          <div style="text-align:center;">
+            <div id="cd-hours" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
+            <div style="font-size:0.85rem;color:#666;">Hours</div>
+          </div>
+          <div style="text-align:center;">
+            <div id="cd-minutes" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
+            <div style="font-size:0.85rem;color:#666;">Minutes</div>
+          </div>
+          <div style="text-align:center;">
+            <div id="cd-seconds" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
+            <div style="font-size:0.85rem;color:#666;">Seconds</div>
+          </div>
+        </div>
+        <div id="total-info" style="margin-top:20px;background:#f8f9fa;padding:12px;border-radius:8px;font-size:0.9rem;color:#555;"></div>
+      </div>
+
+      <div id="no-date-msg" style="text-align:center;padding:40px 0;color:#999;">
+        Set a target date above to start the countdown
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="clearCountdown()">Clear</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../unix-timestamp/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unix Timestamp Converter</h3>
+          <p>Convert between Unix time and dates</p>
+        </a>
+        <a href="../percent-calc/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Percentage Calculator</h3>
+          <p>Calculate percentages, discounts, and changes</p>
+        </a>
+        <a href="../char-counter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and bytes in real time</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    let timer = null;
+
+    function loadSaved() {
+      const saved = localStorage.getItem('countdown-target');
+      const savedName = localStorage.getItem('countdown-name');
+      if (saved) {
+        const d = new Date(saved);
+        document.getElementById('target-date').value = d.toISOString().split('T')[0];
+        document.getElementById('target-time').value = d.toTimeString().slice(0, 5);
+        if (savedName) document.getElementById('event-name').value = savedName;
+        startCountdown();
+      }
+    }
+
+    function getTargetDate() {
+      const dateVal = document.getElementById('target-date').value;
+      if (!dateVal) return null;
+      const timeVal = document.getElementById('target-time').value || '00:00';
+      return new Date(dateVal + 'T' + timeVal + ':00');
+    }
+
+    function startCountdown() {
+      const target = getTargetDate();
+      if (!target || isNaN(target.getTime())) return;
+
+      localStorage.setItem('countdown-target', target.toISOString());
+      localStorage.setItem('countdown-name', document.getElementById('event-name').value);
+
+      document.getElementById('countdown-display').style.display = 'block';
+      document.getElementById('no-date-msg').style.display = 'none';
+
+      const name = document.getElementById('event-name').value;
+      document.getElementById('event-label').textContent = name ? name : '';
+
+      if (timer) clearInterval(timer);
+      updateDisplay(target);
+      timer = setInterval(() => updateDisplay(target), 1000);
+    }
+
+    function updateDisplay(target) {
+      const now = new Date();
+      let diff = target.getTime() - now.getTime();
+      const isPast = diff < 0;
+      if (isPast) diff = -diff;
+
+      document.getElementById('direction-label').textContent = isPast ? 'Elapsed Time' : 'Time Remaining';
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById('cd-days').textContent = days.toLocaleString();
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+
+      const totalHours = Math.floor(totalSeconds / 3600);
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      document.getElementById('total-info').innerHTML =
+        'Total: ' + totalHours.toLocaleString() + ' hours / ' +
+        totalMinutes.toLocaleString() + ' minutes / ' +
+        totalSeconds.toLocaleString() + ' seconds';
+
+      // Color change for past
+      const color = isPast ? '#dc2626' : '#2563eb';
+      ['cd-days','cd-hours','cd-minutes','cd-seconds'].forEach(id => {
+        document.getElementById(id).style.color = color;
+      });
+    }
+
+    function clearCountdown() {
+      if (timer) clearInterval(timer);
+      document.getElementById('target-date').value = '';
+      document.getElementById('target-time').value = '00:00';
+      document.getElementById('event-name').value = '';
+      document.getElementById('countdown-display').style.display = 'none';
+      document.getElementById('no-date-msg').style.display = 'block';
+      localStorage.removeItem('countdown-target');
+      localStorage.removeItem('countdown-name');
+    }
+
+    document.getElementById('target-date').addEventListener('change', startCountdown);
+    document.getElementById('target-time').addEventListener('change', startCountdown);
+    document.getElementById('event-name').addEventListener('input', function() {
+      document.getElementById('event-label').textContent = this.value;
+      localStorage.setItem('countdown-name', this.value);
+    });
+
+    loadSaved();
+  </script>
+</body>
+</html>

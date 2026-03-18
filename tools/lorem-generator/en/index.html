@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lorem Ipsum Generator - Free Online Dummy Text Generator | Simple Toolkit</title>
+  <meta name="description" content="Free Lorem Ipsum generator. Generate dummy text with a specified number of paragraphs for web design and mockups. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="Lorem Ipsum Generator - Free Online Dummy Text Generator | Simple Toolkit">
+  <meta property="og:description" content="Generate Lorem Ipsum dummy text with a specified number of paragraphs. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/lorem-generator/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/lorem-generator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/lorem-generator/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Lorem Ipsum Generator - Free Online Dummy Text Generator",
+    "description": "Free Lorem Ipsum generator. Generate dummy text with a specified number of paragraphs for web design and mockups. No registration required.",
+    "url": "https://simpletoolkit.net/tools/lorem-generator/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Lorem Ipsum?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lorem Ipsum is dummy text that has been used in the printing industry for centuries. It is commonly used to check layout designs without being distracted by readable content."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the Lorem Ipsum generator free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free. No registration is required, and it works entirely in your browser."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Lorem Ipsum Generator</h1>
+    <h2>Free Online Dummy Text Generator</h2>
+    <p class="tool-description">Generate Lorem Ipsum dummy text for web design and mockups. Specify the number of paragraphs to generate.</p>
+
+    <div class="tool-area">
+      <div class="option-row">
+        <label for="para-count">Paragraphs:</label>
+        <input type="number" id="para-count" value="3" min="1" max="20" style="width:80px;">
+      </div>
+      <div class="btn-group">
+        <button class="btn" onclick="generate()">Generate</button>
+        <button class="btn btn-secondary" onclick="copyText()">Copy</button>
+      </div>
+      <div class="result-area" style="margin-top:16px;">
+        <div id="output" style="white-space:pre-wrap;line-height:1.8;"></div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../markdown-preview/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Markdown Preview</h3><p>Preview Markdown in real time</p></a>
+        <a href="../char-counter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Character Counter</h3><p>Count characters in real time</p></a>
+        <a href="../json-formatter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">JSON Formatter</h3><p>Format and minify JSON data</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    const latin = [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.",
+      "Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.",
+      "Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris."
+    ];
+    function generate() {
+      const count = Math.min(20, Math.max(1, parseInt(document.getElementById('para-count').value) || 3));
+      const result = [];
+      for (let i = 0; i < count; i++) result.push(latin[i % latin.length]);
+      document.getElementById('output').textContent = result.join('\n\n');
+    }
+    function copyText() {
+      const text = document.getElementById('output').textContent;
+      if (text) navigator.clipboard.writeText(text);
+    }
+    generate();
+  </script>
+</body>
+</html>

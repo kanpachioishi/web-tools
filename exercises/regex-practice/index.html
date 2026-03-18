@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正規表現 練習問題 - 全10問で正規表現をマスター | Web便利ツール集</title>
+  <meta name="description" content="正規表現の練習問題10問。メールアドレス抽出、電話番号マッチなど実践的な問題をブラウザ上で解いて即時判定。正規表現の基礎から応用まで学べます。">
+  <meta property="og:title" content="正規表現 練習問題 - 全10問で正規表現をマスター | Web便利ツール集">
+  <meta property="og:description" content="正規表現の練習問題10問。実践的な問題をブラウザ上で解いて即時判定。基礎から応用まで学べます。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/exercises/regex-practice/">
+  <link rel="canonical" href="https://simpletoolkit.net/exercises/regex-practice/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .progress-bar {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .progress-bar .bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar .bar-fill {
+      height: 100%;
+      background: #22c55e;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .progress-text {
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .exercise {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .exercise.correct { border-color: #22c55e; background: #f0fdf4; }
+    .exercise.wrong { border-color: #ef4444; background: #fef2f2; }
+
+    .exercise-number {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .exercise h3 { display: inline; font-size: 1.05rem; }
+    .exercise-desc {
+      margin: 12px 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .test-string {
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.6;
+    }
+    .test-string .match-highlight {
+      background: #fbbf24;
+      color: #1e293b;
+      border-radius: 2px;
+      padding: 1px 2px;
+    }
+
+    .regex-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .regex-input-row span {
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+    .regex-input-row input {
+      flex: 1;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.95rem;
+    }
+    .regex-input-row .flags-input {
+      width: 50px;
+      flex: none;
+      text-align: center;
+    }
+
+    .expected-info {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .expected-info code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.85em;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .hint {
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: #fef9c3;
+      border: 1px solid #fde047;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #854d0e;
+      display: none;
+    }
+    .hint.show { display: block; }
+
+    .related-links {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .related-links h2 { font-size: 1.1rem; margin-bottom: 12px; }
+    .related-links a {
+      color: var(--primary);
+      text-decoration: none;
+      display: block;
+      padding: 4px 0;
+      font-size: 0.9rem;
+    }
+    .related-links a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+
+  <main>
+    <h1>正規表現 練習問題</h1>
+    <p class="tool-description">全10問の正規表現練習問題。テスト文字列に対して正規表現を書いて、期待するマッチ結果を得られるか判定します。</p>
+
+    <div class="ad-placeholder"></div>
+
+    <div class="progress-bar">
+      <span class="progress-text" id="progressText">0 / 10 問正解</span>
+      <div class="bar-track"><div class="bar-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div id="exercises"></div>
+
+    <div class="ad-placeholder"></div>
+
+    <div class="related-links">
+      <h2>関連ツール・コンテンツ</h2>
+      <a href="/tools/regex-tester/">正規表現テスター</a>
+      <a href="/exercises/javascript-basics/">JavaScript 基礎練習問題</a>
+      <a href="/exercises/html-css-basics/">HTML/CSS 基礎クイズ</a>
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+  <script>
+  (function() {
+    const exercises = [
+      {
+        title: '数字だけにマッチ',
+        desc: 'テスト文字列から全ての数字（0-9）を個別にマッチさせてください。',
+        testString: 'abc123def456',
+        expectedMatches: ['1','2','3','4','5','6'],
+        defaultFlags: 'g',
+        hint: '\\d は1文字の数字にマッチします。gフラグで全てマッチさせましょう。'
+      },
+      {
+        title: 'メールアドレスを抽出',
+        desc: 'テスト文字列からメールアドレスを全て抽出してください。',
+        testString: '連絡先: user@example.com または info@test.co.jp まで',
+        expectedMatches: ['user@example.com', 'info@test.co.jp'],
+        defaultFlags: 'g',
+        hint: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,} のようなパターンを使います。'
+      },
+      {
+        title: '先頭の単語にマッチ',
+        desc: 'テスト文字列の先頭の単語 "Hello" にだけマッチさせてください。',
+        testString: 'Hello World Hello',
+        expectedMatches: ['Hello'],
+        defaultFlags: '',
+        hint: '^ は文字列の先頭を意味します。^Hello で先頭のHelloにマッチします。'
+      },
+      {
+        title: '3桁の数字にマッチ',
+        desc: 'テスト文字列からちょうど3桁の数字の並び（前後が数字でないもの）を全て抽出してください。',
+        testString: '100円 50円 999円 1000円 12円 456円',
+        expectedMatches: ['100', '999', '456'],
+        defaultFlags: 'g',
+        hint: '\\b\\d{3}\\b で単語境界に囲まれた3桁の数字にマッチします。'
+      },
+      {
+        title: 'HTMLタグを抽出',
+        desc: 'テスト文字列からHTMLタグ（開始タグ・終了タグ）を全て抽出してください。',
+        testString: '<p>Hello</p><span>World</span>',
+        expectedMatches: ['<p>', '</p>', '<span>', '</span>'],
+        defaultFlags: 'g',
+        hint: '</?[a-zA-Z]+> のようなパターンで開始・終了タグにマッチします。'
+      },
+      {
+        title: '電話番号にマッチ',
+        desc: 'テスト文字列から電話番号（ハイフン区切り）を全て抽出してください。',
+        testString: '電話: 090-1234-5678 FAX: 03-1234-5678',
+        expectedMatches: ['090-1234-5678', '03-1234-5678'],
+        defaultFlags: 'g',
+        hint: '\\d{2,4}-\\d{2,4}-\\d{4} のようなパターンで電話番号にマッチします。'
+      },
+      {
+        title: '母音を全て抽出',
+        desc: 'テスト文字列から英語の母音（a, e, i, o, u）を全て抽出してください（大文字小文字問わず）。',
+        testString: 'JavaScript Programming',
+        expectedMatches: ['a','a','i','o','a','i'],
+        defaultFlags: 'gi',
+        hint: '[aeiou] で母音の文字クラスを作ります。iフラグで大文字小文字を区別しないようにしましょう。'
+      },
+      {
+        title: '括弧内の文字列を抽出',
+        desc: 'テスト文字列から丸括弧 () 内の文字列（括弧を含まない中身だけ）を全て抽出してください。',
+        testString: '東京(Tokyo)と大阪(Osaka)は大都市です',
+        expectedMatches: ['Tokyo', 'Osaka'],
+        defaultFlags: 'g',
+        hint: '(?<=\\()([^)]+)(?=\\)) のように先読み・後読みを使うか、キャプチャグループを使います。シンプルには \\(([^)]+)\\) でグループ1を取る方法もあります。'
+      },
+      {
+        title: '繰り返される文字にマッチ',
+        desc: '同じ文字が2回以上連続する部分を全て抽出してください。',
+        testString: 'aabbcc hello good bookkeeper',
+        expectedMatches: ['aa', 'bb', 'cc', 'll', 'oo', 'oo', 'kk', 'ee'],
+        defaultFlags: 'g',
+        hint: '(.)\\1+ で同じ文字の2回以上の繰り返しにマッチします（後方参照）。'
+      },
+      {
+        title: 'URLを抽出',
+        desc: 'テスト文字列からURLを全て抽出してください。',
+        testString: 'サイトは https://example.com と http://test.org/page です',
+        expectedMatches: ['https://example.com', 'http://test.org/page'],
+        defaultFlags: 'g',
+        hint: 'https?://[\\S]+ で http:// または https:// から始まる非空白文字の連続にマッチします。'
+      }
+    ];
+
+    let correctSet = new Set();
+
+    function updateProgress() {
+      const count = correctSet.size;
+      document.getElementById('progressText').textContent = count + ' / 10 問正解';
+      document.getElementById('progressFill').style.width = (count * 10) + '%';
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function testRegex(index) {
+      const ex = exercises[index];
+      const patternInput = document.getElementById('pattern-' + index);
+      const flagsInput = document.getElementById('flags-' + index);
+      const feedback = document.getElementById('feedback-' + index);
+      const card = document.getElementById('exercise-' + index);
+      const testStringEl = document.getElementById('teststring-' + index);
+
+      const pattern = patternInput.value;
+      const flags = flagsInput.value;
+
+      feedback.className = 'feedback show';
+      card.classList.remove('correct', 'wrong');
+
+      if (!pattern) {
+        feedback.textContent = '正規表現を入力してください。';
+        feedback.classList.add('wrong');
+        testStringEl.innerHTML = escapeHtml(ex.testString);
+        return;
+      }
+
+      try {
+        const regex = new RegExp(pattern, flags);
+        let matches = [];
+        let match;
+
+        if (flags.indexOf('g') !== -1) {
+          // For exercises that need capture group 1 (like parentheses extraction)
+          const tempRegex = new RegExp(pattern, flags);
+          while ((match = tempRegex.exec(ex.testString)) !== null) {
+            // Use group 1 if it exists, otherwise full match
+            matches.push(match[1] !== undefined ? match[1] : match[0]);
+            if (!tempRegex.global) break;
+          }
+        } else {
+          match = regex.exec(ex.testString);
+          if (match) {
+            matches.push(match[1] !== undefined ? match[1] : match[0]);
+          }
+        }
+
+        // Highlight matches in test string
+        const highlightRegex = new RegExp(pattern, flags.indexOf('g') === -1 ? flags + 'g' : flags);
+        let highlighted = escapeHtml(ex.testString);
+        // Re-run on original to get positions for highlighting (use full match for highlight)
+        let parts = [];
+        let lastIndex = 0;
+        const hRegex = new RegExp(pattern, flags.indexOf('g') === -1 ? flags + 'g' : flags);
+        let hMatch;
+        while ((hMatch = hRegex.exec(ex.testString)) !== null) {
+          if (hMatch.index > lastIndex) {
+            parts.push(escapeHtml(ex.testString.slice(lastIndex, hMatch.index)));
+          }
+          parts.push('<span class="match-highlight">' + escapeHtml(hMatch[0]) + '</span>');
+          lastIndex = hMatch.index + hMatch[0].length;
+          if (hMatch[0].length === 0) { hRegex.lastIndex++; }
+        }
+        if (lastIndex < ex.testString.length) {
+          parts.push(escapeHtml(ex.testString.slice(lastIndex)));
+        }
+        testStringEl.innerHTML = parts.join('');
+
+        // Compare results
+        const isCorrect = JSON.stringify(matches) === JSON.stringify(ex.expectedMatches);
+
+        if (isCorrect) {
+          feedback.textContent = '正解です！';
+          feedback.classList.add('correct');
+          card.classList.add('correct');
+          correctSet.add(index);
+        } else {
+          feedback.innerHTML = '不正解です。あなたのマッチ結果: [' + matches.map(function(m) { return '"' + escapeHtml(m) + '"'; }).join(', ') + ']';
+          feedback.classList.add('wrong');
+          card.classList.add('wrong');
+          correctSet.delete(index);
+        }
+      } catch (e) {
+        feedback.textContent = '正規表現エラー: ' + e.message;
+        feedback.classList.add('wrong');
+        card.classList.add('wrong');
+        testStringEl.innerHTML = escapeHtml(ex.testString);
+        correctSet.delete(index);
+      }
+      updateProgress();
+    }
+
+    function showHint(index) {
+      document.getElementById('hint-' + index).classList.toggle('show');
+    }
+
+    function resetExercise(index) {
+      document.getElementById('pattern-' + index).value = '';
+      document.getElementById('flags-' + index).value = exercises[index].defaultFlags;
+      document.getElementById('feedback-' + index).className = 'feedback';
+      document.getElementById('hint-' + index).classList.remove('show');
+      document.getElementById('teststring-' + index).innerHTML = escapeHtml(exercises[index].testString);
+      document.getElementById('exercise-' + index).classList.remove('correct', 'wrong');
+      correctSet.delete(index);
+      updateProgress();
+    }
+
+    const container = document.getElementById('exercises');
+    exercises.forEach(function(ex, i) {
+      const div = document.createElement('div');
+      div.className = 'exercise';
+      div.id = 'exercise-' + i;
+
+      const expectedStr = ex.expectedMatches.map(function(m) { return '<code>' + escapeHtml(m) + '</code>'; }).join(', ');
+
+      div.innerHTML =
+        '<div><span class="exercise-number">' + (i + 1) + '</span><h3>' + ex.title + '</h3></div>' +
+        '<p class="exercise-desc">' + ex.desc + '</p>' +
+        '<div class="test-string" id="teststring-' + i + '">' + escapeHtml(ex.testString) + '</div>' +
+        '<p class="expected-info">期待するマッチ結果: ' + expectedStr + '</p>' +
+        '<div class="regex-input-row">' +
+          '<span>/</span>' +
+          '<input type="text" id="pattern-' + i + '" placeholder="正規表現を入力">' +
+          '<span>/</span>' +
+          '<input type="text" id="flags-' + i + '" class="flags-input" value="' + ex.defaultFlags + '" placeholder="g">' +
+        '</div>' +
+        '<div class="btn-group">' +
+          '<button class="btn" onclick="window._testRegex(' + i + ')">判定</button>' +
+          '<button class="btn btn-secondary" onclick="window._hintRegex(' + i + ')">ヒント</button>' +
+          '<button class="btn btn-secondary" onclick="window._resetRegex(' + i + ')">リセット</button>' +
+        '</div>' +
+        '<div class="feedback" id="feedback-' + i + '"></div>' +
+        '<div class="hint" id="hint-' + i + '">' + ex.hint + '</div>';
+
+      container.appendChild(div);
+    });
+
+    // Enter key to test
+    container.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && e.target.type === 'text') {
+        const id = e.target.id;
+        const match = id.match(/(?:pattern|flags)-(\d+)/);
+        if (match) {
+          testRegex(parseInt(match[1]));
+        }
+      }
+    });
+
+    window._testRegex = testRegex;
+    window._hintRegex = showHint;
+    window._resetRegex = resetExercise;
+  })();
+  </script>
+</body>
+</html>

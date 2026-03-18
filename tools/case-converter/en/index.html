@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Converter - Free Online Text Case Changer | Simple Toolkit</title>
+  <meta name="description" content="Free text case converter. Convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case instantly. Perfect for programming and document editing. No registration required.">
+  <meta property="og:title" content="Case Converter - Free Online Text Case Changer | Simple Toolkit">
+  <meta property="og:description" content="Convert text to 6 different cases: UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/case-converter/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/case-converter/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/case-converter/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Case Converter - Free Online Text Case Changer",
+    "description": "Free text case converter. Convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case. No registration required.",
+    "url": "https://simpletoolkit.net/tools/case-converter/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is camelCase?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "camelCase is a naming convention where multiple words are joined together with the first letter of each subsequent word capitalized. Example: myVariableName. It is widely used in JavaScript and Java."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between snake_case and kebab-case?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "snake_case separates words with underscores (_), while kebab-case separates words with hyphens (-). snake_case is common in Python, and kebab-case is common in CSS classes and URLs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the case converter free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free. No registration is required, and it works entirely in your browser."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Case Converter</h1>
+    <h2>Free Online Text Case Changer</h2>
+    <p class="tool-description">Convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case instantly. Perfect for programming variable names and document editing. Free, no registration required.</p>
+
+    <div class="tool-area">
+      <label for="input-text">Enter text</label>
+      <textarea id="input-text" placeholder="e.g. hello world example text" rows="4"></textarea>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px;">
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">UPPERCASE</div>
+          <div id="result-upper" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-upper')">Copy</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">lowercase</div>
+          <div id="result-lower" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-lower')">Copy</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">Title Case</div>
+          <div id="result-title" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-title')">Copy</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">camelCase</div>
+          <div id="result-camel" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-camel')">Copy</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">snake_case</div>
+          <div id="result-snake" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-snake')">Copy</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">kebab-case</div>
+          <div id="result-kebab" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-kebab')">Copy</button>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="document.getElementById('input-text').value='';convertAll();">Clear</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../text-replace/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Text Replace Tool</h3>
+          <p>Bulk text replacement with regex support</p>
+        </a>
+        <a href="../char-counter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and bytes in real time</p>
+        </a>
+        <a href="../zenkaku-hankaku/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Fullwidth/Halfwidth Converter</h3>
+          <p>Convert fullwidth and halfwidth characters</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function splitWords(text) {
+      // Split by spaces, underscores, hyphens, or camelCase boundaries
+      return text
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/[_\-]+/g, ' ')
+        .trim()
+        .split(/\s+/)
+        .filter(w => w.length > 0);
+    }
+
+    function toUpper(text) { return text.toUpperCase(); }
+    function toLower(text) { return text.toLowerCase(); }
+    function toTitle(text) {
+      return splitWords(text).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    }
+    function toCamel(text) {
+      const words = splitWords(text);
+      return words.map((w, i) => {
+        if (i === 0) return w.toLowerCase();
+        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+      }).join('');
+    }
+    function toSnake(text) {
+      return splitWords(text).map(w => w.toLowerCase()).join('_');
+    }
+    function toKebab(text) {
+      return splitWords(text).map(w => w.toLowerCase()).join('-');
+    }
+
+    function convertAll() {
+      const text = document.getElementById('input-text').value;
+      if (!text.trim()) {
+        ['upper','lower','title','camel','snake','kebab'].forEach(id => {
+          document.getElementById('result-' + id).textContent = '-';
+        });
+        return;
+      }
+      document.getElementById('result-upper').textContent = toUpper(text);
+      document.getElementById('result-lower').textContent = toLower(text);
+      document.getElementById('result-title').textContent = toTitle(text);
+      document.getElementById('result-camel').textContent = toCamel(text);
+      document.getElementById('result-snake').textContent = toSnake(text);
+      document.getElementById('result-kebab').textContent = toKebab(text);
+    }
+
+    function copyResult(id) {
+      const text = document.getElementById(id).textContent;
+      if (text === '-') return;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById(id).nextElementSibling;
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+
+    document.getElementById('input-text').addEventListener('input', convertAll);
+  </script>
+</body>
+</html>

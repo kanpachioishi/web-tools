@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Preview - Free Online Markdown Editor | Simple Toolkit</title>
+  <meta name="description" content="Free online Markdown preview editor. See your Markdown rendered in real time with support for headings, bold, lists, code blocks, links, and more. No registration required.">
+  <meta property="og:title" content="Markdown Preview - Free Online Markdown Editor | Simple Toolkit">
+  <meta property="og:description" content="Preview Markdown in real time. Free, no registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/markdown-preview/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/markdown-preview/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/markdown-preview/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Markdown Preview - Free Online Markdown Editor",
+    "description": "Free online Markdown preview editor. See your Markdown rendered in real time. No registration required.",
+    "url": "https://simpletoolkit.net/tools/markdown-preview/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What Markdown syntax is supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Headings, bold, italic, lists, code blocks, links, images, horizontal rules, and blockquotes are supported."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the entered text saved or sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all processing is done within your browser. Your text is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .md-container { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .md-container textarea { min-height: 400px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.9rem; }
+    .md-preview { padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); min-height: 400px; overflow-y: auto; }
+    .md-preview h1, .md-preview h2, .md-preview h3 { margin: 16px 0 8px; }
+    .md-preview p { margin-bottom: 12px; }
+    .md-preview pre { background: #1e293b; color: #e2e8f0; padding: 12px; border-radius: 6px; overflow-x: auto; margin-bottom: 12px; }
+    .md-preview code { background: #f1f5f9; padding: 2px 4px; border-radius: 3px; font-size: 0.9em; }
+    .md-preview pre code { background: none; padding: 0; color: inherit; }
+    .md-preview ul, .md-preview ol { padding-left: 24px; margin-bottom: 12px; }
+    .md-preview img { max-width: 100%; }
+    .md-preview hr { border: none; border-top: 2px solid var(--border); margin: 16px 0; }
+    .md-preview blockquote { border-left: 4px solid var(--primary); padding-left: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    @media (max-width: 600px) { .md-container { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Markdown Preview</h1>
+    <h2>Free Online Markdown Editor</h2>
+    <p class="tool-description">Enter Markdown on the left to see a real-time HTML preview on the right.</p>
+
+    <div class="tool-area">
+      <div class="md-container">
+        <div>
+          <label>Markdown Input</label>
+          <textarea id="md-input" placeholder="# Heading&#10;&#10;**Bold** and *italic*&#10;&#10;- List item&#10;- List item">## Hello World
+
+**Bold text** and *italic text*
+
+- List item 1
+- List item 2
+- List item 3
+
+`Inline code` and code block:
+
+```
+const hello = "world";
+console.log(hello);
+```
+
+[Link](https://example.com)
+
+> Blockquote text
+
+---
+
+Regular paragraph text.</textarea>
+        </div>
+        <div>
+          <label>Preview</label>
+          <div class="md-preview" id="preview"></div>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../lorem-generator/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Lorem Ipsum Generator</h3><p>Generate dummy text</p></a>
+        <a href="../text-diff/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Text Diff Checker</h3><p>Compare two texts for differences</p></a>
+        <a href="../json-formatter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">JSON Formatter</h3><p>Format and minify JSON data</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function parseMarkdown(md) {
+      let html = md
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      // Code blocks
+      html = html.replace(/```([\s\S]*?)```/g, (_, code) => '<pre><code>' + code.trim() + '</code></pre>');
+      // Inline code
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+      // Headings
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+      // Horizontal rule
+      html = html.replace(/^---$/gm, '<hr>');
+      // Blockquote
+      html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+      // Bold and italic
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      // Images
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+      // Links
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+      // Unordered lists
+      html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+      html = html.replace(/((<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+      // Paragraphs
+      html = html.split('\n\n').map(block => {
+        const trimmed = block.trim();
+        if (!trimmed) return '';
+        if (/^<[hupob]|^<li|^<hr|^<pre|^<block/i.test(trimmed)) return trimmed;
+        return '<p>' + trimmed.replace(/\n/g, '<br>') + '</p>';
+      }).join('\n');
+      return html;
+    }
+    const input = document.getElementById('md-input');
+    const preview = document.getElementById('preview');
+    function update() { preview.innerHTML = parseMarkdown(input.value); }
+    input.addEventListener('input', update);
+    update();
+  </script>
+</body>
+</html>

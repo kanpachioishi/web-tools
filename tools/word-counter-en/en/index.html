@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Counter - Free Online Word Count Tool | Simple Toolkit</title>
+  <meta name="description" content="Free word counter tool. Count words, characters, sentences, paragraphs, and estimated reading time in real time. Perfect for essays, blog posts, and reports. No registration required.">
+  <meta property="og:title" content="Word Counter - Free Online Word Count Tool | Simple Toolkit">
+  <meta property="og:description" content="Free word counter. Count words, sentences, paragraphs, and reading time in real time. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/word-counter-en/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/word-counter-en/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/word-counter-en/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Word Counter - Free Online Word Count Tool",
+    "description": "Free word counter tool. Count words, characters, sentences, paragraphs, and estimated reading time in real time. No registration required.",
+    "url": "https://simpletoolkit.net/tools/word-counter-en/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is the reading time calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Reading time is calculated based on an average reading speed of 200 words per minute (WPM), which is a common standard for English text."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the entered text sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all processing is done within your browser. Your text is never sent to any external server."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the word counter free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free to use. No registration is required, and it works entirely in your browser."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Word Counter</h1>
+    <h2>Free Online Word Count Tool</h2>
+    <p class="tool-description">Enter your text to count words, characters, sentences, paragraphs, and estimated reading time in real time. Perfect for essays, blog posts, and reports. Free, no registration required, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <label for="input-text">Enter your text</label>
+      <textarea id="input-text" placeholder="Enter your English text here..." rows="8"></textarea>
+
+      <div class="stats" id="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="word-count">0</div>
+          <div class="stat-label">Words</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="char-count">0</div>
+          <div class="stat-label">Characters</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sentence-count">0</div>
+          <div class="stat-label">Sentences</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="paragraph-count">0</div>
+          <div class="stat-label">Paragraphs</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="read-time">0m 0s</div>
+          <div class="stat-label">Reading Time (200 WPM)</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="document.getElementById('input-text').value=''; updateCount();">Clear</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and bytes in real time</p>
+        </a>
+        <a href="../text-diff/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Text Diff Checker</h3>
+          <p>Highlight differences between two texts</p>
+        </a>
+        <a href="../markdown-preview/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Markdown Preview</h3>
+          <p>Preview Markdown in real time</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    const input = document.getElementById('input-text');
+
+    function updateCount() {
+      const text = input.value;
+      const trimmed = text.trim();
+
+      // Word count
+      const words = trimmed === '' ? 0 : trimmed.split(/\s+/).length;
+      document.getElementById('word-count').textContent = words;
+
+      // Character count
+      document.getElementById('char-count').textContent = text.length;
+
+      // Sentence count
+      const sentences = trimmed === '' ? 0 : trimmed.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+      document.getElementById('sentence-count').textContent = sentences;
+
+      // Paragraph count
+      const paragraphs = trimmed === '' ? 0 : trimmed.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+      document.getElementById('paragraph-count').textContent = paragraphs;
+
+      // Reading time (200 WPM)
+      const totalSeconds = Math.ceil(words / 200 * 60);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      document.getElementById('read-time').textContent = minutes + 'm ' + seconds + 's';
+    }
+
+    input.addEventListener('input', updateCount);
+  </script>
+</body>
+</html>

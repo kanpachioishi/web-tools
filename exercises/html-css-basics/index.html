@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML/CSS 基礎クイズ - 全10問で基本をマスター | Web便利ツール集</title>
+  <meta name="description" content="HTML/CSS基礎の4択クイズ10問。タグの意味、CSSプロパティ、セレクタの優先度などWeb制作の基本知識をテスト。即時採点・解説付き。">
+  <meta property="og:title" content="HTML/CSS 基礎クイズ - 全10問で基本をマスター | Web便利ツール集">
+  <meta property="og:description" content="HTML/CSS基礎の4択クイズ10問。タグの意味、CSSプロパティなどWeb制作の基本知識をテスト。即時採点。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/exercises/html-css-basics/">
+  <link rel="canonical" href="https://simpletoolkit.net/exercises/html-css-basics/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .progress-bar {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .progress-bar .bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar .bar-fill {
+      height: 100%;
+      background: #22c55e;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .progress-text {
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .quiz {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .quiz.correct { border-color: #22c55e; background: #f0fdf4; }
+    .quiz.wrong { border-color: #ef4444; background: #fef2f2; }
+
+    .quiz-number {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .quiz h3 {
+      display: inline;
+      font-size: 1.05rem;
+    }
+    .quiz-question {
+      margin: 12px 0 16px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .quiz-question code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.9em;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .choice-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: inherit;
+      color: var(--text);
+    }
+    .choice-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .choice-btn:disabled { cursor: default; opacity: 0.8; }
+    .choice-btn.selected-correct {
+      border-color: #22c55e;
+      background: #dcfce7;
+      font-weight: 600;
+    }
+    .choice-btn.selected-wrong {
+      border-color: #ef4444;
+      background: #fee2e2;
+    }
+    .choice-btn.show-correct {
+      border-color: #22c55e;
+      background: #dcfce7;
+    }
+
+    .explanation {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      display: none;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0c4a6e;
+    }
+    .explanation.show { display: block; }
+
+    .related-links {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .related-links h2 { font-size: 1.1rem; margin-bottom: 12px; }
+    .related-links a {
+      color: var(--primary);
+      text-decoration: none;
+      display: block;
+      padding: 4px 0;
+      font-size: 0.9rem;
+    }
+    .related-links a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+
+  <main>
+    <h1>HTML/CSS 基礎クイズ</h1>
+    <p class="tool-description">全10問の4択クイズでHTML/CSSの基礎知識をチェック。解説付きで理解を深められます。</p>
+
+    <div class="ad-placeholder"></div>
+
+    <div class="progress-bar">
+      <span class="progress-text" id="progressText">0 / 10 問正解</span>
+      <div class="bar-track"><div class="bar-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div id="quizzes"></div>
+
+    <div class="ad-placeholder"></div>
+
+    <div class="related-links">
+      <h2>関連ツール・コンテンツ</h2>
+      <a href="/tools/color-converter/">カラーコード変換ツール</a>
+      <a href="/tools/css-gradient/">CSSグラデーション生成</a>
+      <a href="/exercises/javascript-basics/">JavaScript 基礎練習問題</a>
+      <a href="/exercises/regex-practice/">正規表現 練習問題</a>
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+  <script>
+  (function() {
+    const quizzes = [
+      {
+        question: 'HTMLで段落を表すタグはどれですか？',
+        choices: ['<code>&lt;div&gt;</code>', '<code>&lt;p&gt;</code>', '<code>&lt;span&gt;</code>', '<code>&lt;br&gt;</code>'],
+        answer: 1,
+        explanation: '<code>&lt;p&gt;</code> タグは paragraph（段落）の略で、テキストの段落を定義するために使います。<code>&lt;div&gt;</code> はブロック要素のコンテナ、<code>&lt;span&gt;</code> はインライン要素のコンテナです。'
+      },
+      {
+        question: 'CSSで文字色を変更するプロパティはどれですか？',
+        choices: ['<code>font-color</code>', '<code>text-color</code>', '<code>color</code>', '<code>foreground</code>'],
+        answer: 2,
+        explanation: '<code>color</code> プロパティでテキストの色を指定します。<code>font-color</code> や <code>text-color</code> というプロパティは存在しません。'
+      },
+      {
+        question: 'HTMLでハイパーリンクを作成するタグはどれですか？',
+        choices: ['<code>&lt;link&gt;</code>', '<code>&lt;a&gt;</code>', '<code>&lt;href&gt;</code>', '<code>&lt;url&gt;</code>'],
+        answer: 1,
+        explanation: '<code>&lt;a&gt;</code> タグ（anchor）に <code>href</code> 属性を指定してリンクを作成します。<code>&lt;link&gt;</code> タグはCSSファイルの読み込みなどに使います。'
+      },
+      {
+        question: 'CSSで要素の外側の余白を指定するプロパティはどれですか？',
+        choices: ['<code>padding</code>', '<code>margin</code>', '<code>border</code>', '<code>gap</code>'],
+        answer: 1,
+        explanation: '<code>margin</code> は要素の外側の余白、<code>padding</code> は要素の内側の余白を指定します。<code>border</code> は枠線、<code>gap</code> はFlexbox/Gridの要素間の隙間です。'
+      },
+      {
+        question: 'CSSセレクタの優先度が最も高いのはどれですか？',
+        choices: ['要素セレクタ（<code>p</code>）', 'クラスセレクタ（<code>.class</code>）', 'IDセレクタ（<code>#id</code>）', 'インラインスタイル（<code>style=""</code>）'],
+        answer: 3,
+        explanation: 'CSSの優先度（詳細度）は「インラインスタイル > ID > クラス > 要素」の順です。<code>!important</code> を使うとさらに高い優先度になりますが、乱用は推奨されません。'
+      },
+      {
+        question: '<code>display: flex</code> を指定した要素の子要素はどのようにレイアウトされますか？',
+        choices: ['縦に積み重なる', '横一列に並ぶ（デフォルト）', '絶対位置で配置される', 'グリッド状に配置される'],
+        answer: 1,
+        explanation: 'Flexboxのデフォルトの <code>flex-direction</code> は <code>row</code> なので、子要素は横一列に並びます。<code>flex-direction: column</code> を指定すると縦方向に並びます。'
+      },
+      {
+        question: 'HTMLの <code>&lt;meta charset="UTF-8"&gt;</code> は何を指定していますか？',
+        choices: ['ページの言語', '文字エンコーディング', 'ページのタイトル', 'レスポンシブ設定'],
+        answer: 1,
+        explanation: '<code>charset</code> は文字エンコーディングを指定します。UTF-8は多言語に対応した標準的なエンコーディングで、日本語を含むほぼすべての文字を扱えます。'
+      },
+      {
+        question: 'CSSの <code>position: relative</code> はどのような効果がありますか？',
+        choices: ['ページの先頭に固定される', '通常の位置から相対的に移動できる', '親要素の左上を基準に配置される', 'ドキュメントフローから除外される'],
+        answer: 1,
+        explanation: '<code>position: relative</code> は元の位置を基準に <code>top</code>、<code>left</code> などで相対的にずらすことができます。元の場所のスペースは確保されたままです。'
+      },
+      {
+        question: 'HTMLのセマンティックタグとして正しくないものはどれですか？',
+        choices: ['<code>&lt;header&gt;</code>', '<code>&lt;article&gt;</code>', '<code>&lt;content&gt;</code>', '<code>&lt;footer&gt;</code>'],
+        answer: 2,
+        explanation: '<code>&lt;content&gt;</code> は標準のHTMLセマンティックタグではありません。<code>&lt;header&gt;</code>、<code>&lt;article&gt;</code>、<code>&lt;footer&gt;</code>、<code>&lt;nav&gt;</code>、<code>&lt;section&gt;</code> などがセマンティックタグです。'
+      },
+      {
+        question: 'CSSの <code>box-sizing: border-box</code> を指定すると <code>width</code> にはどこまで含まれますか？',
+        choices: ['コンテンツのみ', 'コンテンツ + padding', 'コンテンツ + padding + border', 'コンテンツ + padding + border + margin'],
+        answer: 2,
+        explanation: '<code>border-box</code> を指定すると、<code>width</code> に padding と border が含まれるようになります。デフォルトの <code>content-box</code> ではコンテンツのみです。margin は含まれません。'
+      }
+    ];
+
+    let correctSet = new Set();
+    let answered = new Set();
+
+    function updateProgress() {
+      const count = correctSet.size;
+      document.getElementById('progressText').textContent = count + ' / 10 問正解';
+      document.getElementById('progressFill').style.width = (count * 10) + '%';
+    }
+
+    function selectChoice(quizIndex, choiceIndex) {
+      if (answered.has(quizIndex)) return;
+      answered.add(quizIndex);
+
+      const quiz = quizzes[quizIndex];
+      const card = document.getElementById('quiz-' + quizIndex);
+      const explanation = document.getElementById('explanation-' + quizIndex);
+      const buttons = card.querySelectorAll('.choice-btn');
+
+      buttons.forEach(function(btn) { btn.disabled = true; });
+
+      if (choiceIndex === quiz.answer) {
+        buttons[choiceIndex].classList.add('selected-correct');
+        card.classList.add('correct');
+        correctSet.add(quizIndex);
+      } else {
+        buttons[choiceIndex].classList.add('selected-wrong');
+        buttons[quiz.answer].classList.add('show-correct');
+        card.classList.add('wrong');
+      }
+
+      explanation.classList.add('show');
+      updateProgress();
+    }
+
+    const container = document.getElementById('quizzes');
+    quizzes.forEach(function(q, i) {
+      const div = document.createElement('div');
+      div.className = 'quiz';
+      div.id = 'quiz-' + i;
+
+      let choicesHtml = '<div class="choices">';
+      q.choices.forEach(function(c, ci) {
+        choicesHtml += '<button class="choice-btn" onclick="window._select(' + i + ',' + ci + ')">' + c + '</button>';
+      });
+      choicesHtml += '</div>';
+
+      div.innerHTML =
+        '<div><span class="quiz-number">' + (i + 1) + '</span><h3>問題 ' + (i + 1) + '</h3></div>' +
+        '<p class="quiz-question">' + q.question + '</p>' +
+        choicesHtml +
+        '<div class="explanation" id="explanation-' + i + '">' + q.explanation + '</div>';
+
+      container.appendChild(div);
+    });
+
+    window._select = selectChoice;
+  })();
+  </script>
+</body>
+</html>

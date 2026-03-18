@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter - Free Online Unit Conversion Tool | Simple Toolkit</title>
+  <meta name="description" content="Free unit converter for length, weight, and temperature. Convert between mm, cm, m, km, inches, feet, miles, kg, pounds, Celsius, Fahrenheit, and more. No registration required.">
+  <meta property="og:title" content="Unit Converter - Free Online Unit Conversion Tool | Simple Toolkit">
+  <meta property="og:description" content="Convert length, weight, and temperature units easily. Supports metric and imperial systems.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/unit-converter/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/unit-converter/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/unit-converter/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Unit Converter - Free Online Unit Conversion Tool",
+    "description": "Free unit converter for length, weight, and temperature. Convert between metric and imperial systems. No registration required.",
+    "url": "https://simpletoolkit.net/tools/unit-converter/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What units are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Length (mm to mile), weight (mg to lb), and temperature (Celsius, Fahrenheit, Kelvin) conversions are supported."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are the calculation results accurate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, standard conversion factors are used for accurate calculations."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+    .tab-btn { padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .tab-btn:hover:not(.active) { background: var(--border); }
+    .convert-row { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 12px; flex-wrap: wrap; }
+    .convert-row > div { flex: 1; min-width: 140px; }
+    .result-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .result-table th, .result-table td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; font-size: 0.9rem; }
+    .result-table th { background: var(--bg); font-weight: 600; }
+    .result-table td:last-child { font-family: "SF Mono", "Fira Code", monospace; text-align: right; }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Unit Converter</h1>
+    <h2>Free Online Unit Conversion Tool</h2>
+    <p class="tool-description">Convert between length, weight, and temperature units. Enter a value to see conversions to all supported units at once.</p>
+
+    <div class="tool-area">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('length')">Length</button>
+        <button class="tab-btn" onclick="switchTab('weight')">Weight</button>
+        <button class="tab-btn" onclick="switchTab('temperature')">Temperature</button>
+      </div>
+
+      <div class="convert-row">
+        <div>
+          <label for="input-value">Value</label>
+          <input type="number" id="input-value" placeholder="Enter a number" step="any" oninput="doConvert()">
+        </div>
+        <div>
+          <label for="input-unit">Unit</label>
+          <select id="input-unit" onchange="doConvert()"></select>
+        </div>
+      </div>
+
+      <table class="result-table" id="result-table">
+        <thead><tr><th>Unit</th><th>Value</th></tr></thead>
+        <tbody id="result-body"></tbody>
+      </table>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../color-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Color Code Converter</h3>
+          <p>Convert between HEX, RGB, and HSL</p>
+        </a>
+        <a href="../unix-timestamp/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unix Timestamp Converter</h3>
+          <p>Convert between timestamps and dates</p>
+        </a>
+        <a href="../csv-to-table/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">CSV to Table Converter</h3>
+          <p>Convert CSV data to HTML tables</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    const units = {
+      length: {
+        mm:    { label: 'Millimeter (mm)', factor: 0.001 },
+        cm:    { label: 'Centimeter (cm)', factor: 0.01 },
+        m:     { label: 'Meter (m)', factor: 1 },
+        km:    { label: 'Kilometer (km)', factor: 1000 },
+        inch:  { label: 'Inch (inch)', factor: 0.0254 },
+        feet:  { label: 'Feet (feet)', factor: 0.3048 },
+        yard:  { label: 'Yard (yard)', factor: 0.9144 },
+        mile:  { label: 'Mile (mile)', factor: 1609.344 },
+      },
+      weight: {
+        mg: { label: 'Milligram (mg)', factor: 0.000001 },
+        g:  { label: 'Gram (g)', factor: 0.001 },
+        kg: { label: 'Kilogram (kg)', factor: 1 },
+        oz: { label: 'Ounce (oz)', factor: 0.0283495 },
+        lb: { label: 'Pound (lb)', factor: 0.453592 },
+      },
+      temperature: {
+        c: { label: 'Celsius (\u2103)' },
+        f: { label: 'Fahrenheit (\u2109)' },
+        k: { label: 'Kelvin (K)' },
+      }
+    };
+
+    let currentTab = 'length';
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', ['length','weight','temperature'][i] === tab);
+      });
+      populateSelect();
+      doConvert();
+    }
+
+    function populateSelect() {
+      const sel = document.getElementById('input-unit');
+      sel.innerHTML = '';
+      for (const [key, u] of Object.entries(units[currentTab])) {
+        const opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = u.label;
+        sel.appendChild(opt);
+      }
+    }
+
+    function convertTemp(value, from, to) {
+      let celsius;
+      if (from === 'c') celsius = value;
+      else if (from === 'f') celsius = (value - 32) * 5 / 9;
+      else celsius = value - 273.15;
+
+      if (to === 'c') return celsius;
+      if (to === 'f') return celsius * 9 / 5 + 32;
+      return celsius + 273.15;
+    }
+
+    function formatNum(n) {
+      if (Number.isInteger(n) && Math.abs(n) < 1e15) return n.toString();
+      if (Math.abs(n) < 0.0001 || Math.abs(n) >= 1e12) return n.toExponential(6);
+      return parseFloat(n.toPrecision(10)).toString();
+    }
+
+    function doConvert() {
+      const val = parseFloat(document.getElementById('input-value').value);
+      const from = document.getElementById('input-unit').value;
+      const tbody = document.getElementById('result-body');
+      tbody.innerHTML = '';
+
+      if (isNaN(val)) return;
+
+      for (const [key, u] of Object.entries(units[currentTab])) {
+        let result;
+        if (currentTab === 'temperature') {
+          result = convertTemp(val, from, key);
+        } else {
+          const baseVal = val * units[currentTab][from].factor;
+          result = baseVal / u.factor;
+        }
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${u.label}</td><td>${formatNum(result)}</td>`;
+        tbody.appendChild(tr);
+      }
+    }
+
+    populateSelect();
+  </script>
+</body>
+</html>
