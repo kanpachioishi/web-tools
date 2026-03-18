@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Counter - Free Online Character Count Checker | Simple Toolkit</title>
+  <meta name="description" content="Free character counter tool. Instantly count characters, words, lines, and bytes in real time. Perfect for Twitter, blog posts, and reports. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="Character Counter - Free Online Character Count Checker | Simple Toolkit">
+  <meta property="og:description" content="Free character counter tool. Instantly count characters, words, lines, and bytes in real time. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/char-counter/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/char-counter/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/char-counter/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Character Counter - Free Online Character Count Checker",
+    "description": "Free character counter tool. Instantly count characters, words, lines, and bytes in real time. No registration required, works entirely in your browser.",
+    "url": "https://simpletoolkit.net/tools/char-counter/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the character counter free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free to use. No registration is required, and it works entirely in your browser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are spaces and line breaks included in the character count?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The 'Characters' count includes spaces and line breaks. Use 'Characters (no spaces)' to see the count without spaces."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the entered text sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all processing is done within your browser. Your text is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Character Counter</h1>
+    <h2>Free Online Character Count Checker</h2>
+    <p class="tool-description">Simply enter your text to count characters, words, lines, and bytes in real time. Perfect for checking character limits on Twitter posts, blog articles, and reports. Free, no registration required, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <label for="input-text">Enter text</label>
+      <textarea id="input-text" placeholder="Type or paste your text here..." rows="8"></textarea>
+
+      <div class="stats" id="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="char-count">0</div>
+          <div class="stat-label">Characters</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="char-no-space">0</div>
+          <div class="stat-label">Characters (no spaces)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="word-count">0</div>
+          <div class="stat-label">Words</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="line-count">0</div>
+          <div class="stat-label">Lines</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="byte-count">0</div>
+          <div class="stat-label">Bytes</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="document.getElementById('input-text').value=''; updateCount();">Clear</button>
+      </div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../json-formatter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON Formatter</h3>
+          <p>Format and minify JSON data</p>
+        </a>
+        <a href="../password-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Password Generator</h3>
+          <p>Generate secure random passwords</p>
+        </a>
+        <a href="../regex-tester/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Regex Tester</h3>
+          <p>Test regular expressions in real time</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    const input = document.getElementById('input-text');
+
+    function updateCount() {
+      const text = input.value;
+      document.getElementById('char-count').textContent = text.length;
+      document.getElementById('char-no-space').textContent = text.replace(/\s/g, '').length;
+      document.getElementById('word-count').textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+      document.getElementById('line-count').textContent = text === '' ? 0 : text.split('\n').length;
+      document.getElementById('byte-count').textContent = new Blob([text]).size;
+    }
+
+    input.addEventListener('input', updateCount);
+  </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPアドレス確認 - 無料オンラインIPチェッカー | Web便利ツール集</title>
+  <meta name="description" content="現在のIPアドレスを無料で確認。あなたのグローバルIPアドレスと基本情報を即座に表示。VPN接続確認やネットワーク設定のチェックに最適。登録不要でブラウザだけで完結。">
+  <meta property="og:title" content="IPアドレス確認 - 無料オンラインIPチェッカー | Web便利ツール集">
+  <meta property="og:description" content="現在のIPアドレスを無料で確認。グローバルIPと基本情報を即座に表示。登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/ip-checker/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "IPアドレス確認 - 無料オンラインIPチェッカー",
+    "description": "現在のIPアドレスを無料で確認。グローバルIPアドレスと基本情報を即座に表示。登録不要でブラウザだけで完結。",
+    "url": "https://simpletoolkit.net/tools/ip-checker/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "IPアドレスとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPアドレスはインターネット上の機器に割り当てられる識別番号です。グローバルIPアドレスはインターネット上で一意に識別されるアドレスで、プロバイダから割り当てられます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "表示されるIPアドレスで個人が特定されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "IPアドレスだけでは個人を直接特定することはできません。ただし、おおよその地域やプロバイダ情報は推測できるため、VPNの使用で保護することが推奨される場合があります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "VPNを使っているか確認できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "VPN接続中は、VPNサーバーのIPアドレスが表示されます。普段のIPアドレスと異なるIPが表示されていれば、VPNが正常に動作していると確認できます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>IPアドレス確認</h1>
+    <h2>無料オンラインIPチェッカー</h2>
+    <p class="tool-description">あなたの現在のグローバルIPアドレスを確認できます。VPN接続の確認やネットワーク設定のチェックに最適です。無料・登録不要でブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div style="text-align:center;padding:20px 0;">
+        <div style="font-size:0.9rem;color:#666;margin-bottom:8px;">あなたのIPアドレス</div>
+        <div id="ip-address" style="font-size:2.2rem;font-weight:bold;color:#2563eb;font-family:monospace;letter-spacing:2px;">取得中...</div>
+        <button class="btn btn-secondary" style="margin-top:12px;font-size:0.85rem;padding:6px 16px;" onclick="copyIP()">IPをコピー</button>
+      </div>
+
+      <div class="stats" id="ip-info" style="margin-top:20px;">
+        <div class="stat-item">
+          <div class="stat-label">IPバージョン</div>
+          <div class="stat-value" id="ip-version" style="font-size:1rem;">-</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">IPクラス</div>
+          <div class="stat-value" id="ip-class" style="font-size:1rem;">-</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">IPタイプ</div>
+          <div class="stat-value" id="ip-type" style="font-size:1rem;">-</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <h3 style="font-size:1.1rem;margin-bottom:12px;">IPアドレスの詳細分析</h3>
+        <div id="ip-details" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <table style="width:100%;border-collapse:collapse;">
+            <tr><td style="padding:8px;font-weight:bold;width:40%;">2進数表記</td><td id="ip-binary" style="padding:8px;font-family:monospace;">-</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;border-top:1px solid #dee2e6;">16進数表記</td><td id="ip-hex" style="padding:8px;font-family:monospace;border-top:1px solid #dee2e6;">-</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;border-top:1px solid #dee2e6;">10進数表記</td><td id="ip-decimal" style="padding:8px;font-family:monospace;border-top:1px solid #dee2e6;">-</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="fetchIP()">再取得</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なランダムパスワードを生成</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ生成ツール</h3>
+          <p>MD5/SHA-1/SHA-256ハッシュを生成</p>
+        </a>
+        <a href="../url-encode/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URLエンコード・デコード</h3>
+          <p>URLの特殊文字をエンコード・デコード</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function analyzeIPv4(ip) {
+      const parts = ip.split('.').map(Number);
+      // Class
+      let ipClass = '-';
+      if (parts[0] <= 127) ipClass = 'クラスA';
+      else if (parts[0] <= 191) ipClass = 'クラスB';
+      else if (parts[0] <= 223) ipClass = 'クラスC';
+      else if (parts[0] <= 239) ipClass = 'クラスD（マルチキャスト）';
+      else ipClass = 'クラスE（実験用）';
+
+      // Type
+      let ipType = 'グローバル（パブリック）';
+      if (parts[0] === 10) ipType = 'プライベート';
+      else if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) ipType = 'プライベート';
+      else if (parts[0] === 192 && parts[1] === 168) ipType = 'プライベート';
+      else if (parts[0] === 127) ipType = 'ループバック';
+
+      // Binary
+      const binary = parts.map(p => p.toString(2).padStart(8, '0')).join('.');
+      // Hex
+      const hex = parts.map(p => p.toString(16).padStart(2, '0').toUpperCase()).join('.');
+      // Decimal
+      const decimal = ((parts[0] << 24) + (parts[1] << 16) + (parts[2] << 8) + parts[3]) >>> 0;
+
+      document.getElementById('ip-version').textContent = 'IPv4';
+      document.getElementById('ip-class').textContent = ipClass;
+      document.getElementById('ip-type').textContent = ipType;
+      document.getElementById('ip-binary').textContent = binary;
+      document.getElementById('ip-hex').textContent = hex;
+      document.getElementById('ip-decimal').textContent = decimal.toLocaleString();
+    }
+
+    function analyzeIPv6(ip) {
+      document.getElementById('ip-version').textContent = 'IPv6';
+      document.getElementById('ip-class').textContent = '該当なし';
+      document.getElementById('ip-type').textContent = ip.startsWith('fe80') ? 'リンクローカル' : 'グローバル';
+      document.getElementById('ip-binary').textContent = '(IPv6)';
+      document.getElementById('ip-hex').textContent = ip;
+      document.getElementById('ip-decimal').textContent = '-';
+    }
+
+    function fetchIP() {
+      document.getElementById('ip-address').textContent = '取得中...';
+      fetch('https://api.ipify.org?format=json')
+        .then(r => r.json())
+        .then(data => {
+          const ip = data.ip;
+          document.getElementById('ip-address').textContent = ip;
+          if (ip.includes(':')) {
+            analyzeIPv6(ip);
+          } else {
+            analyzeIPv4(ip);
+          }
+        })
+        .catch(() => {
+          document.getElementById('ip-address').textContent = '取得に失敗しました';
+        });
+    }
+
+    function copyIP() {
+      const ip = document.getElementById('ip-address').textContent;
+      if (ip === '取得中...' || ip === '取得に失敗しました') return;
+      navigator.clipboard.writeText(ip).then(() => {
+        const btn = event.target;
+        const orig = btn.textContent;
+        btn.textContent = 'コピーしました！';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+
+    fetchIP();
+  </script>
+</body>
+</html>

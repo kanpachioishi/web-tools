@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator - Free Online QR Code Maker | Simple Toolkit</title>
+  <meta name="description" content="Free QR code generator. Simply enter a URL or text to instantly create and download a QR code. Perfect for business cards, flyers, and social media. No registration required.">
+  <meta property="og:title" content="QR Code Generator - Free Online QR Code Maker | Simple Toolkit">
+  <meta property="og:description" content="Free QR code generator. Enter a URL or text to instantly create and download a QR code. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/qr-generator/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/qr-generator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/qr-generator/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "QR Code Generator - Free Online QR Code Maker",
+    "description": "Free QR code generator. Simply enter a URL or text to instantly create and download a QR code. No registration required, works entirely in your browser.",
+    "url": "https://simpletoolkit.net/tools/qr-generator/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the QR code generator free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free, and you can generate as many QR codes as you like."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use the generated QR codes commercially?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you are free to use the generated QR codes however you like, including for business cards and flyers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I create QR codes from non-English text?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can generate QR codes from text or URLs in any language."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>QR Code Generator</h1>
+    <h2>Free Online QR Code Maker</h2>
+    <p class="tool-description">Enter a URL or text to instantly generate a QR code. You can also download it as a PNG image. Perfect for business cards, flyers, and social media sharing. Free, no registration required, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <label for="qr-input">Enter text or URL</label>
+      <input type="text" id="qr-input" placeholder="https://example.com">
+
+      <div class="btn-group">
+        <button class="btn" onclick="generateQR()">Generate QR Code</button>
+        <button class="btn btn-secondary" onclick="downloadQR()">Download</button>
+      </div>
+
+      <div id="qr-result" style="margin-top:20px;text-align:center;"></div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../password-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Password Generator</h3>
+          <p>Generate secure random passwords</p>
+        </a>
+        <a href="../url-encode/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URL Encoder / Decoder</h3>
+          <p>Encode and decode URLs</p>
+        </a>
+        <a href="../base64/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64 Encoder / Decoder</h3>
+          <p>Encode and decode text to/from Base64</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function generateQR() {
+      const text = document.getElementById('qr-input').value.trim();
+      if (!text) return;
+      const container = document.getElementById('qr-result');
+      const size = 300;
+      const url = 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + 'x' + size + '&data=' + encodeURIComponent(text);
+      container.innerHTML = '<img id="qr-img" src="' + url + '" alt="QR Code" style="max-width:100%;border-radius:8px;">';
+    }
+
+    function downloadQR() {
+      const img = document.getElementById('qr-img');
+      if (!img) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = 'qrcode.png';
+      a.click();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSSの配色テクニック - 見やすいWebデザインの色選び | Web便利ツール集</title>
+  <meta name="description" content="Webデザインの配色テクニックを初心者向けに解説。70-25-5の配色ルール、コントラスト比、アクセシビリティに配慮した色選びのコツを紹介します。">
+  <meta property="og:title" content="CSSの配色テクニック - 見やすいWebデザインの色選び">
+  <meta property="og:description" content="Webデザインの配色テクニックを初心者向けに解説。70-25-5の配色ルール、コントラスト比、色選びのコツを紹介。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/css-color-tips/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/css-color-tips/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "CSSの配色テクニック - 見やすいWebデザインの色選び",
+    "description": "Webデザインの配色テクニックを初心者向けに解説。70-25-5の配色ルール、コントラスト比、色選びのコツを紹介。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2024-02-10",
+    "dateModified": "2024-02-10",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/css-color-tips/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>CSSの配色テクニック - 見やすいWebデザインの色選び</h1>
+      <p class="article-meta">更新日: 2024年2月10日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#color-basics">色の基礎知識（RGB・HSL・HEX）</a></li>
+          <li><a href="#color-ratio">配色の黄金比 70-25-5ルール</a></li>
+          <li><a href="#color-scheme">配色パターンの作り方</a></li>
+          <li><a href="#contrast">コントラスト比とアクセシビリティ</a></li>
+          <li><a href="#css-tips">CSSでの色指定テクニック</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>Webサイトのデザインにおいて、配色は印象を大きく左右する重要な要素です。しかし「どの色を組み合わせればいいかわからない」「なんとなくダサくなる」と悩む方も多いのではないでしょうか。この記事では、色の基礎知識から実践的な配色テクニック、アクセシビリティまで、初心者にもわかりやすく解説します。</p>
+
+        <h2 id="color-basics">色の基礎知識（RGB・HSL・HEX）</h2>
+        <p>CSSで色を指定する方法は複数あります。まずは代表的な3つの形式を理解しましょう。</p>
+
+        <h3>HEX（16進数カラーコード）</h3>
+        <p>最もよく使われる形式です。<code>#</code>の後に6桁の16進数で色を表現します。</p>
+<pre><code>color: #FF5733;  /* 赤みのあるオレンジ */
+color: #333333;  /* 濃いグレー */
+color: #FFFFFF;  /* 白 */</code></pre>
+        <p>先頭2桁が赤(R)、中央2桁が緑(G)、末尾2桁が青(B)の値を表します。各色は00〜FFの範囲で指定します。</p>
+
+        <h3>RGB（赤・緑・青）</h3>
+        <p>光の三原色（赤・緑・青）の組み合わせで色を表現します。各値は0〜255の範囲です。</p>
+<pre><code>color: rgb(255, 87, 51);   /* 赤みのあるオレンジ */
+color: rgba(0, 0, 0, 0.5); /* 50%透明の黒 */</code></pre>
+        <p><code>rgba()</code>を使えば透明度（アルファ値）も指定できるため、半透明のオーバーレイなどに便利です。</p>
+
+        <h3>HSL（色相・彩度・明度）</h3>
+        <p>人間の直感に近い色の指定方法です。色相（Hue: 0-360度）、彩度（Saturation: 0-100%）、明度（Lightness: 0-100%）で色を表現します。</p>
+<pre><code>color: hsl(14, 100%, 60%);   /* 赤みのあるオレンジ */
+color: hsl(14, 100%, 80%);   /* 同系統の薄い色 */
+color: hsl(14, 100%, 40%);   /* 同系統の濃い色 */</code></pre>
+        <p>HSLの大きな利点は、<strong>色相を固定したまま明度や彩度だけを変えられる</strong>こと。同系色のバリエーションを作りやすく、統一感のある配色が簡単にできます。</p>
+
+        <h2 id="color-ratio">配色の黄金比 70-25-5ルール</h2>
+        <p>プロのデザイナーがよく使う配色の法則が「70-25-5ルール」です。3色を以下の比率で使い分けます。</p>
+        <ul>
+          <li><strong>70% - ベースカラー</strong>: 背景や余白に使う最も面積の大きい色。白やライトグレーなど、控えめな色を選ぶ</li>
+          <li><strong>25% - メインカラー</strong>: ヘッダー、ナビゲーション、見出しなどに使うブランドカラー。サイトの印象を決める色</li>
+          <li><strong>5% - アクセントカラー</strong>: ボタン、リンク、CTAなど注目させたい要素に使う色。メインカラーと対照的な色を選ぶ</li>
+        </ul>
+<pre><code>:root {
+  --base-color: #F5F5F5;    /* 70% ライトグレー */
+  --main-color: #2C3E50;    /* 25% ダークネイビー */
+  --accent-color: #E74C3C;  /* 5%  レッド */
+}</code></pre>
+        <p>この比率を守るだけで、バランスの取れた見やすいデザインになります。色選びに迷ったらまずこのルールに従いましょう。</p>
+
+        <h2 id="color-scheme">配色パターンの作り方</h2>
+        <p>色相環（カラーホイール）を使った基本的な配色パターンを紹介します。</p>
+
+        <h3>補色配色（Complementary）</h3>
+        <p>色相環で正反対に位置する2色の組み合わせです。コントラストが強く、メリハリのあるデザインに向いています。例: 青とオレンジ、赤と緑。</p>
+
+        <h3>類似色配色（Analogous）</h3>
+        <p>色相環で隣り合う色の組み合わせです。まとまりが良く、落ち着いた印象になります。例: 青・青緑・緑。自然界にも多い配色パターンです。</p>
+
+        <h3>トライアド配色（Triadic）</h3>
+        <p>色相環を3等分した位置にある3色の組み合わせです。バランスが良く、活気のあるデザインに向いています。例: 赤・青・黄。</p>
+
+        <h2 id="contrast">コントラスト比とアクセシビリティ</h2>
+        <p>見た目の美しさだけでなく、<strong>誰でも読みやすいこと</strong>が良い配色の条件です。WCAG（Web Content Accessibility Guidelines）では、テキストと背景のコントラスト比について以下の基準を定めています。</p>
+
+        <table>
+          <thead>
+            <tr><th>レベル</th><th>通常テキスト</th><th>大きなテキスト</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>AA（最低限）</td><td>4.5:1 以上</td><td>3:1 以上</td></tr>
+            <tr><td>AAA（推奨）</td><td>7:1 以上</td><td>4.5:1 以上</td></tr>
+          </tbody>
+        </table>
+
+        <p>よくある失敗例として、以下のような組み合わせがあります。</p>
+        <ul>
+          <li>薄いグレーのテキスト（#999）を白背景に置く → コントラスト不足</li>
+          <li>赤い背景に緑のテキスト → 色覚多様性に配慮できていない</li>
+          <li>画像の上に直接テキストを置く → 背景によっては読めない</li>
+        </ul>
+        <p>色覚多様性（いわゆる色覚異常）を持つ方は日本人男性の約5%を占めます。色だけで情報を伝えず、アイコンやテキストラベルも併用しましょう。</p>
+
+        <h2 id="css-tips">CSSでの色指定テクニック</h2>
+        <p>実務で役立つCSSの色指定テクニックをいくつか紹介します。</p>
+
+        <h3>CSS変数（カスタムプロパティ）で一元管理</h3>
+        <p>サイト全体の配色をCSS変数で管理すると、色の変更が圧倒的に楽になります。</p>
+<pre><code>:root {
+  --primary: #3498DB;
+  --primary-light: #5DADE2;
+  --primary-dark: #2471A3;
+  --text-color: #333333;
+  --bg-color: #FFFFFF;
+}
+
+.button {
+  background-color: var(--primary);
+  color: var(--bg-color);
+}
+
+.button:hover {
+  background-color: var(--primary-dark);
+}</code></pre>
+
+        <h3>ダークモード対応</h3>
+        <p><code>prefers-color-scheme</code>メディアクエリを使えば、OSの設定に応じて自動的にダークモードに切り替えられます。</p>
+<pre><code>@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #E0E0E0;
+    --bg-color: #1A1A1A;
+  }
+}</code></pre>
+
+        <p>カラーコードの形式変換（HEX → RGB → HSL）は、手計算では面倒です。カラーコード変換ツールを使えば、瞬時に相互変換できます。</p>
+
+        <div class="cta-box">
+          <p>HEX・RGB・HSLのカラーコードを相互変換</p>
+          <a href="../../tools/color-converter/" class="btn">カラーコード変換ツールを使ってみる</a>
+        </div>
+
+        <h2 id="summary">まとめ</h2>
+        <p>Webデザインの配色は、70-25-5ルールを基本に、コントラスト比とアクセシビリティに配慮することが大切です。HEX・RGB・HSLの3つの色指定方法を使い分け、CSS変数で色を一元管理すると、保守しやすいコードになります。</p>
+        <p>配色を考える際には、カラーコード変換ツールを使ってHEX・RGB・HSLを自由に変換しながら、最適な色を見つけてみてください。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../seo-basics/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">SEO対策の基本 - 初心者が今すぐできる10のこと</h3>
+          <p>SEOの基礎知識からtitle・descriptionの書き方まで解説</p>
+        </a>
+        <a href="../image-aspect-ratio/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">画像・動画のアスペクト比 完全ガイド</h3>
+          <p>SNS別の推奨サイズ一覧とリサイズのコツを紹介</p>
+        </a>
+        <a href="../what-is-json/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSONとは？初心者にもわかる書き方・使い方</h3>
+          <p>JSONの基本概念から書き方、データ型、実際の使用例まで解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日数カウントダウン - 無料オンラインカウントダウンタイマー | Web便利ツール集</title>
+  <meta name="description" content="日数カウントダウン無料ツール。目標日までの残り日数・時間・分・秒をリアルタイム表示。イベントや締め切りまでの残り時間を正確に把握。経過日数の計算にも対応。登録不要でブラウザだけで完結。">
+  <meta property="og:title" content="日数カウントダウン - 無料オンラインカウントダウンタイマー | Web便利ツール集">
+  <meta property="og:description" content="目標日までの残り日数をリアルタイム表示。経過日数の計算にも対応。登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/countdown/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "日数カウントダウン - 無料オンラインカウントダウンタイマー",
+    "description": "目標日までの残り日数・時間・分・秒をリアルタイム表示。経過日数の計算にも対応。登録不要でブラウザだけで完結。",
+    "url": "https://simpletoolkit.net/tools/countdown/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "カウントダウンはリアルタイムで更新されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、1秒ごとにリアルタイムで更新されます。残り日数・時間・分・秒が正確に表示されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "過去の日付を設定するとどうなりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "過去の日付を設定すると、その日からの経過日数が表示されます。記念日からの経過日数を確認するのに便利です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "設定した日付は保存されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ブラウザのローカルストレージに保存されるため、次回アクセス時にも前回設定した目標日が復元されます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>日数カウントダウン</h1>
+    <h2>無料オンラインカウントダウンタイマー</h2>
+    <p class="tool-description">目標日を設定すると、残り日数・時間・分・秒をリアルタイムで表示。イベントや締め切りまでの残り時間を正確に把握できます。過去の日付を設定すれば経過日数も計算可能。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;">
+        <div style="flex:1;min-width:200px;">
+          <label for="target-date">目標日</label>
+          <input type="date" id="target-date" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+        </div>
+        <div style="flex:1;min-width:150px;">
+          <label for="target-time">時刻（任意）</label>
+          <input type="time" id="target-time" value="00:00" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+        </div>
+        <div style="min-width:100px;">
+          <label for="event-name">イベント名（任意）</label>
+          <input type="text" id="event-name" placeholder="例: 誕生日" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+        </div>
+      </div>
+
+      <div id="countdown-display" style="text-align:center;padding:30px 0;display:none;">
+        <div id="event-label" style="font-size:1.1rem;color:#666;margin-bottom:16px;"></div>
+        <div id="direction-label" style="font-size:0.95rem;color:#888;margin-bottom:8px;"></div>
+        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+          <div style="text-align:center;">
+            <div id="cd-days" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">0</div>
+            <div style="font-size:0.85rem;color:#666;">日</div>
+          </div>
+          <div style="text-align:center;">
+            <div id="cd-hours" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
+            <div style="font-size:0.85rem;color:#666;">時間</div>
+          </div>
+          <div style="text-align:center;">
+            <div id="cd-minutes" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
+            <div style="font-size:0.85rem;color:#666;">分</div>
+          </div>
+          <div style="text-align:center;">
+            <div id="cd-seconds" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
+            <div style="font-size:0.85rem;color:#666;">秒</div>
+          </div>
+        </div>
+        <div id="total-info" style="margin-top:20px;background:#f8f9fa;padding:12px;border-radius:8px;font-size:0.9rem;color:#555;"></div>
+      </div>
+
+      <div id="no-date-msg" style="text-align:center;padding:40px 0;color:#999;">
+        上の入力欄で目標日を設定してください
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="clearCountdown()">クリア</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unix-timestamp/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unixタイムスタンプ変換</h3>
+          <p>Unix時間と日時を相互変換</p>
+        </a>
+        <a href="../percent-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パーセント計算機</h3>
+          <p>割合・割引・増減率を簡単計算</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>テキストの文字数・単語数をリアルタイムカウント</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    let timer = null;
+
+    function loadSaved() {
+      const saved = localStorage.getItem('countdown-target');
+      const savedName = localStorage.getItem('countdown-name');
+      if (saved) {
+        const d = new Date(saved);
+        document.getElementById('target-date').value = d.toISOString().split('T')[0];
+        document.getElementById('target-time').value = d.toTimeString().slice(0, 5);
+        if (savedName) document.getElementById('event-name').value = savedName;
+        startCountdown();
+      }
+    }
+
+    function getTargetDate() {
+      const dateVal = document.getElementById('target-date').value;
+      if (!dateVal) return null;
+      const timeVal = document.getElementById('target-time').value || '00:00';
+      return new Date(dateVal + 'T' + timeVal + ':00');
+    }
+
+    function startCountdown() {
+      const target = getTargetDate();
+      if (!target || isNaN(target.getTime())) return;
+
+      localStorage.setItem('countdown-target', target.toISOString());
+      localStorage.setItem('countdown-name', document.getElementById('event-name').value);
+
+      document.getElementById('countdown-display').style.display = 'block';
+      document.getElementById('no-date-msg').style.display = 'none';
+
+      const name = document.getElementById('event-name').value;
+      document.getElementById('event-label').textContent = name ? name : '';
+
+      if (timer) clearInterval(timer);
+      updateDisplay(target);
+      timer = setInterval(() => updateDisplay(target), 1000);
+    }
+
+    function updateDisplay(target) {
+      const now = new Date();
+      let diff = target.getTime() - now.getTime();
+      const isPast = diff < 0;
+      if (isPast) diff = -diff;
+
+      document.getElementById('direction-label').textContent = isPast ? '経過時間' : '残り時間';
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById('cd-days').textContent = days.toLocaleString();
+      document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+
+      const totalHours = Math.floor(totalSeconds / 3600);
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      document.getElementById('total-info').innerHTML =
+        '合計: ' + totalHours.toLocaleString() + ' 時間 / ' +
+        totalMinutes.toLocaleString() + ' 分 / ' +
+        totalSeconds.toLocaleString() + ' 秒';
+
+      // Color change for past
+      const color = isPast ? '#dc2626' : '#2563eb';
+      ['cd-days','cd-hours','cd-minutes','cd-seconds'].forEach(id => {
+        document.getElementById(id).style.color = color;
+      });
+    }
+
+    function clearCountdown() {
+      if (timer) clearInterval(timer);
+      document.getElementById('target-date').value = '';
+      document.getElementById('target-time').value = '00:00';
+      document.getElementById('event-name').value = '';
+      document.getElementById('countdown-display').style.display = 'none';
+      document.getElementById('no-date-msg').style.display = 'block';
+      localStorage.removeItem('countdown-target');
+      localStorage.removeItem('countdown-name');
+    }
+
+    document.getElementById('target-date').addEventListener('change', startCountdown);
+    document.getElementById('target-time').addEventListener('change', startCountdown);
+    document.getElementById('event-name').addEventListener('input', function() {
+      document.getElementById('event-label').textContent = this.value;
+      localStorage.setItem('countdown-name', this.value);
+    });
+
+    loadSaved();
+  </script>
+</body>
+</html>

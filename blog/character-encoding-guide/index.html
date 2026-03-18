@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文字コードとは？UTF-8・Shift_JIS・ASCII をわかりやすく解説 | Web便利ツール集</title>
+  <meta name="description" content="文字コードの基本概念をASCII・Shift_JIS・UTF-8の歴史とともに解説。文字化けの原因と対策、エンコーディングの選び方まで初心者にもわかりやすく説明します。">
+  <meta property="og:title" content="文字コードとは？UTF-8・Shift_JIS・ASCII をわかりやすく解説">
+  <meta property="og:description" content="文字コードの基本概念をASCII・Shift_JIS・UTF-8の歴史とともに解説。文字化けの原因と対策も紹介します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/character-encoding-guide/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/character-encoding-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "文字コードとは？UTF-8・Shift_JIS・ASCII をわかりやすく解説",
+    "description": "文字コードの基本概念をASCII・Shift_JIS・UTF-8の歴史とともに解説。文字化けの原因と対策も紹介します。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2024-02-01",
+    "dateModified": "2024-02-01",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/character-encoding-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>文字コードとは？UTF-8・Shift_JIS・ASCII をわかりやすく解説</h1>
+      <p class="article-meta">更新日: 2024年2月1日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-encoding">文字コードとは何か</a></li>
+          <li><a href="#ascii">ASCIIの誕生 - すべての始まり</a></li>
+          <li><a href="#shift-jis">Shift_JIS - 日本語を扱うために</a></li>
+          <li><a href="#utf8">UTF-8 - 世界標準の文字コード</a></li>
+          <li><a href="#mojibake">文字化けの原因と対策</a></li>
+          <li><a href="#how-to-choose">文字コードの選び方</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>Webサイトやプログラムを扱っていると「文字コード」という言葉に出会います。文字化けが発生したとき、CSVファイルを開いたとき、HTMLのmetaタグを設定するとき。この記事では、文字コードの基本概念からASCII・Shift_JIS・UTF-8の違い、文字化けの原因と対策まで、初心者にもわかりやすく解説します。</p>
+
+        <h2 id="what-is-encoding">文字コードとは何か</h2>
+        <p>コンピュータは内部的にすべてのデータを「0」と「1」の数値（ビット）で処理しています。文字もまた例外ではありません。<strong>文字コード</strong>とは、人間が使う文字と数値の対応表（ルール）のことです。</p>
+        <p>たとえば、アルファベットの「A」をコンピュータ内部では「65」という数値で表現します。この「文字 → 数値」の対応ルールが文字コードです。</p>
+        <p>文字コードには大きく2つの概念があります。</p>
+        <ul>
+          <li><strong>文字集合（Character Set）</strong> - どの文字を扱うかを定義する一覧表</li>
+          <li><strong>符号化方式（Encoding）</strong> - 文字をどのように数値に変換するかのルール</li>
+        </ul>
+        <p>日常的にはこの2つをまとめて「文字コード」と呼ぶことが多く、UTF-8やShift_JISといった名前で区別されています。</p>
+
+        <h2 id="ascii">ASCIIの誕生 - すべての始まり</h2>
+        <p>ASCII（アスキー）は1963年にアメリカで策定された、最も歴史のある文字コードです。英数字と一部の記号、合計128文字だけを定義しています。</p>
+        <p>ASCIIの特徴は以下の通りです。</p>
+        <ul>
+          <li><strong>7ビット</strong>で1文字を表現（0〜127の範囲）</li>
+          <li>アルファベット（A-Z, a-z）、数字（0-9）、記号（!、@など）を含む</li>
+          <li>制御文字（改行、タブなど）も定義されている</li>
+        </ul>
+        <p>ASCIIは英語圏では十分でしたが、日本語や中国語などのアジア圏の文字はまったく扱えないという大きな課題がありました。</p>
+
+        <h2 id="shift-jis">Shift_JIS - 日本語を扱うために</h2>
+        <p>1982年、日本語をコンピュータで扱うためにShift_JIS（シフトジス）が登場しました。ASCIIとの互換性を保ちつつ、ひらがな・カタカナ・漢字を表現できるように設計されています。</p>
+        <p>Shift_JISの仕組みは次の通りです。</p>
+        <ul>
+          <li>半角英数字は<strong>1バイト</strong>（ASCIIと同じ）</li>
+          <li>日本語の文字は<strong>2バイト</strong>で表現</li>
+          <li>約7,000字の漢字を収録（JIS第一水準・第二水準）</li>
+        </ul>
+        <p>Shift_JISは長年にわたり日本のPC環境で標準的に使われてきました。Windows環境でCSVファイルを開くと今でもShift_JISが使われることがあります。しかし、日本語以外の言語と混在させにくい、機種依存文字の問題があるなどの弱点もありました。</p>
+
+        <h2 id="utf8">UTF-8 - 世界標準の文字コード</h2>
+        <p>UTF-8は1993年に策定された、現在の<strong>世界標準</strong>となっている文字コードです。Unicode（ユニコード）という巨大な文字集合を、効率的にバイト列に変換する方式です。</p>
+        <p>UTF-8が世界標準になった理由は主に3つあります。</p>
+        <ul>
+          <li><strong>ASCIIと完全互換</strong> - ASCII文字はそのまま1バイトで表現される</li>
+          <li><strong>全世界の文字に対応</strong> - 日本語、中国語、アラビア語、絵文字まで扱える</li>
+          <li><strong>可変長エンコーディング</strong> - 文字に応じて1〜4バイトを使い分け、データサイズが効率的</li>
+        </ul>
+        <p>現在、Webサイトの約98%がUTF-8を採用しており、HTMLの文字コードも<code>&lt;meta charset="UTF-8"&gt;</code>と指定するのが標準です。新しくファイルやWebサイトを作る際は、特別な理由がない限りUTF-8を選びましょう。</p>
+
+        <h2 id="mojibake">文字化けの原因と対策</h2>
+        <p>文字化けとは、文字が正しく表示されず、意味不明な記号や漢字の羅列になる現象です。文字化けが起きる主な原因と対策を見ていきましょう。</p>
+
+        <h3>原因1: エンコーディングの不一致</h3>
+        <p>最も多い原因です。ファイルがShift_JISで保存されているのに、UTF-8として読み込もうとすると文字化けが発生します。</p>
+        <p><strong>対策:</strong> ファイルの文字コードを確認し、正しいエンコーディングで開き直しましょう。テキストエディタの多くは文字コードの変更機能を持っています。</p>
+
+        <h3>原因2: HTMLのcharset指定ミス</h3>
+        <p>HTMLファイルの文字コードと、metaタグのcharset指定が異なると文字化けします。</p>
+        <p><strong>対策:</strong> HTMLファイルはUTF-8で保存し、<code>&lt;meta charset="UTF-8"&gt;</code>を必ず<code>&lt;head&gt;</code>の最初に記述しましょう。</p>
+
+        <h3>原因3: 全角・半角の混在</h3>
+        <p>全角スペースと半角スペース、全角数字と半角数字の混在は、プログラムのエラーや表示崩れの原因になります。</p>
+        <p><strong>対策:</strong> 全角半角変換ツールを使って統一しましょう。入力フォームのバリデーションでも全角半角の統一は重要なポイントです。</p>
+
+        <div class="cta-box">
+          <p>全角・半角の変換や統一をしたい方はこちら</p>
+          <a href="../../tools/zenkaku-hankaku/" class="btn">全角半角変換ツールを使ってみる</a>
+        </div>
+
+        <h2 id="how-to-choose">文字コードの選び方</h2>
+        <p>現在、新しくファイルやプロジェクトを作成する場合は<strong>UTF-8一択</strong>と言って差し支えありません。ただし、以下のケースではShift_JISが必要になることもあります。</p>
+        <ul>
+          <li>日本語版Excelで開くCSVファイル（BOM付きUTF-8でも可）</li>
+          <li>古い業務システムとの連携</li>
+          <li>レガシーなメールシステム（ISO-2022-JP）</li>
+        </ul>
+        <p>迷ったらUTF-8を選んでおけば、まず問題は起きません。</p>
+
+        <h2 id="summary">まとめ</h2>
+        <p>文字コードは「文字と数値の対応表」であり、ASCII → Shift_JIS → UTF-8 と時代とともに進化してきました。現在の標準はUTF-8であり、Webサイトやプログラムでは基本的にUTF-8を使用します。</p>
+        <p>文字化けが起きたら、まずは文字コードの不一致を疑いましょう。また、全角半角の混在もトラブルの原因になりやすいため、変換ツールを活用して統一するのがおすすめです。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../what-is-json/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSONとは？初心者にもわかる書き方・使い方</h3>
+          <p>JSONの基本概念から書き方、データ型、実際の使用例まで解説</p>
+        </a>
+        <a href="../api-basics/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">APIとは？初心者向けにわかりやすく解説</h3>
+          <p>APIの概念からREST API、HTTPメソッドまで実践的に解説</p>
+        </a>
+        <a href="../seo-basics/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">SEO対策の基本 - 初心者が今すぐできる10のこと</h3>
+          <p>SEOの基礎知識からtitle・descriptionの書き方まで解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

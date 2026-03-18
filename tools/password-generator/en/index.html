@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator - Secure Random Password Maker | Simple Toolkit</title>
+  <meta name="description" content="Free password generator tool. Create secure random passwords with one click. Customize length, uppercase, lowercase, numbers, and symbols. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="Password Generator - Secure Random Password Maker | Simple Toolkit">
+  <meta property="og:description" content="Free password generator tool. Create secure random passwords with one click. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/password-generator/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/password-generator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/password-generator/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Password Generator - Secure Random Password Maker",
+    "description": "Free password generator tool. Create secure random passwords with one click. Customize length and character types. No registration required, works entirely in your browser.",
+    "url": "https://simpletoolkit.net/tools/password-generator/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Are the generated passwords secure?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, the tool uses a cryptographically secure random number generator (crypto.getRandomValues) to create unpredictable passwords."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are the passwords stored on a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, password generation is done entirely within your browser. Passwords are never sent to or stored on any external server."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the recommended password length?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A minimum of 12 characters is recommended, ideally 16 or more. Including uppercase, lowercase, numbers, and symbols makes it even more secure."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Password Generator</h1>
+    <h2>Secure Random Password Maker</h2>
+    <p class="tool-description">Generate cryptographically secure random passwords with one click. Customize length, uppercase, lowercase, numbers, and symbols. Free, no registration required, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <div class="option-row">
+        <label for="pw-length">Length:</label>
+        <input type="number" id="pw-length" value="16" min="4" max="128" style="width:80px;">
+      </div>
+      <div class="option-row">
+        <label><input type="checkbox" id="pw-upper" checked> Uppercase (A-Z)</label>
+        <label><input type="checkbox" id="pw-lower" checked> Lowercase (a-z)</label>
+        <label><input type="checkbox" id="pw-digits" checked> Numbers (0-9)</label>
+        <label><input type="checkbox" id="pw-symbols" checked> Symbols (!@#$...)</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="generate()">Generate</button>
+        <button class="btn btn-secondary" onclick="copyPw()">Copy</button>
+      </div>
+
+      <div class="result-area" style="margin-top:16px;">
+        <pre id="pw-output" style="font-size:1.2rem;letter-spacing:1px;text-align:center;min-height:1.5em;">Your password will appear here</pre>
+      </div>
+
+      <div id="pw-strength" style="margin-top:12px;text-align:center;font-weight:600;"></div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../hash-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Hash Generator</h3>
+          <p>Generate MD5, SHA-256, and other hash values</p>
+        </a>
+        <a href="../base64/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64 Encoder / Decoder</h3>
+          <p>Encode and decode text to/from Base64</p>
+        </a>
+        <a href="../qr-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QR Code Generator</h3>
+          <p>Generate QR codes from URLs and text</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function generate() {
+      const length = Math.min(128, Math.max(4, parseInt(document.getElementById('pw-length').value) || 16));
+      let chars = '';
+      if (document.getElementById('pw-upper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      if (document.getElementById('pw-lower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+      if (document.getElementById('pw-digits').checked) chars += '0123456789';
+      if (document.getElementById('pw-symbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+      if (!chars) { chars = 'abcdefghijklmnopqrstuvwxyz'; }
+
+      const array = new Uint32Array(length);
+      crypto.getRandomValues(array);
+      let password = '';
+      for (let i = 0; i < length; i++) {
+        password += chars[array[i] % chars.length];
+      }
+
+      document.getElementById('pw-output').textContent = password;
+
+      // Strength display
+      const entropy = Math.log2(Math.pow(chars.length, length));
+      const el = document.getElementById('pw-strength');
+      if (entropy >= 128) { el.textContent = 'Strength: Very Strong'; el.style.color = '#16a34a'; }
+      else if (entropy >= 60) { el.textContent = 'Strength: Strong'; el.style.color = '#2563eb'; }
+      else if (entropy >= 36) { el.textContent = 'Strength: Fair'; el.style.color = '#d97706'; }
+      else { el.textContent = 'Strength: Weak'; el.style.color = '#dc2626'; }
+    }
+
+    function copyPw() {
+      const text = document.getElementById('pw-output').textContent;
+      if (text && text !== 'Your password will appear here') navigator.clipboard.writeText(text);
+    }
+
+    generate();
+  </script>
+</body>
+</html>

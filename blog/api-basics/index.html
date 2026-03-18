@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APIとは？初心者向けにわかりやすく解説 | Web便利ツール集</title>
+  <meta name="description" content="APIの基本概念からREST API、HTTPメソッド、JSONとの関係まで初心者にもわかりやすく解説。天気予報やSNSなど身近なAPI活用例も紹介します。">
+  <meta property="og:title" content="APIとは？初心者向けにわかりやすく解説">
+  <meta property="og:description" content="APIの基本概念からREST API、HTTPメソッド、JSONとの関係まで初心者にもわかりやすく解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/api-basics/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/api-basics/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "APIとは？初心者向けにわかりやすく解説",
+    "description": "APIの基本概念からREST API、HTTPメソッド、JSONとの関係まで初心者にもわかりやすく解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2024-02-05",
+    "dateModified": "2024-02-05",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/api-basics/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>APIとは？初心者向けにわかりやすく解説</h1>
+      <p class="article-meta">更新日: 2024年2月5日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-api">APIとは何か</a></li>
+          <li><a href="#example">身近なAPIの使用例</a></li>
+          <li><a href="#rest-api">REST APIとは</a></li>
+          <li><a href="#http-methods">HTTPメソッドの基本</a></li>
+          <li><a href="#json-relation">APIとJSONの関係</a></li>
+          <li><a href="#how-to-use">APIを使ってみよう</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>「API」という言葉はIT業界で頻繁に使われますが、初心者の方には少しとっつきにくいかもしれません。しかし、APIの概念を理解すると、Webサービスの仕組みが一気に見えてきます。この記事では、APIの基本概念からREST API、HTTPメソッド、JSONとの関係まで、具体例を交えてわかりやすく解説します。</p>
+
+        <h2 id="what-is-api">APIとは何か</h2>
+        <p>API（Application Programming Interface）とは、<strong>ソフトウェア同士がやり取りするための窓口</strong>のことです。レストランに例えると、料理を作るキッチン（サーバー）と、お客さん（クライアント）をつなぐウェイター（API）のような役割を果たします。</p>
+        <p>お客さんはメニュー（APIドキュメント）を見て注文（リクエスト）を出し、ウェイター（API）がキッチン（サーバー）に伝え、料理（レスポンス）を運んできてくれます。</p>
+        <p>APIを使うメリットは以下の通りです。</p>
+        <ul>
+          <li><strong>機能の再利用</strong> - 他社が作った機能を自分のサービスに組み込める</li>
+          <li><strong>開発効率の向上</strong> - すべてを一から作る必要がなくなる</li>
+          <li><strong>セキュリティ</strong> - 内部のデータベースを直接触らせず、必要な情報だけを公開できる</li>
+        </ul>
+
+        <h2 id="example">身近なAPIの使用例</h2>
+        <p>実は私たちの日常にもAPIは溢れています。具体的な例を見てみましょう。</p>
+
+        <h3>天気予報アプリ</h3>
+        <p>スマホの天気予報アプリは、気象データを提供するAPIにリクエストを送り、取得したデータを画面に表示しています。アプリ開発者が自前で天気を観測しているわけではありません。</p>
+
+        <h3>SNSログイン</h3>
+        <p>「Googleでログイン」「LINEでログイン」といったソーシャルログインは、各サービスが提供する認証APIを利用しています。ユーザーは新規登録の手間が省け、サービス側はパスワード管理のリスクを減らせます。</p>
+
+        <h3>地図の埋め込み</h3>
+        <p>Webサイトに表示されるGoogleマップは、Google Maps APIを使って実現しています。地図アプリを一から作る必要はなく、APIを呼び出すだけで高機能な地図を埋め込めます。</p>
+
+        <h3>決済システム</h3>
+        <p>ECサイトのクレジットカード決済は、StripeやPayPayなどの決済APIを利用しています。複雑な決済処理を安全に代行してくれるため、開発者はビジネスロジックに集中できます。</p>
+
+        <h2 id="rest-api">REST APIとは</h2>
+        <p>Web APIにはいくつかの設計スタイルがありますが、現在最も広く使われているのが<strong>REST API</strong>（レスト・エーピーアイ）です。RESTは「Representational State Transfer」の略です。</p>
+        <p>REST APIの基本的な考え方は、Webの仕組み（HTTP）をそのまま活用するということです。主な特徴は以下の通りです。</p>
+        <ul>
+          <li><strong>URLでリソースを指定</strong> - 例: <code>/users/123</code> で「ID 123のユーザー」を表す</li>
+          <li><strong>HTTPメソッドで操作を区別</strong> - 取得（GET）、作成（POST）、更新（PUT）、削除（DELETE）</li>
+          <li><strong>ステートレス</strong> - 各リクエストは独立しており、前回の通信状態を保持しない</li>
+          <li><strong>JSON形式</strong> - データのやり取りには主にJSON形式を使用</li>
+        </ul>
+
+        <h2 id="http-methods">HTTPメソッドの基本</h2>
+        <p>REST APIでは、HTTPメソッドによって「何をするか」を表現します。主に使われる4つのメソッドを覚えましょう。</p>
+
+        <table>
+          <thead>
+            <tr><th>メソッド</th><th>役割</th><th>例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>GET</td><td>データの取得</td><td>ユーザー情報を取得する</td></tr>
+            <tr><td>POST</td><td>データの新規作成</td><td>新しいユーザーを登録する</td></tr>
+            <tr><td>PUT</td><td>データの更新</td><td>ユーザー情報を変更する</td></tr>
+            <tr><td>DELETE</td><td>データの削除</td><td>ユーザーを削除する</td></tr>
+          </tbody>
+        </table>
+
+        <p>たとえば、ユーザー管理APIの場合は次のようになります。</p>
+<pre><code>GET    /api/users       → 全ユーザーの一覧を取得
+GET    /api/users/123   → ID 123のユーザーを取得
+POST   /api/users       → 新しいユーザーを作成
+PUT    /api/users/123   → ID 123のユーザーを更新
+DELETE /api/users/123   → ID 123のユーザーを削除</code></pre>
+
+        <h2 id="json-relation">APIとJSONの関係</h2>
+        <p>APIでデータをやり取りする際、最も一般的に使われるデータ形式が<strong>JSON</strong>（JavaScript Object Notation）です。APIにリクエストを送ると、レスポンスとしてJSON形式のデータが返ってきます。</p>
+        <p>例えば、ユーザー情報を取得するAPIのレスポンスは以下のようになります。</p>
+<pre><code>{
+  "id": 123,
+  "name": "田中太郎",
+  "email": "tanaka@example.com",
+  "created_at": "2024-01-15T10:30:00Z"
+}</code></pre>
+        <p>APIから返ってきたJSONは、そのままでは1行に圧縮されていて読みにくいことがあります。そんなときはJSON整形ツールを使うと、インデント付きの見やすい形式に変換できます。</p>
+
+        <div class="cta-box">
+          <p>APIレスポンスのJSONを見やすく整形しましょう</p>
+          <a href="../../tools/json-formatter/" class="btn">JSON整形ツールを使ってみる</a>
+        </div>
+
+        <h2 id="how-to-use">APIを使ってみよう</h2>
+        <p>実際にAPIを試してみたい方は、以下の無料で使える公開APIがおすすめです。</p>
+        <ul>
+          <li><strong>JSONPlaceholder</strong> - ダミーデータを返すテスト用API。ユーザーや投稿のCRUD操作を練習できます</li>
+          <li><strong>OpenWeatherMap</strong> - 天気情報を取得できるAPI。無料プランあり</li>
+          <li><strong>PokeAPI</strong> - ポケモンの情報を取得できるAPI。楽しみながらAPI学習ができます</li>
+        </ul>
+        <p>ブラウザのアドレスバーに<code>https://jsonplaceholder.typicode.com/users/1</code>と入力するだけで、APIからJSONレスポンスが返ってくるのを確認できます。</p>
+
+        <h2 id="summary">まとめ</h2>
+        <p>APIは「ソフトウェア同士の窓口」であり、現代のWebサービスに欠かせない仕組みです。REST APIではHTTPメソッド（GET・POST・PUT・DELETE）でリソースを操作し、データのやり取りにはJSON形式が広く使われています。</p>
+        <p>APIの理解を深めるには、実際に公開APIを叩いてみるのが一番です。返ってきたJSONデータをJSON整形ツールで見やすく整形しながら、レスポンスの構造を確認してみてください。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../what-is-json/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSONとは？初心者にもわかる書き方・使い方</h3>
+          <p>JSONの基本概念から書き方、データ型、実際の使用例まで解説</p>
+        </a>
+        <a href="../character-encoding-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字コードとは？UTF-8・Shift_JIS・ASCIIを解説</h3>
+          <p>文字コードの基本概念と文字化けの原因・対策を解説</p>
+        </a>
+        <a href="../seo-basics/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">SEO対策の基本 - 初心者が今すぐできる10のこと</h3>
+          <p>SEOの基礎知識からtitle・descriptionの書き方まで解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

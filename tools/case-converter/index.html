@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英語テキストケース変換 - 無料オンラインケースコンバーター | Web便利ツール集</title>
+  <meta name="description" content="英語テキストのケース変換無料ツール。UPPERCASE、lowercase、Title Case、camelCase、snake_case、kebab-caseに一括変換。プログラミングや文書作成に便利。登録不要でブラウザだけで完結。">
+  <meta property="og:title" content="英語テキストケース変換 - 無料オンラインケースコンバーター | Web便利ツール集">
+  <meta property="og:description" content="英語テキストのケース変換無料ツール。6種類のケースに一括変換。登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/case-converter/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "英語テキストケース変換 - 無料オンラインケースコンバーター",
+    "description": "英語テキストのケース変換無料ツール。UPPERCASE、lowercase、Title Case、camelCase、snake_case、kebab-caseに一括変換。登録不要でブラウザだけで完結。",
+    "url": "https://simpletoolkit.net/tools/case-converter/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "camelCaseとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "camelCase（キャメルケース）は、複数の単語を結合し、2番目以降の単語の先頭を大文字にする命名規則です。例：myVariableName。JavaScriptやJavaで広く使われています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "snake_caseとkebab-caseの違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "snake_caseは単語をアンダースコア（_）で区切り、kebab-caseはハイフン（-）で区切ります。snake_caseはPythonで、kebab-caseはCSSクラスやURLで多用されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本語のテキストも変換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "このツールは英語（アルファベット）テキストの大文字・小文字変換に最適化されています。日本語テキストはそのまま出力されます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>英語テキストケース変換</h1>
+    <h2>無料オンラインケースコンバーター</h2>
+    <p class="tool-description">英語テキストをUPPERCASE、lowercase、Title Case、camelCase、snake_case、kebab-caseに一括変換。プログラミングの変数名変換や文書作成に最適です。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <label for="input-text">テキストを入力</label>
+      <textarea id="input-text" placeholder="例: hello world example text" rows="4"></textarea>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px;">
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">UPPERCASE</div>
+          <div id="result-upper" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-upper')">コピー</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">lowercase</div>
+          <div id="result-lower" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-lower')">コピー</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">Title Case</div>
+          <div id="result-title" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-title')">コピー</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">camelCase</div>
+          <div id="result-camel" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-camel')">コピー</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">snake_case</div>
+          <div id="result-snake" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-snake')">コピー</button>
+        </div>
+        <div class="stat-item" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+          <div class="stat-label" style="font-weight:bold;margin-bottom:8px;">kebab-case</div>
+          <div id="result-kebab" style="font-family:monospace;word-break:break-all;min-height:1.5em;color:#333;">-</div>
+          <button class="btn btn-secondary" style="margin-top:8px;font-size:0.85rem;padding:4px 12px;" onclick="copyResult('result-kebab')">コピー</button>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="document.getElementById('input-text').value='';convertAll();">クリア</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>テキストの文字数・単語数をリアルタイムカウント</p>
+        </a>
+        <a href="../zenkaku-hankaku/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">全角半角変換ツール</h3>
+          <p>全角⇔半角をワンクリックで変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function splitWords(text) {
+      // Split by spaces, underscores, hyphens, or camelCase boundaries
+      return text
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/[_\-]+/g, ' ')
+        .trim()
+        .split(/\s+/)
+        .filter(w => w.length > 0);
+    }
+
+    function toUpper(text) { return text.toUpperCase(); }
+    function toLower(text) { return text.toLowerCase(); }
+    function toTitle(text) {
+      return splitWords(text).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    }
+    function toCamel(text) {
+      const words = splitWords(text);
+      return words.map((w, i) => {
+        if (i === 0) return w.toLowerCase();
+        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+      }).join('');
+    }
+    function toSnake(text) {
+      return splitWords(text).map(w => w.toLowerCase()).join('_');
+    }
+    function toKebab(text) {
+      return splitWords(text).map(w => w.toLowerCase()).join('-');
+    }
+
+    function convertAll() {
+      const text = document.getElementById('input-text').value;
+      if (!text.trim()) {
+        ['upper','lower','title','camel','snake','kebab'].forEach(id => {
+          document.getElementById('result-' + id).textContent = '-';
+        });
+        return;
+      }
+      document.getElementById('result-upper').textContent = toUpper(text);
+      document.getElementById('result-lower').textContent = toLower(text);
+      document.getElementById('result-title').textContent = toTitle(text);
+      document.getElementById('result-camel').textContent = toCamel(text);
+      document.getElementById('result-snake').textContent = toSnake(text);
+      document.getElementById('result-kebab').textContent = toKebab(text);
+    }
+
+    function copyResult(id) {
+      const text = document.getElementById(id).textContent;
+      if (text === '-') return;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById(id).nextElementSibling;
+        const orig = btn.textContent;
+        btn.textContent = 'コピーしました！';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+
+    document.getElementById('input-text').addEventListener('input', convertAll);
+  </script>
+</body>
+</html>

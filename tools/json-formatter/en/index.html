@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Formatter - Free Online JSON Viewer & Beautifier | Simple Toolkit</title>
+  <meta name="description" content="Free JSON formatter tool. Paste your JSON to pretty print or minify it instantly. Perfect for API development and debugging. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="JSON Formatter - Free Online JSON Viewer & Beautifier | Simple Toolkit">
+  <meta property="og:description" content="Free JSON formatter tool. Paste your JSON to pretty print or minify it instantly. No registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/json-formatter/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/json-formatter/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/json-formatter/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Formatter - Free Online JSON Viewer & Beautifier",
+    "description": "Free JSON formatter tool. Paste your JSON to pretty print or minify it instantly. Perfect for API development and debugging. No registration required, works entirely in your browser.",
+    "url": "https://simpletoolkit.net/tools/json-formatter/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the JSON formatter free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free. No registration is required, and it works entirely in your browser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it detect JSON errors?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, if invalid JSON is entered, an error message will be displayed to help identify the issue."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it handle large JSON files?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Since processing is done in the browser's memory, JSON files up to a few MB can be formatted without issues."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>JSON Formatter</h1>
+    <h2>Free Online JSON Beautifier & Minifier</h2>
+    <p class="tool-description">Paste your JSON data to instantly pretty print or minify it. Useful for API development, debugging, and data inspection. Free, no registration required, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <label for="json-input">Enter JSON</label>
+      <textarea id="json-input" placeholder='{"name":"John","age":25}' rows="8" style="font-family:'SF Mono','Fira Code',monospace;font-size:0.9rem;"></textarea>
+
+      <div class="btn-group">
+        <button class="btn" onclick="formatJSON()">Format</button>
+        <button class="btn btn-secondary" onclick="minifyJSON()">Minify</button>
+        <button class="btn btn-secondary" onclick="copyResult()">Copy</button>
+      </div>
+
+      <div id="error-msg" style="color:#dc2626;margin-top:12px;display:none;"></div>
+
+      <div class="result-area" id="result" style="display:none;">
+        <pre id="json-output"></pre>
+      </div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../base64/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64 Encoder / Decoder</h3>
+          <p>Encode and decode text to/from Base64</p>
+        </a>
+        <a href="../url-encode/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URL Encoder / Decoder</h3>
+          <p>Encode and decode URLs</p>
+        </a>
+        <a href="../hash-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Hash Generator</h3>
+          <p>Generate MD5, SHA-256, and other hash values</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function parseInput() {
+      const input = document.getElementById('json-input').value.trim();
+      const errorEl = document.getElementById('error-msg');
+      errorEl.style.display = 'none';
+      if (!input) return null;
+      try {
+        return JSON.parse(input);
+      } catch (e) {
+        errorEl.textContent = 'Invalid JSON format: ' + e.message;
+        errorEl.style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+        return null;
+      }
+    }
+
+    function showResult(text) {
+      document.getElementById('json-output').textContent = text;
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function formatJSON() {
+      const obj = parseInput();
+      if (obj !== null) showResult(JSON.stringify(obj, null, 2));
+    }
+
+    function minifyJSON() {
+      const obj = parseInput();
+      if (obj !== null) showResult(JSON.stringify(obj));
+    }
+
+    function copyResult() {
+      const text = document.getElementById('json-output').textContent;
+      if (text) navigator.clipboard.writeText(text);
+    }
+  </script>
+</body>
+</html>
