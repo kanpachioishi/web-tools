@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unixタイムスタンプとは？エンジニア必須の時刻管理を解説 | Web便利ツール集</title>
+  <meta name="description" content="Unixタイムスタンプ（Unixエポック）の仕組み、なぜ秒数で時刻を管理するのか、2038年問題、各プログラミング言語での扱い方を初心者向けにわかりやすく解説します。">
+  <meta property="og:title" content="Unixタイムスタンプとは？エンジニア必須の時刻管理を解説">
+  <meta property="og:description" content="Unixタイムスタンプの仕組みや2038年問題、各言語での扱い方を初心者にもわかりやすく解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/unix-timestamp-guide/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/unix-timestamp-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Unixタイムスタンプとは？エンジニア必須の時刻管理を解説",
+    "description": "Unixタイムスタンプの仕組みや2038年問題、各言語での扱い方を初心者にもわかりやすく解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2026-03-18",
+    "dateModified": "2026-03-18",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/unix-timestamp-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>Unixタイムスタンプとは？エンジニア必須の時刻管理を解説</h1>
+      <p class="article-meta">更新日: 2026年3月18日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-unix-timestamp">Unixタイムスタンプとは</a></li>
+          <li><a href="#epoch">Unixエポックの由来</a></li>
+          <li><a href="#why-seconds">なぜ秒数で管理するのか</a></li>
+          <li><a href="#2038-problem">2038年問題とは</a></li>
+          <li><a href="#programming">プログラミング言語での扱い方</a></li>
+          <li><a href="#tips">実務で役立つTips</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>データベースやAPI、ログファイルなどで「1710720000」のような大きな数字を見たことはありませんか？これがUnixタイムスタンプです。エンジニアにとって時刻管理の基礎となる概念であり、Web開発やシステム運用で欠かせない知識です。この記事では、Unixタイムスタンプの仕組みから実際の使い方まで、初心者の方にもわかりやすく解説します。</p>
+
+        <h2 id="what-is-unix-timestamp">Unixタイムスタンプとは</h2>
+        <p>Unixタイムスタンプ（Unix timestamp）とは、<strong>1970年1月1日 00:00:00（UTC）</strong>からの経過秒数で時刻を表現する方法です。「Unixタイム」「エポック秒」「POSIX時間」とも呼ばれます。</p>
+        <p>例えば、以下のように変換されます。</p>
+        <table>
+          <thead>
+            <tr><th>日時（UTC）</th><th>Unixタイムスタンプ</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1970年1月1日 00:00:00</td><td>0</td></tr>
+            <tr><td>2000年1月1日 00:00:00</td><td>946684800</td></tr>
+            <tr><td>2024年1月1日 00:00:00</td><td>1704067200</td></tr>
+            <tr><td>2026年3月18日 00:00:00</td><td>1773964800</td></tr>
+          </tbody>
+        </table>
+        <p>このように、どんな日時でも1つの整数で表現できるのがUnixタイムスタンプの特徴です。</p>
+
+        <h2 id="epoch">Unixエポックの由来</h2>
+        <p>「1970年1月1日」が基準日として選ばれた理由には歴史的な経緯があります。Unixオペレーティングシステムが開発されたのは1960年代後半から1970年代初頭です。当時のコンピュータはメモリが非常に限られており、時刻を効率的に管理する必要がありました。</p>
+        <p>初期のUnixでは32ビット符号付き整数でタイムスタンプを保存していました。基準日を1970年1月1日にすることで、当時のシステムが扱う時間範囲をカバーできたのです。この設計は非常にシンプルで効果的だったため、Unix以外のシステムでも広く採用されるようになりました。</p>
+        <p>なお、「エポック（epoch）」は「起点」「基準点」を意味する英語で、Unixエポックとは「Unix時間の起点」という意味です。</p>
+
+        <h2 id="why-seconds">なぜ秒数で管理するのか</h2>
+        <p>「2024年1月1日 12:00:00」のような人間にわかりやすい表記があるのに、なぜわざわざ秒数で管理するのでしょうか？主な理由は以下の3つです。</p>
+
+        <h3>1. タイムゾーンに依存しない</h3>
+        <p>文字列で「2024/01/01 12:00:00」と記録しても、それが日本時間なのかUTCなのかわかりません。Unixタイムスタンプは常にUTC基準なので、世界中どこでも同じ値で同じ瞬間を表せます。</p>
+
+        <h3>2. 計算が簡単</h3>
+        <p>2つの日時の差分を求めるのは、単純な引き算で済みます。「3日後」を計算するには 3 x 86400（1日の秒数）を足すだけです。</p>
+<pre><code>// 2つのイベントの時間差を求める
+const diff = timestamp2 - timestamp1;
+const hours = Math.floor(diff / 3600);
+console.log(`${hours}時間の差`);
+
+// 7日後のタイムスタンプ
+const oneWeekLater = now + (7 * 24 * 60 * 60);</code></pre>
+
+        <h3>3. ソートや比較が容易</h3>
+        <p>ただの整数なので、データベースでのソートや、プログラムでの大小比較が高速に行えます。文字列の日時フォーマットでは、フォーマットの違いにより正しく比較できないケースがありますが、タイムスタンプならその心配がありません。</p>
+
+        <h2 id="2038-problem">2038年問題とは</h2>
+        <p>Unixタイムスタンプには有名な問題があります。それが<strong>2038年問題（Year 2038 Problem）</strong>です。</p>
+        <p>32ビット符号付き整数で表現できる最大値は 2,147,483,647 です。この値に対応する日時は<strong>2038年1月19日 03:14:07（UTC）</strong>です。この瞬間を超えると、32ビットシステムではオーバーフローが発生し、タイムスタンプが負の値（1901年12月13日）に戻ってしまいます。</p>
+<pre><code>32ビット符号付き整数の最大値: 2,147,483,647
+対応する日時: 2038-01-19 03:14:07 UTC
+次の秒: オーバーフロー → 1901-12-13 20:45:52 UTC</code></pre>
+        <p>これは「Y2K問題（2000年問題）」と同様の桁あふれ問題です。対策として、現在のほとんどのシステムでは<strong>64ビット整数</strong>でタイムスタンプを管理するよう移行が進んでいます。64ビットなら約2920億年後まで表現でき、実質的に問題は解消されます。</p>
+        <p>ただし、組み込みシステムやレガシーなソフトウェアでは32ビットのままのものもあり、2038年に向けた対応が課題となっています。</p>
+
+        <h2 id="programming">プログラミング言語での扱い方</h2>
+        <p>主要なプログラミング言語でのタイムスタンプの取得・変換方法を紹介します。</p>
+
+        <h3>JavaScript</h3>
+<pre><code>// 現在のタイムスタンプ（秒）
+const now = Math.floor(Date.now() / 1000);
+console.log(now); // 例: 1773964800
+
+// タイムスタンプ → 日時文字列
+const date = new Date(1773964800 * 1000);
+console.log(date.toISOString());
+// → "2026-03-18T00:00:00.000Z"
+
+// 日時 → タイムスタンプ
+const ts = Math.floor(new Date("2026-03-18").getTime() / 1000);
+console.log(ts); // 1773964800</code></pre>
+        <p>JavaScriptのDate.now()はミリ秒を返すため、秒に変換するには1000で割る必要がある点に注意してください。</p>
+
+        <h3>Python</h3>
+<pre><code>import time
+from datetime import datetime
+
+# 現在のタイムスタンプ
+now = int(time.time())
+print(now)
+
+# タイムスタンプ → datetime
+dt = datetime.fromtimestamp(1773964800)
+print(dt)  # 2026-03-18 09:00:00（JST）
+
+# datetime → タイムスタンプ
+ts = int(datetime(2026, 3, 18).timestamp())
+print(ts)</code></pre>
+
+        <h3>PHP</h3>
+<pre><code>// 現在のタイムスタンプ
+echo time();
+
+// タイムスタンプ → 日時
+echo date("Y-m-d H:i:s", 1773964800);
+
+// 日時 → タイムスタンプ
+echo strtotime("2026-03-18 00:00:00");</code></pre>
+
+        <h2 id="tips">実務で役立つTips</h2>
+
+        <h3>ミリ秒 vs 秒の注意</h3>
+        <p>JavaScriptやJavaではミリ秒のタイムスタンプが使われることが多く、桁数が13桁になります。一方、Unix標準やPython、PHPでは秒（10桁）が一般的です。APIの仕様書を読む際は、どちらの単位か必ず確認しましょう。</p>
+
+        <h3>タイムゾーンの落とし穴</h3>
+        <p>タイムスタンプ自体はUTC基準ですが、人間向けの日時に変換する際にタイムゾーンが関係します。日本時間（JST）はUTC+9なので、表示時に9時間のずれが生じます。システム間でデータをやり取りする場合は、常にUTCで統一するのがベストプラクティスです。</p>
+
+        <div class="cta-box">
+          <p>Unixタイムスタンプの変換を試してみましょう</p>
+          <a href="../../tools/unix-timestamp/" class="btn">Unixタイムスタンプ変換ツールを使ってみる</a>
+        </div>
+
+        <h2 id="summary">まとめ</h2>
+        <p>Unixタイムスタンプは、1970年1月1日からの経過秒数で時刻を表現するシンプルで強力な仕組みです。タイムゾーンに依存しない、計算が容易、ソートが速いなど多くのメリットがあり、データベース、API、ログなどあらゆる場面で使われています。</p>
+        <p>2038年問題という課題はありますが、64ビット化により解決が進んでいます。エンジニアとして必ず押さえておきたい基礎知識ですので、当サイトの変換ツールで実際にタイムスタンプと日時の変換を体験してみてください。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../csv-data-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">CSVファイルとは？形式の基本とExcelでの扱い方</h3>
+          <p>CSVの構造から文字化け対策まで解説</p>
+        </a>
+        <a href="../base64-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコードとは？仕組みと使い方を解説</h3>
+          <p>6ビット変換の仕組みからメール・APIでの活用まで</p>
+        </a>
+        <a href="../regex-basics/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">正規表現入門 - よく使うパターン一覧</h3>
+          <p>基本メタ文字からよく使うパターン10選を実践的に解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

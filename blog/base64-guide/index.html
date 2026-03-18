@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64エンコードとは？仕組みと使い方をわかりやすく解説 | Web便利ツール集</title>
+  <meta name="description" content="Base64エンコードの仕組み（6ビット変換）、なぜ必要なのか、メール・Data URI・APIでの使用場面、パディング（=）の意味まで初心者向けにわかりやすく解説します。">
+  <meta property="og:title" content="Base64エンコードとは？仕組みと使い方をわかりやすく解説">
+  <meta property="og:description" content="Base64エンコードの仕組みから使い方まで初心者にもわかりやすく解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/base64-guide/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/base64-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Base64エンコードとは？仕組みと使い方をわかりやすく解説",
+    "description": "Base64エンコードの仕組みから使い方まで初心者にもわかりやすく解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2026-03-18",
+    "dateModified": "2026-03-18",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/base64-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>Base64エンコードとは？仕組みと使い方をわかりやすく解説</h1>
+      <p class="article-meta">更新日: 2026年3月18日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-base64">Base64とは何か</a></li>
+          <li><a href="#how-it-works">Base64の仕組み - 6ビット変換</a></li>
+          <li><a href="#padding">パディング（=）の意味</a></li>
+          <li><a href="#why-needed">なぜBase64が必要なのか</a></li>
+          <li><a href="#use-cases">Base64の使用場面</a></li>
+          <li><a href="#programming">プログラミングでの扱い方</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>プログラミングやWeb開発をしていると「Base64」という言葉に出会うことがあります。メールの添付ファイル、HTMLに画像を埋め込むData URI、APIのトークンなど、さまざまな場面で使われている技術です。この記事では、Base64の仕組みから具体的な使い方まで、初心者の方にもわかりやすく解説します。</p>
+
+        <h2 id="what-is-base64">Base64とは何か</h2>
+        <p>Base64は、バイナリデータ（画像やファイルなどの0と1の羅列）を、テキスト文字列に変換するエンコード方式です。「Base64」という名前は、64種類の文字（A-Z、a-z、0-9、+、/）を使ってデータを表現することに由来しています。</p>
+        <p>重要なポイントとして、Base64は<strong>暗号化ではありません</strong>。あくまでデータの表現形式を変換しているだけで、誰でも簡単に元のデータに戻す（デコードする）ことができます。セキュリティ目的で使うものではないことを覚えておきましょう。</p>
+
+        <h2 id="how-it-works">Base64の仕組み - 6ビット変換</h2>
+        <p>通常のデータは8ビット（1バイト）単位で扱われますが、Base64では<strong>6ビット単位</strong>に分割して変換します。具体的な手順は以下のとおりです。</p>
+        <ol>
+          <li>元のデータをバイナリ（2進数）に変換する</li>
+          <li>6ビットずつに区切る</li>
+          <li>各6ビットを対応する文字（A-Z、a-z、0-9、+、/の64文字）に置き換える</li>
+        </ol>
+        <p>例えば「Hi」という文字列をBase64エンコードしてみましょう。</p>
+<pre><code>文字:     H         i
+ASCII:    72        105
+2進数:    01001000  01101001
+6ビット区切り: 010010 000110 1001XX
+Base64文字:    S      G      k=
+結果: "SGk="</code></pre>
+        <p>8ビットのデータを6ビットに分けるため、元のデータより約33%サイズが増加します。これはBase64の欠点の一つですが、テキストとして安全に送れるという大きなメリットがあります。</p>
+
+        <h2 id="padding">パディング（=）の意味</h2>
+        <p>Base64エンコードされた文字列の末尾に「=」が付いていることがあります。これは<strong>パディング（詰め物）</strong>と呼ばれます。</p>
+        <p>Base64は3バイト（24ビット）のデータを4文字に変換するのが基本単位です。しかし、元データのバイト数が3の倍数でない場合、端数が生じます。</p>
+        <ul>
+          <li><strong>余り1バイト</strong>の場合: 末尾に「==」が付く</li>
+          <li><strong>余り2バイト</strong>の場合: 末尾に「=」が付く</li>
+          <li><strong>割り切れる</strong>場合: パディングなし</li>
+        </ul>
+<pre><code>"A"   → "QQ=="   (1バイト → ==)
+"Hi"  → "SGk="   (2バイト → =)
+"Hey" → "SGV5"   (3バイト → パディングなし)</code></pre>
+        <p>パディングは、デコード時にデータの正確な長さを復元するために必要です。ただし、実装によってはパディングを省略しても動作する場合があります。</p>
+
+        <h2 id="why-needed">なぜBase64が必要なのか</h2>
+        <p>「わざわざサイズが増えるのに、なぜ変換するのか？」と疑問に思うかもしれません。Base64が必要な理由は、<strong>テキストしか扱えない環境でバイナリデータを送る</strong>ためです。</p>
+        <p>例えば、電子メール（SMTP）は元々7ビットASCIIテキストしか扱えない仕組みでした。画像や添付ファイルのようなバイナリデータをそのまま送ると、途中で文字化けしたりデータが壊れたりしてしまいます。</p>
+        <p>Base64を使えば、どんなバイナリデータもA-Zやa-zなどの安全な文字だけで表現できるため、テキストベースの通信でも問題なく送受信できるのです。</p>
+
+        <h2 id="use-cases">Base64の使用場面</h2>
+
+        <h3>1. メールの添付ファイル（MIME）</h3>
+        <p>電子メールで画像やPDFなどのファイルを添付する際、内部的にBase64エンコードされています。メールソフトが自動で処理するため、ユーザーが意識することはほとんどありません。</p>
+
+        <h3>2. Data URI（HTMLへの画像埋め込み）</h3>
+        <p>HTMLやCSSに小さな画像を直接埋め込む際にBase64が使われます。HTTPリクエストの回数を減らせるメリットがあります。</p>
+<pre><code>&lt;img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEU..." /&gt;</code></pre>
+        <p>ただし、大きな画像をData URIにするとHTMLファイルが巨大になるため、アイコンやごく小さな画像に限定して使うのが一般的です。</p>
+
+        <h3>3. APIの認証トークン</h3>
+        <p>Basic認証では、ユーザー名とパスワードをBase64エンコードしてHTTPヘッダーに含めます。また、JWT（JSON Web Token）でもペイロード部分にBase64URLエンコードが使われています。</p>
+<pre><code>Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+// "username:password" をBase64エンコードした値</code></pre>
+
+        <h3>4. JSON内のバイナリデータ</h3>
+        <p>JSONはテキスト形式なので、バイナリデータを含めるにはBase64エンコードする必要があります。APIで画像データをやり取りする際などに使われます。</p>
+
+        <h2 id="programming">プログラミングでの扱い方</h2>
+        <p>主要なプログラミング言語でのBase64エンコード・デコードの方法を紹介します。</p>
+
+        <h3>JavaScript</h3>
+<pre><code>// エンコード
+const encoded = btoa("Hello, World!");
+console.log(encoded); // "SGVsbG8sIFdvcmxkIQ=="
+
+// デコード
+const decoded = atob("SGVsbG8sIFdvcmxkIQ==");
+console.log(decoded); // "Hello, World!"
+
+// 日本語を扱う場合（UTF-8対応）
+const utf8Encoded = btoa(unescape(encodeURIComponent("こんにちは")));
+const utf8Decoded = decodeURIComponent(escape(atob(utf8Encoded)));</code></pre>
+
+        <h3>Python</h3>
+<pre><code>import base64
+
+# エンコード
+encoded = base64.b64encode(b"Hello, World!").decode()
+print(encoded)  # "SGVsbG8sIFdvcmxkIQ=="
+
+# デコード
+decoded = base64.b64decode("SGVsbG8sIFdvcmxkIQ==").decode()
+print(decoded)  # "Hello, World!"</code></pre>
+
+        <div class="cta-box">
+          <p>Base64のエンコード・デコードを試してみましょう</p>
+          <a href="../../tools/base64/" class="btn">Base64変換ツールを使ってみる</a>
+        </div>
+
+        <h2 id="summary">まとめ</h2>
+        <p>Base64は、バイナリデータをテキスト文字列に変換するための標準的なエンコード方式です。6ビット単位で64種類の文字に変換するシンプルな仕組みで、メールの添付ファイル、Data URI、APIの認証など幅広い場面で活用されています。</p>
+        <p>データサイズが約33%増加するデメリットはありますが、テキストベースの通信で安全にデータを送れるという大きなメリットがあります。暗号化ではないことを理解した上で、適切な場面で活用してみてください。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../url-encoding-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URLエンコードとは？パーセントエンコーディングの基礎知識</h3>
+          <p>なぜURLエンコードが必要か、%XXの仕組みを解説</p>
+        </a>
+        <a href="../what-is-json/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSONとは？初心者にもわかる書き方・使い方</h3>
+          <p>JSONの基本構文から実際の使用例まで徹底解説</p>
+        </a>
+        <a href="../hash-encryption-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ関数とは？仕組みをわかりやすく解説</h3>
+          <p>MD5・SHA-256の違いやソルトの仕組みまで解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

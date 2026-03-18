@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英語ワードカウンター - 無料オンライン英単語数カウント | Web便利ツール集</title>
+  <meta name="description" content="英語ワードカウンター無料ツール。英文の単語数・文数・段落数・読了時間をリアルタイムでカウント。英語エッセイやレポートの文字数チェックに最適。登録不要・ブラウザだけで完結。">
+  <meta property="og:title" content="英語ワードカウンター - 無料オンライン英単語数カウント | Web便利ツール集">
+  <meta property="og:description" content="英語ワードカウンター無料ツール。単語数・文数・段落数・読了時間をリアルタイム表示。登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/word-counter-en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "英語ワードカウンター - 無料オンライン英単語数カウント",
+    "description": "英語ワードカウンター無料ツール。英文の単語数・文数・段落数・読了時間をリアルタイムでカウント。",
+    "url": "https://simpletoolkit.net/tools/word-counter-en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "読了時間はどのように計算されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一般的な英語の読書速度である約200〜250 WPM（Words Per Minute）を基準に計算しています。本ツールでは200 WPMで算出しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本語のテキストもカウントできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "本ツールは英語テキスト向けに最適化されています。日本語の文字数カウントには「文字数カウンター」ツールをご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したテキストはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。テキストが外部に送信されることはありません。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>英語ワードカウンター</h1>
+    <h2>無料オンライン英単語数カウント</h2>
+    <p class="tool-description">英文を入力するだけで、単語数・文数・段落数・読了時間をリアルタイムでカウント。英語エッセイやレポートの確認に最適です。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <label for="input-text">英文テキストを入力</label>
+      <textarea id="input-text" placeholder="Enter your English text here..." rows="8"></textarea>
+
+      <div class="stats" id="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="word-count">0</div>
+          <div class="stat-label">単語数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="char-count">0</div>
+          <div class="stat-label">文字数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="sentence-count">0</div>
+          <div class="stat-label">文数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="paragraph-count">0</div>
+          <div class="stat-label">段落数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="read-time">0分0秒</div>
+          <div class="stat-label">読了時間 (200WPM)</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="document.getElementById('input-text').value=''; updateCount();">クリア</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>テキストの文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト差分比較ツール</h3>
+          <p>2つのテキストの差分をハイライト表示</p>
+        </a>
+        <a href="../markdown-preview/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Markdownプレビューツール</h3>
+          <p>Markdownをリアルタイムでプレビュー</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    const input = document.getElementById('input-text');
+
+    function updateCount() {
+      const text = input.value;
+      const trimmed = text.trim();
+
+      // Word count
+      const words = trimmed === '' ? 0 : trimmed.split(/\s+/).length;
+      document.getElementById('word-count').textContent = words;
+
+      // Character count
+      document.getElementById('char-count').textContent = text.length;
+
+      // Sentence count
+      const sentences = trimmed === '' ? 0 : trimmed.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+      document.getElementById('sentence-count').textContent = sentences;
+
+      // Paragraph count
+      const paragraphs = trimmed === '' ? 0 : trimmed.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+      document.getElementById('paragraph-count').textContent = paragraphs;
+
+      // Reading time (200 WPM)
+      const totalSeconds = Math.ceil(words / 200 * 60);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      document.getElementById('read-time').textContent = minutes + '分' + seconds + '秒';
+    }
+
+    input.addEventListener('input', updateCount);
+  </script>
+</body>
+</html>

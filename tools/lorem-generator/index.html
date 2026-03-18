@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ダミーテキスト生成 - Lorem Ipsum・日本語対応 | Web便利ツール集</title>
+  <meta name="description" content="Lorem Ipsumや日本語のダミーテキストを段落数を指定して生成。Webデザインやモックアップに最適な無料ツール。">
+  <meta property="og:title" content="ダミーテキスト生成 - Lorem Ipsum・日本語対応">
+  <meta property="og:description" content="Lorem Ipsumや日本語のダミーテキストを段落数指定で生成。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/lorem-generator/">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "ダミーテキスト生成ツール", "url": "https://simpletoolkit.net/tools/lorem-generator/", "applicationCategory": "UtilityApplication", "operatingSystem": "All", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" } }
+  </script>
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    { "@type": "Question", "name": "Lorem Ipsumとは何ですか？", "acceptedAnswer": { "@type": "Answer", "text": "印刷業界で古くから使われているダミーテキストです。デザインのレイアウト確認に使用されます。" } },
+    { "@type": "Question", "name": "日本語のダミーテキストも生成できますか？", "acceptedAnswer": { "@type": "Answer", "text": "はい、日本語の文学作品をベースにしたダミーテキストも生成できます。" } }
+  ] }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>ダミーテキスト生成ツール</h1>
+    <h2>Lorem Ipsum・日本語ダミーテキスト</h2>
+    <p class="tool-description">Webデザインやモックアップ用のダミーテキストを生成。Lorem Ipsumと日本語に対応しています。</p>
+
+    <div class="tool-area">
+      <div class="option-row">
+        <label for="lang-select">言語:</label>
+        <select id="lang-select" style="width:160px;">
+          <option value="latin">Lorem Ipsum</option>
+          <option value="ja">日本語</option>
+        </select>
+        <label for="para-count">段落数:</label>
+        <input type="number" id="para-count" value="3" min="1" max="20" style="width:80px;">
+      </div>
+      <div class="btn-group">
+        <button class="btn" onclick="generate()">生成する</button>
+        <button class="btn btn-secondary" onclick="copyText()">コピー</button>
+      </div>
+      <div class="result-area" style="margin-top:16px;">
+        <div id="output" style="white-space:pre-wrap;line-height:1.8;"></div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../markdown-preview/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Markdownプレビュー</h3><p>Markdownをリアルタイムでプレビュー</p></a>
+        <a href="../char-counter/" class="tool-card"><h3 style="font-size:1rem;margin:0;">文字数カウンター</h3><p>文字数をリアルタイムカウント</p></a>
+        <a href="../json-formatter/" class="tool-card"><h3 style="font-size:1rem;margin:0;">JSON整形</h3><p>JSONを見やすく整形</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    const latin = [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.",
+      "Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.",
+      "Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris."
+    ];
+    const ja = [
+      "吾輩は猫である。名前はまだ無い。どこで生れたかとんと見当がつかぬ。何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。吾輩はここで始めて人間というものを見た。",
+      "しかもあとで聞くとそれは書生という人間中で一番獰悪な種族であったそうだ。この書生というのは時々我々を捕えて煮て食うという話である。しかしその当時は何という考もなかったから別段恐しいとも思わなかった。",
+      "親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。なぜそんな無闘な真似をしたと聞く人があるかも知れぬ。",
+      "木曾路はすべて山の中である。あるところは岨づたいに行く崖の道であり、あるところは数十間の深さに臨む木曾川の岸であり、あるところは山の尾をめぐる谷の入り口である。",
+      "メロスは激怒した。必ず、かの邪智暴虐の王を除かなければならぬと決意した。メロスには政治がわからぬ。メロスは、村の牧人である。笛を吹き、羊と遊んで暮して来た。"
+    ];
+    function generate() {
+      const lang = document.getElementById('lang-select').value;
+      const count = Math.min(20, Math.max(1, parseInt(document.getElementById('para-count').value) || 3));
+      const source = lang === 'ja' ? ja : latin;
+      const result = [];
+      for (let i = 0; i < count; i++) result.push(source[i % source.length]);
+      document.getElementById('output').textContent = result.join('\n\n');
+    }
+    function copyText() {
+      const text = document.getElementById('output').textContent;
+      if (text) navigator.clipboard.writeText(text);
+    }
+    generate();
+  </script>
+</body>
+</html>

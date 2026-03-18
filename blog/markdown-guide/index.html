@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown記法まとめ - 基本から応用まで使い方一覧 | Web便利ツール集</title>
+  <meta name="description" content="Markdownの基本記法（見出し、太字、リスト、リンク、画像、コードブロック）からテーブル、GitHubでの使い方まで、よく使う記法を一覧でまとめました。">
+  <meta property="og:title" content="Markdown記法まとめ - 基本から応用まで使い方一覧">
+  <meta property="og:description" content="Markdownの基本記法からテーブル、GitHubでの使い方まで一覧でまとめて解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/markdown-guide/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/markdown-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Markdown記法まとめ - 基本から応用まで使い方一覧",
+    "description": "Markdownの基本記法からテーブル、GitHubでの使い方まで一覧でまとめて解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2026-03-18",
+    "dateModified": "2026-03-18",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/markdown-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>Markdown記法まとめ - 基本から応用まで使い方一覧</h1>
+      <p class="article-meta">更新日: 2026年3月18日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-markdown">Markdownとは</a></li>
+          <li><a href="#headings">見出し（h1〜h6）</a></li>
+          <li><a href="#text-style">テキスト装飾（太字・斜体・取り消し線）</a></li>
+          <li><a href="#lists">リスト（箇条書き・番号付き）</a></li>
+          <li><a href="#links-images">リンクと画像</a></li>
+          <li><a href="#code">コード（インライン・ブロック）</a></li>
+          <li><a href="#tables">テーブル（表）</a></li>
+          <li><a href="#blockquote">引用とその他の記法</a></li>
+          <li><a href="#github">GitHubでの使い方</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>GitHubのREADME、ブログ記事、技術ドキュメントなど、エンジニアが文章を書く場面で広く使われている「Markdown（マークダウン）」。HTMLを直接書くよりもはるかに簡単に、見出しや太字、リスト、テーブルなどの書式を付けることができます。この記事では、Markdownの基本記法から応用的な使い方まで一覧でまとめました。</p>
+
+        <h2 id="what-is-markdown">Markdownとは</h2>
+        <p>Markdownは、2004年にJohn Gruberによって作られた<strong>軽量マークアップ言語</strong>です。プレーンテキストに簡単な記号を加えるだけで、見出し・太字・リスト・リンクなどの書式を表現できます。</p>
+        <p>Markdownの大きな特徴は以下の3つです。</p>
+        <ul>
+          <li><strong>記法がシンプル</strong> - 覚える記号が少なく、すぐに書き始められる</li>
+          <li><strong>可読性が高い</strong> - マークアップしたままの状態でも読みやすい</li>
+          <li><strong>HTMLに変換できる</strong> - 最終的にHTMLに変換されてWebページとして表示される</li>
+        </ul>
+        <p>Markdownファイルの拡張子は「.md」です。GitHub、Qiita、Zenn、Notion、Slackなど、多くのサービスがMarkdown記法をサポートしています。</p>
+
+        <h2 id="headings">見出し（h1〜h6）</h2>
+        <p>見出しは先頭に「#」を付けて記述します。#の数が多いほど小さい見出しになります。</p>
+<pre><code># 見出し1（h1）
+## 見出し2（h2）
+### 見出し3（h3）
+#### 見出し4（h4）
+##### 見出し5（h5）
+###### 見出し6（h6）</code></pre>
+        <p>「#」の後にはスペースを1つ入れるのがルールです。スペースがないと見出しとして認識されない場合があります。通常、h1はドキュメントのタイトルに使い、本文の見出しはh2から始めるのが一般的です。</p>
+
+        <h2 id="text-style">テキスト装飾（太字・斜体・取り消し線）</h2>
+        <p>テキストを装飾するための記法です。</p>
+        <table>
+          <thead>
+            <tr><th>記法</th><th>表示</th><th>説明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>**太字**</code></td><td><strong>太字</strong></td><td>アスタリスク2つで囲む</td></tr>
+            <tr><td><code>*斜体*</code></td><td><em>斜体</em></td><td>アスタリスク1つで囲む</td></tr>
+            <tr><td><code>***太字斜体***</code></td><td><strong><em>太字斜体</em></strong></td><td>アスタリスク3つで囲む</td></tr>
+            <tr><td><code>~~取り消し~~</code></td><td><s>取り消し</s></td><td>チルダ2つで囲む</td></tr>
+          </tbody>
+        </table>
+<pre><code>これは**重要な**テキストです。
+*イタリック*で強調します。
+~~この情報は古いです~~</code></pre>
+
+        <h2 id="lists">リスト（箇条書き・番号付き）</h2>
+
+        <h3>箇条書きリスト</h3>
+        <p>「-」「*」「+」のいずれかとスペースを先頭に付けます。</p>
+<pre><code>- りんご
+- みかん
+- バナナ
+  - 台湾バナナ
+  - フィリピンバナナ</code></pre>
+        <p>インデント（スペース2つまたは4つ）で入れ子にできます。</p>
+
+        <h3>番号付きリスト</h3>
+        <p>「数字.」とスペースで始めます。</p>
+<pre><code>1. 最初のステップ
+2. 次のステップ
+3. 最後のステップ</code></pre>
+        <p>実際の数字に関係なく、自動的に連番が振られます。すべて「1.」と書いても正しく表示されます。</p>
+
+        <h3>チェックリスト</h3>
+        <p>タスク管理に便利なチェックリストも記述できます。</p>
+<pre><code>- [x] 完了したタスク
+- [ ] 未完了のタスク
+- [ ] もう一つの未完了タスク</code></pre>
+
+        <h2 id="links-images">リンクと画像</h2>
+
+        <h3>リンク</h3>
+<pre><code>[表示テキスト](URL)
+[Google](https://www.google.com)
+
+// タイトル付き
+[Google](https://www.google.com "Googleのトップページ")</code></pre>
+
+        <h3>画像</h3>
+        <p>リンクの先頭に「!」を付けると画像になります。</p>
+<pre><code>![代替テキスト](画像のURL)
+![ロゴ](images/logo.png)</code></pre>
+        <p>代替テキスト（alt属性）は、画像が表示されない場合やスクリーンリーダーで読み上げる際に使用されます。アクセシビリティのために必ず設定しましょう。</p>
+
+        <h2 id="code">コード（インライン・ブロック）</h2>
+
+        <h3>インラインコード</h3>
+        <p>文中にコードを挿入する場合はバッククォート（`）で囲みます。</p>
+<pre><code>`console.log()` で値を出力できます。</code></pre>
+
+        <h3>コードブロック</h3>
+        <p>複数行のコードはバッククォート3つで囲みます。言語名を指定するとシンタックスハイライトが適用されます。</p>
+<pre><code>```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+console.log(greet("World"));
+```</code></pre>
+        <p>対応言語の例: javascript, python, html, css, json, bash, sql, java, go, rust など。</p>
+
+        <h2 id="tables">テーブル（表）</h2>
+        <p>パイプ（|）とハイフン（-）でテーブルを作成できます。</p>
+<pre><code>| 名前 | 年齢 | 職業 |
+|------|------|------|
+| 田中 | 30   | エンジニア |
+| 佐藤 | 25   | デザイナー |
+| 鈴木 | 35   | マネージャー |</code></pre>
+
+        <h3>列の配置指定</h3>
+        <p>ハイフンの部分にコロン（:）を付けることで、テキストの配置を指定できます。</p>
+<pre><code>| 左寄せ | 中央寄せ | 右寄せ |
+|:-------|:-------:|-------:|
+| Left   | Center  | Right  |</code></pre>
+
+        <h2 id="blockquote">引用とその他の記法</h2>
+
+        <h3>引用</h3>
+        <p>「>」を先頭に付けると引用ブロックになります。</p>
+<pre><code>> これは引用文です。
+> 複数行にわたる引用も可能です。
+>
+> > 引用のネストもできます。</code></pre>
+
+        <h3>水平線</h3>
+        <p>3つ以上のハイフン、アスタリスク、またはアンダースコアで水平線を引けます。</p>
+<pre><code>---
+***
+___</code></pre>
+
+        <h3>エスケープ</h3>
+        <p>Markdownの記号をそのまま表示したい場合は、バックスラッシュ（\）を前に付けます。</p>
+<pre><code>\*アスタリスクをそのまま表示\*
+\# シャープをそのまま表示</code></pre>
+
+        <h2 id="github">GitHubでの使い方</h2>
+        <p>GitHubではMarkdownが広く使われており、独自の拡張記法（GitHub Flavored Markdown = GFM）もサポートしています。</p>
+
+        <h3>README.md</h3>
+        <p>リポジトリのトップに表示される説明文です。プロジェクトの概要、インストール方法、使い方などを記載します。</p>
+
+        <h3>Issue・Pull Request</h3>
+        <p>バグ報告や機能提案、コードレビューにMarkdownを使用できます。チェックリストでタスクを管理したり、コードブロックでソースコードを共有したりできます。</p>
+
+        <h3>GFM独自の拡張機能</h3>
+        <ul>
+          <li><strong>チェックリスト</strong> - <code>- [x]</code> でタスクの完了/未完了を管理</li>
+          <li><strong>テーブル</strong> - パイプ記法によるテーブル表示</li>
+          <li><strong>取り消し線</strong> - <code>~~text~~</code> で取り消し線</li>
+          <li><strong>自動リンク</strong> - URLをそのまま記述するとリンクになる</li>
+          <li><strong>絵文字</strong> - <code>:emoji_name:</code> で絵文字を挿入</li>
+        </ul>
+
+        <div class="cta-box">
+          <p>Markdownをリアルタイムでプレビューしてみましょう</p>
+          <a href="../../tools/markdown-preview/" class="btn">Markdownプレビューツールを使ってみる</a>
+        </div>
+
+        <h2 id="summary">まとめ</h2>
+        <p>Markdownは、シンプルな記号でテキストに書式を付けられる軽量マークアップ言語です。見出し、太字、リスト、リンク、コードブロック、テーブルなど、ドキュメント作成に必要な機能が揃っており、GitHub、Qiita、Zennなど多くのプラットフォームで採用されています。</p>
+        <p>基本記法はとてもシンプルなので、実際に書きながら覚えるのが一番の近道です。当サイトのMarkdownプレビューツールを使えば、記法を書いてすぐに結果を確認できます。ぜひ活用してみてください。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../csv-data-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">CSVファイルとは？形式の基本とExcelでの扱い方</h3>
+          <p>CSVの構造から文字化け対策まで解説</p>
+        </a>
+        <a href="../what-is-json/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSONとは？初心者にもわかる書き方・使い方</h3>
+          <p>JSONの基本構文から実際の使用例まで徹底解説</p>
+        </a>
+        <a href="../regex-basics/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">正規表現入門 - よく使うパターン一覧</h3>
+          <p>基本メタ文字からよく使うパターン10選を実践的に解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

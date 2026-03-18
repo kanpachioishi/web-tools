@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSVファイルとは？形式の基本とExcelでの扱い方 | Web便利ツール集</title>
+  <meta name="description" content="CSVファイルの構造、区切り文字の種類、文字コード問題（UTF-8 BOM）、Excelでの開き方と文字化け対策まで、初心者にもわかりやすく解説します。">
+  <meta property="og:title" content="CSVファイルとは？形式の基本とExcelでの扱い方">
+  <meta property="og:description" content="CSVファイルの基本構造からExcelでの文字化け対策まで初心者にもわかりやすく解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/csv-data-guide/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/csv-data-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "CSVファイルとは？形式の基本とExcelでの扱い方",
+    "description": "CSVファイルの基本構造からExcelでの文字化け対策まで初心者にもわかりやすく解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2026-03-18",
+    "dateModified": "2026-03-18",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/csv-data-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>CSVファイルとは？形式の基本とExcelでの扱い方</h1>
+      <p class="article-meta">更新日: 2026年3月18日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-csv">CSVファイルとは</a></li>
+          <li><a href="#structure">CSVの基本構造</a></li>
+          <li><a href="#delimiters">区切り文字の種類</a></li>
+          <li><a href="#encoding">文字コード問題（UTF-8とBOM）</a></li>
+          <li><a href="#excel">Excelでの開き方と文字化け対策</a></li>
+          <li><a href="#programming">プログラミングでの読み書き</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>データの受け渡しやシステム間の連携でよく使われる「CSVファイル」。Excelで開けるのは知っているけど、文字化けして困ったことがある人も多いのではないでしょうか。この記事では、CSVファイルの基本構造から文字化けの原因と対策まで、初心者の方にもわかりやすく解説します。</p>
+
+        <h2 id="what-is-csv">CSVファイルとは</h2>
+        <p>CSV（シーエスブイ）は「Comma-Separated Values」の略で、日本語では「カンマ区切り値」を意味します。その名のとおり、データをカンマ（,）で区切って並べたテキストファイルです。</p>
+        <p>CSVの最大の特徴は<strong>シンプルさ</strong>です。特別なソフトウェアがなくても、メモ帳やテキストエディタで中身を確認・編集できます。また、Excel、Googleスプレッドシート、データベース、プログラミング言語など、ほぼすべてのツールで読み書きが可能です。</p>
+        <p>CSVファイルの拡張子は「.csv」です。見た目は普通のテキストファイルですが、拡張子によってExcelなどの表計算ソフトと関連付けられています。</p>
+
+        <h2 id="structure">CSVの基本構造</h2>
+        <p>CSVファイルの構造は非常にシンプルです。</p>
+<pre><code>名前,年齢,職業
+田中太郎,30,エンジニア
+佐藤花子,25,デザイナー
+鈴木一郎,35,マネージャー</code></pre>
+        <p>ルールは以下のとおりです。</p>
+        <ul>
+          <li><strong>各行が1レコード</strong>（1件のデータ）</li>
+          <li><strong>カンマで区切られた各値がフィールド</strong>（列）</li>
+          <li><strong>1行目がヘッダー行</strong>（列名）になることが多い（必須ではない）</li>
+        </ul>
+
+        <h3>フィールドにカンマや改行が含まれる場合</h3>
+        <p>データ自体にカンマが含まれる場合は、そのフィールドをダブルクォーテーション（"）で囲みます。</p>
+<pre><code>名前,住所,備考
+田中太郎,"東京都渋谷区1-2-3",なし
+佐藤花子,"大阪府大阪市中央区4,5,6","備考に、カンマあり"</code></pre>
+        <p>ダブルクォーテーション自体をデータに含めたい場合は、ダブルクォーテーションを2つ重ねます。</p>
+<pre><code>"彼は""天才""と呼ばれた"
+→ 実際の値: 彼は"天才"と呼ばれた</code></pre>
+
+        <h2 id="delimiters">区切り文字の種類</h2>
+        <p>CSVは名前のとおりカンマ区切りが標準ですが、実際にはさまざまな区切り文字が使われています。</p>
+
+        <table>
+          <thead>
+            <tr><th>形式</th><th>区切り文字</th><th>拡張子</th><th>特徴</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>CSV</td><td>カンマ（,）</td><td>.csv</td><td>最も一般的</td></tr>
+            <tr><td>TSV</td><td>タブ（\t）</td><td>.tsv / .txt</td><td>データにカンマが多い場合に便利</td></tr>
+            <tr><td>SSV</td><td>セミコロン（;）</td><td>.csv</td><td>ヨーロッパで多い（小数点にカンマを使うため）</td></tr>
+            <tr><td>パイプ区切り</td><td>パイプ（|）</td><td>.txt</td><td>データにカンマやタブが含まれる場合</td></tr>
+          </tbody>
+        </table>
+        <p>特にヨーロッパの国々では、数値の小数点にカンマを使う（例: 3,14）ため、CSVの区切り文字にセミコロンを使うことが多いです。ファイルを受け取ったときは、実際の区切り文字を確認することが大切です。</p>
+
+        <h2 id="encoding">文字コード問題（UTF-8とBOM）</h2>
+        <p>CSVファイルで最もトラブルが多いのが<strong>文字コードの問題</strong>です。日本語を含むCSVファイルを開いたときに文字化けする原因のほとんどは、文字コードの不一致です。</p>
+
+        <h3>主な文字コード</h3>
+        <ul>
+          <li><strong>UTF-8</strong> - 現在の世界標準。Webやプログラミングではほぼこれ</li>
+          <li><strong>UTF-8 BOM付き</strong> - UTF-8の先頭にBOM（Byte Order Mark）を付けたもの。ExcelでUTF-8を正しく認識させるために使う</li>
+          <li><strong>Shift_JIS（CP932）</strong> - 日本語Windows環境のレガシーな文字コード</li>
+        </ul>
+
+        <h3>BOM（Byte Order Mark）とは</h3>
+        <p>BOMはファイルの先頭に付ける見えない3バイトの印（EF BB BF）で、「このファイルはUTF-8ですよ」とソフトウェアに伝える役割があります。</p>
+        <p>ExcelはBOMなしのUTF-8ファイルをShift_JISと誤認識することがあるため、Excelで開くことを前提としたCSVファイルは<strong>UTF-8 BOM付き</strong>で保存するのがおすすめです。</p>
+
+        <h2 id="excel">Excelでの開き方と文字化け対策</h2>
+        <p>CSVファイルをExcelで開く方法はいくつかあります。文字化けを防ぐための方法を紹介します。</p>
+
+        <h3>方法1: UTF-8 BOM付きで保存する（推奨）</h3>
+        <p>CSVファイルを作成・出力する側でUTF-8 BOM付きにしておけば、Excelでダブルクリックするだけで正しく開けます。これが最もシンプルな対策です。</p>
+
+        <h3>方法2: Excelの「データの取得」機能を使う</h3>
+        <p>BOMなしのUTF-8ファイルを開く場合は、以下の手順で文字コードを指定できます。</p>
+        <ol>
+          <li>Excelを開き、「データ」タブをクリック</li>
+          <li>「テキストまたはCSVから」を選択</li>
+          <li>ファイルを選択すると、プレビュー画面が表示される</li>
+          <li>「元のファイル」のドロップダウンで「65001: Unicode (UTF-8)」を選択</li>
+          <li>プレビューで文字化けが解消されていることを確認して「読み込み」</li>
+        </ol>
+
+        <h3>方法3: Shift_JISで保存し直す</h3>
+        <p>どうしてもダブルクリックで開きたい場合は、テキストエディタ（VSCodeなど）でファイルを開き、Shift_JIS（CP932）で保存し直す方法もあります。ただし、Shift_JISでは表現できない文字（一部の絵文字や特殊文字）が失われるリスクがあります。</p>
+
+        <h2 id="programming">プログラミングでの読み書き</h2>
+
+        <h3>JavaScript</h3>
+<pre><code>// CSVを配列に変換（簡易版）
+const csv = `名前,年齢,職業
+田中太郎,30,エンジニア
+佐藤花子,25,デザイナー`;
+
+const rows = csv.split("\n").map(row => row.split(","));
+console.log(rows[1]); // ["田中太郎", "30", "エンジニア"]</code></pre>
+
+        <h3>Python</h3>
+<pre><code>import csv
+
+# 読み込み
+with open("data.csv", encoding="utf-8") as f:
+    reader = csv.reader(f)
+    for row in reader:
+        print(row)
+
+# 書き込み（BOM付きUTF-8）
+with open("output.csv", "w", encoding="utf-8-sig", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["名前", "年齢", "職業"])
+    writer.writerow(["田中太郎", 30, "エンジニア"])</code></pre>
+        <p>Pythonでは encoding="utf-8-sig" を指定するだけでBOM付きUTF-8で出力できます。</p>
+
+        <div class="cta-box">
+          <p>CSVデータをテーブル形式で表示してみましょう</p>
+          <a href="../../tools/csv-to-table/" class="btn">CSVテーブル変換ツールを使ってみる</a>
+        </div>
+
+        <h2 id="summary">まとめ</h2>
+        <p>CSVファイルは、カンマで区切られたシンプルなテキスト形式です。ほぼすべてのツールやプログラミング言語で扱えるため、データの受け渡しに広く使われています。</p>
+        <p>最大の注意点は文字コードの問題です。日本語CSVをExcelで開く場合は「UTF-8 BOM付き」で保存するのがベストプラクティスです。また、区切り文字やクォーテーションのルールを理解しておくと、データ処理のトラブルを防げます。当サイトのCSVテーブル変換ツールで、CSVデータの構造を視覚的に確認してみてください。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../markdown-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Markdown記法まとめ - 基本から応用まで</h3>
+          <p>見出しからテーブルまでMarkdownの使い方一覧</p>
+        </a>
+        <a href="../unix-timestamp-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unixタイムスタンプとは？エンジニア必須の時刻管理</h3>
+          <p>Unixエポックの由来や2038年問題まで解説</p>
+        </a>
+        <a href="../url-encoding-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URLエンコードとは？パーセントエンコーディングの基礎</h3>
+          <p>%XXの仕組みやencodeURIの使い分けを解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

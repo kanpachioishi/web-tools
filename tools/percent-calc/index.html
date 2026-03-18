@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>パーセント計算 - 無料オンライン%計算ツール | Web便利ツール集</title>
+  <meta name="description" content="パーセント計算の無料オンラインツール。「AはBの何%？」「Aの何%はいくつ？」「何%増減？」の3パターンをリアルタイム計算。登録不要・ブラウザだけで完結。">
+  <meta property="og:title" content="パーセント計算 - 無料オンライン%計算ツール | Web便利ツール集">
+  <meta property="og:description" content="パーセント計算の無料ツール。3つの計算パターンに対応。登録不要・ブラウザだけで完結。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/percent-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "パーセント計算 - 無料オンライン%計算ツール",
+    "description": "パーセント計算の無料オンラインツール。「AはBの何%？」「Aの何%はいくつ？」「何%増減？」の3パターンをリアルタイム計算。",
+    "url": "https://simpletoolkit.net/tools/percent-calc/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "パーセント計算ツールは無料ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料でご利用いただけます。登録も不要で、ブラウザだけで動作します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのような計算ができますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "「AはBの何%？」「Aの何%はいくつ？」「元の値から何%増減？」の3パターンの計算に対応しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "小数点以下の計算はできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、小数点以下の値も入力・計算できます。結果は小数第2位まで表示されます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>パーセント計算ツール</h1>
+    <h2>無料オンライン%計算</h2>
+    <p class="tool-description">パーセントに関する3つの計算パターンに対応。数値を入力するだけでリアルタイムに結果を表示します。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <h3 style="margin-top:0;">1. AはBの何%？</h3>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <input type="number" id="p1-a" placeholder="A" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern1()">
+        <span>は</span>
+        <input type="number" id="p1-b" placeholder="B" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern1()">
+        <span>の</span>
+        <strong id="p1-result">?</strong>
+        <span>%</span>
+      </div>
+
+      <h3>2. Aの何%はいくつ？</h3>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <input type="number" id="p2-a" placeholder="A" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern2()">
+        <span>の</span>
+        <input type="number" id="p2-percent" placeholder="%" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern2()">
+        <span>% は</span>
+        <strong id="p2-result">?</strong>
+      </div>
+
+      <h3>3. 何%増（減）？</h3>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <input type="number" id="p3-from" placeholder="元の値" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern3()">
+        <span>から</span>
+        <input type="number" id="p3-to" placeholder="変化後" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern3()">
+        <span>へ →</span>
+        <strong id="p3-result">?</strong>
+        <span>% の変化</span>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度の単位を相互変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../aspect-ratio/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">アスペクト比計算ツール</h3>
+          <p>幅と高さからアスペクト比を計算</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function calcPattern1() {
+      const a = parseFloat(document.getElementById('p1-a').value);
+      const b = parseFloat(document.getElementById('p1-b').value);
+      if (!isNaN(a) && !isNaN(b) && b !== 0) {
+        document.getElementById('p1-result').textContent = (a / b * 100).toFixed(2);
+      } else {
+        document.getElementById('p1-result').textContent = '?';
+      }
+    }
+    function calcPattern2() {
+      const a = parseFloat(document.getElementById('p2-a').value);
+      const p = parseFloat(document.getElementById('p2-percent').value);
+      if (!isNaN(a) && !isNaN(p)) {
+        document.getElementById('p2-result').textContent = (a * p / 100).toFixed(2);
+      } else {
+        document.getElementById('p2-result').textContent = '?';
+      }
+    }
+    function calcPattern3() {
+      const from = parseFloat(document.getElementById('p3-from').value);
+      const to = parseFloat(document.getElementById('p3-to').value);
+      if (!isNaN(from) && !isNaN(to) && from !== 0) {
+        document.getElementById('p3-result').textContent = ((to - from) / from * 100).toFixed(2);
+      } else {
+        document.getElementById('p3-result').textContent = '?';
+      }
+    }
+  </script>
+</body>
+</html>

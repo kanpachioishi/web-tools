@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>アスペクト比計算 - 無料オンライン画面比率計算ツール | Web便利ツール集</title>
+  <meta name="description" content="画像や動画のアスペクト比を計算。幅と高さから比率を算出、リサイズ計算、16:9や4:3のプリセット対応。無料・登録不要。">
+  <meta property="og:title" content="アスペクト比計算 - 無料オンライン画面比率計算ツール">
+  <meta property="og:description" content="画像や動画のアスペクト比を計算。リサイズ計算やプリセット対応。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/aspect-ratio/">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "アスペクト比計算ツール", "url": "https://simpletoolkit.net/tools/aspect-ratio/", "applicationCategory": "UtilityApplication", "operatingSystem": "All", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" } }
+  </script>
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    { "@type": "Question", "name": "アスペクト比とは何ですか？", "acceptedAnswer": { "@type": "Answer", "text": "画像や画面の幅と高さの比率です。例えば16:9はワイドスクリーン、4:3は従来のディスプレイの比率です。" } },
+    { "@type": "Question", "name": "YouTubeの推奨アスペクト比は？", "acceptedAnswer": { "@type": "Answer", "text": "YouTubeの標準は16:9（1920x1080など）です。ショート動画は9:16（1080x1920）が推奨です。" } }
+  ] }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>アスペクト比計算ツール</h1>
+    <h2>無料オンライン画面比率計算</h2>
+    <p class="tool-description">幅と高さからアスペクト比を計算。プリセットから選択してリサイズ計算もできます。動画・画像制作に便利。</p>
+
+    <div class="tool-area">
+      <h3 style="margin-bottom:12px;">アスペクト比を計算</h3>
+      <div class="option-row">
+        <label>幅: <input type="number" id="w" value="1920" style="width:100px;"></label>
+        <label>高さ: <input type="number" id="h" value="1080" style="width:100px;"></label>
+      </div>
+      <div class="stats" style="margin-top:12px;">
+        <div class="stat-item"><div class="stat-value" id="ratio">16:9</div><div class="stat-label">アスペクト比</div></div>
+        <div class="stat-item"><div class="stat-value" id="decimal">1.778</div><div class="stat-label">小数比</div></div>
+      </div>
+
+      <h3 style="margin-top:28px;margin-bottom:12px;">プリセット</h3>
+      <div class="btn-group" id="presets">
+        <button class="btn btn-secondary" onclick="setPreset(16,9)">16:9</button>
+        <button class="btn btn-secondary" onclick="setPreset(4,3)">4:3</button>
+        <button class="btn btn-secondary" onclick="setPreset(1,1)">1:1</button>
+        <button class="btn btn-secondary" onclick="setPreset(9,16)">9:16</button>
+        <button class="btn btn-secondary" onclick="setPreset(21,9)">21:9</button>
+        <button class="btn btn-secondary" onclick="setPreset(3,2)">3:2</button>
+      </div>
+
+      <h3 style="margin-top:28px;margin-bottom:12px;">リサイズ計算</h3>
+      <div class="option-row">
+        <label>新しい幅: <input type="number" id="nw" value="1280" style="width:100px;"></label>
+        <span>→ 高さ: <strong id="nh">720</strong></span>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../percent-calc/" class="tool-card"><h3 style="font-size:1rem;margin:0;">パーセント計算</h3><p>各種パーセント計算</p></a>
+        <a href="../unit-converter/" class="tool-card"><h3 style="font-size:1rem;margin:0;">単位変換</h3><p>長さ・重さ・温度を変換</p></a>
+        <a href="../color-converter/" class="tool-card"><h3 style="font-size:1rem;margin:0;">カラーコード変換</h3><p>HEX/RGB/HSLを変換</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+
+    function calc() {
+      const w = parseInt(document.getElementById('w').value) || 0;
+      const h = parseInt(document.getElementById('h').value) || 0;
+      if (w <= 0 || h <= 0) return;
+      const g = gcd(w, h);
+      document.getElementById('ratio').textContent = (w / g) + ':' + (h / g);
+      document.getElementById('decimal').textContent = (w / h).toFixed(3);
+      resize();
+    }
+
+    function resize() {
+      const w = parseInt(document.getElementById('w').value) || 0;
+      const h = parseInt(document.getElementById('h').value) || 0;
+      const nw = parseInt(document.getElementById('nw').value) || 0;
+      if (w > 0 && h > 0 && nw > 0) {
+        document.getElementById('nh').textContent = Math.round(nw * h / w);
+      }
+    }
+
+    function setPreset(rw, rh) {
+      const currentW = parseInt(document.getElementById('w').value) || 1920;
+      document.getElementById('w').value = currentW;
+      document.getElementById('h').value = Math.round(currentW * rh / rw);
+      calc();
+    }
+
+    document.getElementById('w').addEventListener('input', calc);
+    document.getElementById('h').addEventListener('input', calc);
+    document.getElementById('nw').addEventListener('input', resize);
+    calc();
+  </script>
+</body>
+</html>

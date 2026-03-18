@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URLエンコードとは？パーセントエンコーディングの基礎知識 | Web便利ツール集</title>
+  <meta name="description" content="URLエンコード（パーセントエンコーディング）の仕組み、なぜ必要なのか、%XXの意味、encodeURIとencodeURIComponentの違い、UTF-8との関係を初心者向けに解説します。">
+  <meta property="og:title" content="URLエンコードとは？パーセントエンコーディングの基礎知識">
+  <meta property="og:description" content="URLエンコードの仕組みとパーセントエンコーディングの基礎を初心者にもわかりやすく解説。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://simpletoolkit.net/blog/url-encoding-guide/">
+  <link rel="canonical" href="https://simpletoolkit.net/blog/url-encoding-guide/">
+  <link rel="stylesheet" href="../../common/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "URLエンコードとは？パーセントエンコーディングの基礎知識",
+    "description": "URLエンコードの仕組みとパーセントエンコーディングの基礎を初心者にもわかりやすく解説。",
+    "author": { "@type": "Organization", "name": "Web便利ツール集" },
+    "publisher": { "@type": "Organization", "name": "Web便利ツール集" },
+    "datePublished": "2026-03-18",
+    "dateModified": "2026-03-18",
+    "mainEntityOfPage": "https://simpletoolkit.net/blog/url-encoding-guide/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <article>
+      <h1>URLエンコードとは？パーセントエンコーディングの基礎知識</h1>
+      <p class="article-meta">更新日: 2026年3月18日</p>
+
+      <div class="article-toc">
+        <p>目次</p>
+        <ol>
+          <li><a href="#what-is-url-encoding">URLエンコードとは</a></li>
+          <li><a href="#why-needed">なぜURLエンコードが必要なのか</a></li>
+          <li><a href="#percent-encoding">%XXの仕組み（パーセントエンコーディング）</a></li>
+          <li><a href="#reserved-chars">予約文字と非予約文字</a></li>
+          <li><a href="#encodeuri-vs-component">encodeURI vs encodeURIComponent</a></li>
+          <li><a href="#utf8">UTF-8との関係</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </div>
+
+      <div class="article-body">
+        <p>Webブラウザのアドレスバーに日本語を含むURLを入力したとき、「%E3%81%82」のような見慣れない文字列に変換されたことはありませんか？これが「URLエンコード（パーセントエンコーディング）」です。Web開発やAPI連携では必須の知識であるURLエンコードについて、基礎からわかりやすく解説します。</p>
+
+        <h2 id="what-is-url-encoding">URLエンコードとは</h2>
+        <p>URLエンコードとは、URLに使用できない文字や特殊な意味を持つ文字を「%XX」という形式に変換する仕組みです。正式には<strong>パーセントエンコーディング（Percent-Encoding）</strong>と呼ばれます。</p>
+        <p>URLには使える文字が決まっており、半角英数字と一部の記号（-、_、.、~）のみがそのまま使用できます。日本語やスペース、その他の記号はそのままURLに含めることができないため、エンコードが必要になります。</p>
+
+        <h2 id="why-needed">なぜURLエンコードが必要なのか</h2>
+        <p>URLエンコードが必要な理由は大きく分けて2つあります。</p>
+
+        <h3>1. URLの構造を壊さないため</h3>
+        <p>URLには「?」「&」「=」「/」「#」など、特別な意味を持つ文字があります。例えば、検索クエリに「&」が含まれている場合、それがパラメータの区切りなのか検索文字列の一部なのか判別できません。</p>
+<pre><code>// "A&B" を検索したい場合
+// NG: &がパラメータ区切りと解釈される
+https://example.com/search?q=A&B=...
+
+// OK: &をエンコード
+https://example.com/search?q=A%26B</code></pre>
+
+        <h3>2. ASCII以外の文字を使うため</h3>
+        <p>URLの仕様（RFC 3986）では、使用できる文字がASCIIの一部に限定されています。日本語、中国語、アラビア文字などの非ASCII文字は、そのままURLに含めることができません。</p>
+<pre><code>// 日本語の "東京" をURLに含める場合
+https://example.com/city/東京
+↓ エンコード後
+https://example.com/city/%E6%9D%B1%E4%BA%AC</code></pre>
+
+        <h2 id="percent-encoding">%XXの仕組み（パーセントエンコーディング）</h2>
+        <p>パーセントエンコーディングでは、文字をUTF-8でバイト列に変換し、各バイトを「%」+「16進数2桁」で表現します。</p>
+        <p>具体的な変換手順は以下のとおりです。</p>
+        <ol>
+          <li>文字をUTF-8のバイト列に変換する</li>
+          <li>各バイトを16進数に変換する</li>
+          <li>先頭に「%」を付ける</li>
+        </ol>
+
+        <table>
+          <thead>
+            <tr><th>文字</th><th>UTF-8バイト列</th><th>URLエンコード</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>スペース</td><td>0x20</td><td>%20</td></tr>
+            <tr><td>あ</td><td>0xE3 0x81 0x82</td><td>%E3%81%82</td></tr>
+            <tr><td>&</td><td>0x26</td><td>%26</td></tr>
+            <tr><td>=</td><td>0x3D</td><td>%3D</td></tr>
+          </tbody>
+        </table>
+        <p>スペースについては、「%20」の他に「+」で表現される場合もあります（application/x-www-form-urlencoded形式）。</p>
+
+        <h2 id="reserved-chars">予約文字と非予約文字</h2>
+        <p>URLの文字は「予約文字」と「非予約文字」に分類されます。</p>
+        <p><strong>非予約文字（エンコード不要）:</strong></p>
+<pre><code>A-Z a-z 0-9 - _ . ~</code></pre>
+        <p><strong>予約文字（文脈によりエンコードが必要）:</strong></p>
+<pre><code>: / ? # [ ] @ ! $ & ' ( ) * + , ; =</code></pre>
+        <p>予約文字はURL内で特別な役割を持つため、データとして使いたい場合はエンコードが必要です。ただし、URLの構造部分（パスの区切り「/」など）として使う場合はエンコードしません。</p>
+
+        <h2 id="encodeuri-vs-component">encodeURI vs encodeURIComponent</h2>
+        <p>JavaScriptにはURLエンコード用の関数が2つあり、用途が異なります。この違いを理解することが非常に重要です。</p>
+
+        <h3>encodeURI()</h3>
+        <p>URL全体をエンコードする場合に使います。URL構造に必要な文字（:、/、?、#、&、=など）はエンコードされません。</p>
+<pre><code>encodeURI("https://example.com/path?q=東京&lang=ja")
+// → "https://example.com/path?q=%E6%9D%B1%E4%BA%AC&lang=ja"
+// ://?&= はエンコードされない</code></pre>
+
+        <h3>encodeURIComponent()</h3>
+        <p>URLのパラメータ値など、URLの一部分をエンコードする場合に使います。予約文字もすべてエンコードされます。</p>
+<pre><code>encodeURIComponent("東京&大阪")
+// → "%E6%9D%B1%E4%BA%AC%26%E5%A4%A7%E9%98%AA"
+// & もエンコードされる</code></pre>
+
+        <p><strong>使い分けの原則:</strong> URL全体にはencodeURI、パラメータの値にはencodeURIComponentを使いましょう。</p>
+
+        <h2 id="utf8">UTF-8との関係</h2>
+        <p>現在のWeb標準では、URLエンコードにはUTF-8を使用することが推奨されています（RFC 3986）。かつてはShift_JISやEUC-JPでエンコードするWebサイトもありましたが、現在はほぼUTF-8に統一されています。</p>
+        <p>注意点として、古いシステムやレガシーな日本語サイトでは異なる文字コードが使われている場合があります。文字化けが発生した場合は、文字コードの不一致を疑ってみてください。</p>
+
+        <h3>各言語でのURLエンコード</h3>
+<pre><code>// JavaScript
+encodeURIComponent("こんにちは")
+
+# Python
+from urllib.parse import quote
+quote("こんにちは")
+
+# PHP
+urlencode("こんにちは")
+
+# Java
+URLEncoder.encode("こんにちは", "UTF-8")</code></pre>
+
+        <div class="cta-box">
+          <p>URLエンコード・デコードを試してみましょう</p>
+          <a href="../../tools/url-encode/" class="btn">URLエンコードツールを使ってみる</a>
+        </div>
+
+        <h2 id="summary">まとめ</h2>
+        <p>URLエンコード（パーセントエンコーディング）は、URLに使用できない文字を「%XX」形式に変換する仕組みです。日本語や特殊文字をURLに安全に含めるために不可欠な技術であり、Web開発では必ず理解しておく必要があります。</p>
+        <p>特にJavaScriptのencodeURIとencodeURIComponentの使い分けは重要です。URL全体にはencodeURI、パラメータ値にはencodeURIComponentと覚えておきましょう。当サイトのURLエンコードツールで実際に変換を試してみてください。</p>
+      </div>
+    </article>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他の技術解説記事</h2>
+      <div class="tool-grid">
+        <a href="../base64-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコードとは？仕組みと使い方を解説</h3>
+          <p>6ビット変換の仕組みからメール・APIでの活用まで</p>
+        </a>
+        <a href="../unix-timestamp-guide/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unixタイムスタンプとは？エンジニア必須の時刻管理</h3>
+          <p>Unixエポックの由来や2038年問題まで解説</p>
+        </a>
+        <a href="../what-is-json/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSONとは？初心者にもわかる書き方・使い方</h3>
+          <p>JSONの基本構文から実際の使用例まで徹底解説</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>
