@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Encoder / Decoder - Free Online Tool | Simple Toolkit</title>
+  <meta name="description" content="Free online Base64 encoder and decoder. Convert text to Base64 and vice versa with one click. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="Base64 Encoder / Decoder - Free Online Tool | Simple Toolkit">
+  <meta property="og:description" content="Free online Base64 encoder and decoder. Convert text to Base64 and vice versa.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/base64/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/base64/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/base64/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Base64 Encoder / Decoder - Free Online Tool",
+    "description": "Free online Base64 encoder and decoder. Convert text to Base64 and vice versa with one click. No registration required, works entirely in your browser.",
+    "url": "https://simpletoolkit.net/tools/base64/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Base64 encoding?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Base64 is a method of converting binary data into ASCII strings. It is widely used for email attachments and sending data via APIs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I encode non-ASCII text to Base64?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, this tool supports UTF-8 encoding, so text in any language can be correctly encoded and decoded in Base64."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Base64 Encoder / Decoder</h1>
+    <p class="tool-description">Convert text to and from Base64. Supports both encoding and decoding.</p>
+
+    <div class="tool-area">
+      <label for="input-text">Text (Plain)</label>
+      <textarea id="input-text" placeholder="Enter text to encode..." rows="5"></textarea>
+
+      <div class="btn-group" style="justify-content: center; margin: 16px 0;">
+        <button class="btn" onclick="encode()">Encode &darr;</button>
+        <button class="btn" onclick="decode()">Decode &uarr;</button>
+      </div>
+
+      <label for="output-text">Base64</label>
+      <textarea id="output-text" placeholder="Base64 string will appear here..." rows="5"></textarea>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="copyResult('output-text')">Copy Base64</button>
+        <button class="btn btn-secondary" onclick="copyResult('input-text')">Copy Text</button>
+        <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+
+      <div id="error-msg" style="color: #dc2626; margin-top: 12px; display: none;"></div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../url-encode/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URL Encoder / Decoder</h3>
+          <p>Encode and decode URLs</p>
+        </a>
+        <a href="../hash-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Hash Generator</h3>
+          <p>Generate MD5, SHA-256, and other hash values</p>
+        </a>
+        <a href="../json-formatter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON Formatter</h3>
+          <p>Format and minify JSON data</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function encode() {
+      const input = document.getElementById('input-text').value;
+      const errorMsg = document.getElementById('error-msg');
+      try {
+        const encoded = btoa(unescape(encodeURIComponent(input)));
+        document.getElementById('output-text').value = encoded;
+        errorMsg.style.display = 'none';
+      } catch (e) {
+        errorMsg.textContent = 'Encoding failed: ' + e.message;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function decode() {
+      const input = document.getElementById('output-text').value;
+      const errorMsg = document.getElementById('error-msg');
+      try {
+        const decoded = decodeURIComponent(escape(atob(input)));
+        document.getElementById('input-text').value = decoded;
+        errorMsg.style.display = 'none';
+      } catch (e) {
+        errorMsg.textContent = 'Decoding failed. Please enter a valid Base64 string.';
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function copyResult(id) {
+      const text = document.getElementById(id).value;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('output-text').value = '';
+      document.getElementById('error-msg').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

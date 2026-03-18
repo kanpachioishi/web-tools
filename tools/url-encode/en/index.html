@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encoder / Decoder - Free Online Tool | Simple Toolkit</title>
+  <meta name="description" content="Free online URL encoder and decoder (percent encoding). Convert special characters in URLs easily. No registration required, works entirely in your browser.">
+  <meta property="og:title" content="URL Encoder / Decoder - Free Online Tool | Simple Toolkit">
+  <meta property="og:description" content="Free online URL encoder and decoder. Convert special characters in URLs easily.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/url-encode/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/url-encode/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/url-encode/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "URL Encoder / Decoder - Free Online Tool",
+    "description": "Free online URL encoder and decoder (percent encoding). Convert special characters in URLs easily. No registration required, works entirely in your browser.",
+    "url": "https://simpletoolkit.net/tools/url-encode/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is URL encoding?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "URL encoding (percent encoding) converts characters that cannot be used directly in URLs (such as spaces and special characters) into %XX format."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between encodeURI and encodeURIComponent?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "encodeURI encodes an entire URL while preserving URL-safe characters, while encodeURIComponent encodes everything except alphanumeric characters and is used for encoding parameter values."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>URL Encoder / Decoder</h1>
+    <p class="tool-description">Encode and decode URLs (percent encoding) in both directions.</p>
+
+    <div class="tool-area">
+      <label for="input-text">Text (Decoded)</label>
+      <textarea id="input-text" placeholder="Enter text or URL to encode..." rows="5"></textarea>
+
+      <div class="btn-group" style="justify-content: center; margin: 16px 0;">
+        <button class="btn" onclick="encode()">Encode &darr;</button>
+        <button class="btn" onclick="decode()">Decode &uarr;</button>
+      </div>
+
+      <label for="output-text">URL Encoded</label>
+      <textarea id="output-text" placeholder="Encoded result will appear here..." rows="5"></textarea>
+
+      <div class="option-row" style="margin-top: 12px;">
+        <label><input type="checkbox" id="encode-component" checked> Use encodeURIComponent (recommended)</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="copyResult('output-text')">Copy Encoded</button>
+        <button class="btn btn-secondary" onclick="copyResult('input-text')">Copy Text</button>
+        <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+
+      <div id="error-msg" style="color: #dc2626; margin-top: 12px; display: none;"></div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../base64/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64 Encoder / Decoder</h3>
+          <p>Encode and decode text to/from Base64</p>
+        </a>
+        <a href="../json-formatter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON Formatter</h3>
+          <p>Format and minify JSON data</p>
+        </a>
+        <a href="../qr-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QR Code Generator</h3>
+          <p>Generate QR codes from URLs and text</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function encode() {
+      const input = document.getElementById('input-text').value;
+      const useComponent = document.getElementById('encode-component').checked;
+      try {
+        const encoded = useComponent ? encodeURIComponent(input) : encodeURI(input);
+        document.getElementById('output-text').value = encoded;
+        document.getElementById('error-msg').style.display = 'none';
+      } catch (e) {
+        showError('Encoding failed: ' + e.message);
+      }
+    }
+
+    function decode() {
+      const input = document.getElementById('output-text').value;
+      const useComponent = document.getElementById('encode-component').checked;
+      try {
+        const decoded = useComponent ? decodeURIComponent(input) : decodeURI(input);
+        document.getElementById('input-text').value = decoded;
+        document.getElementById('error-msg').style.display = 'none';
+      } catch (e) {
+        showError('Decoding failed. Please enter a valid URL-encoded string.');
+      }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function copyResult(id) {
+      const text = document.getElementById(id).value;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('output-text').value = '';
+      document.getElementById('error-msg').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

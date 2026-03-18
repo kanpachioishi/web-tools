@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unix Timestamp Converter - Free Online Tool | Simple Toolkit</title>
+  <meta name="description" content="Free online Unix timestamp converter. Convert between Unix timestamps and human-readable dates. Also displays the current timestamp in real time.">
+  <meta property="og:title" content="Unix Timestamp Converter - Free Online Tool | Simple Toolkit">
+  <meta property="og:description" content="Free Unix timestamp converter. Convert between timestamps and dates with real-time display.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/unix-timestamp/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/unix-timestamp/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/unix-timestamp/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Unix Timestamp Converter - Free Online Tool",
+    "description": "Free online Unix timestamp converter. Convert between Unix timestamps and human-readable dates. Displays the current timestamp in real time.",
+    "url": "https://simpletoolkit.net/tools/unix-timestamp/en/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a Unix timestamp?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Unix timestamp represents time as the number of seconds elapsed since January 1, 1970 00:00:00 UTC. It is widely used in programming."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it support millisecond timestamps?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, 13-digit millisecond timestamps are automatically detected and correctly converted."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Unix Timestamp Converter</h1>
+    <p class="tool-description">Convert between Unix timestamps and human-readable dates. The current timestamp is also displayed in real time.</p>
+
+    <div class="tool-area">
+      <div class="stats" style="margin-top: 0; margin-bottom: 20px;">
+        <div class="stat-item" style="flex: auto;">
+          <div class="stat-label">Current Unix Timestamp</div>
+          <div class="stat-value" id="current-ts" style="font-family: 'SF Mono', 'Fira Code', monospace;"></div>
+          <div class="stat-label" id="current-dt"></div>
+          <button class="btn btn-secondary" style="margin-top: 8px; padding: 4px 12px; font-size: 0.85rem;" onclick="copyText(document.getElementById('current-ts').textContent)">Copy</button>
+        </div>
+      </div>
+
+      <h2 style="font-size: 1.1rem; margin-bottom: 12px;">Timestamp to Date</h2>
+      <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px;">
+          <label for="ts-input">Unix Timestamp</label>
+          <input type="text" id="ts-input" placeholder="e.g. 1700000000">
+        </div>
+        <button class="btn" onclick="tsToDate()">Convert</button>
+      </div>
+      <div class="result-area" id="ts-result" style="margin-top: 12px;">
+        <pre>Conversion result will appear here</pre>
+      </div>
+
+      <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);">
+
+      <h2 style="font-size: 1.1rem; margin-bottom: 12px;">Date to Timestamp</h2>
+      <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px;">
+          <label for="dt-input">Date & Time</label>
+          <input type="datetime-local" id="dt-input" step="1">
+        </div>
+        <button class="btn" onclick="dateToTs()">Convert</button>
+      </div>
+      <div class="result-area" id="dt-result" style="margin-top: 12px;">
+        <pre>Conversion result will appear here</pre>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="setNow()">Set Current Time</button>
+        <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../hash-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Hash Generator</h3>
+          <p>Generate MD5, SHA-256, and other hash values</p>
+        </a>
+        <a href="../json-formatter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON Formatter</h3>
+          <p>Format and minify JSON data</p>
+        </a>
+        <a href="../color-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Color Code Converter</h3>
+          <p>Convert between HEX, RGB, and HSL</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function updateCurrent() {
+      const now = Math.floor(Date.now() / 1000);
+      document.getElementById('current-ts').textContent = now;
+      document.getElementById('current-dt').textContent = formatDate(new Date());
+    }
+    updateCurrent();
+    setInterval(updateCurrent, 1000);
+
+    function formatDate(d) {
+      return d.getFullYear() + '/' +
+        String(d.getMonth() + 1).padStart(2, '0') + '/' +
+        String(d.getDate()).padStart(2, '0') + ' ' +
+        String(d.getHours()).padStart(2, '0') + ':' +
+        String(d.getMinutes()).padStart(2, '0') + ':' +
+        String(d.getSeconds()).padStart(2, '0');
+    }
+
+    function tsToDate() {
+      const input = document.getElementById('ts-input').value.trim();
+      if (!input) return;
+      let ts = Number(input);
+      if (isNaN(ts)) {
+        document.getElementById('ts-result').innerHTML = '<pre style="color:#dc2626;">Invalid timestamp</pre>';
+        return;
+      }
+      // Millisecond detection (13+ digits = milliseconds)
+      const isMs = input.length >= 13;
+      const date = isMs ? new Date(ts) : new Date(ts * 1000);
+      if (isNaN(date.getTime())) {
+        document.getElementById('ts-result').innerHTML = '<pre style="color:#dc2626;">Invalid timestamp</pre>';
+        return;
+      }
+      const result = `Local: ${formatDate(date)}\nUTC:   ${date.toUTCString()}\nISO:   ${date.toISOString()}${isMs ? '\n* Interpreted as a millisecond timestamp' : ''}`;
+      document.getElementById('ts-result').innerHTML = '<pre>' + result + '</pre>';
+    }
+
+    function dateToTs() {
+      const input = document.getElementById('dt-input').value;
+      if (!input) return;
+      const date = new Date(input);
+      if (isNaN(date.getTime())) {
+        document.getElementById('dt-result').innerHTML = '<pre style="color:#dc2626;">Invalid date</pre>';
+        return;
+      }
+      const ts = Math.floor(date.getTime() / 1000);
+      const tsMs = date.getTime();
+      const result = `Seconds:      ${ts}\nMilliseconds: ${tsMs}`;
+      document.getElementById('dt-result').innerHTML = '<pre>' + result + '</pre>';
+    }
+
+    function setNow() {
+      const now = new Date();
+      const local = now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0') + 'T' +
+        String(now.getHours()).padStart(2, '0') + ':' +
+        String(now.getMinutes()).padStart(2, '0') + ':' +
+        String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('dt-input').value = local;
+      document.getElementById('ts-input').value = Math.floor(Date.now() / 1000);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('ts-input').value = '';
+      document.getElementById('dt-input').value = '';
+      document.getElementById('ts-result').innerHTML = '<pre>Conversion result will appear here</pre>';
+      document.getElementById('dt-result').innerHTML = '<pre>Conversion result will appear here</pre>';
+    }
+  </script>
+</body>
+</html>
