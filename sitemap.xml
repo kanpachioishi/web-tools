@@ -1,107 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/</loc>
+    <loc>https://simpletoolkit.net/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/char-counter/</loc>
+    <loc>https://simpletoolkit.net/tools/char-counter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/json-formatter/</loc>
+    <loc>https://simpletoolkit.net/tools/json-formatter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/qr-generator/</loc>
+    <loc>https://simpletoolkit.net/tools/qr-generator/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/password-generator/</loc>
+    <loc>https://simpletoolkit.net/tools/password-generator/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/color-converter/</loc>
+    <loc>https://simpletoolkit.net/tools/color-converter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/base64/</loc>
+    <loc>https://simpletoolkit.net/tools/base64/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/url-encode/</loc>
+    <loc>https://simpletoolkit.net/tools/url-encode/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/unix-timestamp/</loc>
+    <loc>https://simpletoolkit.net/tools/unix-timestamp/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/hash-generator/</loc>
+    <loc>https://simpletoolkit.net/tools/hash-generator/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/regex-tester/</loc>
+    <loc>https://simpletoolkit.net/tools/regex-tester/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/zenkaku-hankaku/</loc>
+    <loc>https://simpletoolkit.net/tools/zenkaku-hankaku/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/text-diff/</loc>
+    <loc>https://simpletoolkit.net/tools/text-diff/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/unit-converter/</loc>
+    <loc>https://simpletoolkit.net/tools/unit-converter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/csv-to-table/</loc>
+    <loc>https://simpletoolkit.net/tools/csv-to-table/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/tools/text-replace/</loc>
+    <loc>https://simpletoolkit.net/tools/text-replace/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/blog/what-is-json/</loc>
+    <loc>https://simpletoolkit.net/blog/what-is-json/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/blog/regex-basics/</loc>
+    <loc>https://simpletoolkit.net/blog/regex-basics/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/blog/password-security/</loc>
+    <loc>https://simpletoolkit.net/blog/password-security/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/blog/color-code-guide/</loc>
+    <loc>https://simpletoolkit.net/blog/color-code-guide/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kanpachioishi.github.io/web-tools/blog/hash-encryption-guide/</loc>
+    <loc>https://simpletoolkit.net/blog/hash-encryption-guide/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
