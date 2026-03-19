@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>年齢早見表2026年版 - 西暦・和暦・干支・学年対応｜SimpleToolkit</title>
+  <meta name="description" content="2026年（令和8年）の年齢早見表。西暦・和暦（令和/平成/昭和/大正）対応、干支・学年・卒業年度も一目でわかる。無料オンライン年齢早見表。">
+  <meta property="og:title" content="年齢早見表2026年版 - 西暦・和暦・干支・学年対応｜SimpleToolkit">
+  <meta property="og:description" content="2026年（令和8年）の年齢早見表。西暦・和暦対応、干支・学年・卒業年度も一目でわかる無料ツール。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/age-calculator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "年齢早見表2026年版 - 西暦・和暦・干支・学年対応",
+    "description": "2026年（令和8年）の年齢早見表。西暦・和暦（令和/平成/昭和/大正）対応、干支・学年・卒業年度も一目でわかる。無料オンライン年齢早見表。",
+    "url": "https://simpletoolkit.net/tools/age-calculator/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "年齢早見表とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "年齢早見表とは、生まれた年（西暦・和暦）から現在の年齢を一覧で確認できる表です。入学・卒業年度や干支なども合わせて確認できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "和暦（令和・平成・昭和・大正）は西暦何年から何年ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "大正は1912年〜1926年、昭和は1926年〜1989年、平成は1989年〜2019年、令和は2019年〜現在です。元年と最終年は重複する場合があります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "数え年と満年齢の違いは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "満年齢は誕生日を迎えるごとに1歳ずつ加算される一般的な数え方です。数え年は生まれた時点で1歳とし、元旦を迎えるごとに1歳加算されます。現在の日本では満年齢が公式に使われています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "干支（えと）はどうやって調べられますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "干支は12年周期で繰り返されます。本ツールでは生まれ年ごとに自動で干支を表示しますので、一覧から簡単に確認できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "この年齢早見表は無料で使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料でご利用いただけます。登録不要で、すべての処理はブラウザ内で完結します。データが外部に送信されることはありません。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .controls label {
+      margin-bottom: 0;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .controls select, .controls input[type="text"] {
+      width: auto;
+      min-width: 120px;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 180px;
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+    .age-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .age-table th, .age-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .age-table th {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .age-table tbody tr:nth-child(even) {
+      background: #f1f5f9;
+    }
+    .age-table tbody tr:hover {
+      background: #dbeafe;
+    }
+    .age-table .highlight {
+      background: #fef3c7 !important;
+      font-weight: 700;
+    }
+    .age-table td.wareki {
+      text-align: left;
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .legend .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .info-section {
+      margin-top: 32px;
+    }
+    .info-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+    .info-section p {
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+    .result-count {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    @media (max-width: 600px) {
+      .age-table { font-size: 0.78rem; }
+      .age-table th, .age-table td { padding: 5px 6px; }
+      .controls { flex-direction: column; align-items: stretch; }
+      .controls select, .controls input[type="text"] { width: 100%; }
+      .search-box { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>年齢早見表</h1>
+    <h2>2026年（令和8年）版 - 西暦・和暦・干支・学年対応</h2>
+    <p class="tool-description">生まれ年から年齢・和暦（令和/平成/昭和/大正）・干支・学年・卒業年度が一目でわかる年齢早見表です。任意の年の早見表も表示可能。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="controls">
+        <label for="target-year">基準年：</label>
+        <select id="target-year"></select>
+        <label for="search-input">検索：</label>
+        <input type="text" id="search-input" class="search-box" placeholder="例：昭和50年、1975、うさぎ">
+      </div>
+      <div id="result-count" class="result-count"></div>
+      <div class="table-wrapper">
+        <table class="age-table" id="age-table">
+          <thead>
+            <tr>
+              <th>西暦</th>
+              <th>和暦</th>
+              <th>干支</th>
+              <th>年齢</th>
+              <th>学年・卒業年度</th>
+            </tr>
+          </thead>
+          <tbody id="age-tbody"></tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="background:#dbeafe;"></span> 大正</span>
+        <span><span class="dot" style="background:#dcfce7;"></span> 昭和</span>
+        <span><span class="dot" style="background:#fef3c7;"></span> 平成</span>
+        <span><span class="dot" style="background:#ede9fe;"></span> 令和</span>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>年齢早見表の使い方</h2>
+      <p>上部の「基準年」を変更すると、その年における年齢早見表が表示されます。検索ボックスでは西暦・和暦・干支で絞り込みが可能です。例えば「昭和50年」「1975」「うさぎ」などで検索できます。</p>
+
+      <h2>和暦と西暦の対応</h2>
+      <p>大正は1912年（大正元年）〜1926年（大正15年）、昭和は1926年（昭和元年）〜1989年（昭和64年）、平成は1989年（平成元年）〜2019年（平成31年）、令和は2019年（令和元年）〜現在です。</p>
+
+      <h2>学年・卒業年度について</h2>
+      <p>日本の学校制度では、4月2日〜翌年4月1日生まれが同じ学年になります。本表では生まれ年を基準に、小学校入学（6歳の年の4月）〜大学卒業（22歳の年の3月）までの年度を表示しています。</p>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unix-timestamp/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unixタイムスタンプ変換</h3>
+          <p>Unixタイムスタンプと日時を相互変換</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイム表示</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // 干支データ
+    const ETOS = ['子（ねずみ）','丑（うし）','寅（とら）','卯（うさぎ）','辰（たつ）','巳（へび）','午（うま）','未（ひつじ）','申（さる）','酉（とり）','戌（いぬ）','亥（いのしし）'];
+
+    // 和暦変換
+    function toWareki(year) {
+      if (year >= 2019) return '令和' + (year - 2018 === 1 ? '元' : (year - 2018)) + '年';
+      if (year >= 1989) return '平成' + (year - 1988 === 1 ? '元' : (year - 1988)) + '年';
+      if (year >= 1926) return '昭和' + (year - 1925 === 1 ? '元' : (year - 1925)) + '年';
+      if (year >= 1912) return '大正' + (year - 1911 === 1 ? '元' : (year - 1911)) + '年';
+      if (year >= 1868) return '明治' + (year - 1867 === 1 ? '元' : (year - 1867)) + '年';
+      return '';
+    }
+
+    // 和暦の時代を取得
+    function getEra(year) {
+      if (year >= 2019) return 'reiwa';
+      if (year >= 1989) return 'heisei';
+      if (year >= 1926) return 'showa';
+      if (year >= 1912) return 'taisho';
+      return 'meiji';
+    }
+
+    // 時代ごとの行の背景色
+    function getEraColor(era) {
+      switch(era) {
+        case 'reiwa': return '#ede9fe';
+        case 'heisei': return '#fef3c7';
+        case 'showa': return '#dcfce7';
+        case 'taisho': return '#dbeafe';
+        default: return '';
+      }
+    }
+
+    // 干支取得
+    function getEto(year) {
+      return ETOS[(year - 4) % 12];
+    }
+
+    // 学年・卒業年度情報
+    function getSchoolInfo(birthYear, targetYear) {
+      // 4月入学基準（簡略化：生まれ年の4月に入学として計算）
+      const elemEntry = birthYear + 7;    // 小学校入学年度
+      const elemGrad = birthYear + 12;    // 小学校卒業年度（3月）
+      const juniorEntry = birthYear + 13; // 中学入学
+      const juniorGrad = birthYear + 15;  // 中学卒業
+      const highEntry = birthYear + 16;   // 高校入学
+      const highGrad = birthYear + 18;    // 高校卒業
+      const uniEntry = birthYear + 19;    // 大学入学
+      const uniGrad = birthYear + 22;     // 大学卒業
+
+      const items = [];
+
+      if (targetYear === elemEntry) items.push('小学校入学');
+      else if (targetYear > elemEntry && targetYear <= elemGrad) {
+        const grade = targetYear - elemEntry + 1;
+        if (targetYear === elemGrad) items.push('小学校卒業（小6）');
+        else items.push('小学' + grade + '年');
+      }
+
+      if (targetYear === juniorEntry) items.push('中学入学');
+      else if (targetYear > juniorEntry && targetYear <= juniorGrad) {
+        const grade = targetYear - juniorEntry + 1;
+        if (targetYear === juniorGrad) items.push('中学卒業（中3）');
+        else items.push('中学' + grade + '年');
+      }
+
+      if (targetYear === highEntry) items.push('高校入学');
+      else if (targetYear > highEntry && targetYear <= highGrad) {
+        const grade = targetYear - highEntry + 1;
+        if (targetYear === highGrad) items.push('高校卒業（高3）');
+        else items.push('高校' + grade + '年');
+      }
+
+      if (targetYear === uniEntry) items.push('大学入学');
+      else if (targetYear > uniEntry && targetYear <= uniGrad) {
+        const grade = targetYear - uniEntry + 1;
+        if (targetYear === uniGrad) items.push('大学卒業（大4）');
+        else items.push('大学' + grade + '年');
+      }
+
+      return items.length > 0 ? items.join(' / ') : '-';
+    }
+
+    // 今日の日時から年齢を正確に計算
+    function calcAge(birthYear, targetYear) {
+      return targetYear - birthYear;
+    }
+
+    // 今年の値を取得
+    const currentYear = new Date().getFullYear();
+
+    // 基準年セレクトボックスの初期化
+    const targetYearSelect = document.getElementById('target-year');
+    for (let y = currentYear + 5; y >= 1920; y--) {
+      const opt = document.createElement('option');
+      opt.value = y;
+      opt.textContent = y + '年（' + toWareki(y) + '）';
+      if (y === currentYear) opt.selected = true;
+      targetYearSelect.appendChild(opt);
+    }
+
+    // テーブル描画
+    function renderTable() {
+      const targetYear = parseInt(targetYearSelect.value);
+      const searchText = document.getElementById('search-input').value.trim().toLowerCase();
+      const tbody = document.getElementById('age-tbody');
+      tbody.innerHTML = '';
+
+      const startYear = targetYear; // 0歳
+      const endYear = targetYear - 120; // 120歳まで
+      let visibleCount = 0;
+      const totalCount = startYear - endYear + 1;
+
+      for (let birthYear = startYear; birthYear >= endYear; birthYear--) {
+        const age = calcAge(birthYear, targetYear);
+        const wareki = toWareki(birthYear);
+        const eto = getEto(birthYear);
+        const era = getEra(birthYear);
+        const schoolInfo = getSchoolInfo(birthYear, targetYear);
+
+        // 検索フィルター
+        if (searchText) {
+          const searchTarget = (birthYear + ' ' + wareki + ' ' + eto + ' ' + schoolInfo + ' ' + age + '歳').toLowerCase();
+          if (!searchTarget.includes(searchText)) continue;
+        }
+
+        visibleCount++;
+        const tr = document.createElement('tr');
+
+        // 現在の年齢をハイライト
+        const today = new Date();
+        const isCurrentAge = (birthYear === today.getFullYear() - Math.floor((today.getMonth() + 1) / 1)) ? false : false;
+
+        // 時代に応じた背景色（ストライプの代わり）
+        const eraColor = getEraColor(era);
+        if (eraColor) {
+          tr.style.background = eraColor;
+        }
+
+        tr.innerHTML =
+          '<td>' + birthYear + '年</td>' +
+          '<td class="wareki">' + (wareki || '-') + '</td>' +
+          '<td>' + eto + '</td>' +
+          '<td>' + age + '歳</td>' +
+          '<td class="wareki">' + schoolInfo + '</td>';
+
+        tbody.appendChild(tr);
+      }
+
+      // 結果カウント
+      const countEl = document.getElementById('result-count');
+      if (searchText) {
+        countEl.textContent = totalCount + '件中 ' + visibleCount + '件表示';
+      } else {
+        countEl.textContent = '';
+      }
+    }
+
+    // イベントリスナー
+    targetYearSelect.addEventListener('change', renderTable);
+    document.getElementById('search-input').addEventListener('input', renderTable);
+
+    // 初期描画
+    renderTable();
+  </script>
+</body>
+</html>

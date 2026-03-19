@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI計算 - 無料オンラインBMI計算機｜SimpleToolkit</title>
+  <meta name="description" content="身長と体重を入力するだけでBMIを瞬時に計算。日本肥満学会の基準で判定、理想体重も表示。登録不要・無料のオンラインBMI計算ツール。">
+  <meta property="og:title" content="BMI計算 - 無料オンラインBMI計算機｜SimpleToolkit">
+  <meta property="og:description" content="身長と体重を入力するだけでBMIを瞬時に計算。日本肥満学会の基準で判定、理想体重も表示。登録不要・無料。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/bmi-calculator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "BMI計算 - 無料オンラインBMI計算機",
+    "description": "身長と体重を入力するだけでBMIを瞬時に計算。日本肥満学会の基準で判定、理想体重も表示。登録不要・無料のオンラインBMI計算ツール。",
+    "url": "https://simpletoolkit.net/tools/bmi-calculator/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "BMIとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BMI（Body Mass Index）は体格指数とも呼ばれ、体重(kg)を身長(m)の2乗で割って算出される肥満度の指標です。国際的に広く使われており、日本肥満学会ではBMI 22を標準体重としています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "BMIの適正値はいくつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "日本肥満学会の基準では、BMI 18.5以上25未満が「普通体重」とされています。BMI 22が最も病気になりにくい標準体重とされており、この値を基準に理想体重を計算できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "BMIの計算式を教えてください",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BMIの計算式は「BMI = 体重(kg) / 身長(m)の2乗」です。例えば身長170cm・体重65kgの場合、65 / (1.70 × 1.70) = 22.49 となります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "理想体重（標準体重）の計算方法は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "理想体重は「身長(m) × 身長(m) × 22」で計算されます。BMI 22が最も健康リスクが低いとされているため、この数値を基準にしています。例えば身長170cmの場合、1.70 × 1.70 × 22 = 63.6kg が理想体重です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。身長や体重のデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .bmi-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .bmi-result.show {
+      display: block;
+    }
+    .bmi-value-display {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .bmi-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .bmi-category {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-top: 4px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+    .category-underweight { color: #2563eb; background: #eff6ff; }
+    .category-normal { color: #16a34a; background: #f0fdf4; }
+    .category-obese1 { color: #ca8a04; background: #fefce8; }
+    .category-obese2 { color: #ea580c; background: #fff7ed; }
+    .category-obese3 { color: #dc2626; background: #fef2f2; }
+    .category-obese4 { color: #991b1b; background: #fef2f2; }
+
+    /* BMI Gauge */
+    .bmi-gauge {
+      margin: 20px 0;
+      position: relative;
+    }
+    .gauge-bar {
+      height: 24px;
+      border-radius: 12px;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+    .gauge-segment {
+      height: 100%;
+    }
+    .gauge-segment-underweight { background: #93c5fd; flex: 18.5; }
+    .gauge-segment-normal { background: #86efac; flex: 6.5; }
+    .gauge-segment-obese1 { background: #fde047; flex: 5; }
+    .gauge-segment-obese2 { background: #fdba74; flex: 5; }
+    .gauge-segment-obese3 { background: #fca5a5; flex: 5; }
+    .gauge-segment-obese4 { background: #f87171; flex: 10; }
+    .gauge-marker {
+      position: absolute;
+      top: -6px;
+      width: 4px;
+      height: 36px;
+      background: var(--text);
+      border-radius: 2px;
+      transform: translateX(-50%);
+      transition: left 0.5s ease;
+    }
+    .gauge-marker::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid var(--text);
+    }
+    .gauge-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .bmi-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .detail-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .detail-card .detail-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .detail-card .detail-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .bmi-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .bmi-table th, .bmi-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .bmi-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .bmi-table .current-row {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .bmi-number { font-size: 2.5rem; }
+      .bmi-details { grid-template-columns: 1fr; }
+      .gauge-labels { font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>BMI計算</h1>
+    <h2>無料オンラインBMI計算機</h2>
+    <p class="tool-description">身長と体重を入力するだけで、BMI（体格指数）を瞬時に計算。日本肥満学会の基準に基づいた判定結果と理想体重を表示します。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="height">身長</label>
+          <input type="number" id="height" placeholder="170" min="50" max="300" step="0.1">
+          <div class="unit">cm</div>
+        </div>
+        <div class="input-field">
+          <label for="weight">体重</label>
+          <input type="number" id="weight" placeholder="65" min="10" max="500" step="0.1">
+          <div class="unit">kg</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculateBMI()">BMIを計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="bmi-result" id="bmi-result">
+        <div class="bmi-value-display">
+          <div class="bmi-number" id="bmi-number"></div>
+          <div class="bmi-category" id="bmi-category"></div>
+        </div>
+
+        <div class="bmi-gauge">
+          <div class="gauge-bar">
+            <div class="gauge-segment gauge-segment-underweight"></div>
+            <div class="gauge-segment gauge-segment-normal"></div>
+            <div class="gauge-segment gauge-segment-obese1"></div>
+            <div class="gauge-segment gauge-segment-obese2"></div>
+            <div class="gauge-segment gauge-segment-obese3"></div>
+            <div class="gauge-segment gauge-segment-obese4"></div>
+            <div class="gauge-marker" id="gauge-marker"></div>
+          </div>
+          <div class="gauge-labels">
+            <span>0</span>
+            <span>18.5</span>
+            <span>25</span>
+            <span>30</span>
+            <span>35</span>
+            <span>40</span>
+            <span>50</span>
+          </div>
+        </div>
+
+        <div class="bmi-details">
+          <div class="detail-card">
+            <div class="detail-label">あなたのBMI</div>
+            <div class="detail-value" id="detail-bmi"></div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-label">理想体重（BMI 22）</div>
+            <div class="detail-value" id="ideal-weight"></div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-label">理想体重との差</div>
+            <div class="detail-value" id="weight-diff"></div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-label">判定</div>
+            <div class="detail-value" id="detail-category" style="font-size:1rem;"></div>
+          </div>
+        </div>
+
+        <table class="bmi-table">
+          <thead>
+            <tr>
+              <th>BMI範囲</th>
+              <th>判定</th>
+            </tr>
+          </thead>
+          <tbody id="bmi-table-body">
+            <tr><td>18.5未満</td><td>低体重（やせ）</td></tr>
+            <tr><td>18.5 〜 24.9</td><td>普通体重</td></tr>
+            <tr><td>25.0 〜 29.9</td><td>肥満（1度）</td></tr>
+            <tr><td>30.0 〜 34.9</td><td>肥満（2度）</td></tr>
+            <tr><td>35.0 〜 39.9</td><td>肥満（3度）</td></tr>
+            <tr><td>40.0以上</td><td>肥満（4度）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function calculateBMI() {
+      var heightCm = parseFloat(document.getElementById('height').value);
+      var weight = parseFloat(document.getElementById('weight').value);
+
+      if (!heightCm || !weight || heightCm <= 0 || weight <= 0) {
+        alert('身長と体重を正しく入力してください。');
+        return;
+      }
+
+      var heightM = heightCm / 100;
+      var bmi = weight / (heightM * heightM);
+      var bmiRounded = Math.round(bmi * 100) / 100;
+      var idealWeight = Math.round(heightM * heightM * 22 * 10) / 10;
+      var diff = Math.round((weight - idealWeight) * 10) / 10;
+
+      // Determine category
+      var category, categoryClass, rowIndex;
+      if (bmi < 18.5) {
+        category = '低体重（やせ）';
+        categoryClass = 'category-underweight';
+        rowIndex = 0;
+      } else if (bmi < 25) {
+        category = '普通体重';
+        categoryClass = 'category-normal';
+        rowIndex = 1;
+      } else if (bmi < 30) {
+        category = '肥満（1度）';
+        categoryClass = 'category-obese1';
+        rowIndex = 2;
+      } else if (bmi < 35) {
+        category = '肥満（2度）';
+        categoryClass = 'category-obese2';
+        rowIndex = 3;
+      } else if (bmi < 40) {
+        category = '肥満（3度）';
+        categoryClass = 'category-obese3';
+        rowIndex = 4;
+      } else {
+        category = '肥満（4度）';
+        categoryClass = 'category-obese4';
+        rowIndex = 5;
+      }
+
+      // Display results
+      document.getElementById('bmi-number').textContent = bmiRounded;
+      var catEl = document.getElementById('bmi-category');
+      catEl.textContent = category;
+      catEl.className = 'bmi-category ' + categoryClass;
+
+      document.getElementById('detail-bmi').textContent = bmiRounded;
+      document.getElementById('ideal-weight').textContent = idealWeight + ' kg';
+      document.getElementById('weight-diff').textContent = (diff >= 0 ? '+' : '') + diff + ' kg';
+      document.getElementById('detail-category').textContent = category;
+
+      // Gauge marker position (BMI 0-50 range)
+      var gaugePercent = Math.min(Math.max(bmi / 50 * 100, 0), 100);
+      document.getElementById('gauge-marker').style.left = gaugePercent + '%';
+
+      // Highlight current row in table
+      var rows = document.getElementById('bmi-table-body').querySelectorAll('tr');
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].className = (i === rowIndex) ? 'current-row' : '';
+      }
+
+      document.getElementById('bmi-result').classList.add('show');
+    }
+
+    function clearForm() {
+      document.getElementById('height').value = '';
+      document.getElementById('weight').value = '';
+      document.getElementById('bmi-result').classList.remove('show');
+    }
+
+    // Enter key support
+    document.getElementById('height').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculateBMI();
+    });
+    document.getElementById('weight').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculateBMI();
+    });
+  </script>
+</body>
+</html>
