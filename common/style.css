@@ -223,6 +223,25 @@ textarea {
   margin-top: auto;
 }
 
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
 .ad-placeholder {
   background: var(--bg);
   border: 1px dashed var(--border);

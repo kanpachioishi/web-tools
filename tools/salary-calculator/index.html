@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手取り計算シミュレーター - 年収から手取りを自動計算｜SimpleToolkit</title>
+  <meta name="description" content="年収（額面）を入力するだけで手取り年収・月収を瞬時に計算。所得税・住民税・社会保険料の内訳も一目でわかる。年収別早見表付き。">
+  <meta property="og:title" content="手取り計算シミュレーター - 年収から手取りを自動計算｜SimpleToolkit">
+  <meta property="og:description" content="年収（額面）を入力するだけで手取り年収・月収を瞬時に計算。所得税・住民税・社会保険料の内訳グラフ付き。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/salary-calculator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "手取り計算シミュレーター - 年収から手取りを自動計算",
+    "description": "年収（額面）を入力するだけで手取り年収・月収を瞬時に計算。所得税・住民税・社会保険料の内訳も一目でわかる無料オンラインツール。",
+    "url": "https://simpletoolkit.net/tools/salary-calculator/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "手取りとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "手取りとは、額面年収から所得税・住民税・社会保険料（健康保険料・厚生年金保険料・雇用保険料）を差し引いた、実際に受け取れる金額のことです。一般的に額面年収の75〜85%程度が手取りとなります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "社会保険料の内訳は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "会社員の社会保険料は主に健康保険料（約5%）、厚生年金保険料（約9.15%）、雇用保険料（約0.6%）で構成されます。40歳以上65歳未満の方は介護保険料（約0.8%）も加わります。これらは労使折半で、従業員負担分は合計約15%です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "所得税はどのように計算されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "所得税は累進課税制度で、課税所得に応じて5%〜45%の税率が段階的に適用されます。課税所得は、年収から給与所得控除・社会保険料控除・基礎控除（48万円）・扶養控除などを差し引いた金額です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "住民税はどのように計算されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "住民税は所得割（課税所得の10%）と均等割（年額約5,000円）の合計です。所得割は都道府県民税4%と市区町村民税6%を合わせた10%で、全国ほぼ一律です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。年収などのデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 160px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input,
+    .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus,
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .salary-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .salary-result.show {
+      display: block;
+    }
+
+    .result-highlight {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .result-highlight .label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-highlight .amount {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .result-highlight .sub-amount {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .result-highlight .rate {
+      font-size: 0.9rem;
+      color: #16a34a;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .breakdown-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .breakdown-card .bd-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .breakdown-card .bd-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .breakdown-card .bd-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .bd-social { color: #0891b2; }
+    .bd-income-tax { color: #dc2626; }
+    .bd-resident-tax { color: #ea580c; }
+    .bd-deduction { color: #7c3aed; }
+    .bd-take-home { color: #16a34a; }
+
+    /* CSS Bar Chart */
+    .chart-section {
+      margin-bottom: 24px;
+    }
+    .chart-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .stacked-bar {
+      display: flex;
+      height: 40px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .stacked-bar > div {
+      transition: width 0.5s ease;
+      min-width: 0;
+    }
+    .bar-take-home { background: #22c55e; }
+    .bar-social { background: #06b6d4; }
+    .bar-income-tax { background: #ef4444; }
+    .bar-resident-tax { background: #f97316; }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.8rem;
+    }
+    .chart-legend span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    /* Detail Breakdown List */
+    .detail-list {
+      margin: 16px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-row.total {
+      font-weight: 700;
+      font-size: 1rem;
+      border-top: 2px solid var(--text);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .detail-row .row-label {
+      color: var(--text-muted);
+    }
+    .detail-row .row-value {
+      font-weight: 600;
+    }
+
+    /* Quick Table */
+    .quick-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.85rem;
+    }
+    .quick-table th, .quick-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: right;
+    }
+    .quick-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+    .quick-table td:first-child {
+      text-align: center;
+      font-weight: 600;
+    }
+    .quick-table .current-row {
+      background: #eff6ff;
+      font-weight: 700;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+
+    @media (max-width: 600px) {
+      .result-highlight .amount { font-size: 1.8rem; }
+      .breakdown-grid { grid-template-columns: 1fr; }
+      .quick-table { font-size: 0.75rem; }
+      .quick-table th, .quick-table td { padding: 6px 4px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>手取り計算シミュレーター</h1>
+    <h2>年収から手取りを無料で自動計算</h2>
+    <p class="tool-description">年収（額面）を入力するだけで、所得税・住民税・社会保険料を自動計算し、手取り年収・月収を瞬時に表示します。内訳グラフと年収別早見表付き。登録不要・無料・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="annual-income">年収（額面）</label>
+          <input type="number" id="annual-income" placeholder="5000000" min="0" max="100000000" step="10000">
+          <div class="unit">円</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="age-group">年齢区分</label>
+          <select id="age-group">
+            <option value="under40">39歳以下</option>
+            <option value="40to64">40〜64歳（介護保険あり）</option>
+            <option value="over65">65歳以上</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label for="dependents">扶養家族の人数</label>
+          <input type="number" id="dependents" placeholder="0" min="0" max="20" step="1" value="0">
+          <div class="unit">人</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculateSalary()">手取りを計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="salary-result" id="salary-result">
+        <!-- Highlight: Take-home pay -->
+        <div class="result-highlight">
+          <div class="label">手取り年収</div>
+          <div class="amount" id="take-home-yearly"></div>
+          <div class="sub-amount">月収 <strong id="take-home-monthly"></strong></div>
+          <div class="rate" id="take-home-rate"></div>
+        </div>
+
+        <!-- Breakdown Cards -->
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <div class="bd-label">社会保険料</div>
+            <div class="bd-value bd-social" id="bd-social"></div>
+            <div class="bd-sub" id="bd-social-rate"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">所得税</div>
+            <div class="bd-value bd-income-tax" id="bd-income-tax"></div>
+            <div class="bd-sub" id="bd-income-tax-rate"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">住民税</div>
+            <div class="bd-value bd-resident-tax" id="bd-resident-tax"></div>
+            <div class="bd-sub" id="bd-resident-tax-rate"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">給与所得控除</div>
+            <div class="bd-value bd-deduction" id="bd-deduction"></div>
+            <div class="bd-sub" id="bd-deduction-rate"></div>
+          </div>
+        </div>
+
+        <!-- Stacked Bar Chart -->
+        <div class="chart-section">
+          <h3>年収の内訳</h3>
+          <div class="stacked-bar" id="stacked-bar">
+            <div class="bar-take-home" id="bar-take-home"></div>
+            <div class="bar-social" id="bar-social"></div>
+            <div class="bar-income-tax" id="bar-income-tax"></div>
+            <div class="bar-resident-tax" id="bar-resident-tax"></div>
+          </div>
+          <div class="chart-legend">
+            <span><span class="legend-dot" style="background:#22c55e;"></span>手取り</span>
+            <span><span class="legend-dot" style="background:#06b6d4;"></span>社会保険料</span>
+            <span><span class="legend-dot" style="background:#ef4444;"></span>所得税</span>
+            <span><span class="legend-dot" style="background:#f97316;"></span>住民税</span>
+          </div>
+        </div>
+
+        <!-- Detail Breakdown -->
+        <div class="detail-list" id="detail-list">
+          <h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>
+        </div>
+
+        <div class="notice">
+          <strong>注意：</strong>この計算結果は概算値です。実際の手取り額は、勤務先の健康保険組合の保険料率、お住まいの自治体の住民税率、その他の控除（配偶者控除・医療費控除など）により異なります。正確な金額は勤務先の給与担当や税理士にご確認ください。
+        </div>
+
+        <!-- Quick Reference Table -->
+        <h3 style="font-size:1rem;margin-top:32px;margin-bottom:8px;">年収別 手取り早見表</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px;">39歳以下・扶養なしの場合の概算値</p>
+        <div style="overflow-x:auto;">
+          <table class="quick-table" id="quick-table">
+            <thead>
+              <tr>
+                <th>年収（額面）</th>
+                <th>社会保険料</th>
+                <th>所得税</th>
+                <th>住民税</th>
+                <th>手取り年収</th>
+                <th>手取り月収</th>
+                <th>手取り率</th>
+              </tr>
+            </thead>
+            <tbody id="quick-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI計算</h3>
+          <p>身長と体重からBMIを瞬時に計算</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // === Tax Calculation Logic (2026 estimate) ===
+
+    // 給与所得控除（国税庁 速算表ベース）
+    function calcEmploymentDeduction(income) {
+      if (income <= 1625000) return 550000;
+      if (income <= 1800000) return income * 0.4 - 100000;
+      if (income <= 3600000) return income * 0.3 + 80000;
+      if (income <= 6600000) return income * 0.2 + 440000;
+      if (income <= 8500000) return income * 0.1 + 1100000;
+      return 1950000; // 上限195万円
+    }
+
+    // 社会保険料（概算）
+    function calcSocialInsurance(income, ageGroup) {
+      // 健康保険: 約5% (40-64歳は介護保険込み約5.8%)
+      // 厚生年金: 約9.15% (上限あり: 標準報酬月額65万円 = 年収780万円相当)
+      // 雇用保険: 約0.6%
+      var healthRate = 0.05;
+      if (ageGroup === '40to64') healthRate = 0.058; // 介護保険込み
+      if (ageGroup === 'over65') healthRate = 0.05;  // 65歳以上は介護保険なし
+
+      var healthInsurance = income * healthRate;
+
+      // 厚生年金（上限: 月額報酬65万 × 9.15% × 12 = 約713,700円）
+      var pensionBase = Math.min(income, 7800000);
+      var pension = pensionBase * 0.0915;
+
+      // 雇用保険
+      var employment = income * 0.006;
+
+      return {
+        health: Math.floor(healthInsurance),
+        pension: Math.floor(pension),
+        employment: Math.floor(employment),
+        total: Math.floor(healthInsurance + pension + employment)
+      };
+    }
+
+    // 所得税（累進課税）
+    function calcIncomeTax(taxableIncome) {
+      if (taxableIncome <= 0) return 0;
+      var tax = 0;
+      var brackets = [
+        { limit: 1950000, rate: 0.05, deduction: 0 },
+        { limit: 3300000, rate: 0.10, deduction: 97500 },
+        { limit: 6950000, rate: 0.20, deduction: 427500 },
+        { limit: 9000000, rate: 0.23, deduction: 636000 },
+        { limit: 18000000, rate: 0.33, deduction: 1536000 },
+        { limit: 40000000, rate: 0.40, deduction: 2796000 },
+        { limit: Infinity, rate: 0.45, deduction: 4796000 }
+      ];
+      for (var i = 0; i < brackets.length; i++) {
+        if (taxableIncome <= brackets[i].limit) {
+          tax = taxableIncome * brackets[i].rate - brackets[i].deduction;
+          break;
+        }
+      }
+      // 復興特別所得税（2.1%）
+      tax = tax * 1.021;
+      return Math.floor(tax);
+    }
+
+    // 住民税
+    function calcResidentTax(taxableIncome) {
+      if (taxableIncome <= 0) return 5000; // 均等割のみ
+      return Math.floor(taxableIncome * 0.10) + 5000;
+    }
+
+    // メイン計算
+    function calcAll(income, ageGroup, dependents) {
+      var employmentDeduction = calcEmploymentDeduction(income);
+      var social = calcSocialInsurance(income, ageGroup);
+
+      // 基礎控除 48万円
+      var basicDeduction = 480000;
+      // 扶養控除 38万円 × 人数
+      var dependentDeduction = 380000 * dependents;
+
+      // 課税所得
+      var taxableIncome = income - employmentDeduction - social.total - basicDeduction - dependentDeduction;
+      if (taxableIncome < 0) taxableIncome = 0;
+
+      var incomeTax = calcIncomeTax(taxableIncome);
+      var residentTax = calcResidentTax(taxableIncome);
+
+      var takeHome = income - social.total - incomeTax - residentTax;
+      if (takeHome < 0) takeHome = 0;
+
+      return {
+        income: income,
+        employmentDeduction: employmentDeduction,
+        social: social,
+        basicDeduction: basicDeduction,
+        dependentDeduction: dependentDeduction,
+        taxableIncome: taxableIncome,
+        incomeTax: incomeTax,
+        residentTax: residentTax,
+        takeHome: takeHome
+      };
+    }
+
+    function formatYen(n) {
+      return Math.floor(n).toLocaleString('ja-JP') + '円';
+    }
+
+    function calculateSalary() {
+      var income = parseInt(document.getElementById('annual-income').value);
+      var ageGroup = document.getElementById('age-group').value;
+      var dependents = parseInt(document.getElementById('dependents').value) || 0;
+
+      if (!income || income <= 0) {
+        alert('年収を正しく入力してください。');
+        return;
+      }
+
+      var r = calcAll(income, ageGroup, dependents);
+
+      // Highlight
+      document.getElementById('take-home-yearly').textContent = formatYen(r.takeHome);
+      document.getElementById('take-home-monthly').textContent = formatYen(Math.floor(r.takeHome / 12));
+      document.getElementById('take-home-rate').textContent = '手取り率: ' + (r.takeHome / r.income * 100).toFixed(1) + '%';
+
+      // Breakdown cards
+      document.getElementById('bd-social').textContent = formatYen(r.social.total);
+      document.getElementById('bd-social-rate').textContent = '年収の' + (r.social.total / r.income * 100).toFixed(1) + '%';
+      document.getElementById('bd-income-tax').textContent = formatYen(r.incomeTax);
+      document.getElementById('bd-income-tax-rate').textContent = '年収の' + (r.incomeTax / r.income * 100).toFixed(1) + '%';
+      document.getElementById('bd-resident-tax').textContent = formatYen(r.residentTax);
+      document.getElementById('bd-resident-tax-rate').textContent = '年収の' + (r.residentTax / r.income * 100).toFixed(1) + '%';
+      document.getElementById('bd-deduction').textContent = formatYen(r.employmentDeduction);
+      document.getElementById('bd-deduction-rate').textContent = '年収の' + (r.employmentDeduction / r.income * 100).toFixed(1) + '%';
+
+      // Stacked bar
+      var takeHomePct = r.takeHome / r.income * 100;
+      var socialPct = r.social.total / r.income * 100;
+      var incomeTaxPct = r.incomeTax / r.income * 100;
+      var residentTaxPct = r.residentTax / r.income * 100;
+      document.getElementById('bar-take-home').style.width = takeHomePct + '%';
+      document.getElementById('bar-social').style.width = socialPct + '%';
+      document.getElementById('bar-income-tax').style.width = incomeTaxPct + '%';
+      document.getElementById('bar-resident-tax').style.width = residentTaxPct + '%';
+
+      // Detail list
+      var dl = document.getElementById('detail-list');
+      dl.innerHTML = '<h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>';
+      var rows = [
+        ['額面年収', formatYen(r.income)],
+        ['給与所得控除', '- ' + formatYen(r.employmentDeduction)],
+        ['社会保険料（健康保険）', '- ' + formatYen(r.social.health)],
+        ['社会保険料（厚生年金）', '- ' + formatYen(r.social.pension)],
+        ['社会保険料（雇用保険）', '- ' + formatYen(r.social.employment)],
+        ['基礎控除', '- ' + formatYen(r.basicDeduction)],
+      ];
+      if (r.dependentDeduction > 0) {
+        rows.push(['扶養控除（' + document.getElementById('dependents').value + '人）', '- ' + formatYen(r.dependentDeduction)]);
+      }
+      rows.push(
+        ['課税所得', formatYen(r.taxableIncome)],
+        ['所得税（復興特別所得税込）', '- ' + formatYen(r.incomeTax)],
+        ['住民税（所得割+均等割）', '- ' + formatYen(r.residentTax)]
+      );
+
+      for (var i = 0; i < rows.length; i++) {
+        var div = document.createElement('div');
+        div.className = 'detail-row';
+        div.innerHTML = '<span class="row-label">' + rows[i][0] + '</span><span class="row-value">' + rows[i][1] + '</span>';
+        dl.appendChild(div);
+      }
+      var totalDiv = document.createElement('div');
+      totalDiv.className = 'detail-row total';
+      totalDiv.innerHTML = '<span class="row-label">手取り年収</span><span class="row-value" style="color:var(--primary);">' + formatYen(r.takeHome) + '</span>';
+      dl.appendChild(totalDiv);
+
+      // Quick table
+      generateQuickTable(income);
+
+      document.getElementById('salary-result').classList.add('show');
+    }
+
+    function generateQuickTable(currentIncome) {
+      var salaries = [3000000, 3500000, 4000000, 4500000, 5000000, 5500000, 6000000, 7000000, 8000000, 9000000, 10000000, 12000000, 15000000];
+      var tbody = document.getElementById('quick-table-body');
+      tbody.innerHTML = '';
+      for (var i = 0; i < salaries.length; i++) {
+        var s = salaries[i];
+        var r = calcAll(s, 'under40', 0);
+        var tr = document.createElement('tr');
+        // Highlight if close to current income
+        if (currentIncome >= s - 250000 && currentIncome < s + 250000) {
+          tr.className = 'current-row';
+        }
+        tr.innerHTML =
+          '<td>' + (s / 10000).toLocaleString() + '万円</td>' +
+          '<td>' + formatYen(r.social.total) + '</td>' +
+          '<td>' + formatYen(r.incomeTax) + '</td>' +
+          '<td>' + formatYen(r.residentTax) + '</td>' +
+          '<td>' + formatYen(r.takeHome) + '</td>' +
+          '<td>' + formatYen(Math.floor(r.takeHome / 12)) + '</td>' +
+          '<td>' + (r.takeHome / s * 100).toFixed(1) + '%</td>';
+        tbody.appendChild(tr);
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('annual-income').value = '';
+      document.getElementById('age-group').value = 'under40';
+      document.getElementById('dependents').value = '0';
+      document.getElementById('salary-result').classList.remove('show');
+    }
+
+    // Enter key support
+    document.getElementById('annual-income').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculateSalary();
+    });
+    document.getElementById('dependents').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculateSalary();
+    });
+  </script>
+</body>
+</html>

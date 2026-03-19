@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ルーレット - 無料オンラインランダム抽選ツール｜SimpleToolkit</title>
+  <meta name="description" content="項目を自由に設定してルーレットを回せる無料ツール。食事決め、抽選、ランダム選択に最適。登録不要・すぐに使えるオンラインルーレット。">
+  <meta property="og:title" content="ルーレット - 無料オンラインランダム抽選ツール｜SimpleToolkit">
+  <meta property="og:description" content="項目を自由に設定してルーレットを回せる無料ツール。食事決め、抽選、ランダム選択に最適。登録不要・すぐに使える。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/roulette/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ルーレット - 無料オンラインランダム抽選ツール",
+    "description": "項目を自由に設定してルーレットを回せる無料ツール。食事決め、抽選、ランダム選択に最適。登録不要・すぐに使えるオンラインルーレット。",
+    "url": "https://simpletoolkit.net/tools/roulette/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "ルーレットの使い方は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "テキストエリアに1行1項目で選択肢を入力し、「スピン！」ボタンを押すだけです。ルーレットが回転し、ランダムに1つの項目が選ばれます。項目は2〜20個まで設定できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "項目を追加・変更するには？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "テキストエリアに直接入力してください。1行に1つの項目を書きます。改行で区切ることで複数の項目を設定できます。空行は自動的に無視されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "結果は公平ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、JavaScriptの乱数生成を使用しており、各項目が均等な確率で選ばれます。すべての処理はブラウザ内で完結し、外部サーバーへのデータ送信は一切ありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どんな用途に使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "食事決め（ランチルーレット）、罰ゲーム抽選、プレゼント交換の順番決め、チーム分け、当番決め、旅行先の選択など、あらゆるランダム選択に活用できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スマートフォンでも使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、レスポンシブ対応しているのでスマートフォン、タブレット、PCなどあらゆるデバイスで快適に利用できます。アプリのインストールも不要です。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .roulette-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1;
+    }
+    .canvas-wrapper canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .roulette-pointer {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 30px solid #e11d48;
+      z-index: 10;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    .spin-btn {
+      font-size: 1.3rem;
+      padding: 14px 48px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #e11d48, #be123c);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 15px rgba(225,29,72,0.4);
+    }
+    .spin-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(225,29,72,0.5);
+    }
+    .spin-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .spin-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .items-section {
+      width: 100%;
+    }
+    .items-section label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .items-section textarea {
+      width: 100%;
+      min-height: 160px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      line-height: 1.6;
+      resize: vertical;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .items-section textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .items-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .items-count {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-align: right;
+    }
+    .items-count.error {
+      color: #e11d48;
+      font-weight: 600;
+    }
+
+    /* Result popup overlay */
+    .result-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+    .result-overlay.show {
+      display: flex;
+    }
+    .result-popup {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 48px;
+      text-align: center;
+      max-width: 90vw;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .result-label {
+      font-size: 1rem;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .result-text {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #e11d48;
+      margin-bottom: 24px;
+      word-break: break-all;
+    }
+    .result-close-btn {
+      padding: 10px 36px;
+      border: none;
+      border-radius: 50px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .result-close-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* History */
+    .history-section {
+      width: 100%;
+      margin-top: 8px;
+    }
+    .history-section h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .history-list {
+      list-style: none;
+      padding: 0;
+    }
+    .history-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .history-list li:last-child {
+      border-bottom: none;
+    }
+    .history-num {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      min-width: 30px;
+    }
+    .history-value {
+      font-weight: 600;
+      flex: 1;
+      text-align: center;
+    }
+    .history-empty {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .canvas-wrapper {
+        max-width: 300px;
+      }
+      .result-text {
+        font-size: 1.8rem;
+      }
+      .result-popup {
+        padding: 28px 24px;
+      }
+      .spin-btn {
+        font-size: 1.1rem;
+        padding: 12px 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>ルーレット</h1>
+    <h2>無料オンラインランダム抽選ツール</h2>
+    <p class="tool-description">項目を自由に設定してルーレットを回せる無料ツール。食事決め、抽選、ランダム選択に最適。登録不要・ブラウザだけですぐに使えます。</p>
+
+    <div class="tool-area">
+      <div class="roulette-container">
+        <div class="canvas-wrapper">
+          <div class="roulette-pointer"></div>
+          <canvas id="roulette-canvas" width="400" height="400"></canvas>
+        </div>
+
+        <button class="spin-btn" id="spin-btn" onclick="spin()">スピン！</button>
+
+        <div class="items-section">
+          <label for="items-input">項目を入力（1行に1つ）</label>
+          <textarea id="items-input" placeholder="ラーメン&#10;カレー&#10;寿司&#10;パスタ&#10;ハンバーグ&#10;焼肉">ラーメン
+カレー
+寿司
+パスタ
+ハンバーグ
+焼肉</textarea>
+          <div class="items-hint">※ 2〜20個まで設定できます。空行は無視されます。</div>
+          <div class="items-count" id="items-count"></div>
+        </div>
+
+        <div class="history-section">
+          <h3>結果の履歴（直近10回）</h3>
+          <ul class="history-list" id="history-list">
+            <li class="history-empty">まだ結果がありません</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result popup -->
+    <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
+      <div class="result-popup" onclick="event.stopPropagation()">
+        <div class="result-label">結果</div>
+        <div class="result-text" id="result-text"></div>
+        <button class="result-close-btn" onclick="closeResult()">OK</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QRコード生成ツール</h3>
+          <p>テキストやURLからQRコードを生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var canvas = document.getElementById('roulette-canvas');
+    var ctx = canvas.getContext('2d');
+    var itemsInput = document.getElementById('items-input');
+    var spinBtn = document.getElementById('spin-btn');
+    var currentAngle = 0;
+    var isSpinning = false;
+    var history = [];
+
+    // Beautiful color palette
+    var COLORS = [
+      '#e11d48', '#2563eb', '#16a34a', '#f59e0b', '#8b5cf6',
+      '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1',
+      '#14b8a6', '#ef4444', '#3b82f6', '#a855f7', '#eab308',
+      '#22c55e', '#d946ef', '#0ea5e9', '#f43f5e', '#10b981'
+    ];
+
+    function getItems() {
+      var lines = itemsInput.value.split('\n');
+      var items = [];
+      for (var i = 0; i < lines.length; i++) {
+        var t = lines[i].trim();
+        if (t !== '') items.push(t);
+      }
+      return items;
+    }
+
+    function updateItemsCount() {
+      var items = getItems();
+      var countEl = document.getElementById('items-count');
+      if (items.length < 2) {
+        countEl.textContent = '項目数: ' + items.length + '（2個以上必要です）';
+        countEl.className = 'items-count error';
+      } else if (items.length > 20) {
+        countEl.textContent = '項目数: ' + items.length + '（20個以下にしてください）';
+        countEl.className = 'items-count error';
+      } else {
+        countEl.textContent = '項目数: ' + items.length;
+        countEl.className = 'items-count';
+      }
+    }
+
+    function drawWheel(items, angle) {
+      var w = canvas.width;
+      var h = canvas.height;
+      var cx = w / 2;
+      var cy = h / 2;
+      var r = Math.min(cx, cy) - 10;
+      var n = items.length;
+      var sliceAngle = (2 * Math.PI) / n;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Draw slices
+      for (var i = 0; i < n; i++) {
+        var startAngle = angle + i * sliceAngle;
+        var endAngle = startAngle + sliceAngle;
+
+        // Slice fill
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fillStyle = COLORS[i % COLORS.length];
+        ctx.fill();
+
+        // Slice border
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r, startAngle, endAngle);
+        ctx.closePath();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Text
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold ' + Math.min(16, Math.max(10, Math.floor(200 / n))) + 'px sans-serif';
+        ctx.shadowColor = 'rgba(0,0,0,0.4)';
+        ctx.shadowBlur = 3;
+
+        var label = items[i];
+        var maxLen = n <= 4 ? 10 : (n <= 8 ? 7 : 5);
+        if (label.length > maxLen) label = label.substring(0, maxLen) + '...';
+        ctx.fillText(label, r - 14, 5);
+        ctx.restore();
+      }
+
+      // Center circle
+      ctx.beginPath();
+      ctx.arc(cx, cy, 22, 0, 2 * Math.PI);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Outer ring
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+    }
+
+    function spin() {
+      if (isSpinning) return;
+
+      var items = getItems();
+      if (items.length < 2) {
+        alert('項目を2個以上入力してください。');
+        return;
+      }
+      if (items.length > 20) {
+        alert('項目は20個以下にしてください。');
+        return;
+      }
+
+      isSpinning = true;
+      spinBtn.disabled = true;
+
+      var n = items.length;
+      var sliceAngle = (2 * Math.PI) / n;
+
+      // Random target: 5-8 full rotations + random position
+      var fullRotations = (5 + Math.random() * 3) * 2 * Math.PI;
+      var randomSlice = Math.floor(Math.random() * n);
+      // Target angle: pointer is at top (270deg = -PI/2)
+      // We need the middle of the target slice to end up at the top
+      var targetSliceCenter = randomSlice * sliceAngle + sliceAngle / 2;
+      // The pointer is at the top (-PI/2), but in canvas 0 is right,
+      // so "top" in our rotation corresponds to -PI/2
+      // We want: currentAngle + totalSpin + targetSliceCenter = -PI/2 + 2*PI*k
+      // Actually the wheel rotates, and the pointer reads from top.
+      // The winning slice is the one at -PI/2 (top).
+      // After rotation by totalAngle, slice i starts at totalAngle + i*sliceAngle
+      // For slice randomSlice to be at the pointer (-PI/2):
+      // totalAngle + randomSlice*sliceAngle + sliceAngle/2 ≡ -PI/2 (mod 2PI)
+      // totalAngle = -PI/2 - targetSliceCenter (mod 2PI)
+      var finalAngle = -Math.PI / 2 - targetSliceCenter;
+      // Normalize to positive range
+      finalAngle = ((finalAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+      var totalSpin = fullRotations + (finalAngle - ((currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI));
+      if (totalSpin < fullRotations) totalSpin += 2 * Math.PI;
+
+      var startAngle = currentAngle;
+      var startTime = null;
+      var duration = 4000 + Math.random() * 1000; // 4-5 seconds
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        var easedProgress = easeOutCubic(progress);
+
+        currentAngle = startAngle + totalSpin * easedProgress;
+        drawWheel(items, currentAngle);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          // Spin complete
+          isSpinning = false;
+          spinBtn.disabled = false;
+
+          // Show result
+          var resultItem = items[randomSlice];
+          showResult(resultItem);
+          addHistory(resultItem);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function showResult(text) {
+      document.getElementById('result-text').textContent = text;
+      document.getElementById('result-overlay').classList.add('show');
+    }
+
+    function closeResult(event) {
+      if (event && event.target !== document.getElementById('result-overlay')) return;
+      document.getElementById('result-overlay').classList.remove('show');
+    }
+
+    function addHistory(item) {
+      history.unshift(item);
+      if (history.length > 10) history.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      var list = document.getElementById('history-list');
+      if (history.length === 0) {
+        list.innerHTML = '<li class="history-empty">まだ結果がありません</li>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < history.length; i++) {
+        html += '<li><span class="history-num">#' + (i + 1) + '</span><span class="history-value">' + escapeHtml(history[i]) + '</span></li>';
+      }
+      list.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Initialize
+    itemsInput.addEventListener('input', function() {
+      updateItemsCount();
+      if (!isSpinning) {
+        drawWheel(getItems(), currentAngle);
+      }
+    });
+
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('result-overlay').classList.remove('show');
+      }
+    });
+
+    // Initial draw
+    updateItemsCount();
+    drawWheel(getItems(), currentAngle);
+  </script>
+</body>
+</html>

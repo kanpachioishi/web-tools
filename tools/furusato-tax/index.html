@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ふるさと納税控除上限額シミュレーター - 無料計算ツール｜SimpleToolkit</title>
+  <meta name="description" content="年収と家族構成を入力するだけでふるさと納税の控除上限額を瞬時に計算。年収別早見表付き。自己負担2,000円で最大限お得にふるさと納税。">
+  <meta property="og:title" content="ふるさと納税控除上限額シミュレーター - 無料計算ツール｜SimpleToolkit">
+  <meta property="og:description" content="年収と家族構成を入力するだけでふるさと納税の控除上限額を瞬時に計算。年収別早見表付き。自己負担2,000円で最大限お得にふるさと納税。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/furusato-tax/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ふるさと納税控除上限額シミュレーター - 無料計算ツール",
+    "description": "年収と家族構成を入力するだけでふるさと納税の控除上限額を瞬時に計算。年収別早見表付き。自己負担2,000円で最大限お得にふるさと納税。",
+    "url": "https://simpletoolkit.net/tools/furusato-tax/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "ふるさと納税とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ふるさと納税は、自分が応援したい自治体に寄附ができる制度です。寄附額のうち2,000円を超える部分が、所得税・住民税から控除されます。さらに寄附先の自治体から返礼品を受け取れるため、実質2,000円の負担で各地の特産品を楽しめます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ふるさと納税の控除上限額とは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "控除上限額とは、自己負担2,000円でふるさと納税ができる上限金額のことです。年収・家族構成・各種控除によって異なります。上限額を超えて寄附した場合、超過分は自己負担となるため、事前に上限額を確認することが重要です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ふるさと納税の控除上限額はどうやって計算しますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "控除上限額の目安は「住民税所得割額 × 20% + 2,000円」で計算できます。住民税所得割額は、給与所得から各種控除を差し引いた課税所得に税率10%を掛けて算出します。年収や家族構成によって控除額が変わるため、上限額も変動します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ふるさと納税はいつまでに申し込めばいいですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ふるさと納税は1月1日から12月31日までの1年間が対象期間です。その年の所得税・翌年の住民税から控除を受けるには、12月31日までに寄附を完了する必要があります。年末は駆け込み需要で人気の返礼品が品切れになることもあるため、早めの申し込みがおすすめです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。年収や家族構成のデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 200px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    .input-field input,
+    .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus,
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .result-area {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-area.show {
+      display: block;
+    }
+
+    .result-main {
+      text-align: center;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      padding: 32px 20px;
+      margin-bottom: 20px;
+    }
+    .result-label {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-amount {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .result-amount .yen {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .result-sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .result-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .result-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .result-card .card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-card .card-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .result-card .card-value.highlight {
+      color: #16a34a;
+    }
+
+    .notice {
+      background: #fefce8;
+      border: 1px solid #fde047;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #854d0e;
+      margin-top: 16px;
+    }
+
+    .hayami-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.85rem;
+    }
+    .hayami-table th,
+    .hayami-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: right;
+    }
+    .hayami-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+    .hayami-table td:first-child {
+      text-align: center;
+      font-weight: 600;
+    }
+    .hayami-table .highlight-row {
+      background: #eff6ff;
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      margin-top: 32px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .result-amount { font-size: 2.2rem; }
+      .result-cards { grid-template-columns: 1fr; }
+      .hayami-table { font-size: 0.75rem; }
+      .hayami-table th, .hayami-table td { padding: 6px 4px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>ふるさと納税控除上限額シミュレーター</h1>
+    <h2>無料オンライン計算ツール</h2>
+    <p class="tool-description">年収と家族構成を入力するだけで、ふるさと納税の控除上限額（目安）を瞬時に計算できます。年収別の早見表付き。自己負担2,000円で最大限お得にふるさと納税を活用しましょう。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="income">年収（給与所得）</label>
+          <input type="number" id="income" placeholder="5000000" min="0" max="100000000" step="10000">
+          <div class="unit">円（税引前の額面年収）</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="family">家族構成</label>
+          <select id="family">
+            <option value="single">独身 または 共働き（配偶者控除なし）</option>
+            <option value="spouse">配偶者控除あり（専業主婦・主夫など）</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label for="dependents">扶養家族の人数</label>
+          <select id="dependents">
+            <option value="0">0人</option>
+            <option value="1">1人</option>
+            <option value="2">2人</option>
+            <option value="3">3人</option>
+            <option value="4">4人</option>
+            <option value="5">5人</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">控除上限額を計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="result-main">
+          <div class="result-label">ふるさと納税 控除上限額（目安）</div>
+          <div class="result-amount" id="result-limit"></div>
+          <div class="result-sub" id="result-sub"></div>
+        </div>
+
+        <div class="result-cards">
+          <div class="result-card">
+            <div class="card-label">控除上限額</div>
+            <div class="card-value" id="card-limit"></div>
+          </div>
+          <div class="result-card">
+            <div class="card-label">自己負担額</div>
+            <div class="card-value" id="card-burden"></div>
+          </div>
+          <div class="result-card">
+            <div class="card-label">実質お得額</div>
+            <div class="card-value highlight" id="card-benefit"></div>
+          </div>
+        </div>
+
+        <div class="notice">
+          <strong>ご注意：</strong>この計算結果はあくまで目安です。実際の控除上限額は、住宅ローン控除・医療費控除・iDeCoなどの各種控除により変動します。正確な金額はお住まいの市区町村にお問い合わせください。
+        </div>
+
+        <h2 class="section-title">年収別ふるさと納税控除上限額 早見表</h2>
+        <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:8px;">選択中の家族構成での目安額（扶養家族 <span id="hayami-dep">0</span>人）</p>
+        <table class="hayami-table" id="hayami-table">
+          <thead>
+            <tr>
+              <th>年収</th>
+              <th>控除上限額（目安）</th>
+              <th>実質お得額</th>
+            </tr>
+          </thead>
+          <tbody id="hayami-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI計算</h3>
+          <p>身長と体重からBMIを瞬時に計算</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // 給与所得控除を計算
+    function calcSalaryDeduction(income) {
+      if (income <= 1625000) return 550000;
+      if (income <= 1800000) return income * 0.4 - 100000;
+      if (income <= 3600000) return income * 0.3 + 80000;
+      if (income <= 6600000) return income * 0.2 + 440000;
+      if (income <= 8500000) return income * 0.1 + 1100000;
+      return 1950000; // 上限
+    }
+
+    // ふるさと納税控除上限額を計算（簡易版）
+    function calcFurusatoLimit(income, familyType, dependents) {
+      if (income <= 0) return 0;
+
+      // 給与所得
+      var salaryDeduction = calcSalaryDeduction(income);
+      var salaryIncome = Math.max(income - salaryDeduction, 0);
+
+      // 所得控除
+      var basicDeduction = 430000; // 基礎控除
+      var socialInsurance = Math.floor(income * 0.15); // 社会保険料（年収の約15%で概算）
+      var spouseDeduction = (familyType === 'spouse') ? 380000 : 0; // 配偶者控除
+      var dependentDeduction = dependents * 380000; // 扶養控除（一般扶養親族）
+
+      var totalDeduction = basicDeduction + socialInsurance + spouseDeduction + dependentDeduction;
+
+      // 課税所得
+      var taxableIncome = Math.max(salaryIncome - totalDeduction, 0);
+
+      // 住民税所得割額（税率10%）
+      var juuminzeiShotokuwari = Math.floor(taxableIncome * 0.10);
+
+      // 控除上限額 = 住民税所得割額 × 20% + 2,000円
+      var limit = Math.floor(juuminzeiShotokuwari * 0.20) + 2000;
+
+      // 最低0円
+      return Math.max(limit, 0);
+    }
+
+    function formatNumber(num) {
+      return num.toLocaleString('ja-JP');
+    }
+
+    function calculate() {
+      var income = parseInt(document.getElementById('income').value);
+      var familyType = document.getElementById('family').value;
+      var dependents = parseInt(document.getElementById('dependents').value);
+
+      if (!income || income <= 0) {
+        alert('年収を正しく入力してください。');
+        return;
+      }
+
+      var limit = calcFurusatoLimit(income, familyType, dependents);
+      var burden = 2000;
+      var benefit = Math.max(limit - burden, 0);
+
+      // メイン結果
+      document.getElementById('result-limit').innerHTML =
+        formatNumber(limit) + '<span class="yen">円</span>';
+      document.getElementById('result-sub').textContent =
+        '年収 ' + formatNumber(income) + '円 の場合の控除上限額（目安）';
+
+      // カード
+      document.getElementById('card-limit').textContent = formatNumber(limit) + '円';
+      document.getElementById('card-burden').textContent = formatNumber(burden) + '円';
+      document.getElementById('card-benefit').textContent = formatNumber(benefit) + '円';
+
+      // 早見表を生成
+      generateHayamiTable(familyType, dependents, income);
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function generateHayamiTable(familyType, dependents, currentIncome) {
+      var incomes = [
+        3000000, 3500000, 4000000, 4500000, 5000000,
+        5500000, 6000000, 6500000, 7000000, 7500000,
+        8000000, 9000000, 10000000, 12000000, 15000000, 20000000
+      ];
+
+      document.getElementById('hayami-dep').textContent = dependents;
+
+      var tbody = document.getElementById('hayami-body');
+      tbody.innerHTML = '';
+
+      for (var i = 0; i < incomes.length; i++) {
+        var inc = incomes[i];
+        var lim = calcFurusatoLimit(inc, familyType, dependents);
+        var ben = Math.max(lim - 2000, 0);
+        var row = document.createElement('tr');
+
+        // 現在の年収に近い行をハイライト
+        var isClose = (currentIncome >= inc - 250000 && currentIncome < inc + 250000);
+        if (isClose) row.className = 'highlight-row';
+
+        var incomeText = (inc >= 10000000)
+          ? (inc / 10000000) + ',' + formatNumber(inc % 10000000 || 0)
+          : formatNumber(inc);
+
+        row.innerHTML =
+          '<td>' + formatNumber(inc) + '円</td>' +
+          '<td>' + formatNumber(lim) + '円</td>' +
+          '<td>' + formatNumber(ben) + '円</td>';
+        tbody.appendChild(row);
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('income').value = '';
+      document.getElementById('family').selectedIndex = 0;
+      document.getElementById('dependents').selectedIndex = 0;
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    // Enterキー対応
+    document.getElementById('income').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+  </script>
+</body>
+</html>
