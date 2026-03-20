@@ -3,7 +3,9 @@
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
   footer.innerHTML = `
-    <div class="ad-placeholder"></div>
+    <div class="ad-placeholder">
+      <!-- AdSense承認後、ここに広告ユニットコードを挿入 -->
+    </div>
     <nav class="footer-links">
       <a href="/about/">サイトについて</a>
       <a href="/contact/">お問い合わせ</a>

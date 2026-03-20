@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>電気代計算 - 無料オンライン電気料金シミュレーター｜SimpleToolkit</title>
+  <meta name="description" content="家電の消費電力・使用時間・電力単価から電気代を瞬時に計算。1時間/1日/1ヶ月/1年の電気料金がわかる。登録不要・無料のオンライン電気代計算ツール。">
+  <meta property="og:title" content="電気代計算 - 無料オンライン電気料金シミュレーター｜SimpleToolkit">
+  <meta property="og:description" content="家電の消費電力・使用時間・電力単価から電気代を瞬時に計算。登録不要・無料。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/electricity-cost/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "電気代計算 - 無料オンライン電気料金シミュレーター",
+    "description": "家電の消費電力・使用時間・電力単価から電気代を瞬時に計算。1時間/1日/1ヶ月/1年の電気料金がわかる。",
+    "url": "https://simpletoolkit.net/tools/electricity-cost/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "電気代の計算方法は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "電気代は「消費電力(W) ÷ 1000 × 使用時間(h) × 電力単価(円/kWh)」で計算できます。例えば1000Wのドライヤーを1時間使った場合、1000÷1000×1×31=31円（単価31円/kWhの場合）です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "電力単価の目安はいくら？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "全国平均の電力単価は約31円/kWh（2024年現在）です。電力会社やプラン、使用量によって異なりますが、一般家庭では27〜40円/kWh程度が目安です。請求書や電力会社のサイトで確認できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。入力データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .presets {
+      margin-bottom: 16px;
+    }
+    .presets label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .preset-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .preset-btn {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .preset-btn:hover {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .result-area {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-area.show { display: block; }
+    .cost-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .cost-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .cost-card .card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .cost-card .card-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .cost-card .card-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .detail-section {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+    }
+    .detail-section h3 {
+      font-size: 1rem;
+      margin: 0 0 8px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-row:last-child { border-bottom: none; }
+
+    /* 複数家電 */
+    .appliance-list {
+      margin-top: 16px;
+    }
+    .appliance-item {
+      display: flex;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .appliance-item .input-field {
+      flex: 1;
+      min-width: 100px;
+    }
+    .remove-btn {
+      padding: 10px 12px;
+      border: 1px solid #ef4444;
+      border-radius: var(--radius);
+      background: #fef2f2;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    @media (max-width: 600px) {
+      .cost-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>電気代計算</h1>
+    <h2>無料オンライン電気料金シミュレーター</h2>
+    <p class="tool-description">家電の消費電力と使用時間を入力するだけで、1時間・1日・1ヶ月・1年の電気代を瞬時に計算。複数の家電をまとめて計算することも可能。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="presets">
+        <label>よく使う家電のプリセット</label>
+        <div class="preset-btns">
+          <button class="preset-btn" onclick="setPreset('エアコン',500,8)">エアコン (500W)</button>
+          <button class="preset-btn" onclick="setPreset('冷蔵庫',150,24)">冷蔵庫 (150W)</button>
+          <button class="preset-btn" onclick="setPreset('ドライヤー',1200,0.25)">ドライヤー (1200W)</button>
+          <button class="preset-btn" onclick="setPreset('テレビ',100,5)">テレビ (100W)</button>
+          <button class="preset-btn" onclick="setPreset('洗濯機',400,1)">洗濯機 (400W)</button>
+          <button class="preset-btn" onclick="setPreset('電子レンジ',1000,0.25)">電子レンジ (1000W)</button>
+          <button class="preset-btn" onclick="setPreset('PC',200,8)">PC (200W)</button>
+          <button class="preset-btn" onclick="setPreset('照明(LED)',10,8)">照明LED (10W)</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="watt">消費電力</label>
+          <input type="number" id="watt" placeholder="500" min="0" step="1">
+          <div class="unit">W（ワット）</div>
+        </div>
+        <div class="input-field">
+          <label for="hours">1日の使用時間</label>
+          <input type="number" id="hours" placeholder="8" min="0" max="24" step="0.25">
+          <div class="unit">時間</div>
+        </div>
+        <div class="input-field">
+          <label for="price">電力単価</label>
+          <input type="number" id="price" placeholder="31" min="0" step="0.1" value="31">
+          <div class="unit">円/kWh（全国平均約31円）</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">電気代を計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="cost-cards">
+          <div class="cost-card">
+            <div class="card-label">1時間</div>
+            <div class="card-value" id="cost-hour"></div>
+          </div>
+          <div class="cost-card">
+            <div class="card-label">1日</div>
+            <div class="card-value" id="cost-day"></div>
+          </div>
+          <div class="cost-card">
+            <div class="card-label">1ヶ月（30日）</div>
+            <div class="card-value" id="cost-month"></div>
+          </div>
+          <div class="cost-card">
+            <div class="card-label">1年（365日）</div>
+            <div class="card-value" id="cost-year"></div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>計算内訳</h3>
+          <div class="detail-row">
+            <span>消費電力</span>
+            <span id="detail-watt"></span>
+          </div>
+          <div class="detail-row">
+            <span>1日の使用時間</span>
+            <span id="detail-hours"></span>
+          </div>
+          <div class="detail-row">
+            <span>1日の消費電力量</span>
+            <span id="detail-kwh"></span>
+          </div>
+          <div class="detail-row">
+            <span>電力単価</span>
+            <span id="detail-price"></span>
+          </div>
+          <div class="detail-row" style="font-weight:700;">
+            <span>計算式</span>
+            <span id="detail-formula"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../loan-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">金利計算・ローン計算</h3>
+          <p>ローン返済額を簡単シミュレーション</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../percent-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">割合計算</h3>
+          <p>パーセント計算を簡単に</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function setPreset(name, watt, hours) {
+      document.getElementById('watt').value = watt;
+      document.getElementById('hours').value = hours;
+    }
+
+    function calculate() {
+      var watt = parseFloat(document.getElementById('watt').value);
+      var hours = parseFloat(document.getElementById('hours').value);
+      var price = parseFloat(document.getElementById('price').value);
+
+      if (!watt || watt < 0 || isNaN(hours) || hours < 0 || !price || price < 0) {
+        alert('消費電力・使用時間・電力単価を正しく入力してください。');
+        return;
+      }
+
+      var kwhPerDay = watt / 1000 * hours;
+      var costPerHour = watt / 1000 * price;
+      var costPerDay = kwhPerDay * price;
+      var costPerMonth = costPerDay * 30;
+      var costPerYear = costPerDay * 365;
+
+      document.getElementById('cost-hour').textContent = costPerHour.toFixed(2) + ' 円';
+      document.getElementById('cost-day').textContent = costPerDay.toFixed(2) + ' 円';
+      document.getElementById('cost-month').textContent = Math.round(costPerMonth).toLocaleString('ja-JP') + ' 円';
+      document.getElementById('cost-year').textContent = Math.round(costPerYear).toLocaleString('ja-JP') + ' 円';
+
+      document.getElementById('detail-watt').textContent = watt + ' W';
+      document.getElementById('detail-hours').textContent = hours + ' 時間';
+      document.getElementById('detail-kwh').textContent = kwhPerDay.toFixed(3) + ' kWh';
+      document.getElementById('detail-price').textContent = price + ' 円/kWh';
+      document.getElementById('detail-formula').textContent = watt + 'W ÷ 1000 × ' + hours + 'h × ' + price + '円 = ' + costPerDay.toFixed(2) + '円/日';
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function clearForm() {
+      document.getElementById('watt').value = '';
+      document.getElementById('hours').value = '';
+      document.getElementById('price').value = '31';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    document.querySelectorAll('#watt, #hours, #price').forEach(function(el) {
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calculate();
+      });
+    });
+  </script>
+</body>
+</html>

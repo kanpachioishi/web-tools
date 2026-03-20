@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カロリー計算 - 無料オンライン食事カロリー計算ツール｜SimpleToolkit</title>
+  <meta name="description" content="食品名を選んで量を入力するだけで摂取カロリーを瞬時に計算。主要な食品・料理のカロリーデータベース搭載。1日の食事カロリーを簡単管理。登録不要・無料。">
+  <meta property="og:title" content="カロリー計算 - 無料オンライン食事カロリー計算ツール｜SimpleToolkit">
+  <meta property="og:description" content="食品名を選んで量を入力するだけで摂取カロリーを瞬時に計算。主要な食品のカロリーデータベース搭載。登録不要・無料。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/calorie-calculator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "カロリー計算 - 無料オンライン食事カロリー計算ツール",
+    "description": "食品名を選んで量を入力するだけで摂取カロリーを瞬時に計算。主要な食品・料理のカロリーデータベース搭載。1日の食事カロリーを簡単管理。",
+    "url": "https://simpletoolkit.net/tools/calorie-calculator/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "1日に必要なカロリーはどのくらい？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "成人男性で約2,200〜2,600kcal、成人女性で約1,800〜2,200kcalが目安です。年齢・性別・活動量によって異なります。ダイエットの場合は基礎代謝を下回らない範囲で摂取カロリーを調整することが推奨されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "カロリー計算はダイエットに効果的？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、カロリー計算はダイエットの基本です。摂取カロリーが消費カロリーを下回れば体重は減少します。ただし、栄養バランスも重要なので、カロリーだけでなくタンパク質・脂質・炭水化物のバランスにも注意しましょう。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。食事データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .search-area {
+      margin-bottom: 16px;
+    }
+    .search-area label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .search-row {
+      display: flex;
+      gap: 8px;
+    }
+    .search-row input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .search-row input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .suggestions {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
+    .suggestions.show { display: block; }
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .suggestion-item:hover { background: #eff6ff; }
+    .suggestion-item .cal { color: var(--text-muted); font-size: 0.8rem; }
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .cat-tab {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .cat-tab:hover, .cat-tab.active {
+      border-color: var(--primary);
+      background: #eff6ff;
+      color: var(--primary);
+    }
+    .add-row {
+      display: flex;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .add-row .input-field {
+      min-width: 80px;
+    }
+    .add-row .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+    }
+    .add-row .input-field input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .meal-list {
+      margin-top: 16px;
+    }
+    .meal-section {
+      margin-bottom: 20px;
+    }
+    .meal-section h3 {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .meal-section .meal-total {
+      font-size: 0.85rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .food-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .food-item .food-name { flex: 1; }
+    .food-item .food-cal { font-weight: 600; color: var(--primary); margin: 0 12px; }
+    .food-item .remove {
+      color: #ef4444;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 1.1rem;
+      padding: 0 4px;
+    }
+    .total-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: var(--bg);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      margin-top: 16px;
+    }
+    .total-bar .total-label { font-weight: 600; font-size: 1rem; }
+    .total-bar .total-value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+    .pfc-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .pfc-item {
+      flex: 1;
+      min-width: 80px;
+      text-align: center;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .pfc-item .pfc-label { font-size: 0.75rem; color: var(--text-muted); }
+    .pfc-item .pfc-value { font-size: 1.1rem; font-weight: 700; }
+    .pfc-protein { border-left: 3px solid #ef4444; }
+    .pfc-fat { border-left: 3px solid #f59e0b; }
+    .pfc-carb { border-left: 3px solid #3b82f6; }
+    .meal-select {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    @media (max-width: 600px) {
+      .add-row { flex-direction: column; align-items: stretch; }
+      .pfc-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>カロリー計算</h1>
+    <h2>無料オンライン食事カロリー計算ツール</h2>
+    <p class="tool-description">食品を検索して追加するだけで、1食・1日の摂取カロリーを簡単に計算。PFC（タンパク質・脂質・炭水化物）バランスも表示。ダイエットや食事管理に。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="search-area">
+        <label>食品を検索して追加</label>
+        <div class="search-row">
+          <input type="text" id="food-search" placeholder="食品名を入力（例：ごはん、鶏肉、パン）" autocomplete="off">
+        </div>
+        <div class="suggestions" id="suggestions"></div>
+      </div>
+
+      <div class="category-tabs" id="category-tabs"></div>
+
+      <div class="add-row" id="add-row" style="display:none;">
+        <div style="flex:2;">
+          <span id="selected-food-name" style="font-weight:600;"></span>
+          <span id="selected-food-cal" style="font-size:0.85rem;color:var(--text-muted);margin-left:8px;"></span>
+        </div>
+        <div class="input-field">
+          <label for="food-amount">量</label>
+          <input type="number" id="food-amount" value="1" min="0.1" step="0.1">
+        </div>
+        <div class="input-field">
+          <label for="food-unit">単位</label>
+          <input type="text" id="food-unit" readonly>
+        </div>
+        <select class="meal-select" id="meal-type">
+          <option value="breakfast">朝食</option>
+          <option value="lunch">昼食</option>
+          <option value="dinner">夕食</option>
+          <option value="snack">間食</option>
+        </select>
+        <button class="btn" onclick="addFood()" style="white-space:nowrap;">追加</button>
+      </div>
+
+      <div class="total-bar">
+        <span class="total-label">合計カロリー</span>
+        <span class="total-value" id="total-calories">0 kcal</span>
+      </div>
+
+      <div class="pfc-bar">
+        <div class="pfc-item pfc-protein">
+          <div class="pfc-label">タンパク質</div>
+          <div class="pfc-value" id="total-protein">0 g</div>
+        </div>
+        <div class="pfc-item pfc-fat">
+          <div class="pfc-label">脂質</div>
+          <div class="pfc-value" id="total-fat">0 g</div>
+        </div>
+        <div class="pfc-item pfc-carb">
+          <div class="pfc-label">炭水化物</div>
+          <div class="pfc-value" id="total-carb">0 g</div>
+        </div>
+      </div>
+
+      <div class="meal-list" id="meal-list">
+        <div class="meal-section" id="section-breakfast">
+          <h3>朝食 <span class="meal-total" id="total-breakfast">0 kcal</span></h3>
+          <div id="list-breakfast"></div>
+        </div>
+        <div class="meal-section" id="section-lunch">
+          <h3>昼食 <span class="meal-total" id="total-lunch">0 kcal</span></h3>
+          <div id="list-lunch"></div>
+        </div>
+        <div class="meal-section" id="section-dinner">
+          <h3>夕食 <span class="meal-total" id="total-dinner">0 kcal</span></h3>
+          <div id="list-dinner"></div>
+        </div>
+        <div class="meal-section" id="section-snack">
+          <h3>間食 <span class="meal-total" id="total-snack">0 kcal</span></h3>
+          <div id="list-snack"></div>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-secondary" onclick="clearAll()">すべてクリア</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI計算</h3>
+          <p>身長と体重からBMIを計算</p>
+        </a>
+        <a href="../tdee-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">TDEE計算</h3>
+          <p>1日の消費カロリーを計算</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // Food database: [name, cal per unit, unit, protein, fat, carb, category]
+    var FOODS = [
+      // ごはん・パン・麺
+      ['白ごはん（1杯150g）',234,'杯',3.8,0.5,53.4,'主食'],
+      ['食パン（6枚切り1枚）',158,'枚',5.6,2.6,28.0,'主食'],
+      ['うどん（1玉）',252,'玉',6.3,0.9,52.0,'主食'],
+      ['そば（1玉）',264,'玉',9.6,1.5,50.4,'主食'],
+      ['パスタ（1人前100g乾）',378,'人前',13.0,2.2,73.0,'主食'],
+      ['ラーメン（1杯）',443,'杯',17.0,8.5,65.0,'主食'],
+      ['おにぎり（1個）',170,'個',3.0,0.5,37.0,'主食'],
+      ['チャーハン（1人前）',520,'人前',14.0,18.0,72.0,'主食'],
+      ['カレーライス（1皿）',590,'皿',15.0,14.0,95.0,'主食'],
+      ['玄米ごはん（1杯150g）',228,'杯',4.2,1.5,51.3,'主食'],
+      ['もち（1個50g）',118,'個',2.1,0.3,25.2,'主食'],
+
+      // 肉類
+      ['鶏むね肉（100g）',108,'人前(100g)',22.3,1.5,0,'肉'],
+      ['鶏もも肉（100g）',200,'人前(100g)',16.2,14.0,0,'肉'],
+      ['豚ロース（100g）',263,'人前(100g)',19.3,19.2,0.2,'肉'],
+      ['牛肩ロース（100g）',240,'人前(100g)',17.9,17.4,0.1,'肉'],
+      ['豚バラ肉（100g）',386,'人前(100g)',14.2,34.6,0.1,'肉'],
+      ['ハンバーグ（1個）',268,'個',15.6,17.0,12.8,'肉'],
+      ['焼き鳥（1本）',80,'本',8.5,4.5,0.5,'肉'],
+      ['唐揚げ（1個30g）',71,'個',5.8,4.2,2.5,'肉'],
+      ['とんかつ（1枚）',463,'枚',23.5,30.8,19.5,'肉'],
+      ['ウインナー（1本）',64,'本',2.6,5.7,0.6,'肉'],
+
+      // 魚介類
+      ['鮭（1切れ80g）',106,'切れ',17.8,3.4,0.1,'魚'],
+      ['まぐろ赤身（刺身5切）',100,'人前',21.6,0.4,0.1,'魚'],
+      ['さば（1切れ80g）',196,'切れ',16.5,13.6,0.2,'魚'],
+      ['えび（5尾50g）',49,'人前(5尾)',10.6,0.3,0.1,'魚'],
+      ['サーモン刺身（5切）',138,'人前',14.0,8.4,0.1,'魚'],
+      ['あじの開き（1枚）',126,'枚',15.4,6.6,0.1,'魚'],
+      ['ツナ缶（1缶）',161,'缶',12.8,11.4,0.4,'魚'],
+
+      // 卵・乳製品
+      ['卵（1個）',76,'個',6.2,5.2,0.2,'卵・乳'],
+      ['目玉焼き（1個）',94,'個',6.2,7.2,0.2,'卵・乳'],
+      ['牛乳（200ml）',134,'杯',6.6,7.6,9.6,'卵・乳'],
+      ['ヨーグルト（100g）',62,'個',3.6,3.0,4.9,'卵・乳'],
+      ['チーズ（1枚18g）',61,'枚',4.1,4.7,0.2,'卵・乳'],
+      ['豆腐（1丁300g）',168,'丁',14.7,9.0,4.8,'卵・乳'],
+
+      // 野菜・サラダ
+      ['サラダ（1皿）',20,'皿',1.0,0.1,4.0,'野菜'],
+      ['味噌汁（1杯）',40,'杯',2.8,1.2,4.5,'野菜'],
+      ['ほうれん草おひたし（1皿）',22,'皿',2.0,0.3,2.8,'野菜'],
+      ['きんぴらごぼう（1皿）',80,'皿',1.5,2.5,12.5,'野菜'],
+      ['ポテトサラダ（1皿）',120,'皿',2.5,6.0,13.5,'野菜'],
+
+      // 果物
+      ['バナナ（1本）',86,'本',1.1,0.2,22.5,'果物'],
+      ['りんご（1個）',138,'個',0.3,0.5,37.6,'果物'],
+      ['みかん（1個）',34,'個',0.5,0.1,8.6,'果物'],
+
+      // 飲み物
+      ['コーヒー（ブラック）',6,'杯',0.3,0,0.9,'飲み物'],
+      ['コーヒー（砂糖ミルク）',36,'杯',0.5,1.0,5.5,'飲み物'],
+      ['オレンジジュース（200ml）',84,'杯',1.0,0.2,20.8,'飲み物'],
+      ['コーラ（350ml）',157,'本',0,0,39.3,'飲み物'],
+      ['ビール（350ml）',140,'本',1.1,0,10.9,'飲み物'],
+      ['緑茶',2,'杯',0.1,0,0.3,'飲み物'],
+
+      // お菓子・デザート
+      ['ショートケーキ（1切）',366,'切れ',5.5,21.8,37.5,'菓子'],
+      ['チョコレート（1枚50g）',279,'枚',3.5,17.4,27.6,'菓子'],
+      ['ポテトチップス（1袋60g）',332,'袋',2.8,21.6,31.7,'菓子'],
+      ['アイスクリーム（1個）',196,'個',3.5,10.0,23.2,'菓子'],
+      ['大福（1個）',147,'個',3.3,0.4,33.5,'菓子'],
+      ['せんべい（2枚）',74,'枚×2',1.5,0.4,16.0,'菓子'],
+      ['どら焼き（1個）',196,'個',4.2,2.5,39.8,'菓子']
+    ];
+
+    var selectedFood = null;
+    var mealItems = { breakfast: [], lunch: [], dinner: [], snack: [] };
+    var categories = ['全て','主食','肉','魚','卵・乳','野菜','果物','飲み物','菓子'];
+
+    // Build category tabs
+    var tabContainer = document.getElementById('category-tabs');
+    categories.forEach(function(cat, i) {
+      var btn = document.createElement('button');
+      btn.className = 'cat-tab' + (i === 0 ? ' active' : '');
+      btn.textContent = cat;
+      btn.onclick = function() {
+        document.querySelectorAll('.cat-tab').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        showCategoryFoods(cat);
+      };
+      tabContainer.appendChild(btn);
+    });
+
+    function showCategoryFoods(cat) {
+      var sug = document.getElementById('suggestions');
+      sug.innerHTML = '';
+      var filtered = cat === '全て' ? FOODS : FOODS.filter(function(f) { return f[6] === cat; });
+      filtered.forEach(function(food) {
+        var div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span>' + food[0] + '</span><span class="cal">' + food[1] + ' kcal/' + food[2] + '</span>';
+        div.onclick = function() { selectFood(food); };
+        sug.appendChild(div);
+      });
+      sug.classList.add('show');
+    }
+
+    // Search
+    var searchInput = document.getElementById('food-search');
+    searchInput.addEventListener('input', function() {
+      var query = this.value.trim();
+      var sug = document.getElementById('suggestions');
+      document.querySelectorAll('.cat-tab').forEach(function(b) { b.classList.remove('active'); });
+
+      if (!query) {
+        sug.classList.remove('show');
+        return;
+      }
+      sug.innerHTML = '';
+      var matched = FOODS.filter(function(f) { return f[0].indexOf(query) >= 0; });
+      if (matched.length === 0) {
+        sug.innerHTML = '<div style="padding:8px 12px;color:var(--text-muted);font-size:0.85rem;">該当する食品が見つかりません</div>';
+      }
+      matched.forEach(function(food) {
+        var div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span>' + food[0] + '</span><span class="cal">' + food[1] + ' kcal/' + food[2] + '</span>';
+        div.onclick = function() { selectFood(food); };
+        sug.appendChild(div);
+      });
+      sug.classList.add('show');
+    });
+
+    function selectFood(food) {
+      selectedFood = food;
+      document.getElementById('selected-food-name').textContent = food[0];
+      document.getElementById('selected-food-cal').textContent = '(' + food[1] + ' kcal/' + food[2] + ')';
+      document.getElementById('food-amount').value = 1;
+      document.getElementById('food-unit').value = food[2];
+      document.getElementById('add-row').style.display = 'flex';
+      document.getElementById('suggestions').classList.remove('show');
+      document.getElementById('food-search').value = '';
+
+      // Auto-select meal type by time
+      var h = new Date().getHours();
+      if (h < 10) document.getElementById('meal-type').value = 'breakfast';
+      else if (h < 15) document.getElementById('meal-type').value = 'lunch';
+      else if (h < 20) document.getElementById('meal-type').value = 'dinner';
+      else document.getElementById('meal-type').value = 'snack';
+    }
+
+    function addFood() {
+      if (!selectedFood) return;
+      var amount = parseFloat(document.getElementById('food-amount').value);
+      if (!amount || amount <= 0) { alert('量を正しく入力してください。'); return; }
+
+      var meal = document.getElementById('meal-type').value;
+      var item = {
+        name: selectedFood[0],
+        cal: Math.round(selectedFood[1] * amount),
+        protein: Math.round(selectedFood[3] * amount * 10) / 10,
+        fat: Math.round(selectedFood[4] * amount * 10) / 10,
+        carb: Math.round(selectedFood[5] * amount * 10) / 10,
+        amount: amount,
+        unit: selectedFood[2]
+      };
+      mealItems[meal].push(item);
+      document.getElementById('add-row').style.display = 'none';
+      selectedFood = null;
+      renderMeals();
+    }
+
+    function removeFood(meal, index) {
+      mealItems[meal].splice(index, 1);
+      renderMeals();
+    }
+
+    function renderMeals() {
+      var totalCal = 0, totalP = 0, totalF = 0, totalC = 0;
+
+      ['breakfast', 'lunch', 'dinner', 'snack'].forEach(function(meal) {
+        var list = document.getElementById('list-' + meal);
+        list.innerHTML = '';
+        var mealCal = 0;
+
+        mealItems[meal].forEach(function(item, idx) {
+          mealCal += item.cal;
+          totalCal += item.cal;
+          totalP += item.protein;
+          totalF += item.fat;
+          totalC += item.carb;
+
+          var div = document.createElement('div');
+          div.className = 'food-item';
+          div.innerHTML = '<span class="food-name">' + item.name +
+            (item.amount !== 1 ? ' x' + item.amount : '') +
+            '</span><span class="food-cal">' + item.cal + ' kcal</span>' +
+            '<button class="remove" onclick="removeFood(\'' + meal + '\',' + idx + ')">x</button>';
+          list.appendChild(div);
+        });
+
+        document.getElementById('total-' + meal).textContent = mealCal + ' kcal';
+      });
+
+      document.getElementById('total-calories').textContent = totalCal + ' kcal';
+      document.getElementById('total-protein').textContent = Math.round(totalP * 10) / 10 + ' g';
+      document.getElementById('total-fat').textContent = Math.round(totalF * 10) / 10 + ' g';
+      document.getElementById('total-carb').textContent = Math.round(totalC * 10) / 10 + ' g';
+    }
+
+    function clearAll() {
+      mealItems = { breakfast: [], lunch: [], dinner: [], snack: [] };
+      document.getElementById('add-row').style.display = 'none';
+      selectedFood = null;
+      renderMeals();
+    }
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-area') && !e.target.closest('.category-tabs')) {
+        document.getElementById('suggestions').classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

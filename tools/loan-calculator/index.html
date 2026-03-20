@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>金利計算・ローン計算 - 無料オンラインローン返済シミュレーター｜SimpleToolkit</title>
+  <meta name="description" content="借入額・金利・返済期間を入力するだけでローン返済額を瞬時に計算。元利均等・元金均等の両方式に対応。返済総額や利息総額も表示。登録不要・無料。">
+  <meta property="og:title" content="金利計算・ローン計算 - 無料オンラインローン返済シミュレーター｜SimpleToolkit">
+  <meta property="og:description" content="借入額・金利・返済期間を入力するだけでローン返済額を瞬時に計算。元利均等・元金均等の両方式に対応。登録不要・無料。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/loan-calculator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "金利計算・ローン計算 - 無料オンラインローン返済シミュレーター",
+    "description": "借入額・金利・返済期間を入力するだけでローン返済額を瞬時に計算。元利均等・元金均等の両方式に対応。返済総額や利息総額も表示。",
+    "url": "https://simpletoolkit.net/tools/loan-calculator/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "元利均等返済と元金均等返済の違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "元利均等返済は毎月の返済額が一定で家計管理がしやすい方式です。元金均等返済は毎月の元金返済額が一定で、返済が進むにつれ利息が減り月々の返済額も下がります。総返済額は元金均等返済の方が少なくなります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "住宅ローンの金利相場はどのくらい？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2024年現在、変動金利は年0.3〜0.6%程度、固定金利（35年）は年1.5〜2.0%程度が相場です。金融機関や借入条件によって異なりますので、複数の金融機関を比較することをおすすめします。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。借入額や金利のデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .method-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .method-selector label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 8px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .method-selector input[type="radio"] { display: none; }
+    .method-selector input[type="radio"]:checked + label {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .result-area {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-area.show { display: block; }
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-card .card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .summary-card .card-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 16px;
+    }
+    .schedule-table th, .schedule-table td {
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      text-align: right;
+    }
+    .schedule-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+    .schedule-table td:first-child { text-align: center; }
+    .schedule-toggle {
+      margin-top: 12px;
+      text-align: center;
+    }
+    .schedule-toggle button {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-decoration: underline;
+    }
+    .schedule-wrapper {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    @media (max-width: 600px) {
+      .summary-cards { grid-template-columns: 1fr; }
+      .schedule-table { font-size: 0.75rem; }
+      .schedule-table th, .schedule-table td { padding: 4px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>金利計算・ローン計算</h1>
+    <h2>無料オンラインローン返済シミュレーター</h2>
+    <p class="tool-description">借入額・金利・返済期間を入力するだけで、毎月の返済額、返済総額、利息総額を瞬時にシミュレーション。元利均等返済・元金均等返済の両方式に対応。住宅ローン・カーローン・教育ローンなどあらゆるローン計算に。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="principal">借入額</label>
+          <input type="number" id="principal" placeholder="30000000" min="1" step="10000">
+          <div class="unit">円</div>
+        </div>
+        <div class="input-field">
+          <label for="rate">年利</label>
+          <input type="number" id="rate" placeholder="1.5" min="0" max="100" step="0.01">
+          <div class="unit">%</div>
+        </div>
+        <div class="input-field">
+          <label for="years">返済期間</label>
+          <input type="number" id="years" placeholder="35" min="1" max="50" step="1">
+          <div class="unit">年</div>
+        </div>
+      </div>
+
+      <div class="method-selector">
+        <span style="font-weight:600;margin-right:8px;line-height:2.2;">返済方式：</span>
+        <input type="radio" name="method" id="method-equal" value="equal" checked>
+        <label for="method-equal">元利均等返済</label>
+        <input type="radio" name="method" id="method-principal" value="principal">
+        <label for="method-principal">元金均等返済</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculateLoan()">計算する</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="card-label">毎月の返済額</div>
+            <div class="card-value" id="monthly-payment"></div>
+          </div>
+          <div class="summary-card">
+            <div class="card-label">返済総額</div>
+            <div class="card-value" id="total-payment"></div>
+          </div>
+          <div class="summary-card">
+            <div class="card-label">利息総額</div>
+            <div class="card-value" id="total-interest"></div>
+          </div>
+        </div>
+
+        <h3 style="font-size:1rem;margin-bottom:8px;">返済スケジュール（年単位）</h3>
+        <div class="schedule-wrapper">
+          <table class="schedule-table" id="schedule-table">
+            <thead>
+              <tr>
+                <th>年</th>
+                <th>年間返済額</th>
+                <th>元金分</th>
+                <th>利息分</th>
+                <th>残高</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../mortgage-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">住宅ローン計算</h3>
+          <p>住宅ローンの月々の返済額を計算</p>
+        </a>
+        <a href="../percent-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">割合計算</h3>
+          <p>パーセント計算を簡単に</p>
+        </a>
+        <a href="../salary-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">手取り計算</h3>
+          <p>年収から手取り額を計算</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    function formatNumber(n) {
+      return Math.round(n).toLocaleString('ja-JP');
+    }
+
+    function calculateLoan() {
+      var P = parseFloat(document.getElementById('principal').value);
+      var annualRate = parseFloat(document.getElementById('rate').value);
+      var years = parseInt(document.getElementById('years').value);
+      var method = document.querySelector('input[name="method"]:checked').value;
+
+      if (!P || !annualRate || !years || P <= 0 || annualRate < 0 || years <= 0) {
+        alert('借入額・年利・返済期間を正しく入力してください。');
+        return;
+      }
+
+      var monthlyRate = annualRate / 100 / 12;
+      var totalMonths = years * 12;
+      var schedule = [];
+      var totalPayment = 0;
+      var totalInterest = 0;
+
+      if (method === 'equal') {
+        // 元利均等返済
+        var monthly;
+        if (monthlyRate === 0) {
+          monthly = P / totalMonths;
+        } else {
+          monthly = P * monthlyRate * Math.pow(1 + monthlyRate, totalMonths) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+        }
+        var remaining = P;
+        var yearPayment = 0, yearPrincipal = 0, yearInterest = 0;
+
+        for (var m = 1; m <= totalMonths; m++) {
+          var interestPart = remaining * monthlyRate;
+          var principalPart = monthly - interestPart;
+          remaining -= principalPart;
+          if (remaining < 0) remaining = 0;
+          yearPayment += monthly;
+          yearPrincipal += principalPart;
+          yearInterest += interestPart;
+          totalPayment += monthly;
+          totalInterest += interestPart;
+
+          if (m % 12 === 0 || m === totalMonths) {
+            schedule.push({
+              year: Math.ceil(m / 12),
+              payment: yearPayment,
+              principal: yearPrincipal,
+              interest: yearInterest,
+              remaining: Math.max(0, remaining)
+            });
+            yearPayment = 0; yearPrincipal = 0; yearInterest = 0;
+          }
+        }
+        document.getElementById('monthly-payment').textContent = formatNumber(monthly) + ' 円';
+      } else {
+        // 元金均等返済
+        var monthlyPrincipal = P / totalMonths;
+        var remaining = P;
+        var yearPayment = 0, yearPrincipalSum = 0, yearInterest = 0;
+        var firstMonthly = monthlyPrincipal + P * monthlyRate;
+
+        for (var m = 1; m <= totalMonths; m++) {
+          var interestPart = remaining * monthlyRate;
+          var monthlyTotal = monthlyPrincipal + interestPart;
+          remaining -= monthlyPrincipal;
+          if (remaining < 0) remaining = 0;
+          yearPayment += monthlyTotal;
+          yearPrincipalSum += monthlyPrincipal;
+          yearInterest += interestPart;
+          totalPayment += monthlyTotal;
+          totalInterest += interestPart;
+
+          if (m % 12 === 0 || m === totalMonths) {
+            schedule.push({
+              year: Math.ceil(m / 12),
+              payment: yearPayment,
+              principal: yearPrincipalSum,
+              interest: yearInterest,
+              remaining: Math.max(0, remaining)
+            });
+            yearPayment = 0; yearPrincipalSum = 0; yearInterest = 0;
+          }
+        }
+        document.getElementById('monthly-payment').textContent = formatNumber(firstMonthly) + ' 円〜';
+      }
+
+      document.getElementById('total-payment').textContent = formatNumber(totalPayment) + ' 円';
+      document.getElementById('total-interest').textContent = formatNumber(totalInterest) + ' 円';
+
+      // Build schedule table
+      var tbody = document.getElementById('schedule-body');
+      tbody.innerHTML = '';
+      for (var i = 0; i < schedule.length; i++) {
+        var row = schedule[i];
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + row.year + '年目</td>' +
+          '<td>' + formatNumber(row.payment) + '</td>' +
+          '<td>' + formatNumber(row.principal) + '</td>' +
+          '<td>' + formatNumber(row.interest) + '</td>' +
+          '<td>' + formatNumber(row.remaining) + '</td>';
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function clearForm() {
+      document.getElementById('principal').value = '';
+      document.getElementById('rate').value = '';
+      document.getElementById('years').value = '';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    document.querySelectorAll('#principal, #rate, #years').forEach(function(el) {
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calculateLoan();
+      });
+    });
+  </script>
+</body>
+</html>

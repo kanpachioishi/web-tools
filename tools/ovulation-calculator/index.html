@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排卵日計算 - 無料オンライン排卵日予測ツール｜SimpleToolkit</title>
+  <meta name="description" content="最終月経開始日と生理周期を入力するだけで排卵日・妊娠しやすい時期を予測。次の生理予定日も表示。登録不要・無料のオンライン排卵日計算ツール。">
+  <meta property="og:title" content="排卵日計算 - 無料オンライン排卵日予測ツール｜SimpleToolkit">
+  <meta property="og:description" content="最終月経開始日と生理周期を入力するだけで排卵日・妊娠しやすい時期を予測。登録不要・無料。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/ovulation-calculator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "排卵日計算 - 無料オンライン排卵日予測ツール",
+    "description": "最終月経開始日と生理周期を入力するだけで排卵日・妊娠しやすい時期を予測。次の生理予定日も表示。",
+    "url": "https://simpletoolkit.net/tools/ovulation-calculator/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "排卵日の計算方法は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "排卵日は一般的に「次の生理予定日の14日前」とされています（オギノ式）。例えば生理周期が28日の場合、最終月経開始日から14日後が排卵予定日です。ただし個人差があり、あくまで目安としてご活用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "妊娠しやすい時期はいつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一般的に排卵日の5日前から排卵日の翌日までの約6日間が妊娠しやすい時期とされています。特に排卵日の1〜2日前が最も妊娠しやすいとされています。精子は体内で約3〜5日間生存可能です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "この計算結果は正確ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "本ツールはオギノ式に基づく一般的な計算です。実際の排卵日はストレスや体調により変動するため、あくまで目安としてお使いください。正確な排卵日の特定には、基礎体温の測定や排卵検査薬の使用、医療機関での超音波検査をおすすめします。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。入力データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 180px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .result-area {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-area.show { display: block; }
+    .date-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .date-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .date-card.highlight {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .date-card .card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .date-card .card-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .date-card .card-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .calendar-section {
+      margin-top: 20px;
+    }
+    .calendar-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      font-size: 0.85rem;
+    }
+    .cal-header {
+      text-align: center;
+      font-weight: 600;
+      padding: 8px 4px;
+      color: var(--text-muted);
+    }
+    .cal-day {
+      text-align: center;
+      padding: 8px 4px;
+      border-radius: 4px;
+      position: relative;
+    }
+    .cal-day.empty { background: transparent; }
+    .cal-day.period { background: #fecaca; color: #991b1b; }
+    .cal-day.fertile { background: #bbf7d0; color: #166534; }
+    .cal-day.ovulation { background: #86efac; color: #14532d; font-weight: 700; }
+    .cal-day.next-period { background: #fecaca; color: #991b1b; }
+    .cal-day.today { border: 2px solid var(--primary); }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+    }
+
+    .notice {
+      margin-top: 20px;
+      padding: 14px;
+      background: #fffbeb;
+      border: 1px solid #fbbf24;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+
+    @media (max-width: 600px) {
+      .date-cards { grid-template-columns: 1fr; }
+      .calendar { font-size: 0.75rem; }
+      .cal-day { padding: 6px 2px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>排卵日計算</h1>
+    <h2>無料オンライン排卵日予測ツール</h2>
+    <p class="tool-description">最終月経開始日と生理周期を入力するだけで、排卵予定日・妊娠しやすい時期・次の生理予定日を自動計算。カレンダー表示で一目で確認できます。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="last-period">最終月経開始日</label>
+          <input type="date" id="last-period">
+        </div>
+        <div class="input-field">
+          <label for="cycle">生理周期</label>
+          <input type="number" id="cycle" placeholder="28" min="20" max="45" step="1" value="28">
+          <div class="unit">日（一般的に25〜35日）</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">排卵日を計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="date-cards">
+          <div class="date-card highlight">
+            <div class="card-label">排卵予定日</div>
+            <div class="card-value" id="ovulation-date"></div>
+          </div>
+          <div class="date-card">
+            <div class="card-label">妊娠しやすい時期</div>
+            <div class="card-value" id="fertile-window"></div>
+          </div>
+          <div class="date-card">
+            <div class="card-label">次の生理予定日</div>
+            <div class="card-value" id="next-period"></div>
+          </div>
+        </div>
+
+        <div class="calendar-section">
+          <h3>カレンダー</h3>
+          <div id="calendar-container"></div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-color" style="background:#fecaca;"></div>月経期間</div>
+            <div class="legend-item"><div class="legend-color" style="background:#bbf7d0;"></div>妊娠しやすい時期</div>
+            <div class="legend-item"><div class="legend-color" style="background:#86efac;"></div>排卵予定日</div>
+          </div>
+        </div>
+
+        <div class="notice">
+          <strong>ご注意：</strong>本ツールはオギノ式に基づく一般的な計算による目安です。実際の排卵日はストレスや体調の変化により前後することがあります。正確な判定には、基礎体温の測定・排卵検査薬・医療機関での検査をご利用ください。避妊の目的には使用しないでください。
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI計算</h3>
+          <p>身長と体重からBMIを計算</p>
+        </a>
+        <a href="../age-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">年齢計算</h3>
+          <p>生年月日から正確な年齢を計算</p>
+        </a>
+        <a href="../tdee-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">TDEE計算</h3>
+          <p>1日の消費カロリーを計算</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // Set default date to today
+    (function() {
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
+      var dd = String(today.getDate()).padStart(2, '0');
+      document.getElementById('last-period').value = yyyy + '-' + mm + '-' + dd;
+    })();
+
+    function formatDate(d) {
+      return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+    }
+
+    function formatDateShort(d) {
+      return (d.getMonth() + 1) + '/' + d.getDate();
+    }
+
+    function addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
+    function isSameDay(a, b) {
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+
+    function calculate() {
+      var lastPeriodStr = document.getElementById('last-period').value;
+      var cycle = parseInt(document.getElementById('cycle').value);
+
+      if (!lastPeriodStr || !cycle || cycle < 20 || cycle > 45) {
+        alert('最終月経開始日と生理周期を正しく入力してください。');
+        return;
+      }
+
+      var lastPeriod = new Date(lastPeriodStr + 'T00:00:00');
+      var ovulationDay = addDays(lastPeriod, cycle - 14);
+      var fertileStart = addDays(ovulationDay, -5);
+      var fertileEnd = addDays(ovulationDay, 1);
+      var nextPeriod = addDays(lastPeriod, cycle);
+      var periodEnd = addDays(lastPeriod, 5); // typical period: 5 days
+
+      document.getElementById('ovulation-date').textContent = formatDate(ovulationDay);
+      document.getElementById('fertile-window').textContent = formatDateShort(fertileStart) + ' 〜 ' + formatDateShort(fertileEnd);
+      document.getElementById('next-period').textContent = formatDate(nextPeriod);
+
+      // Build calendar
+      buildCalendar(lastPeriod, ovulationDay, fertileStart, fertileEnd, nextPeriod, periodEnd);
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function buildCalendar(lastPeriod, ovulation, fertileStart, fertileEnd, nextPeriod, periodEnd) {
+      var container = document.getElementById('calendar-container');
+      container.innerHTML = '';
+      var today = new Date();
+      today.setHours(0,0,0,0);
+
+      // Show 2 months starting from lastPeriod's month
+      var startMonth = new Date(lastPeriod.getFullYear(), lastPeriod.getMonth(), 1);
+
+      for (var m = 0; m < 2; m++) {
+        var currentMonth = new Date(startMonth.getFullYear(), startMonth.getMonth() + m, 1);
+        var monthLabel = document.createElement('h4');
+        monthLabel.style.cssText = 'font-size:0.95rem;margin:16px 0 8px;';
+        monthLabel.textContent = currentMonth.getFullYear() + '年' + (currentMonth.getMonth() + 1) + '月';
+        container.appendChild(monthLabel);
+
+        var cal = document.createElement('div');
+        cal.className = 'calendar';
+
+        var dayNames = ['日','月','火','水','木','金','土'];
+        for (var i = 0; i < 7; i++) {
+          var hdr = document.createElement('div');
+          hdr.className = 'cal-header';
+          hdr.textContent = dayNames[i];
+          if (i === 0) hdr.style.color = '#ef4444';
+          if (i === 6) hdr.style.color = '#3b82f6';
+          cal.appendChild(hdr);
+        }
+
+        var firstDay = currentMonth.getDay();
+        var daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
+
+        for (var e = 0; e < firstDay; e++) {
+          var empty = document.createElement('div');
+          empty.className = 'cal-day empty';
+          cal.appendChild(empty);
+        }
+
+        for (var d = 1; d <= daysInMonth; d++) {
+          var dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
+          var cell = document.createElement('div');
+          cell.className = 'cal-day';
+          cell.textContent = d;
+
+          // Color coding
+          if (dateObj >= lastPeriod && dateObj <= periodEnd) {
+            cell.classList.add('period');
+          }
+          if (isSameDay(dateObj, ovulation)) {
+            cell.classList.add('ovulation');
+          } else if (dateObj >= fertileStart && dateObj <= fertileEnd) {
+            cell.classList.add('fertile');
+          }
+          if (isSameDay(dateObj, nextPeriod)) {
+            cell.classList.add('next-period');
+          }
+          if (isSameDay(dateObj, today)) {
+            cell.classList.add('today');
+          }
+
+          cal.appendChild(cell);
+        }
+
+        container.appendChild(cal);
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('cycle').value = '28';
+      document.getElementById('result-area').classList.remove('show');
+    }
+  </script>
+</body>
+</html>
