@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>あみだくじメーカー - 無料オンラインあみだくじ作成ツール｜SimpleToolkit</title>
+  <meta name="description" content="参加者と結果を入力するだけであみだくじを自動作成。アニメーション付きで結果を表示。飲み会の席決め、担当決めに最適な無料ツール。">
+  <meta property="og:title" content="あみだくじメーカー - 無料オンラインあみだくじ作成ツール｜SimpleToolkit">
+  <meta property="og:description" content="参加者と結果を入力するだけであみだくじを自動作成。アニメーション付きで結果を表示。飲み会の席決め、担当決めに最適な無料ツール。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/amidakuji/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "あみだくじメーカー - 無料オンラインあみだくじ作成ツール",
+    "description": "参加者と結果を入力するだけであみだくじを自動作成。アニメーション付きで結果を表示。飲み会の席決め、担当決めに最適な無料ツール。",
+    "url": "https://simpletoolkit.net/tools/amidakuji/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "あみだくじとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "あみだくじは、複数の縦線と横線で構成されるくじ引きの一種です。上から縦線をたどり、横線にぶつかったら横に移動するルールで、最終的にたどり着いた先が結果となります。公平にランダムな結果を得られるため、席決めや担当決めなどに広く使われています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "あみだくじは公平ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、あみだくじは数学的に公平です。横線の配置によって結果が変わりますが、横線がランダムに配置されていれば、各参加者が各結果にたどり着く確率は等しくなります。このツールではランダムに横線を配置するため、公平な結果が得られます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "参加者は何人まで対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "このツールでは2人から10人まで対応しています。参加者の名前と結果を自由に設定でき、飲み会の席決め、掃除当番、プレゼント交換など様々な場面で活用できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。入力したデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .settings-section {
+      margin-bottom: 20px;
+    }
+    .settings-section label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+    .settings-section textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    .settings-section textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .settings-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .settings-row > div {
+      flex: 1;
+      min-width: 200px;
+    }
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .canvas-container {
+      margin-top: 20px;
+      text-align: center;
+      overflow-x: auto;
+    }
+    #amida-canvas {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      max-width: 100%;
+      cursor: pointer;
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.95rem;
+    }
+    .result-table th, .result-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: center;
+    }
+    .result-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .result-table .highlight {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #1da1f2;
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 12px;
+      text-decoration: none;
+    }
+    .share-btn:hover {
+      background: #0c85d0;
+    }
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    #result-section {
+      display: none;
+      margin-top: 24px;
+    }
+    #result-section.show {
+      display: block;
+    }
+    .person-select {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .person-select label {
+      font-weight: 600;
+      margin-right: 4px;
+      font-size: 0.95rem;
+    }
+    .person-btn {
+      padding: 6px 14px;
+      border: 2px solid var(--primary);
+      background: var(--bg);
+      color: var(--primary);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .person-btn:hover, .person-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .settings-row {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .person-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>あみだくじメーカー</h1>
+    <h2>無料オンラインあみだくじ作成ツール</h2>
+    <p class="tool-description">参加者と結果を入力するだけで、あみだくじを自動作成。アニメーション付きで経路をたどって結果を表示します。飲み会の席決め、担当決め、プレゼント交換などに最適。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="settings-row">
+        <div class="settings-section">
+          <label for="participants">参加者（1行に1名、2〜10人）</label>
+          <textarea id="participants" rows="5">Aさん
+Bさん
+Cさん
+Dさん</textarea>
+          <div class="hint">改行で区切って入力してください</div>
+        </div>
+        <div class="settings-section">
+          <label for="results">結果（1行に1つ、参加者と同じ数）</label>
+          <textarea id="results" rows="5">当たり
+ハズレ
+ハズレ
+ハズレ</textarea>
+          <div class="hint">参加者の数と同じ数だけ入力してください</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="createAmida()">くじを作成</button>
+        <button class="btn btn-secondary" onclick="shuffleAmida()">シャッフル</button>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="amida-canvas" width="600" height="500"></canvas>
+      </div>
+
+      <div class="person-select" id="person-select" style="display:none;">
+        <label>経路を表示：</label>
+        <div id="person-buttons"></div>
+        <button class="btn" onclick="showAllResults()" style="margin-left:8px;padding:6px 14px;font-size:0.9rem;">全員の結果を見る</button>
+      </div>
+
+      <div id="result-section">
+        <h3 style="margin-bottom:12px;">結果</h3>
+        <table class="result-table" id="result-table">
+          <thead>
+            <tr><th>参加者</th><th>結果</th></tr>
+          </thead>
+          <tbody id="result-body"></tbody>
+        </table>
+        <a class="share-btn" id="share-btn" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Xでシェア
+        </a>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+        <a href="../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QRコード生成ツール</h3>
+          <p>テキストやURLからQRコードを作成</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var amidaData = null;
+    var animating = false;
+
+    var COLORS = ['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#34495e','#e91e63','#00bcd4'];
+
+    function parseLines(id) {
+      return document.getElementById(id).value.split('\n').map(function(s){return s.trim();}).filter(function(s){return s.length > 0;});
+    }
+
+    function createAmida() {
+      var names = parseLines('participants');
+      var results = parseLines('results');
+
+      if (names.length < 2 || names.length > 10) {
+        alert('参加者は2〜10人で入力してください。');
+        return;
+      }
+      if (results.length !== names.length) {
+        alert('結果の数（' + results.length + '個）が参加者の数（' + names.length + '人）と一致しません。');
+        return;
+      }
+
+      // Shuffle results
+      var shuffledResults = results.slice();
+      for (var i = shuffledResults.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = shuffledResults[i];
+        shuffledResults[i] = shuffledResults[j];
+        shuffledResults[j] = tmp;
+      }
+
+      // Generate horizontal bars
+      var n = names.length;
+      var numBars = n * (3 + Math.floor(Math.random() * 3)); // n*3 ~ n*5
+      var bars = [];
+      var segments = 8; // vertical segments for bar placement
+      for (var b = 0; b < numBars; b++) {
+        var col = Math.floor(Math.random() * (n - 1)); // between col and col+1
+        var row = Math.floor(Math.random() * segments);
+        // Avoid duplicate position
+        var dup = false;
+        for (var k = 0; k < bars.length; k++) {
+          if (bars[k].col === col && bars[k].row === row) { dup = true; break; }
+        }
+        if (!dup) {
+          bars.push({col: col, row: row});
+        }
+      }
+      // Sort bars by row
+      bars.sort(function(a,b){ return a.row - b.row || a.col - b.col; });
+
+      amidaData = {
+        names: names,
+        results: shuffledResults,
+        bars: bars,
+        segments: segments
+      };
+
+      drawAmida();
+      showPersonButtons();
+      document.getElementById('result-section').classList.remove('show');
+    }
+
+    function shuffleAmida() {
+      if (!amidaData) {
+        createAmida();
+        return;
+      }
+      // Re-shuffle results and bars
+      var n = amidaData.names.length;
+      var results = parseLines('results');
+      if (results.length !== n) {
+        alert('結果の数が参加者の数と一致しません。');
+        return;
+      }
+      var shuffledResults = results.slice();
+      for (var i = shuffledResults.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = shuffledResults[i];
+        shuffledResults[i] = shuffledResults[j];
+        shuffledResults[j] = tmp;
+      }
+
+      var numBars = n * (3 + Math.floor(Math.random() * 3));
+      var bars = [];
+      var segments = 8;
+      for (var b = 0; b < numBars; b++) {
+        var col = Math.floor(Math.random() * (n - 1));
+        var row = Math.floor(Math.random() * segments);
+        var dup = false;
+        for (var k = 0; k < bars.length; k++) {
+          if (bars[k].col === col && bars[k].row === row) { dup = true; break; }
+        }
+        if (!dup) {
+          bars.push({col: col, row: row});
+        }
+      }
+      bars.sort(function(a,b){ return a.row - b.row || a.col - b.col; });
+
+      amidaData.results = shuffledResults;
+      amidaData.bars = bars;
+      amidaData.segments = segments;
+
+      drawAmida();
+      document.getElementById('result-section').classList.remove('show');
+      // Reset person button styles
+      var btns = document.querySelectorAll('.person-btn');
+      for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+    }
+
+    function getLayout() {
+      var n = amidaData.names.length;
+      var canvas = document.getElementById('amida-canvas');
+      var isMobile = window.innerWidth < 600;
+      var colWidth = isMobile ? Math.max(50, Math.min(70, (window.innerWidth - 40) / n)) : Math.max(60, Math.min(100, 600 / n));
+      var padX = colWidth * 0.7;
+      var padTop = 50;
+      var padBottom = 50;
+      var height = 400;
+      var totalW = padX * 2 + (n - 1) * colWidth;
+
+      canvas.width = totalW;
+      canvas.height = height + padTop + padBottom;
+
+      return {
+        n: n,
+        colWidth: colWidth,
+        padX: padX,
+        padTop: padTop,
+        padBottom: padBottom,
+        height: height,
+        totalW: totalW
+      };
+    }
+
+    function colX(layout, i) {
+      return layout.padX + i * layout.colWidth;
+    }
+
+    function rowY(layout, r) {
+      return layout.padTop + (r + 1) * (layout.height / (amidaData.segments + 1));
+    }
+
+    function drawAmida(highlightPaths) {
+      if (!amidaData) return;
+      var layout = getLayout();
+      var canvas = document.getElementById('amida-canvas');
+      var ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      var n = layout.n;
+
+      // Draw vertical lines
+      ctx.strokeStyle = '#ccc';
+      ctx.lineWidth = 2;
+      for (var i = 0; i < n; i++) {
+        var x = colX(layout, i);
+        ctx.beginPath();
+        ctx.moveTo(x, layout.padTop);
+        ctx.lineTo(x, layout.padTop + layout.height);
+        ctx.stroke();
+      }
+
+      // Draw horizontal bars
+      ctx.strokeStyle = '#888';
+      ctx.lineWidth = 2;
+      for (var b = 0; b < amidaData.bars.length; b++) {
+        var bar = amidaData.bars[b];
+        var x1 = colX(layout, bar.col);
+        var x2 = colX(layout, bar.col + 1);
+        var y = rowY(layout, bar.row);
+        ctx.beginPath();
+        ctx.moveTo(x1, y);
+        ctx.lineTo(x2, y);
+        ctx.stroke();
+      }
+
+      // Draw names (top)
+      ctx.fillStyle = '#333';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      for (var i = 0; i < n; i++) {
+        var name = amidaData.names[i];
+        if (name.length > 6) name = name.substring(0, 5) + '...';
+        ctx.fillText(name, colX(layout, i), layout.padTop - 8);
+      }
+
+      // Draw results (bottom) - hidden by default, shown after reveal
+      if (highlightPaths) {
+        ctx.font = 'bold 13px sans-serif';
+        ctx.textBaseline = 'top';
+        for (var i = 0; i < n; i++) {
+          var res = amidaData.results[i];
+          if (res.length > 6) res = res.substring(0, 5) + '...';
+          ctx.fillStyle = '#333';
+          ctx.fillText(res, colX(layout, i), layout.padTop + layout.height + 12);
+        }
+      } else {
+        ctx.font = 'bold 13px sans-serif';
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = '#aaa';
+        for (var i = 0; i < n; i++) {
+          ctx.fillText('???', colX(layout, i), layout.padTop + layout.height + 12);
+        }
+      }
+
+      // Draw highlighted paths
+      if (highlightPaths) {
+        for (var p = 0; p < highlightPaths.length; p++) {
+          var path = highlightPaths[p].path;
+          var color = highlightPaths[p].color;
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(path[0].x, path[0].y);
+          for (var s = 1; s < path.length; s++) {
+            ctx.lineTo(path[s].x, path[s].y);
+          }
+          ctx.stroke();
+
+          // Draw circle at start
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.arc(path[0].x, path[0].y, 6, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Draw circle at end
+          ctx.beginPath();
+          ctx.arc(path[path.length-1].x, path[path.length-1].y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    function tracePath(startCol) {
+      var layout = getLayout();
+      var path = [];
+      var col = startCol;
+      var y = layout.padTop;
+      path.push({x: colX(layout, col), y: y});
+
+      // Sort bars by row for traversal
+      var sortedBars = amidaData.bars.slice().sort(function(a,b){return a.row - b.row;});
+
+      for (var b = 0; b < sortedBars.length; b++) {
+        var bar = sortedBars[b];
+        var barY = rowY(layout, bar.row);
+
+        if (bar.col === col) {
+          // Move down to bar, then right
+          path.push({x: colX(layout, col), y: barY});
+          col = col + 1;
+          path.push({x: colX(layout, col), y: barY});
+        } else if (bar.col + 1 === col) {
+          // Move down to bar, then left
+          path.push({x: colX(layout, col), y: barY});
+          col = col - 1;
+          path.push({x: colX(layout, col), y: barY});
+        }
+      }
+
+      // Move to bottom
+      path.push({x: colX(layout, col), y: layout.padTop + layout.height});
+
+      return {path: path, endCol: col};
+    }
+
+    function animatePath(startCol, color, callback) {
+      if (animating) return;
+      animating = true;
+
+      var result = tracePath(startCol);
+      var path = result.path;
+
+      // Calculate total length
+      var totalLen = 0;
+      var segLens = [];
+      for (var i = 1; i < path.length; i++) {
+        var dx = path[i].x - path[i-1].x;
+        var dy = path[i].y - path[i-1].y;
+        var len = Math.sqrt(dx*dx + dy*dy);
+        segLens.push(len);
+        totalLen += len;
+      }
+
+      var duration = 1500; // ms
+      var startTime = null;
+
+      function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        var targetLen = progress * totalLen;
+
+        // Redraw base
+        drawAmida(null);
+
+        // Show results at bottom
+        var layout = getLayout();
+        var canvas = document.getElementById('amida-canvas');
+        var ctx = canvas.getContext('2d');
+        if (progress >= 1) {
+          ctx.font = 'bold 13px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          for (var i = 0; i < amidaData.names.length; i++) {
+            var res = amidaData.results[i];
+            if (res.length > 6) res = res.substring(0, 5) + '...';
+            ctx.fillStyle = '#333';
+            ctx.fillText(res, colX(layout, i), layout.padTop + layout.height + 12);
+          }
+        }
+
+        // Draw partial path
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+
+        var accum = 0;
+        for (var i = 0; i < segLens.length; i++) {
+          if (accum + segLens[i] <= targetLen) {
+            ctx.lineTo(path[i+1].x, path[i+1].y);
+            accum += segLens[i];
+          } else {
+            var remain = targetLen - accum;
+            var ratio = remain / segLens[i];
+            var ix = path[i].x + (path[i+1].x - path[i].x) * ratio;
+            var iy = path[i].y + (path[i+1].y - path[i].y) * ratio;
+            ctx.lineTo(ix, iy);
+            break;
+          }
+        }
+        ctx.stroke();
+
+        // Start circle
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(path[0].x, path[0].y, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (progress >= 1) {
+          // End circle
+          ctx.beginPath();
+          ctx.arc(path[path.length-1].x, path[path.length-1].y, 8, 0, Math.PI * 2);
+          ctx.fill();
+
+          animating = false;
+          if (callback) callback(result.endCol);
+        } else {
+          requestAnimationFrame(animate);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    function showPersonButtons() {
+      var container = document.getElementById('person-select');
+      container.style.display = 'flex';
+      var btnsDiv = document.getElementById('person-buttons');
+      btnsDiv.innerHTML = '';
+      for (var i = 0; i < amidaData.names.length; i++) {
+        var btn = document.createElement('button');
+        btn.className = 'person-btn';
+        btn.textContent = amidaData.names[i];
+        btn.setAttribute('data-index', i);
+        btn.onclick = (function(idx) {
+          return function() {
+            if (animating) return;
+            // Reset other buttons
+            var allBtns = document.querySelectorAll('.person-btn');
+            for (var j = 0; j < allBtns.length; j++) allBtns[j].classList.remove('active');
+            this.classList.add('active');
+            animatePersonPath(idx);
+          };
+        })(i);
+        btnsDiv.appendChild(btn);
+      }
+    }
+
+    function animatePersonPath(idx) {
+      var color = COLORS[idx % COLORS.length];
+      animatePath(idx, color, function(endCol) {
+        // Show single result
+        var resultSection = document.getElementById('result-section');
+        resultSection.classList.add('show');
+        var tbody = document.getElementById('result-body');
+        tbody.innerHTML = '';
+        var tr = document.createElement('tr');
+        tr.className = 'highlight';
+        tr.innerHTML = '<td>' + escapeHtml(amidaData.names[idx]) + '</td><td>' + escapeHtml(amidaData.results[endCol]) + '</td>';
+        tbody.appendChild(tr);
+
+        updateShareBtn(amidaData.names[idx] + ' の結果は「' + amidaData.results[endCol] + '」でした！');
+      });
+    }
+
+    function showAllResults() {
+      if (animating || !amidaData) return;
+
+      var paths = [];
+      var mapping = [];
+      for (var i = 0; i < amidaData.names.length; i++) {
+        var result = tracePath(i);
+        paths.push({path: result.path, color: COLORS[i % COLORS.length]});
+        mapping.push({name: amidaData.names[i], result: amidaData.results[result.endCol]});
+      }
+
+      drawAmida(paths);
+
+      // Show result table
+      var resultSection = document.getElementById('result-section');
+      resultSection.classList.add('show');
+      var tbody = document.getElementById('result-body');
+      tbody.innerHTML = '';
+      var shareText = 'あみだくじの結果：\n';
+      for (var i = 0; i < mapping.length; i++) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + escapeHtml(mapping[i].name) + '</td><td>' + escapeHtml(mapping[i].result) + '</td>';
+        tbody.appendChild(tr);
+        shareText += mapping[i].name + ' → ' + mapping[i].result + '\n';
+      }
+
+      updateShareBtn(shareText.trim());
+
+      // Highlight all person buttons
+      var btns = document.querySelectorAll('.person-btn');
+      for (var i = 0; i < btns.length; i++) btns[i].classList.add('active');
+    }
+
+    function updateShareBtn(text) {
+      var url = 'https://simpletoolkit.net/tools/amidakuji/';
+      var shareUrl = 'https://x.com/intent/tweet?text=' + encodeURIComponent(text + '\n\n#あみだくじ') + '&url=' + encodeURIComponent(url);
+      document.getElementById('share-btn').href = shareUrl;
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Canvas click to select person
+    document.getElementById('amida-canvas').addEventListener('click', function(e) {
+      if (!amidaData || animating) return;
+      var layout = getLayout();
+      var rect = this.getBoundingClientRect();
+      var scaleX = this.width / rect.width;
+      var clickX = (e.clientX - rect.left) * scaleX;
+      var clickY = (e.clientY - rect.top) * (this.height / rect.height);
+
+      if (clickY < layout.padTop + 20) {
+        // Clicked near top, find closest name
+        var minDist = Infinity;
+        var closest = -1;
+        for (var i = 0; i < amidaData.names.length; i++) {
+          var x = colX(layout, i);
+          var dist = Math.abs(clickX - x);
+          if (dist < minDist) {
+            minDist = dist;
+            closest = i;
+          }
+        }
+        if (closest >= 0 && minDist < layout.colWidth * 0.6) {
+          var btns = document.querySelectorAll('.person-btn');
+          for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+          if (btns[closest]) btns[closest].classList.add('active');
+          animatePersonPath(closest);
+        }
+      }
+    });
+
+    // Initial draw
+    createAmida();
+  </script>
+</body>
+</html>
