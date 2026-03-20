@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TDEE計算 - 1日の消費カロリーを自動計算｜SimpleToolkit</title>
+  <meta name="description" content="年齢・身長・体重・活動レベルを入力するだけで1日の総消費カロリー(TDEE)と基礎代謝(BMR)を自動計算。ダイエット・増量の目標カロリーも表示。">
+  <meta property="og:title" content="TDEE計算 - 1日の消費カロリーを自動計算｜SimpleToolkit">
+  <meta property="og:description" content="年齢・身長・体重・活動レベルを入力するだけで1日の総消費カロリー(TDEE)と基礎代謝(BMR)を自動計算。ダイエット・増量の目標カロリーも表示。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/tdee-calculator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "TDEE計算 - 1日の消費カロリーを自動計算",
+    "description": "年齢・身長・体重・活動レベルを入力するだけで1日の総消費カロリー(TDEE)と基礎代謝(BMR)を自動計算。ダイエット・増量の目標カロリーも表示。",
+    "url": "https://simpletoolkit.net/tools/tdee-calculator/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "TDEEとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "TDEE（Total Daily Energy Expenditure）は1日の総消費カロリーのことです。基礎代謝（BMR）に日常の活動量を掛け合わせて算出します。ダイエットや増量の計画を立てる際の基準となる数値です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "基礎代謝(BMR)とTDEEの違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "基礎代謝(BMR)は何もせず安静にしているだけで消費されるカロリーです。TDEEはBMRに日常の活動（運動・仕事・家事など）で消費するカロリーを加えた、1日の総消費カロリーです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mifflin-St Jeor式とは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mifflin-St Jeor式は1990年に発表された基礎代謝の計算式で、現在最も正確とされています。男性: 10×体重(kg)+6.25×身長(cm)-5×年齢+5、女性: 10×体重(kg)+6.25×身長(cm)-5×年齢-161 で計算します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ダイエットには1日何kcal減らせばいいですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一般的に、TDEEから1日あたり500kcalを減らすと、週に約0.5kgの減量が期待できます。急激な減量は健康に悪影響を及ぼすため、TDEEの20%以上のカロリーカットは避けることが推奨されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。身体データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    .input-field input,
+    .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus,
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .gender-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .gender-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .gender-btn:hover {
+      border-color: var(--primary);
+    }
+    .gender-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .activity-select {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    .activity-select label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    .activity-select select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .activity-select select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Results */
+    .tdee-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .tdee-result.show {
+      display: block;
+    }
+    .result-hero {
+      text-align: center;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+    }
+    .result-hero-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-hero-value {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .result-hero-unit {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+    .result-hero-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .result-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .result-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .result-card.highlight-loss {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    .result-card.highlight-gain {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+    .result-card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-card-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .result-card-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Chart */
+    .chart-section {
+      margin: 24px 0;
+    }
+    .chart-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+    .chart-container {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .pie-chart {
+      width: 200px;
+      height: 200px;
+      position: relative;
+    }
+    .pie-chart canvas {
+      width: 100%;
+      height: 100%;
+    }
+    .chart-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .legend-label {
+      color: var(--text-muted);
+    }
+    .legend-value {
+      font-weight: 700;
+    }
+
+    /* Macro bars */
+    .macro-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .macro-bar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .macro-bar-label {
+      width: 80px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .macro-bar-track {
+      flex: 1;
+      height: 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .macro-bar-fill {
+      height: 100%;
+      border-radius: 12px;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      min-width: 40px;
+    }
+    .macro-bar-fill.protein { background: #3b82f6; }
+    .macro-bar-fill.fat { background: #f59e0b; }
+    .macro-bar-fill.carb { background: #10b981; }
+    .macro-bar-amount {
+      width: 60px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* Activity level table */
+    .activity-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .activity-table th,
+    .activity-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .activity-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .activity-table .current-row {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .result-hero-value { font-size: 2.2rem; }
+      .result-cards { grid-template-columns: 1fr; }
+      .result-card-value { font-size: 1.2rem; }
+      .pie-chart { width: 160px; height: 160px; }
+      .macro-bar-label { width: 64px; font-size: 0.8rem; }
+      .macro-bar-amount { width: 50px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>TDEE計算（1日の総消費カロリー計算）</h1>
+    <h2>基礎代謝・消費カロリーを無料で自動計算</h2>
+    <p class="tool-description">年齢・身長・体重・活動レベルを入力するだけで、1日の総消費カロリー（TDEE）と基礎代謝（BMR）をMifflin-St Jeor式で自動計算。ダイエット・増量の目標カロリーやマクロ栄養素の目安も表示します。無料・登録不要・ブラウザだけで完結。</p>
+
+    <div class="tool-area">
+      <!-- 性別 -->
+      <label style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:6px;">性別</label>
+      <div class="gender-group">
+        <button type="button" class="gender-btn active" id="gender-male" onclick="setGender('male')">男性</button>
+        <button type="button" class="gender-btn" id="gender-female" onclick="setGender('female')">女性</button>
+      </div>
+
+      <!-- 年齢・身長・体重 -->
+      <div class="input-row">
+        <div class="input-field">
+          <label for="age">年齢</label>
+          <input type="number" id="age" placeholder="30" min="1" max="120" step="1">
+          <div class="unit">歳</div>
+        </div>
+        <div class="input-field">
+          <label for="height">身長</label>
+          <input type="number" id="height" placeholder="170" min="50" max="300" step="0.1">
+          <div class="unit">cm</div>
+        </div>
+        <div class="input-field">
+          <label for="weight">体重</label>
+          <input type="number" id="weight" placeholder="65" min="10" max="500" step="0.1">
+          <div class="unit">kg</div>
+        </div>
+      </div>
+
+      <!-- 活動レベル -->
+      <div class="activity-select">
+        <label for="activity">活動レベル</label>
+        <select id="activity">
+          <option value="1.2">座りがち（運動なし）</option>
+          <option value="1.375">軽い運動（週1-3回）</option>
+          <option value="1.55" selected>中程度の運動（週3-5回）</option>
+          <option value="1.725">活発な運動（週6-7回）</option>
+          <option value="1.9">非常に活発（毎日激しい運動）</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculateTDEE()">計算する</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <!-- 結果 -->
+      <div class="tdee-result" id="tdee-result">
+        <!-- TDEE表示 -->
+        <div class="result-hero">
+          <div class="result-hero-label">あなたの1日の総消費カロリー（TDEE）</div>
+          <div class="result-hero-value"><span id="tdee-value">0</span> <span class="result-hero-unit">kcal/日</span></div>
+          <div class="result-hero-sub">基礎代謝（BMR）: <strong id="bmr-value">0</strong> kcal/日</div>
+        </div>
+
+        <!-- 目標カロリー -->
+        <div class="result-cards">
+          <div class="result-card">
+            <div class="result-card-label">基礎代謝（BMR）</div>
+            <div class="result-card-value" id="card-bmr">-</div>
+            <div class="result-card-note">安静時の消費カロリー</div>
+          </div>
+          <div class="result-card">
+            <div class="result-card-label">TDEE（維持カロリー）</div>
+            <div class="result-card-value" id="card-tdee">-</div>
+            <div class="result-card-note">現在の体重を維持</div>
+          </div>
+          <div class="result-card highlight-loss">
+            <div class="result-card-label">減量目標</div>
+            <div class="result-card-value" id="card-loss">-</div>
+            <div class="result-card-note">-500kcal/日 = 週0.5kg減</div>
+          </div>
+          <div class="result-card highlight-gain">
+            <div class="result-card-label">増量目標</div>
+            <div class="result-card-value" id="card-gain">-</div>
+            <div class="result-card-note">+500kcal/日 = 週0.5kg増</div>
+          </div>
+        </div>
+
+        <!-- マクロ栄養素 -->
+        <div class="chart-section">
+          <h3>マクロ栄養素の目安（維持カロリーの場合）</h3>
+          <div class="chart-container">
+            <div class="pie-chart">
+              <canvas id="macro-chart" width="200" height="200"></canvas>
+            </div>
+            <div class="chart-legend">
+              <div class="legend-item">
+                <div class="legend-color" style="background:#3b82f6;"></div>
+                <div>
+                  <div class="legend-label">タンパク質（30%）</div>
+                  <div class="legend-value" id="legend-protein">- g</div>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color" style="background:#f59e0b;"></div>
+                <div>
+                  <div class="legend-label">脂質（25%）</div>
+                  <div class="legend-value" id="legend-fat">- g</div>
+                </div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color" style="background:#10b981;"></div>
+                <div>
+                  <div class="legend-label">炭水化物（45%）</div>
+                  <div class="legend-value" id="legend-carb">- g</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- マクロバー -->
+          <div class="macro-bars">
+            <div class="macro-bar-item">
+              <div class="macro-bar-label">タンパク質</div>
+              <div class="macro-bar-track">
+                <div class="macro-bar-fill protein" id="bar-protein" style="width:0%"></div>
+              </div>
+              <div class="macro-bar-amount" id="bar-protein-amount">- g</div>
+            </div>
+            <div class="macro-bar-item">
+              <div class="macro-bar-label">脂質</div>
+              <div class="macro-bar-track">
+                <div class="macro-bar-fill fat" id="bar-fat" style="width:0%"></div>
+              </div>
+              <div class="macro-bar-amount" id="bar-fat-amount">- g</div>
+            </div>
+            <div class="macro-bar-item">
+              <div class="macro-bar-label">炭水化物</div>
+              <div class="macro-bar-track">
+                <div class="macro-bar-fill carb" id="bar-carb" style="width:0%"></div>
+              </div>
+              <div class="macro-bar-amount" id="bar-carb-amount">- g</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 活動レベル別TDEE -->
+        <h3 style="font-size:1.1rem;margin-top:24px;margin-bottom:12px;">活動レベル別TDEE一覧</h3>
+        <table class="activity-table">
+          <thead>
+            <tr>
+              <th>活動レベル</th>
+              <th>係数</th>
+              <th>TDEE (kcal/日)</th>
+            </tr>
+          </thead>
+          <tbody id="activity-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI計算</h3>
+          <p>身長と体重からBMIを瞬時に計算</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var selectedGender = 'male';
+
+    function setGender(gender) {
+      selectedGender = gender;
+      document.getElementById('gender-male').classList.toggle('active', gender === 'male');
+      document.getElementById('gender-female').classList.toggle('active', gender === 'female');
+    }
+
+    function calculateTDEE() {
+      var age = parseInt(document.getElementById('age').value);
+      var height = parseFloat(document.getElementById('height').value);
+      var weight = parseFloat(document.getElementById('weight').value);
+      var activityLevel = parseFloat(document.getElementById('activity').value);
+
+      if (!age || !height || !weight || age <= 0 || height <= 0 || weight <= 0) {
+        alert('年齢・身長・体重を正しく入力してください。');
+        return;
+      }
+
+      // Mifflin-St Jeor式でBMR計算
+      var bmr;
+      if (selectedGender === 'male') {
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+      } else {
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+      }
+
+      var tdee = bmr * activityLevel;
+      var bmrRounded = Math.round(bmr);
+      var tdeeRounded = Math.round(tdee);
+      var lossTarget = Math.round(tdee - 500);
+      var gainTarget = Math.round(tdee + 500);
+
+      // マクロ栄養素（TDEE基準: タンパク質30%, 脂質25%, 炭水化物45%）
+      var proteinKcal = tdee * 0.30;
+      var fatKcal = tdee * 0.25;
+      var carbKcal = tdee * 0.45;
+      var proteinG = Math.round(proteinKcal / 4);
+      var fatG = Math.round(fatKcal / 9);
+      var carbG = Math.round(carbKcal / 4);
+      var totalG = proteinG + fatG + carbG;
+
+      // 表示更新
+      document.getElementById('tdee-value').textContent = tdeeRounded.toLocaleString();
+      document.getElementById('bmr-value').textContent = bmrRounded.toLocaleString();
+      document.getElementById('card-bmr').textContent = bmrRounded.toLocaleString() + ' kcal';
+      document.getElementById('card-tdee').textContent = tdeeRounded.toLocaleString() + ' kcal';
+      document.getElementById('card-loss').textContent = lossTarget.toLocaleString() + ' kcal';
+      document.getElementById('card-gain').textContent = gainTarget.toLocaleString() + ' kcal';
+
+      // マクロ栄養素
+      document.getElementById('legend-protein').textContent = proteinG + ' g';
+      document.getElementById('legend-fat').textContent = fatG + ' g';
+      document.getElementById('legend-carb').textContent = carbG + ' g';
+
+      // マクロバー
+      var maxG = Math.max(proteinG, fatG, carbG);
+      document.getElementById('bar-protein').style.width = (proteinG / maxG * 100) + '%';
+      document.getElementById('bar-protein').textContent = '30%';
+      document.getElementById('bar-protein-amount').textContent = proteinG + ' g';
+      document.getElementById('bar-fat').style.width = (fatG / maxG * 100) + '%';
+      document.getElementById('bar-fat').textContent = '25%';
+      document.getElementById('bar-fat-amount').textContent = fatG + ' g';
+      document.getElementById('bar-carb').style.width = (carbG / maxG * 100) + '%';
+      document.getElementById('bar-carb').textContent = '45%';
+      document.getElementById('bar-carb-amount').textContent = carbG + ' g';
+
+      // 円グラフ描画
+      drawPieChart(proteinG, fatG, carbG);
+
+      // 活動レベル別テーブル
+      var levels = [
+        { name: '座りがち（運動なし）', factor: 1.2 },
+        { name: '軽い運動（週1-3回）', factor: 1.375 },
+        { name: '中程度の運動（週3-5回）', factor: 1.55 },
+        { name: '活発な運動（週6-7回）', factor: 1.725 },
+        { name: '非常に活発（毎日激しい運動）', factor: 1.9 }
+      ];
+      var tbody = document.getElementById('activity-table-body');
+      tbody.innerHTML = '';
+      for (var i = 0; i < levels.length; i++) {
+        var tr = document.createElement('tr');
+        var levelTdee = Math.round(bmr * levels[i].factor);
+        if (levels[i].factor === activityLevel) {
+          tr.className = 'current-row';
+        }
+        tr.innerHTML = '<td>' + levels[i].name + '</td><td>' + levels[i].factor + '</td><td>' + levelTdee.toLocaleString() + ' kcal</td>';
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById('tdee-result').classList.add('show');
+    }
+
+    function drawPieChart(protein, fat, carb) {
+      var canvas = document.getElementById('macro-chart');
+      var ctx = canvas.getContext('2d');
+      var size = canvas.width;
+      var centerX = size / 2;
+      var centerY = size / 2;
+      var radius = size / 2 - 10;
+
+      ctx.clearRect(0, 0, size, size);
+
+      var total = protein + fat + carb;
+      var slices = [
+        { value: protein, color: '#3b82f6' },
+        { value: fat, color: '#f59e0b' },
+        { value: carb, color: '#10b981' }
+      ];
+
+      var startAngle = -Math.PI / 2;
+      for (var i = 0; i < slices.length; i++) {
+        var sliceAngle = (slices[i].value / total) * 2 * Math.PI;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+        ctx.closePath();
+        ctx.fillStyle = slices[i].color;
+        ctx.fill();
+        startAngle += sliceAngle;
+      }
+
+      // 中心に白い円（ドーナツ型）
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius * 0.55, 0, 2 * Math.PI);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+
+      // 中心テキスト
+      ctx.fillStyle = '#333';
+      ctx.font = 'bold 14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('TDEE', centerX, centerY - 8);
+      ctx.font = '12px sans-serif';
+      ctx.fillStyle = '#666';
+      ctx.fillText('栄養素比率', centerX, centerY + 10);
+    }
+
+    function clearForm() {
+      document.getElementById('age').value = '';
+      document.getElementById('height').value = '';
+      document.getElementById('weight').value = '';
+      document.getElementById('activity').selectedIndex = 2;
+      setGender('male');
+      document.getElementById('tdee-result').classList.remove('show');
+    }
+
+    // Enter key support
+    var inputs = document.querySelectorAll('#age, #height, #weight');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calculateTDEE();
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>騒音レベル測定 - スマホで簡単デシベル測定｜SimpleToolkit</title>
+  <meta name="description" content="スマホやPCのマイクで周囲の騒音レベル（デシベル）をリアルタイム測定。日常の騒音チェックや防音対策の参考に。">
+  <meta property="og:title" content="騒音レベル測定 - スマホで簡単デシベル測定｜SimpleToolkit">
+  <meta property="og:description" content="スマホやPCのマイクで周囲の騒音レベル（デシベル）をリアルタイム測定。日常の騒音チェックや防音対策の参考に。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/noise-meter/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "騒音レベル測定 - スマホで簡単デシベル測定",
+    "description": "スマホやPCのマイクで周囲の騒音レベル（デシベル）をリアルタイム測定。日常の騒音チェックや防音対策の参考に。",
+    "url": "https://simpletoolkit.net/tools/noise-meter/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "スマホで騒音レベルを測定できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、スマホやPCに内蔵されたマイクを使って周囲の騒音レベル（デシベル）をリアルタイムで測定できます。ブラウザからマイクへのアクセスを許可するだけで、すぐに測定を開始できます。ただし専門的な測定機器とは精度が異なるため、目安としてご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "デシベル（dB）とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "デシベル（dB）は音の大きさ（音圧レベル）を表す単位です。0dBは人間の聴覚の閾値で、通常の会話は約60dB、電車内は約80dB、ライブ会場は約100dB程度です。85dB以上の音に長時間さらされると聴覚障害のリスクがあります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "何デシベルから騒音になりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "環境省の騒音基準では、住宅地の昼間で55dB以下、夜間で45dB以下が望ましいとされています。一般的に60dBを超えると「うるさい」と感じ始め、80dB以上になると長時間の曝露で聴覚への影響が懸念されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "測定データはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。マイクの音声データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .mic-permission {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .mic-permission .mic-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+    }
+    .mic-permission p {
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .meter-container {
+      display: none;
+    }
+    .meter-container.active {
+      display: block;
+    }
+
+    /* Digital display */
+    .db-display {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .db-value {
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      transition: color 0.3s;
+      font-variant-numeric: tabular-nums;
+    }
+    .db-unit {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+    .db-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 4px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    /* Gauge canvas */
+    .gauge-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    #gauge-canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Level bar */
+    .level-bar-wrapper {
+      margin: 16px 0;
+    }
+    .level-bar-bg {
+      height: 20px;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+    .level-bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.1s ease, background 0.3s;
+      width: 0%;
+    }
+    .level-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-card .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .stat-card .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Reference table */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.9rem;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .ref-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+    .ref-table td:first-child {
+      text-align: center;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .ref-table .ref-quiet { color: #16a34a; }
+    .ref-table .ref-normal { color: #ca8a04; }
+    .ref-table .ref-loud { color: #ea580c; }
+    .ref-table .ref-danger { color: #dc2626; }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+
+    /* Timer */
+    .timer-display {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin: 8px 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Caution */
+    .caution {
+      background: #fefce8;
+      border: 1px solid #fde047;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #854d0e;
+      margin-top: 20px;
+    }
+
+    /* Blink animation for danger zone */
+    @keyframes blink-red {
+      0%, 100% { color: #dc2626; }
+      50% { color: #fca5a5; }
+    }
+    .blink {
+      animation: blink-red 0.5s infinite;
+    }
+
+    @media (max-width: 600px) {
+      .db-value { font-size: 3.5rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>騒音レベル測定</h1>
+    <h2>スマホ・PCで簡単デシベル測定</h2>
+    <p class="tool-description">お使いのスマホやPCのマイクを使って、周囲の騒音レベル（デシベル）をリアルタイムに測定します。日常の騒音チェックや防音対策の参考にお使いください。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <!-- Permission request -->
+      <div class="mic-permission" id="mic-permission">
+        <div class="mic-icon">&#127908;</div>
+        <p>マイクへのアクセス許可が必要です。<br>下のボタンをタップして、ブラウザの許可ダイアログで「許可」を選択してください。</p>
+        <button class="btn" id="btn-start" onclick="startMeasurement()">測定を開始する</button>
+        <div id="mic-error" style="color:#dc2626;margin-top:12px;display:none;"></div>
+      </div>
+
+      <!-- Meter UI (hidden until mic granted) -->
+      <div class="meter-container" id="meter-container">
+        <!-- Digital dB display -->
+        <div class="db-display">
+          <span class="db-value" id="db-value">--</span><span class="db-unit">dB</span>
+          <div class="db-label" id="db-label">--</div>
+        </div>
+
+        <!-- Gauge -->
+        <div class="gauge-wrapper">
+          <canvas id="gauge-canvas" width="400" height="220"></canvas>
+        </div>
+
+        <!-- Level bar -->
+        <div class="level-bar-wrapper">
+          <div class="level-bar-bg">
+            <div class="level-bar-fill" id="level-bar-fill"></div>
+          </div>
+          <div class="level-bar-labels">
+            <span>0 dB</span>
+            <span>40</span>
+            <span>60</span>
+            <span>80</span>
+            <span>100</span>
+            <span>120 dB</span>
+          </div>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-display" id="timer-display">測定時間: 00:00</div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">現在値</div>
+            <div class="stat-value" id="stat-current">-- dB</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">最大値</div>
+            <div class="stat-value" id="stat-max">-- dB</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">最小値</div>
+            <div class="stat-value" id="stat-min">-- dB</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">平均値</div>
+            <div class="stat-value" id="stat-avg">-- dB</div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+          <button class="btn" id="btn-toggle" onclick="toggleMeasurement()">一時停止</button>
+          <button class="btn btn-secondary" onclick="resetStats()">リセット</button>
+        </div>
+
+        <div class="caution">
+          &#9888; この測定ツールは専門的な測定機器ではありません。デバイスのマイク性能により精度が異なります。あくまで目安としてお使いください。
+        </div>
+      </div>
+    </div>
+
+    <!-- Reference table -->
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">騒音レベルの目安</h2>
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>dB</th>
+            <th>環境の例</th>
+            <th>体感</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ref-quiet">20 dB</td>
+            <td>木の葉が触れ合う音、雪の降る音</td>
+            <td>ほぼ無音</td>
+          </tr>
+          <tr>
+            <td class="ref-quiet">30 dB</td>
+            <td>深夜の郊外、ささやき声</td>
+            <td>非常に静か</td>
+          </tr>
+          <tr>
+            <td class="ref-quiet">40 dB</td>
+            <td>図書館、静かな住宅地の昼間</td>
+            <td>静か</td>
+          </tr>
+          <tr>
+            <td class="ref-normal">50 dB</td>
+            <td>静かなオフィス、エアコンの室外機</td>
+            <td>日常レベル</td>
+          </tr>
+          <tr>
+            <td class="ref-normal">60 dB</td>
+            <td>通常の会話、テレビの音</td>
+            <td>普通</td>
+          </tr>
+          <tr>
+            <td class="ref-loud">70 dB</td>
+            <td>掃除機、騒がしい街頭</td>
+            <td>やや騒がしい</td>
+          </tr>
+          <tr>
+            <td class="ref-loud">80 dB</td>
+            <td>電車内、パチンコ店</td>
+            <td>騒がしい</td>
+          </tr>
+          <tr>
+            <td class="ref-danger">90 dB</td>
+            <td>カラオケ（店内）、犬の鳴き声</td>
+            <td>非常に騒がしい</td>
+          </tr>
+          <tr>
+            <td class="ref-danger">100 dB</td>
+            <td>電車のガード下、ライブ会場</td>
+            <td>聴覚障害のリスク</td>
+          </tr>
+          <tr>
+            <td class="ref-danger">110 dB</td>
+            <td>車のクラクション、工事現場</td>
+            <td>苦痛を感じる</td>
+          </tr>
+          <tr>
+            <td class="ref-danger">120 dB</td>
+            <td>ジェット機の離陸（近距離）</td>
+            <td>聴力損傷の危険</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var audioContext = null;
+    var analyser = null;
+    var microphone = null;
+    var stream = null;
+    var animationId = null;
+    var isRunning = false;
+    var isPaused = false;
+
+    // Stats
+    var maxDb = -Infinity;
+    var minDb = Infinity;
+    var dbSum = 0;
+    var dbCount = 0;
+    var startTime = null;
+    var elapsedTime = 0;
+    var timerInterval = null;
+
+    // Gauge drawing
+    var gaugeCanvas = document.getElementById('gauge-canvas');
+    var gaugeCtx = gaugeCanvas.getContext('2d');
+
+    function startMeasurement() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        document.getElementById('mic-error').textContent = 'このブラウザはマイク入力に対応していません。Chrome、Firefox、Safariの最新版をお使いください。';
+        document.getElementById('mic-error').style.display = 'block';
+        return;
+      }
+
+      navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        .then(function(s) {
+          stream = s;
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioContext.createAnalyser();
+          analyser.fftSize = 2048;
+          analyser.smoothingTimeConstant = 0.8;
+          microphone = audioContext.createMediaStreamSource(stream);
+          microphone.connect(analyser);
+
+          document.getElementById('mic-permission').style.display = 'none';
+          document.getElementById('meter-container').classList.add('active');
+
+          isRunning = true;
+          isPaused = false;
+          startTime = Date.now();
+          timerInterval = setInterval(updateTimer, 1000);
+          measure();
+        })
+        .catch(function(err) {
+          var msg = 'マイクへのアクセスが拒否されました。';
+          if (err.name === 'NotAllowedError') {
+            msg += 'ブラウザの設定からマイクの許可を有効にしてください。';
+          } else if (err.name === 'NotFoundError') {
+            msg += 'マイクが見つかりません。マイクが接続されているか確認してください。';
+          } else {
+            msg += '（' + err.message + '）';
+          }
+          document.getElementById('mic-error').textContent = msg;
+          document.getElementById('mic-error').style.display = 'block';
+        });
+    }
+
+    function measure() {
+      if (!isRunning || isPaused) return;
+
+      var dataArray = new Float32Array(analyser.fftSize);
+      analyser.getFloatTimeDomainData(dataArray);
+
+      // Calculate RMS
+      var sum = 0;
+      for (var i = 0; i < dataArray.length; i++) {
+        sum += dataArray[i] * dataArray[i];
+      }
+      var rms = Math.sqrt(sum / dataArray.length);
+
+      // Convert to dB (relative to full scale)
+      // We use a reference that maps typical microphone input to approximate real-world dB
+      var db = 0;
+      if (rms > 0) {
+        db = 20 * Math.log10(rms);
+        // Map from dBFS (typically -100 to 0) to approximate SPL dB (0 to 120)
+        // This is an approximation since actual calibration depends on the microphone
+        db = Math.max(0, Math.min(120, db + 100));
+      }
+
+      var dbRounded = Math.round(db * 10) / 10;
+
+      // Update stats
+      if (dbRounded > maxDb) maxDb = dbRounded;
+      if (dbRounded < minDb) minDb = dbRounded;
+      dbSum += dbRounded;
+      dbCount++;
+      var avgDb = Math.round(dbSum / dbCount * 10) / 10;
+
+      // Update UI
+      updateDisplay(dbRounded, avgDb);
+
+      animationId = requestAnimationFrame(measure);
+    }
+
+    function updateDisplay(db, avg) {
+      var dbValueEl = document.getElementById('db-value');
+      var dbLabelEl = document.getElementById('db-label');
+      var levelBar = document.getElementById('level-bar-fill');
+
+      dbValueEl.textContent = db.toFixed(1);
+
+      // Determine level
+      var label, color, bgColor, barColor;
+      if (db < 40) {
+        label = '静か';
+        color = '#16a34a';
+        bgColor = '#f0fdf4';
+        barColor = '#22c55e';
+      } else if (db < 60) {
+        label = '普通';
+        color = '#ca8a04';
+        bgColor = '#fefce8';
+        barColor = '#eab308';
+      } else if (db < 80) {
+        label = 'やや騒がしい';
+        color = '#ea580c';
+        bgColor = '#fff7ed';
+        barColor = '#f97316';
+      } else if (db < 100) {
+        label = '騒がしい';
+        color = '#dc2626';
+        bgColor = '#fef2f2';
+        barColor = '#ef4444';
+      } else {
+        label = '危険！';
+        color = '#dc2626';
+        bgColor = '#fef2f2';
+        barColor = '#dc2626';
+      }
+
+      dbValueEl.style.color = color;
+      dbLabelEl.textContent = label;
+      dbLabelEl.style.color = color;
+      dbLabelEl.style.background = bgColor;
+
+      // Blink for danger
+      if (db >= 100) {
+        dbValueEl.classList.add('blink');
+      } else {
+        dbValueEl.classList.remove('blink');
+      }
+
+      // Level bar
+      var barPercent = Math.min(db / 120 * 100, 100);
+      levelBar.style.width = barPercent + '%';
+      levelBar.style.background = barColor;
+
+      // Stats
+      document.getElementById('stat-current').textContent = db.toFixed(1) + ' dB';
+      document.getElementById('stat-max').textContent = (maxDb === -Infinity ? '--' : maxDb.toFixed(1)) + ' dB';
+      document.getElementById('stat-min').textContent = (minDb === Infinity ? '--' : minDb.toFixed(1)) + ' dB';
+      document.getElementById('stat-avg').textContent = avg.toFixed(1) + ' dB';
+
+      // Draw gauge
+      drawGauge(db);
+    }
+
+    function drawGauge(db) {
+      var canvas = gaugeCanvas;
+      var ctx = gaugeCtx;
+      var W = canvas.width;
+      var H = canvas.height;
+      var cx = W / 2;
+      var cy = H - 20;
+      var radius = Math.min(W, H) - 40;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Arc angles: from PI (left) to 0 (right)
+      var startAngle = Math.PI;
+      var endAngle = 0;
+
+      // Draw colored arc segments
+      var segments = [
+        { from: 0, to: 40, color: '#22c55e' },
+        { from: 40, to: 60, color: '#eab308' },
+        { from: 60, to: 80, color: '#f97316' },
+        { from: 80, to: 100, color: '#ef4444' },
+        { from: 100, to: 120, color: '#dc2626' }
+      ];
+
+      for (var i = 0; i < segments.length; i++) {
+        var seg = segments[i];
+        var a1 = startAngle - (seg.from / 120) * Math.PI;
+        var a2 = startAngle - (seg.to / 120) * Math.PI;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, a1, a2, true);
+        ctx.lineWidth = 24;
+        ctx.strokeStyle = seg.color;
+        ctx.lineCap = 'butt';
+        ctx.stroke();
+      }
+
+      // Draw tick marks and labels
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      var ticks = [0, 20, 40, 60, 80, 100, 120];
+      for (var t = 0; t < ticks.length; t++) {
+        var angle = startAngle - (ticks[t] / 120) * Math.PI;
+        var x1 = cx + (radius - 16) * Math.cos(angle);
+        var y1 = cy + (radius - 16) * Math.sin(angle);
+        var x2 = cx + (radius + 16) * Math.cos(angle);
+        var y2 = cy + (radius + 16) * Math.sin(angle);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#9ca3af';
+        ctx.stroke();
+
+        var labelR = radius + 28;
+        var lx = cx + labelR * Math.cos(angle);
+        var ly = cy + labelR * Math.sin(angle);
+        ctx.fillText(ticks[t], lx, ly);
+      }
+
+      // Draw needle
+      var needleAngle = startAngle - (Math.min(Math.max(db, 0), 120) / 120) * Math.PI;
+      var needleLen = radius - 30;
+      var nx = cx + needleLen * Math.cos(needleAngle);
+      var ny = cy + needleLen * Math.sin(needleAngle);
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(nx, ny);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#1f2937';
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Needle center dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+      ctx.fillStyle = '#1f2937';
+      ctx.fill();
+
+      // dB text below center
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('dB', cx, cy - 16);
+    }
+
+    function updateTimer() {
+      if (!startTime || isPaused) return;
+      elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+      var mins = Math.floor(elapsedTime / 60);
+      var secs = elapsedTime % 60;
+      document.getElementById('timer-display').textContent = '測定時間: ' + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function toggleMeasurement() {
+      var btn = document.getElementById('btn-toggle');
+      if (isPaused) {
+        isPaused = false;
+        startTime = Date.now() - elapsedTime * 1000;
+        btn.textContent = '一時停止';
+        measure();
+      } else {
+        isPaused = true;
+        btn.textContent = '再開';
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+      }
+    }
+
+    function resetStats() {
+      maxDb = -Infinity;
+      minDb = Infinity;
+      dbSum = 0;
+      dbCount = 0;
+      startTime = Date.now();
+      elapsedTime = 0;
+      document.getElementById('timer-display').textContent = '測定時間: 00:00';
+      document.getElementById('stat-max').textContent = '-- dB';
+      document.getElementById('stat-min').textContent = '-- dB';
+      document.getElementById('stat-avg').textContent = '-- dB';
+    }
+
+    // Draw initial empty gauge
+    drawGauge(0);
+  </script>
+</body>
+</html>

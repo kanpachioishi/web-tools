@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>特殊文字変換 - おしゃれフォントでSNS映え文字を作成｜SimpleToolkit</title>
+  <meta name="description" content="テキストを入力するだけで15種類以上のおしゃれフォントに一括変換。コピペでSNSのプロフィールや投稿に使える特殊文字を無料で生成。">
+  <meta property="og:title" content="特殊文字変換 - おしゃれフォントでSNS映え文字を作成｜SimpleToolkit">
+  <meta property="og:description" content="テキストを入力するだけで15種類以上のおしゃれフォントに一括変換。コピペでSNSのプロフィールや投稿に使える特殊文字を無料で生成。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/fancy-text/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "特殊文字変換 - おしゃれフォントでSNS映え文字を作成",
+    "description": "テキストを入力するだけで15種類以上のおしゃれフォントに一括変換。コピペでSNSのプロフィールや投稿に使える特殊文字を無料で生成。",
+    "url": "https://simpletoolkit.net/tools/fancy-text/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "特殊文字・おしゃれフォントとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unicodeに含まれる装飾的な文字（数学記号、囲み文字など）を使って、通常のアルファベットを見た目の異なるスタイルに変換したものです。フォントのインストールは不要で、コピー＆ペーストでどこでも使えます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "SNSのプロフィールや投稿に使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、X（旧Twitter）、Instagram、LINE、TikTokなど主要なSNSのプロフィール名や投稿文に使えます。ただしプラットフォームや端末によって一部の文字が正しく表示されない場合があります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本語（ひらがな・カタカナ・漢字）は変換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "現在対応しているのは英数字（a-z, A-Z, 0-9）の変換です。日本語の文字はそのまま表示されるため、英数字と組み合わせてご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての変換処理はブラウザ内で完結します。入力テキストが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-area {
+      margin-bottom: 24px;
+    }
+    .input-area textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1.1rem;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      font-family: inherit;
+    }
+    .input-area textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-area textarea::placeholder {
+      color: var(--text-muted);
+    }
+    .style-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .style-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .style-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .copy-btn {
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .copy-btn.copied {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .style-output {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      word-break: break-all;
+      color: var(--text);
+      min-height: 1.6em;
+    }
+    .style-output.placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #333;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      z-index: 9999;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* SNS Preview */
+    .sns-preview-section {
+      margin-top: 32px;
+    }
+    .sns-preview-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+    .sns-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 2px solid var(--border);
+    }
+    .sns-tab {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .sns-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .sns-tab:hover {
+      color: var(--text);
+    }
+    .sns-preview-card {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 20px;
+      background: var(--bg);
+    }
+    .sns-mock {
+      display: none;
+    }
+    .sns-mock.active {
+      display: block;
+    }
+    /* X mock */
+    .x-mock {
+      max-width: 500px;
+    }
+    .x-mock-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .x-mock-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .x-mock-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .x-mock-handle {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .x-mock-body {
+      font-size: 1rem;
+      line-height: 1.5;
+      word-break: break-all;
+      min-height: 1.5em;
+    }
+    /* Instagram mock */
+    .ig-mock {
+      max-width: 400px;
+    }
+    .ig-mock-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .ig-mock-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+    .ig-mock-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .ig-mock-bio {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      word-break: break-all;
+      min-height: 1.5em;
+    }
+    /* LINE mock */
+    .line-mock {
+      max-width: 400px;
+    }
+    .line-mock-bubble {
+      background: #a8d97f;
+      color: #000;
+      padding: 10px 14px;
+      border-radius: 18px 18px 4px 18px;
+      display: inline-block;
+      max-width: 80%;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-all;
+      min-height: 1.5em;
+    }
+    .line-mock-time {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    .sns-style-selector {
+      margin-bottom: 12px;
+    }
+    .sns-style-selector label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-right: 8px;
+    }
+    .sns-style-selector select {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .style-output { font-size: 1rem; }
+      .sns-tab { padding: 8px 14px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>特殊文字変換</h1>
+    <h2>おしゃれフォントでSNS映え文字を作成</h2>
+    <p class="tool-description">テキストを入力するだけで15種類以上のおしゃれフォントに一括変換。コピー＆ペーストでX（旧Twitter）、Instagram、LINEのプロフィールや投稿に使える特殊文字を無料で生成できます。</p>
+
+    <div class="tool-area">
+      <div class="input-area">
+        <label for="input-text">変換したいテキストを入力</label>
+        <textarea id="input-text" placeholder="ここにテキストを入力してください（例: Hello World）"></textarea>
+      </div>
+
+      <div id="results-container"></div>
+    </div>
+
+    <!-- SNS Preview -->
+    <div class="sns-preview-section">
+      <h2>SNSプレビュー</h2>
+      <div class="sns-style-selector">
+        <label for="sns-style-select">表示スタイル:</label>
+        <select id="sns-style-select"></select>
+      </div>
+      <div class="sns-tabs">
+        <button class="sns-tab active" data-tab="x">X（Twitter）</button>
+        <button class="sns-tab" data-tab="ig">Instagram</button>
+        <button class="sns-tab" data-tab="line">LINE</button>
+      </div>
+      <div class="sns-preview-card">
+        <div class="sns-mock active" id="sns-x">
+          <div class="x-mock">
+            <div class="x-mock-header">
+              <div class="x-mock-avatar"></div>
+              <div>
+                <div class="x-mock-name">ユーザー名</div>
+                <div class="x-mock-handle">@username</div>
+              </div>
+            </div>
+            <div class="x-mock-body" id="x-preview-text"></div>
+          </div>
+        </div>
+        <div class="sns-mock" id="sns-ig">
+          <div class="ig-mock">
+            <div class="ig-mock-header">
+              <div class="ig-mock-avatar"></div>
+              <div class="ig-mock-name">username</div>
+            </div>
+            <div class="ig-mock-bio" id="ig-preview-text"></div>
+          </div>
+        </div>
+        <div class="sns-mock" id="sns-line">
+          <div class="line-mock">
+            <div class="line-mock-bubble" id="line-preview-text"></div>
+            <div class="line-mock-time">既読 14:32</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換を簡単に</p>
+        </a>
+        <a href="../zenkaku-hankaku/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">全角半角変換</h3>
+          <p>全角⇔半角を一括変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">コピーしました！</div>
+
+  <script>
+  (function() {
+    // ===== Unicode Fancy Text Converters =====
+
+    // Helper: convert using code point offset for a-z, A-Z, 0-9
+    function makeOffsetConverter(upperStart, lowerStart, digitStart, specialMap) {
+      return function(text) {
+        var result = '';
+        for (var i = 0; i < text.length; i++) {
+          var c = text[i];
+          var code = text.charCodeAt(i);
+          if (specialMap && specialMap[c] !== undefined) {
+            result += specialMap[c];
+          } else if (code >= 0x41 && code <= 0x5A && upperStart !== null) {
+            // A-Z
+            result += String.fromCodePoint(upperStart + (code - 0x41));
+          } else if (code >= 0x61 && code <= 0x7A && lowerStart !== null) {
+            // a-z
+            result += String.fromCodePoint(lowerStart + (code - 0x61));
+          } else if (code >= 0x30 && code <= 0x39 && digitStart !== null) {
+            // 0-9
+            result += String.fromCodePoint(digitStart + (code - 0x30));
+          } else {
+            result += c;
+          }
+        }
+        return result;
+      };
+    }
+
+    // Helper: convert using explicit character map
+    function makeMapConverter(upper, lower, digits) {
+      return function(text) {
+        var result = '';
+        for (var i = 0; i < text.length; i++) {
+          var c = text[i];
+          var code = text.charCodeAt(i);
+          if (code >= 0x41 && code <= 0x5A && upper) {
+            result += upper[code - 0x41] || c;
+          } else if (code >= 0x61 && code <= 0x7A && lower) {
+            result += lower[code - 0x61] || c;
+          } else if (code >= 0x30 && code <= 0x39 && digits) {
+            result += digits[code - 0x30] || c;
+          } else {
+            result += c;
+          }
+        }
+        return result;
+      };
+    }
+
+    // 1. Double Struck (𝕕𝕠𝕦𝕓𝕝𝕖 𝕤𝕥𝕣𝕦𝕔𝕜)
+    var doubleStruck = makeOffsetConverter(0x1D538, 0x1D552, 0x1D7D8, null);
+
+    // 2. Gothic / Fraktur (𝔊𝔬𝔱𝔥𝔦𝔠)
+    var gothic = makeOffsetConverter(0x1D504, 0x1D51E, null, {
+      'C': '\u212D', 'H': '\u210C', 'I': '\u2111', 'R': '\u211C', 'Z': '\u2128'
+    });
+
+    // 3. Script Bold (𝓢𝓬𝓻𝓲𝓹𝓽 𝓑𝓸𝓵𝓭)
+    var scriptBold = makeOffsetConverter(0x1D4D0, 0x1D4EA, null, null);
+
+    // 4. Script (𝒮𝒸𝓇𝒾𝓅𝓉)
+    var script = makeOffsetConverter(0x1D49C, 0x1D4B6, null, {
+      'B': '\u212C', 'E': '\u2130', 'F': '\u2131', 'H': '\u210B',
+      'I': '\u2110', 'L': '\u2112', 'M': '\u2133', 'R': '\u211B',
+      'e': '\u212F', 'g': '\u210A', 'o': '\u2134'
+    });
+
+    // 5. Squared (🄱🄾🅇🄴🄳) - Regional indicator-like / squared latin
+    var squaredUpper = '🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉'.match(/.{1,2}/gu);
+    var squared = function(text) {
+      var result = '';
+      for (var i = 0; i < text.length; i++) {
+        var code = text.charCodeAt(i);
+        if (code >= 0x41 && code <= 0x5A) {
+          result += squaredUpper[code - 0x41];
+        } else if (code >= 0x61 && code <= 0x7A) {
+          result += squaredUpper[code - 0x61];
+        } else {
+          result += text[i];
+        }
+      }
+      return result;
+    };
+
+    // 6. Circled (Ⓒⓘⓡⓒⓛⓔⓓ)
+    var circled = makeOffsetConverter(0x24B6, 0x24D0, null, {
+      '0': '\u24EA'
+    });
+    // Fix digits 1-9 for circled
+    var circledFull = function(text) {
+      var result = '';
+      for (var i = 0; i < text.length; i++) {
+        var c = text[i];
+        var code = text.charCodeAt(i);
+        if (code >= 0x41 && code <= 0x5A) {
+          result += String.fromCodePoint(0x24B6 + (code - 0x41));
+        } else if (code >= 0x61 && code <= 0x7A) {
+          result += String.fromCodePoint(0x24D0 + (code - 0x61));
+        } else if (c === '0') {
+          result += '\u24EA';
+        } else if (code >= 0x31 && code <= 0x39) {
+          result += String.fromCodePoint(0x2460 + (code - 0x31));
+        } else {
+          result += c;
+        }
+      }
+      return result;
+    };
+
+    // 7. Small Caps (ᴛɪɴʏ ᴄᴀᴘꜱ)
+    var smallCapsMap = 'ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ';
+    var smallCapsArr = Array.from(smallCapsMap);
+    var smallCaps = function(text) {
+      var result = '';
+      for (var i = 0; i < text.length; i++) {
+        var code = text.charCodeAt(i);
+        if (code >= 0x61 && code <= 0x7A) {
+          result += smallCapsArr[code - 0x61];
+        } else if (code >= 0x41 && code <= 0x5A) {
+          result += smallCapsArr[code - 0x41];
+        } else {
+          result += text[i];
+        }
+      }
+      return result;
+    };
+
+    // 8. Upside Down (ɟlᴉddǝp)
+    var flipMap = {
+      'a':'ɐ','b':'q','c':'ɔ','d':'p','e':'ǝ','f':'ɟ','g':'ƃ','h':'ɥ',
+      'i':'ᴉ','j':'ɾ','k':'ʞ','l':'l','m':'ɯ','n':'u','o':'o','p':'d',
+      'q':'b','r':'ɹ','s':'s','t':'ʇ','u':'n','v':'ʌ','w':'ʍ','x':'x',
+      'y':'ʎ','z':'z',
+      'A':'∀','B':'ꓭ','C':'Ɔ','D':'ꓷ','E':'Ǝ','F':'Ⅎ','G':'⅁','H':'H',
+      'I':'I','J':'ꓩ','K':'ꓘ','L':'˥','M':'W','N':'N','O':'O','P':'Ԁ',
+      'Q':'Ꝺ','R':'ꓤ','S':'S','T':'⊥','U':'∩','V':'Λ','W':'M','X':'X',
+      'Y':'⅄','Z':'Z',
+      '0':'0','1':'Ɩ','2':'ᄅ','3':'Ɛ','4':'ㄣ','5':'ϛ','6':'9','7':'ㄥ','8':'8','9':'6',
+      '.':'˙',',':'\'','\'':',','!':'¡','?':'¿','(':')',')':'(',
+      '[':']',']':'[','{':'}','}':'{','<':'>','>':'<',
+      '_':'\u203E','&':'⅋'
+    };
+    var upsideDown = function(text) {
+      var result = '';
+      for (var i = text.length - 1; i >= 0; i--) {
+        result += flipMap[text[i]] || text[i];
+      }
+      return result;
+    };
+
+    // 9. Full Width (ｆｕｌｌ ｗｉｄｔｈ)
+    var fullWidth = function(text) {
+      var result = '';
+      for (var i = 0; i < text.length; i++) {
+        var code = text.charCodeAt(i);
+        if (code >= 0x21 && code <= 0x7E) {
+          result += String.fromCodePoint(code + 0xFEE0);
+        } else if (code === 0x20) {
+          result += '\u3000';
+        } else {
+          result += text[i];
+        }
+      }
+      return result;
+    };
+
+    // 10. Negative Squared (🅱🅻🅾🅲🅺)
+    var negSquaredUpper = '🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉'.match(/.{1,2}/gu);
+    var negSquared = function(text) {
+      var result = '';
+      for (var i = 0; i < text.length; i++) {
+        var code = text.charCodeAt(i);
+        if (code >= 0x41 && code <= 0x5A) {
+          result += negSquaredUpper[code - 0x41];
+        } else if (code >= 0x61 && code <= 0x7A) {
+          result += negSquaredUpper[code - 0x61];
+        } else {
+          result += text[i];
+        }
+      }
+      return result;
+    };
+
+    // 11. Strikethrough (s̶t̶r̶i̶k̶e̶t̶h̶r̶o̶u̶g̶h̶)
+    var strikethrough = function(text) {
+      var result = '';
+      for (var i = 0; i < text.length; i++) {
+        result += text[i];
+        if (text[i] !== ' ') {
+          result += '\u0336';
+        }
+      }
+      return result;
+    };
+
+    // 12. Underline (u̲n̲d̲e̲r̲l̲i̲n̲e̲)
+    var underline = function(text) {
+      var result = '';
+      for (var i = 0; i < text.length; i++) {
+        result += text[i];
+        if (text[i] !== ' ') {
+          result += '\u0332';
+        }
+      }
+      return result;
+    };
+
+    // 13. Bold (𝐁𝐨𝐥𝐝)
+    var bold = makeOffsetConverter(0x1D400, 0x1D41A, 0x1D7CE, null);
+
+    // 14. Italic (𝐼𝑡𝑎𝑙𝑖𝑐)
+    var italic = makeOffsetConverter(0x1D434, 0x1D44E, null, {
+      'h': '\u210E'
+    });
+
+    // 15. Bold Italic (𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒄)
+    var boldItalic = makeOffsetConverter(0x1D468, 0x1D482, null, null);
+
+    // 16. Monospace (𝚖𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎)
+    var monospace = makeOffsetConverter(0x1D670, 0x1D68A, 0x1D7F6, null);
+
+    // 17. Wavy (wave effect with combining chars)
+    var wavy = function(text) {
+      var diacritics = ['\u0360', '\u0361', '\u0362'];
+      var result = '';
+      var j = 0;
+      for (var i = 0; i < text.length; i++) {
+        result += text[i];
+        if (text[i] !== ' ' && i < text.length - 1 && text[i+1] !== ' ') {
+          result += diacritics[j % diacritics.length];
+          j++;
+        }
+      }
+      return result;
+    };
+
+    // 18. Sans-Serif Bold (𝗦𝗮𝗻𝘀-𝗦𝗲𝗿𝗶𝗳 𝗕𝗼𝗹𝗱)
+    var sansBold = makeOffsetConverter(0x1D5D4, 0x1D5EE, 0x1D7EC, null);
+
+    // Style definitions
+    var styles = [
+      { name: '𝕕𝕠𝕦𝕓𝕝𝕖 𝕤𝕥𝕣𝕦𝕔𝕜（二重線）', fn: doubleStruck, example: '𝔸𝔹ℂ' },
+      { name: '𝔊𝔬𝔱𝔥𝔦𝔠（ゴシック/フラクトゥール）', fn: gothic, example: '𝔄𝔅ℭ' },
+      { name: '𝓢𝓬𝓻𝓲𝓹𝓽 𝓑𝓸𝓵𝓭（筆記体太字）', fn: scriptBold, example: '𝓐𝓑𝓒' },
+      { name: '𝒮𝒸𝓇𝒾𝓅𝓉（筆記体）', fn: script, example: '𝒜ℬ𝒞' },
+      { name: '🄱🄾🅇🄴🄳（囲み文字）', fn: squared, example: '🄰🄱🄲' },
+      { name: 'Ⓒⓘⓡⓒⓛⓔⓓ（丸囲み）', fn: circledFull, example: 'ⒶⒷⒸ' },
+      { name: 'ᴛɪɴʏ ᴄᴀᴘꜱ（スモールキャップス）', fn: smallCaps, example: 'ᴀʙᴄ' },
+      { name: 'ɟlᴉddǝp（上下逆さ）', fn: upsideDown, example: 'ɔqɐ' },
+      { name: 'ｆｕｌｌ ｗｉｄｔｈ（全角）', fn: fullWidth, example: 'Ａ Ｂ Ｃ' },
+      { name: '🅱🅻🅾🅲🅺（塗りつぶし囲み）', fn: negSquared, example: '🅰🅱🅲' },
+      { name: 's̶t̶r̶i̶k̶e̶t̶h̶r̶o̶u̶g̶h̶（取り消し線付き）', fn: strikethrough, example: 'A̶B̶C̶' },
+      { name: 'u̲n̲d̲e̲r̲l̲i̲n̲e̲（下線付き）', fn: underline, example: 'A̲B̲C̲' },
+      { name: '𝐁𝐨𝐥𝐝（太字）', fn: bold, example: '𝐀𝐁𝐂' },
+      { name: '𝐼𝑡𝑎𝑙𝑖𝑐（斜体）', fn: italic, example: '𝐴𝐵𝐶' },
+      { name: '𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒄（太字斜体）', fn: boldItalic, example: '𝑨𝑩𝑪' },
+      { name: '𝚖𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎（等幅）', fn: monospace, example: '𝙰𝙱𝙲' },
+      { name: 'w͡a͢v͡y（波打ち）', fn: wavy, example: 'A͡B͢C' },
+      { name: '𝗦𝗮𝗻𝘀-𝗦𝗲𝗿𝗶𝗳 𝗕𝗼𝗹𝗱（サンセリフ太字）', fn: sansBold, example: '𝗔𝗕𝗖' }
+    ];
+
+    // Build result cards
+    var container = document.getElementById('results-container');
+    var snsSelect = document.getElementById('sns-style-select');
+
+    styles.forEach(function(style, index) {
+      // Result card
+      var card = document.createElement('div');
+      card.className = 'style-card';
+      card.innerHTML =
+        '<div class="style-card-header">' +
+          '<span class="style-name">' + style.name + '</span>' +
+          '<button class="copy-btn" data-index="' + index + '">コピー</button>' +
+        '</div>' +
+        '<div class="style-output placeholder" id="output-' + index + '">変換結果がここに表示されます</div>';
+      container.appendChild(card);
+
+      // SNS select option
+      var opt = document.createElement('option');
+      opt.value = index;
+      opt.textContent = style.name;
+      snsSelect.appendChild(opt);
+    });
+
+    // Real-time conversion
+    var inputEl = document.getElementById('input-text');
+    inputEl.addEventListener('input', convert);
+
+    function convert() {
+      var text = inputEl.value;
+      styles.forEach(function(style, index) {
+        var outputEl = document.getElementById('output-' + index);
+        if (text.length === 0) {
+          outputEl.textContent = '変換結果がここに表示されます';
+          outputEl.classList.add('placeholder');
+        } else {
+          outputEl.textContent = style.fn(text);
+          outputEl.classList.remove('placeholder');
+        }
+      });
+      updateSNSPreview();
+    }
+
+    // Copy buttons
+    container.addEventListener('click', function(e) {
+      var btn = e.target.closest('.copy-btn');
+      if (!btn) return;
+      var index = parseInt(btn.getAttribute('data-index'));
+      var outputEl = document.getElementById('output-' + index);
+      if (outputEl.classList.contains('placeholder')) return;
+      var text = outputEl.textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'コピー済み';
+        btn.classList.add('copied');
+        showToast();
+        setTimeout(function() {
+          btn.textContent = 'コピー';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+
+    // Toast
+    function showToast() {
+      var toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 1800);
+    }
+
+    // SNS Tabs
+    var tabs = document.querySelectorAll('.sns-tab');
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        document.querySelectorAll('.sns-mock').forEach(function(m) { m.classList.remove('active'); });
+        document.getElementById('sns-' + tab.getAttribute('data-tab')).classList.add('active');
+      });
+    });
+
+    // SNS Preview
+    snsSelect.addEventListener('change', updateSNSPreview);
+
+    function updateSNSPreview() {
+      var text = inputEl.value;
+      var styleIndex = parseInt(snsSelect.value);
+      var converted = text ? styles[styleIndex].fn(text) : '';
+      document.getElementById('x-preview-text').textContent = converted || 'ここにプレビューが表示されます';
+      document.getElementById('ig-preview-text').textContent = converted || 'ここにプレビューが表示されます';
+      document.getElementById('line-preview-text').textContent = converted || 'ここにプレビューが表示されます';
+    }
+
+    // Initialize
+    updateSNSPreview();
+  })();
+  </script>
+</body>
+</html>

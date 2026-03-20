@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSSグラデーションジェネレーター - 美しいグラデーションを簡単作成｜SimpleToolkit</title>
+  <meta name="description" content="CSSのグラデーションをビジュアルで作成。Linear/Radial/Conic対応、プリセット20種類以上。コードをコピーしてすぐ使える無料ツール。">
+  <meta property="og:title" content="CSSグラデーションジェネレーター - 美しいグラデーションを簡単作成｜SimpleToolkit">
+  <meta property="og:description" content="CSSのグラデーションをビジュアルで作成。Linear/Radial/Conic対応、プリセット20種類以上。コードをコピーしてすぐ使える無料ツール。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/css-gradient/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CSSグラデーションジェネレーター - 美しいグラデーションを簡単作成",
+    "description": "CSSのグラデーションをビジュアルで作成。Linear/Radial/Conic対応、プリセット20種類以上。コードをコピーしてすぐ使える無料ツール。",
+    "url": "https://simpletoolkit.net/tools/css-gradient/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "CSSグラデーションとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CSSグラデーションは、2つ以上の色の間で滑らかに変化する背景を作成するCSS機能です。linear-gradient（直線）、radial-gradient（放射状）、conic-gradient（円錐状）の3種類があります。画像を使わずにコードだけで美しい背景を実現できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "linear-gradientとradial-gradientの違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "linear-gradientは直線的に色が変化するグラデーションで、角度を指定して方向を制御します。radial-gradientは中心から外側に向かって放射状に色が変化します。用途に応じて使い分けることで、さまざまなデザイン効果が得られます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "conic-gradientとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "conic-gradient（円錐グラデーション）は、中心点の周りを回転するように色が変化するグラデーションです。円グラフのような表現や、虹色の円形効果などに利用できます。比較的新しいCSS機能ですが、主要ブラウザで対応しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "このツールで生成したCSSはそのまま使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、生成されたCSSコードをそのままコピーして、あなたのWebサイトのスタイルシートに貼り付けるだけで使えます。すべての主要ブラウザに対応した標準的なCSS構文を出力します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .gradient-preview {
+      width: 100%;
+      height: 280px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      transition: background 0.3s ease;
+    }
+
+    .controls-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .control-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .control-row label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      min-width: 80px;
+      color: var(--text);
+    }
+
+    .type-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .type-btn {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .type-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .type-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .angle-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .angle-control input[type="range"] {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .angle-control .angle-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* Color stops */
+    .color-stops-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .color-stops-header h3 {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .add-stop-btn {
+      padding: 4px 12px;
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .add-stop-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .color-stop-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .color-stop-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .color-stop-item input[type="color"] {
+      width: 40px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 1px;
+      background: var(--surface);
+    }
+
+    .color-stop-item input[type="range"] {
+      flex: 1;
+      min-width: 80px;
+    }
+
+    .color-stop-item .stop-position {
+      font-size: 0.8rem;
+      min-width: 36px;
+      text-align: right;
+      color: var(--text-muted);
+    }
+
+    .color-stop-item .hex-display {
+      font-size: 0.8rem;
+      min-width: 62px;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .remove-stop-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .remove-stop-btn:hover {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .action-buttons .btn {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    /* CSS output */
+    .css-output {
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .css-output pre {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .copy-btn.copied {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Presets */
+    .presets-section {
+      margin-top: 24px;
+    }
+
+    .presets-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 8px;
+    }
+
+    .preset-item {
+      height: 64px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .preset-item:hover {
+      border-color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      .gradient-preview {
+        height: 180px;
+      }
+      .control-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .control-row label {
+        min-width: unset;
+      }
+      .type-buttons {
+        width: 100%;
+      }
+      .type-btn {
+        flex: 1;
+        text-align: center;
+      }
+      .angle-control {
+        width: 100%;
+      }
+      .color-stop-item {
+        flex-wrap: wrap;
+      }
+      .presets-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>CSSグラデーションジェネレーター</h1>
+    <h2>美しいグラデーションを簡単作成 - 無料オンラインツール</h2>
+    <p class="tool-description">Linear・Radial・Conicの3種類のグラデーションをビジュアルで作成できます。色の追加・削除・位置調整、プリセットからの選択、ランダム生成に対応。生成されたCSSコードをコピーしてすぐに使えます。</p>
+
+    <div class="tool-area">
+      <!-- Preview -->
+      <div class="gradient-preview" id="gradient-preview"></div>
+
+      <!-- Controls -->
+      <div class="controls-section">
+        <!-- Gradient Type -->
+        <div class="control-row">
+          <label>タイプ</label>
+          <div class="type-buttons" id="type-buttons">
+            <button class="type-btn active" data-type="linear" onclick="setType('linear')">Linear</button>
+            <button class="type-btn" data-type="radial" onclick="setType('radial')">Radial</button>
+            <button class="type-btn" data-type="conic" onclick="setType('conic')">Conic</button>
+          </div>
+        </div>
+
+        <!-- Angle (linear/conic only) -->
+        <div class="control-row" id="angle-row">
+          <label>角度</label>
+          <div class="angle-control">
+            <input type="range" id="angle-slider" min="0" max="360" value="135" oninput="updateAngle(this.value)">
+            <span class="angle-value" id="angle-value">135°</span>
+          </div>
+        </div>
+
+        <!-- Color stops -->
+        <div class="color-stops-header">
+          <h3>カラーストップ</h3>
+          <button class="add-stop-btn" onclick="addColorStop()">+ 色を追加</button>
+        </div>
+        <div class="color-stop-list" id="color-stop-list"></div>
+
+        <!-- Action buttons -->
+        <div class="action-buttons">
+          <button class="btn" onclick="randomGradient()">ランダム生成</button>
+          <button class="btn btn-secondary" onclick="resetGradient()">リセット</button>
+        </div>
+      </div>
+
+      <!-- CSS output -->
+      <div class="css-output">
+        <h3 style="font-size:0.95rem;margin-bottom:8px;">生成されたCSS</h3>
+        <button class="copy-btn" id="copy-btn" onclick="copyCSS()">コピー</button>
+        <pre id="css-code"></pre>
+      </div>
+
+      <!-- Presets -->
+      <div class="presets-section">
+        <h3>プリセット</h3>
+        <div class="presets-grid" id="presets-grid"></div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../color-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">カラーコード変換</h3>
+          <p>HEX・RGB・HSLのカラーコードを相互変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONデータを見やすく整形・バリデーション</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // State
+    var gradientType = 'linear';
+    var angle = 135;
+    var colorStops = [
+      { color: '#667eea', position: 0 },
+      { color: '#764ba2', position: 100 }
+    ];
+
+    // Presets
+    var presets = [
+      { name: 'サンセット', stops: [{color:'#f093fb',position:0},{color:'#f5576c',position:100}], type:'linear', angle:135 },
+      { name: 'オーシャン', stops: [{color:'#4facfe',position:0},{color:'#00f2fe',position:100}], type:'linear', angle:135 },
+      { name: 'パープル', stops: [{color:'#667eea',position:0},{color:'#764ba2',position:100}], type:'linear', angle:135 },
+      { name: 'フラミンゴ', stops: [{color:'#f78ca0',position:0},{color:'#f9748f',position:19},{color:'#fd868c',position:60},{color:'#fe9a8b',position:100}], type:'linear', angle:135 },
+      { name: 'エメラルド', stops: [{color:'#43e97b',position:0},{color:'#38f9d7',position:100}], type:'linear', angle:135 },
+      { name: 'ミッドナイト', stops: [{color:'#0c3483',position:0},{color:'#a2b6df',position:45},{color:'#6b8cce',position:100}], type:'linear', angle:135 },
+      { name: 'ピーチ', stops: [{color:'#ffecd2',position:0},{color:'#fcb69f',position:100}], type:'linear', angle:135 },
+      { name: 'ラベンダー', stops: [{color:'#a18cd1',position:0},{color:'#fbc2eb',position:100}], type:'linear', angle:135 },
+      { name: 'グリーンビーチ', stops: [{color:'#02aab0',position:0},{color:'#00cdac',position:100}], type:'linear', angle:135 },
+      { name: 'チェリー', stops: [{color:'#eb3349',position:0},{color:'#f45c43',position:100}], type:'linear', angle:135 },
+      { name: 'レインボー', stops: [{color:'#ff0000',position:0},{color:'#ff8800',position:17},{color:'#ffff00',position:33},{color:'#00ff00',position:50},{color:'#0088ff',position:67},{color:'#8800ff',position:83},{color:'#ff00ff',position:100}], type:'linear', angle:90 },
+      { name: 'ゴールド', stops: [{color:'#f7971e',position:0},{color:'#ffd200',position:100}], type:'linear', angle:135 },
+      { name: 'ナイトスカイ', stops: [{color:'#0f0c29',position:0},{color:'#302b63',position:50},{color:'#24243e',position:100}], type:'linear', angle:180 },
+      { name: 'コーラル', stops: [{color:'#ff9a9e',position:0},{color:'#fecfef',position:100}], type:'linear', angle:135 },
+      { name: 'アイス', stops: [{color:'#e6e9f0',position:0},{color:'#eef1f5',position:100}], type:'linear', angle:135 },
+      { name: 'ネオン', stops: [{color:'#00f260',position:0},{color:'#0575e6',position:100}], type:'linear', angle:135 },
+      { name: 'サクラ', stops: [{color:'#fbd3e9',position:0},{color:'#bb377d',position:100}], type:'linear', angle:135 },
+      { name: 'オーロラ', stops: [{color:'#a8edea',position:0},{color:'#fed6e3',position:100}], type:'linear', angle:135 },
+      { name: '放射サンセット', stops: [{color:'#f5af19',position:0},{color:'#f12711',position:100}], type:'radial', angle:0 },
+      { name: '放射オーシャン', stops: [{color:'#c2e9fb',position:0},{color:'#a1c4fd',position:100}], type:'radial', angle:0 },
+      { name: 'コニック虹', stops: [{color:'#ff0000',position:0},{color:'#ffff00',position:25},{color:'#00ff00',position:50},{color:'#0000ff',position:75},{color:'#ff0000',position:100}], type:'conic', angle:0 },
+      { name: 'コニックパステル', stops: [{color:'#fbc2eb',position:0},{color:'#a6c1ee',position:33},{color:'#fbc2eb',position:66},{color:'#a6c1ee',position:100}], type:'conic', angle:0 },
+      { name: 'デイブレイク', stops: [{color:'#fdfcfb',position:0},{color:'#e2d1c3',position:100}], type:'linear', angle:135 },
+      { name: 'プラム', stops: [{color:'#3a1c71',position:0},{color:'#d76d77',position:50},{color:'#ffaf7b',position:100}], type:'linear', angle:135 }
+    ];
+
+    function generateCSS() {
+      var stopsStr = colorStops.map(function(s) {
+        return s.color + ' ' + s.position + '%';
+      }).join(', ');
+
+      var css;
+      if (gradientType === 'linear') {
+        css = 'linear-gradient(' + angle + 'deg, ' + stopsStr + ')';
+      } else if (gradientType === 'radial') {
+        css = 'radial-gradient(circle, ' + stopsStr + ')';
+      } else {
+        css = 'conic-gradient(from ' + angle + 'deg, ' + stopsStr + ')';
+      }
+      return css;
+    }
+
+    function updatePreview() {
+      var css = generateCSS();
+      document.getElementById('gradient-preview').style.background = css;
+      document.getElementById('css-code').textContent = 'background: ' + css + ';';
+    }
+
+    function setType(type) {
+      gradientType = type;
+      var btns = document.querySelectorAll('.type-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('active', btns[i].getAttribute('data-type') === type);
+      }
+      // Show/hide angle control
+      var angleRow = document.getElementById('angle-row');
+      if (type === 'radial') {
+        angleRow.style.display = 'none';
+      } else {
+        angleRow.style.display = '';
+      }
+      updatePreview();
+    }
+
+    function updateAngle(val) {
+      angle = parseInt(val);
+      document.getElementById('angle-value').textContent = angle + '°';
+      updatePreview();
+    }
+
+    function renderColorStops() {
+      var list = document.getElementById('color-stop-list');
+      list.innerHTML = '';
+      for (var i = 0; i < colorStops.length; i++) {
+        (function(index) {
+          var stop = colorStops[index];
+          var item = document.createElement('div');
+          item.className = 'color-stop-item';
+
+          var colorInput = document.createElement('input');
+          colorInput.type = 'color';
+          colorInput.value = stop.color;
+          colorInput.addEventListener('input', function() {
+            colorStops[index].color = this.value;
+            hexDisplay.textContent = this.value.toUpperCase();
+            updatePreview();
+          });
+
+          var hexDisplay = document.createElement('span');
+          hexDisplay.className = 'hex-display';
+          hexDisplay.textContent = stop.color.toUpperCase();
+
+          var rangeInput = document.createElement('input');
+          rangeInput.type = 'range';
+          rangeInput.min = '0';
+          rangeInput.max = '100';
+          rangeInput.value = stop.position;
+          rangeInput.addEventListener('input', function() {
+            colorStops[index].position = parseInt(this.value);
+            posLabel.textContent = this.value + '%';
+            updatePreview();
+          });
+
+          var posLabel = document.createElement('span');
+          posLabel.className = 'stop-position';
+          posLabel.textContent = stop.position + '%';
+
+          var removeBtn = document.createElement('button');
+          removeBtn.className = 'remove-stop-btn';
+          removeBtn.innerHTML = '&times;';
+          removeBtn.title = 'この色を削除';
+          removeBtn.addEventListener('click', function() {
+            removeColorStop(index);
+          });
+
+          item.appendChild(colorInput);
+          item.appendChild(hexDisplay);
+          item.appendChild(rangeInput);
+          item.appendChild(posLabel);
+          if (colorStops.length > 2) {
+            item.appendChild(removeBtn);
+          }
+
+          list.appendChild(item);
+        })(i);
+      }
+    }
+
+    function addColorStop() {
+      if (colorStops.length >= 10) {
+        alert('色は最大10個まで追加できます。');
+        return;
+      }
+      // Pick a random color and position in a gap
+      var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+      var lastPos = colorStops[colorStops.length - 1].position;
+      var secondLastPos = colorStops.length > 1 ? colorStops[colorStops.length - 2].position : 0;
+      var newPos = Math.round((secondLastPos + lastPos) / 2);
+      colorStops.splice(colorStops.length - 1, 0, { color: randomColor, position: newPos });
+      renderColorStops();
+      updatePreview();
+    }
+
+    function removeColorStop(index) {
+      if (colorStops.length <= 2) return;
+      colorStops.splice(index, 1);
+      renderColorStops();
+      updatePreview();
+    }
+
+    function copyCSS() {
+      var code = document.getElementById('css-code').textContent;
+      navigator.clipboard.writeText(code).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'コピーしました!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'コピー';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(function() {
+        // Fallback
+        var textarea = document.createElement('textarea');
+        textarea.value = code;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        var btn = document.getElementById('copy-btn');
+        btn.textContent = 'コピーしました!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'コピー';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    function randomGradient() {
+      var types = ['linear', 'radial', 'conic'];
+      gradientType = types[Math.floor(Math.random() * types.length)];
+      angle = Math.floor(Math.random() * 360);
+      document.getElementById('angle-slider').value = angle;
+      document.getElementById('angle-value').textContent = angle + '°';
+
+      var numStops = 2 + Math.floor(Math.random() * 3); // 2-4 stops
+      colorStops = [];
+      for (var i = 0; i < numStops; i++) {
+        colorStops.push({
+          color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+          position: Math.round(i / (numStops - 1) * 100)
+        });
+      }
+
+      // Update type buttons
+      var btns = document.querySelectorAll('.type-btn');
+      for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.toggle('active', btns[j].getAttribute('data-type') === gradientType);
+      }
+
+      var angleRow = document.getElementById('angle-row');
+      angleRow.style.display = gradientType === 'radial' ? 'none' : '';
+
+      renderColorStops();
+      updatePreview();
+    }
+
+    function resetGradient() {
+      gradientType = 'linear';
+      angle = 135;
+      colorStops = [
+        { color: '#667eea', position: 0 },
+        { color: '#764ba2', position: 100 }
+      ];
+      document.getElementById('angle-slider').value = angle;
+      document.getElementById('angle-value').textContent = angle + '°';
+      setType('linear');
+      renderColorStops();
+      updatePreview();
+    }
+
+    function applyPreset(index) {
+      var preset = presets[index];
+      gradientType = preset.type;
+      angle = preset.angle;
+      colorStops = preset.stops.map(function(s) { return { color: s.color, position: s.position }; });
+
+      document.getElementById('angle-slider').value = angle;
+      document.getElementById('angle-value').textContent = angle + '°';
+
+      var btns = document.querySelectorAll('.type-btn');
+      for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.toggle('active', btns[j].getAttribute('data-type') === gradientType);
+      }
+
+      var angleRow = document.getElementById('angle-row');
+      angleRow.style.display = gradientType === 'radial' ? 'none' : '';
+
+      renderColorStops();
+      updatePreview();
+    }
+
+    function renderPresets() {
+      var grid = document.getElementById('presets-grid');
+      grid.innerHTML = '';
+      for (var i = 0; i < presets.length; i++) {
+        (function(index) {
+          var preset = presets[index];
+          var stopsStr = preset.stops.map(function(s) { return s.color + ' ' + s.position + '%'; }).join(', ');
+          var css;
+          if (preset.type === 'linear') {
+            css = 'linear-gradient(' + preset.angle + 'deg, ' + stopsStr + ')';
+          } else if (preset.type === 'radial') {
+            css = 'radial-gradient(circle, ' + stopsStr + ')';
+          } else {
+            css = 'conic-gradient(from ' + preset.angle + 'deg, ' + stopsStr + ')';
+          }
+          var item = document.createElement('div');
+          item.className = 'preset-item';
+          item.style.background = css;
+          item.title = preset.name;
+          item.addEventListener('click', function() { applyPreset(index); });
+          grid.appendChild(item);
+        })(i);
+      }
+    }
+
+    // Initialize
+    renderColorStops();
+    renderPresets();
+    updatePreview();
+  </script>
+</body>
+</html>
