@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>偏差値計算ツール - テストの偏差値を自動計算｜SimpleToolkit</title>
+  <meta name="description" content="テストの点数から偏差値を自動計算。平均点・標準偏差から個別計算、クラス全員の点数から一括計算も可能。正規分布グラフで自分の位置を確認。無料・登録不要。">
+  <meta property="og:title" content="偏差値計算ツール - テストの偏差値を自動計算｜SimpleToolkit">
+  <meta property="og:description" content="テストの点数から偏差値を自動計算。正規分布グラフで自分の位置を視覚的に確認。無料・登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/deviation-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "偏差値計算ツール - テストの偏差値を自動計算",
+    "description": "テストの点数から偏差値を自動計算。平均点・標準偏差から個別計算、クラス全員の点数から一括計算も可能。正規分布グラフで自分の位置を確認。",
+    "url": "https://simpletoolkit.net/tools/deviation-calc/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "偏差値とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "偏差値とは、テストの点数が全体の中でどの位置にあるかを示す数値です。平均点を偏差値50とし、標準偏差を基準に換算します。偏差値60なら上位約15.9%、偏差値70なら上位約2.3%に位置します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "偏差値の計算式は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "偏差値 = (自分の点数 - 平均点) / 標準偏差 × 10 + 50 で計算されます。例えば平均点60点、標準偏差15点のテストで75点を取った場合、(75-60)/15×10+50 = 60 となります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "標準偏差がわからない場合はどうすればいいですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "本ツールの「簡易モード」を使えば、クラス全員の点数をカンマ区切りで入力するだけで、平均点・標準偏差・偏差値をすべて自動計算できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。点数データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .mode-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 20px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .mode-tab {
+      flex: 1;
+      padding: 12px 16px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--bg);
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .mode-tab.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .mode-panel { display: none; }
+    .mode-panel.active { display: block; }
+
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+    .input-field input:focus, .input-field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field textarea {
+      min-height: 80px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .input-field .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .result-area { display: none; margin-top: 24px; }
+    .result-area.show { display: block; }
+
+    .deviation-display {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .deviation-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .deviation-label {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .deviation-rank {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 8px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-card .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .stat-card .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .canvas-container {
+      margin: 24px 0;
+      text-align: center;
+    }
+    .canvas-container canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .percentile-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .percentile-table th, .percentile-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .percentile-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .percentile-table .highlight-row {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    .explanation {
+      margin-top: 32px;
+      line-height: 1.8;
+    }
+    .explanation h2 {
+      font-size: 1.2rem;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    .explanation h3 {
+      font-size: 1.05rem;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    .formula-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 600px) {
+      .deviation-number { font-size: 2.5rem; }
+      .stats-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>偏差値計算ツール</h1>
+    <h2>テストの偏差値を無料で自動計算</h2>
+    <p class="tool-description">テストの点数から偏差値を自動計算します。平均点・標準偏差がわかっている場合は「個別計算モード」、クラス全員の点数がわかる場合は「簡易モード」をご利用ください。正規分布グラフで自分の位置も確認できます。</p>
+
+    <div class="tool-area">
+      <div class="mode-tabs">
+        <button class="mode-tab active" onclick="switchMode('individual')">個別計算モード</button>
+        <button class="mode-tab" onclick="switchMode('simple')">簡易モード</button>
+      </div>
+
+      <!-- 個別計算モード -->
+      <div class="mode-panel active" id="panel-individual">
+        <div class="input-group">
+          <div class="input-field">
+            <label for="my-score">自分の点数</label>
+            <input type="number" id="my-score" placeholder="75">
+          </div>
+          <div class="input-field">
+            <label for="avg-score">平均点</label>
+            <input type="number" id="avg-score" placeholder="60">
+          </div>
+          <div class="input-field">
+            <label for="std-dev">標準偏差</label>
+            <input type="number" id="std-dev" placeholder="15" step="0.1">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn" onclick="calcIndividual()">偏差値を計算</button>
+          <button class="btn btn-secondary" onclick="clearIndividual()">クリア</button>
+        </div>
+      </div>
+
+      <!-- 簡易モード -->
+      <div class="mode-panel" id="panel-simple">
+        <div class="input-field" style="margin-bottom:12px;">
+          <label for="my-score-simple">自分の点数</label>
+          <input type="number" id="my-score-simple" placeholder="75">
+        </div>
+        <div class="input-field">
+          <label for="all-scores">クラス全員の点数（カンマ区切り）</label>
+          <textarea id="all-scores" placeholder="45, 52, 60, 63, 67, 70, 72, 75, 80, 85, 90"></textarea>
+          <div class="hint">カンマまたはスペースで区切って入力してください。自分の点数も含めてOKです。</div>
+        </div>
+        <div class="btn-group" style="margin-top:12px;">
+          <button class="btn" onclick="calcSimple()">偏差値を計算</button>
+          <button class="btn btn-secondary" onclick="clearSimple()">クリア</button>
+        </div>
+      </div>
+
+      <!-- 結果表示 -->
+      <div class="result-area" id="result-area">
+        <div class="deviation-display">
+          <div class="deviation-label">あなたの偏差値</div>
+          <div class="deviation-number" id="deviation-value"></div>
+          <div class="deviation-rank" id="deviation-rank"></div>
+        </div>
+
+        <div class="stats-cards" id="stats-cards">
+          <div class="stat-card">
+            <div class="stat-label">平均点</div>
+            <div class="stat-value" id="stat-avg"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">標準偏差</div>
+            <div class="stat-value" id="stat-std"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">上位</div>
+            <div class="stat-value" id="stat-percentile"></div>
+          </div>
+        </div>
+
+        <div class="canvas-container">
+          <h3 style="font-size:1rem;margin-bottom:8px;">正規分布上の位置</h3>
+          <canvas id="distribution-canvas" width="600" height="280"></canvas>
+        </div>
+
+        <h3 style="font-size:1rem;margin-top:24px;margin-bottom:8px;">偏差値と上位%の換算表</h3>
+        <table class="percentile-table" id="percentile-table">
+          <thead>
+            <tr>
+              <th>偏差値</th>
+              <th>上位%</th>
+              <th>割合の目安</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="explanation">
+      <h2>偏差値とは？</h2>
+      <p>偏差値（へんさち）とは、テストの点数が全体の中でどの位置にあるかを示す指標です。平均点を偏差値50として、そこからどれだけ離れているかを標準偏差を基に数値化します。</p>
+      <p>日本の受験や模試で広く使われており、異なるテスト間で自分の成績の位置を比較できるのが大きなメリットです。</p>
+
+      <h2>偏差値の計算式</h2>
+      <div class="formula-box">偏差値 = (自分の点数 - 平均点) / 標準偏差 × 10 + 50</div>
+      <p>例えば、平均点60点・標準偏差15点のテストで75点を取った場合：</p>
+      <div class="formula-box">(75 - 60) / 15 × 10 + 50 = <strong>60.0</strong></div>
+
+      <h3>標準偏差とは？</h3>
+      <p>標準偏差は、データのばらつきの大きさを表す数値です。標準偏差が大きいほど点数のばらつきが大きく、小さいほど平均付近に集まっていることを意味します。</p>
+
+      <h2>偏差値の目安</h2>
+      <ul>
+        <li><strong>偏差値70以上</strong>：上位約2.3%。非常に優秀な成績。</li>
+        <li><strong>偏差値60〜69</strong>：上位約6.7〜15.9%。平均よりかなり上。</li>
+        <li><strong>偏差値50〜59</strong>：上位約15.9〜50%。平均〜やや上。</li>
+        <li><strong>偏差値40〜49</strong>：上位約50〜84.1%。平均〜やや下。</li>
+        <li><strong>偏差値30以下</strong>：上位約97.7%以下。</li>
+      </ul>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI計算</h3>
+          <p>身長と体重からBMIを瞬時に計算</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // 正規分布の累積分布関数（近似）
+    function normalCDF(z) {
+      var a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
+      var a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+      var sign = z < 0 ? -1 : 1;
+      z = Math.abs(z) / Math.sqrt(2);
+      var t = 1.0 / (1.0 + p * z);
+      var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
+      return 0.5 * (1.0 + sign * y);
+    }
+
+    // 偏差値から上位%を計算
+    function deviationToPercentile(dev) {
+      var z = (dev - 50) / 10;
+      return (1 - normalCDF(z)) * 100;
+    }
+
+    // 正規分布の確率密度関数
+    function normalPDF(x) {
+      return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+    }
+
+    function switchMode(mode) {
+      var tabs = document.querySelectorAll('.mode-tab');
+      var panels = document.querySelectorAll('.mode-panel');
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      if (mode === 'individual') {
+        tabs[0].classList.add('active');
+        document.getElementById('panel-individual').classList.add('active');
+      } else {
+        tabs[1].classList.add('active');
+        document.getElementById('panel-simple').classList.add('active');
+      }
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    function calcIndividual() {
+      var score = parseFloat(document.getElementById('my-score').value);
+      var avg = parseFloat(document.getElementById('avg-score').value);
+      var std = parseFloat(document.getElementById('std-dev').value);
+      if (isNaN(score) || isNaN(avg) || isNaN(std)) {
+        alert('すべての項目を入力してください。');
+        return;
+      }
+      if (std <= 0) {
+        alert('標準偏差は0より大きい値を入力してください。');
+        return;
+      }
+      showResult(score, avg, std);
+    }
+
+    function calcSimple() {
+      var myScore = parseFloat(document.getElementById('my-score-simple').value);
+      var rawText = document.getElementById('all-scores').value;
+      if (isNaN(myScore)) {
+        alert('自分の点数を入力してください。');
+        return;
+      }
+      var scores = rawText.split(/[,\s\t\n]+/).map(function(s) { return parseFloat(s.trim()); }).filter(function(n) { return !isNaN(n); });
+      if (scores.length < 2) {
+        alert('2人以上の点数を入力してください。');
+        return;
+      }
+      var sum = scores.reduce(function(a, b) { return a + b; }, 0);
+      var avg = sum / scores.length;
+      var variance = scores.reduce(function(a, b) { return a + (b - avg) * (b - avg); }, 0) / scores.length;
+      var std = Math.sqrt(variance);
+      if (std === 0) {
+        alert('全員が同じ点数のため、偏差値を計算できません。');
+        return;
+      }
+      showResult(myScore, avg, std);
+    }
+
+    function showResult(score, avg, std) {
+      var deviation = (score - avg) / std * 10 + 50;
+      var devRounded = Math.round(deviation * 10) / 10;
+      var percentile = deviationToPercentile(deviation);
+      var percRounded = Math.round(percentile * 10) / 10;
+
+      document.getElementById('deviation-value').textContent = devRounded;
+      document.getElementById('stat-avg').textContent = Math.round(avg * 10) / 10;
+      document.getElementById('stat-std').textContent = Math.round(std * 10) / 10;
+      document.getElementById('stat-percentile').textContent = percRounded + '%';
+
+      // ランク表示
+      var rankText;
+      if (percentile <= 1) rankText = '上位1%以内 - 極めて優秀';
+      else if (percentile <= 5) rankText = '上位' + percRounded + '% - 非常に優秀';
+      else if (percentile <= 15) rankText = '上位' + percRounded + '% - 優秀';
+      else if (percentile <= 50) rankText = '上位' + percRounded + '% - 平均以上';
+      else if (percentile <= 85) rankText = '上位' + percRounded + '% - 平均的';
+      else rankText = '上位' + percRounded + '%';
+      document.getElementById('deviation-rank').textContent = rankText;
+
+      drawDistribution(deviation);
+      buildPercentileTable(devRounded);
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function drawDistribution(deviation) {
+      var canvas = document.getElementById('distribution-canvas');
+      var ctx = canvas.getContext('2d');
+      var W = canvas.width, H = canvas.height;
+      var pad = { top: 20, bottom: 40, left: 40, right: 20 };
+      var plotW = W - pad.left - pad.right;
+      var plotH = H - pad.top - pad.bottom;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // 正規分布曲線を描画（偏差値25〜75の範囲 = z: -2.5〜2.5）
+      var zMin = -3.5, zMax = 3.5;
+      var maxPDF = normalPDF(0);
+
+      // 塗りつぶし
+      ctx.beginPath();
+      ctx.moveTo(pad.left, pad.top + plotH);
+      for (var i = 0; i <= plotW; i++) {
+        var z = zMin + (zMax - zMin) * (i / plotW);
+        var y = normalPDF(z);
+        ctx.lineTo(pad.left + i, pad.top + plotH - (y / maxPDF) * plotH * 0.9);
+      }
+      ctx.lineTo(pad.left + plotW, pad.top + plotH);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(59, 130, 246, 0.12)';
+      ctx.fill();
+
+      // 曲線
+      ctx.beginPath();
+      for (var i = 0; i <= plotW; i++) {
+        var z = zMin + (zMax - zMin) * (i / plotW);
+        var y = normalPDF(z);
+        var px = pad.left + i;
+        var py = pad.top + plotH - (y / maxPDF) * plotH * 0.9;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // マーカー（自分の位置）
+      var myZ = (deviation - 50) / 10;
+      var markerX = pad.left + ((myZ - zMin) / (zMax - zMin)) * plotW;
+      markerX = Math.max(pad.left, Math.min(pad.left + plotW, markerX));
+      var markerY = pad.top + plotH - (normalPDF(myZ) / maxPDF) * plotH * 0.9;
+
+      // マーカー線
+      ctx.beginPath();
+      ctx.moveTo(markerX, markerY);
+      ctx.lineTo(markerX, pad.top + plotH);
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // マーカー点
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, 7, 0, Math.PI * 2);
+      ctx.fillStyle = '#ef4444';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // マーカーラベル
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(Math.round(deviation * 10) / 10, markerX, markerY - 14);
+
+      // X軸ラベル（偏差値）
+      ctx.fillStyle = '#666';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      var devLabels = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75];
+      devLabels.forEach(function(d) {
+        var z = (d - 50) / 10;
+        var x = pad.left + ((z - zMin) / (zMax - zMin)) * plotW;
+        ctx.fillText(d, x, pad.top + plotH + 18);
+        // 目盛り線
+        ctx.beginPath();
+        ctx.moveTo(x, pad.top + plotH);
+        ctx.lineTo(x, pad.top + plotH + 4);
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+
+      // X軸タイトル
+      ctx.fillStyle = '#999';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('偏差値', pad.left + plotW / 2, pad.top + plotH + 34);
+
+      // ベースライン
+      ctx.beginPath();
+      ctx.moveTo(pad.left, pad.top + plotH);
+      ctx.lineTo(pad.left + plotW, pad.top + plotH);
+      ctx.strokeStyle = '#ccc';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    function buildPercentileTable(currentDev) {
+      var data = [
+        { dev: 80, desc: '1000人中4人' },
+        { dev: 75, desc: '1000人中13人' },
+        { dev: 70, desc: '約50人に1人' },
+        { dev: 65, desc: '約15人に1人' },
+        { dev: 60, desc: '約6人に1人' },
+        { dev: 55, desc: '約3人に1人' },
+        { dev: 50, desc: '2人に1人（平均）' },
+        { dev: 45, desc: '約3人に2人' },
+        { dev: 40, desc: '約6人に5人' },
+        { dev: 35, desc: '約15人に13人' },
+        { dev: 30, desc: '約50人に49人' }
+      ];
+      var tbody = document.querySelector('#percentile-table tbody');
+      tbody.innerHTML = '';
+      var currentRounded = Math.round(currentDev / 5) * 5;
+      data.forEach(function(row) {
+        var perc = deviationToPercentile(row.dev);
+        var tr = document.createElement('tr');
+        if (row.dev === currentRounded) tr.className = 'highlight-row';
+        tr.innerHTML = '<td>' + row.dev + '</td><td>' + (Math.round(perc * 100) / 100) + '%</td><td>' + row.desc + '</td>';
+        tbody.appendChild(tr);
+      });
+    }
+
+    function clearIndividual() {
+      document.getElementById('my-score').value = '';
+      document.getElementById('avg-score').value = '';
+      document.getElementById('std-dev').value = '';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    function clearSimple() {
+      document.getElementById('my-score-simple').value = '';
+      document.getElementById('all-scores').value = '';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    // Enter key support
+    ['my-score', 'avg-score', 'std-dev'].forEach(function(id) {
+      document.getElementById(id).addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calcIndividual();
+      });
+    });
+    document.getElementById('my-score-simple').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calcSimple();
+    });
+  </script>
+</body>
+</html>

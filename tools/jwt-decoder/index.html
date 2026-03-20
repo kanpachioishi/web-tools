@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWTデコーダー - トークンをオンラインで解析｜SimpleToolkit</title>
+  <meta name="description" content="JWTトークンを貼り付けるだけでHeader・Payload・Signatureを分解・解析。有効期限の判定やフィールドの日本語解説付き。無料・登録不要のオンラインJWTデコーダー。">
+  <meta property="og:title" content="JWTデコーダー - トークンをオンラインで解析｜SimpleToolkit">
+  <meta property="og:description" content="JWTトークンを貼り付けるだけでHeader・Payload・Signatureを分解・解析。有効期限判定・フィールド解説付き。無料・登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/jwt-decoder/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JWTデコーダー - トークンをオンラインで解析",
+    "description": "JWTトークンを貼り付けるだけでHeader・Payload・Signatureを分解・解析。有効期限の判定やフィールドの日本語解説付き。無料・登録不要のオンラインJWTデコーダー。",
+    "url": "https://simpletoolkit.net/tools/jwt-decoder/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "JWTとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "JWT（JSON Web Token）は、JSON形式の情報を安全にやり取りするためのトークン規格です。Header・Payload・Signatureの3つの部分で構成され、認証やAPI通信で広く使われています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "JWTのデコードは安全ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "このツールではすべての処理がブラウザ内で完結します。トークンがサーバーに送信されることはありません。ただし、JWTのPayloadはBase64URLエンコードされているだけで暗号化はされていないため、機密情報を含むトークンの取り扱いには注意が必要です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "JWTの有効期限はどうやって確認しますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "JWTのPayloadに含まれるexpフィールド（Expiration Time）がUnixタイムスタンプ形式で有効期限を表しています。このツールでは自動的に日時に変換し、期限切れかどうかを判定して表示します。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .jwt-input {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.85rem;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      word-break: break-all;
+    }
+    .jwt-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .jwt-section {
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .jwt-section-header {
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .jwt-section-header .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .header-section .jwt-section-header { background: #eff6ff; color: #2563eb; }
+    .header-section .dot { background: #2563eb; }
+    .payload-section .jwt-section-header { background: #f0fdf4; color: #16a34a; }
+    .payload-section .dot { background: #16a34a; }
+    .signature-section .jwt-section-header { background: #fef3c7; color: #b45309; }
+    .signature-section .dot { background: #b45309; }
+    .jwt-section-body {
+      padding: 16px;
+      background: var(--bg);
+    }
+    .json-display {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin: 0;
+    }
+    .json-key { color: #2563eb; }
+    .json-string { color: #16a34a; }
+    .json-number { color: #d97706; }
+    .json-boolean { color: #dc2626; }
+    .json-null { color: #6b7280; }
+    .json-brace { color: var(--text); }
+
+    .field-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+    .field-table th, .field-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .field-table th {
+      background: var(--bg);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .field-table .field-name {
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    .expiry-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+    .expiry-valid { background: #f0fdf4; color: #16a34a; }
+    .expiry-expired { background: #fef2f2; color: #dc2626; }
+    .expiry-unknown { background: #f3f4f6; color: #6b7280; }
+
+    .signature-raw {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.8rem;
+      word-break: break-all;
+      color: #b45309;
+    }
+
+    .error-msg {
+      color: #dc2626;
+      background: #fef2f2;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      margin-top: 16px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    .result-area { display: none; }
+    .result-area.show { display: block; }
+
+    .explanation-section {
+      margin-top: 40px;
+    }
+    .explanation-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+    .explanation-section h3 {
+      font-size: 1rem;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+    .explanation-section p, .explanation-section li {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+    .explanation-section code {
+      background: var(--bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .explanation-section ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>JWTデコーダー</h1>
+    <h2>JWTトークンをオンラインで解析・デコード</h2>
+    <p class="tool-description">JWTトークンを貼り付けるだけで、Header・Payload・Signatureを分解して見やすく表示します。各フィールドの日本語解説や有効期限の判定も自動で行います。すべての処理はブラウザ内で完結し、トークンは外部に送信されません。</p>
+
+    <div class="tool-area">
+      <label for="jwt-input" style="font-weight:600;display:block;margin-bottom:8px;">JWTトークンを入力</label>
+      <textarea class="jwt-input" id="jwt-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"></textarea>
+
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn" onclick="decodeJWT()">デコード</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <div class="error-msg" id="error-msg"></div>
+
+      <div class="result-area" id="result-area">
+        <!-- Header -->
+        <div class="jwt-section header-section">
+          <div class="jwt-section-header"><span class="dot"></span> Header（ヘッダー）</div>
+          <div class="jwt-section-body">
+            <pre class="json-display" id="header-json"></pre>
+            <table class="field-table" id="header-fields" style="margin-top:12px;"></table>
+          </div>
+        </div>
+
+        <!-- Payload -->
+        <div class="jwt-section payload-section">
+          <div class="jwt-section-header"><span class="dot"></span> Payload（ペイロード）</div>
+          <div class="jwt-section-body">
+            <pre class="json-display" id="payload-json"></pre>
+            <div id="expiry-info" style="margin-top:12px;"></div>
+            <table class="field-table" id="payload-fields" style="margin-top:12px;"></table>
+          </div>
+        </div>
+
+        <!-- Signature -->
+        <div class="jwt-section signature-section">
+          <div class="jwt-section-header"><span class="dot"></span> Signature（署名）</div>
+          <div class="jwt-section-body">
+            <p style="font-size:0.85rem;color:var(--text-muted);margin:0 0 8px;">Base64URLエンコードされた署名データ:</p>
+            <div class="signature-raw" id="signature-raw"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 解説セクション -->
+    <div class="explanation-section">
+      <h2>JWTとBase64URLデコードの仕組み</h2>
+
+      <h3>JWTの構造</h3>
+      <p>JWT（JSON Web Token）は、ドット（<code>.</code>）で区切られた3つのパートで構成されています。</p>
+      <ul>
+        <li><strong>Header</strong> - トークンのタイプ（JWT）と署名アルゴリズム（HS256、RS256等）を格納</li>
+        <li><strong>Payload</strong> - ユーザーIDや有効期限などのクレーム（情報）を格納</li>
+        <li><strong>Signature</strong> - HeaderとPayloadを秘密鍵で署名したデータ。改ざん検知に使用</li>
+      </ul>
+
+      <h3>Base64URLエンコードとは</h3>
+      <p>JWTのHeaderとPayloadはBase64URLエンコードされています。これは標準のBase64エンコードを、URLで安全に使える形に変換したものです。</p>
+      <ul>
+        <li><code>+</code> を <code>-</code> に置換</li>
+        <li><code>/</code> を <code>_</code> に置換</li>
+        <li>末尾のパディング（<code>=</code>）を除去</li>
+      </ul>
+      <p>デコードの手順: Base64URL文字列 → 標準Base64に変換 → バイナリデータに変換 → UTF-8文字列（JSON）に変換</p>
+
+      <h3>主要なクレーム（Payload フィールド）</h3>
+      <ul>
+        <li><code>sub</code>（Subject） - トークンの主体（通常はユーザーID）</li>
+        <li><code>iss</code>（Issuer） - トークンの発行者</li>
+        <li><code>exp</code>（Expiration Time） - 有効期限（Unixタイムスタンプ）</li>
+        <li><code>iat</code>（Issued At） - 発行日時（Unixタイムスタンプ）</li>
+        <li><code>nbf</code>（Not Before） - 有効開始日時</li>
+        <li><code>aud</code>（Audience） - トークンの対象者</li>
+        <li><code>jti</code>（JWT ID） - トークンの一意な識別子</li>
+      </ul>
+
+      <h3>セキュリティに関する注意</h3>
+      <p>JWTのPayloadはBase64URLエンコードされているだけで、<strong>暗号化されていません</strong>。誰でもデコードして中身を読むことができます。パスワードやクレジットカード番号などの機密情報をPayloadに含めてはいけません。</p>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>テキストをBase64形式に変換・復元</p>
+        </a>
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONを見やすくフォーマット</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ生成ツール</h3>
+          <p>SHA-256等のハッシュ値を生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var HEADER_FIELDS = {
+      alg: '署名アルゴリズム',
+      typ: 'トークンタイプ',
+      kid: '鍵ID（Key ID）',
+      jku: 'JWK Set URL',
+      x5u: 'X.509証明書URL',
+      x5t: 'X.509証明書のサムプリント',
+      cty: 'コンテンツタイプ'
+    };
+
+    var PAYLOAD_FIELDS = {
+      sub: '主体（Subject） - トークンの対象ユーザー',
+      iss: '発行者（Issuer） - トークンを発行したサービス',
+      aud: '対象者（Audience） - トークンの受信者',
+      exp: '有効期限（Expiration Time）',
+      iat: '発行日時（Issued At）',
+      nbf: '有効開始日時（Not Before）',
+      jti: 'トークンID（JWT ID） - 一意な識別子',
+      name: 'ユーザー名',
+      email: 'メールアドレス',
+      role: 'ロール・権限',
+      scope: 'スコープ・権限範囲'
+    };
+
+    function base64UrlDecode(str) {
+      // Base64URL → 標準Base64に変換
+      var base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+      // パディングを追加
+      while (base64.length % 4 !== 0) {
+        base64 += '=';
+      }
+      try {
+        var decoded = atob(base64);
+        // UTF-8デコード
+        return decodeURIComponent(Array.prototype.map.call(decoded, function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+      } catch (e) {
+        throw new Error('Base64URLデコードに失敗しました');
+      }
+    }
+
+    function syntaxHighlight(json) {
+      var str = JSON.stringify(json, null, 2);
+      return str.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+        var cls = 'json-number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'json-key';
+            return '<span class="' + cls + '">' + escapeHtml(match.slice(0, -1)) + '</span>:';
+          } else {
+            cls = 'json-string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'json-boolean';
+        } else if (/null/.test(match)) {
+          cls = 'json-null';
+        }
+        return '<span class="' + cls + '">' + escapeHtml(match) + '</span>';
+      }).replace(/([{}[\]])/g, '<span class="json-brace">$1</span>');
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function formatTimestamp(ts) {
+      var d = new Date(ts * 1000);
+      return d.getFullYear() + '/' +
+        ('0' + (d.getMonth() + 1)).slice(-2) + '/' +
+        ('0' + d.getDate()).slice(-2) + ' ' +
+        ('0' + d.getHours()).slice(-2) + ':' +
+        ('0' + d.getMinutes()).slice(-2) + ':' +
+        ('0' + d.getSeconds()).slice(-2);
+    }
+
+    function buildFieldTable(obj, fieldDefs, tableEl) {
+      var html = '<tr><th>フィールド</th><th>値</th><th>説明</th></tr>';
+      var keys = Object.keys(obj);
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        var val = obj[key];
+        var displayVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+
+        // タイムスタンプフィールドは日時表示を追加
+        if ((key === 'exp' || key === 'iat' || key === 'nbf') && typeof val === 'number') {
+          displayVal = val + '<br><small style="color:var(--text-muted);">' + formatTimestamp(val) + '</small>';
+        }
+
+        var desc = fieldDefs[key] || '―';
+        html += '<tr><td class="field-name">' + escapeHtml(key) + '</td><td>' + displayVal + '</td><td>' + escapeHtml(desc) + '</td></tr>';
+      }
+      tableEl.innerHTML = html;
+    }
+
+    function decodeJWT() {
+      var token = document.getElementById('jwt-input').value.trim();
+      var errorEl = document.getElementById('error-msg');
+      var resultEl = document.getElementById('result-area');
+
+      errorEl.classList.remove('show');
+      resultEl.classList.remove('show');
+
+      if (!token) {
+        errorEl.textContent = 'JWTトークンを入力してください。';
+        errorEl.classList.add('show');
+        return;
+      }
+
+      var parts = token.split('.');
+      if (parts.length !== 3) {
+        errorEl.textContent = '無効なJWTフォーマットです。JWTはドット（.）で区切られた3つのパートで構成されています。';
+        errorEl.classList.add('show');
+        return;
+      }
+
+      try {
+        var headerStr = base64UrlDecode(parts[0]);
+        var header = JSON.parse(headerStr);
+      } catch (e) {
+        errorEl.textContent = 'Headerのデコードに失敗しました: ' + e.message;
+        errorEl.classList.add('show');
+        return;
+      }
+
+      try {
+        var payloadStr = base64UrlDecode(parts[1]);
+        var payload = JSON.parse(payloadStr);
+      } catch (e) {
+        errorEl.textContent = 'Payloadのデコードに失敗しました: ' + e.message;
+        errorEl.classList.add('show');
+        return;
+      }
+
+      // Header表示
+      document.getElementById('header-json').innerHTML = syntaxHighlight(header);
+      buildFieldTable(header, HEADER_FIELDS, document.getElementById('header-fields'));
+
+      // Payload表示
+      document.getElementById('payload-json').innerHTML = syntaxHighlight(payload);
+      buildFieldTable(payload, PAYLOAD_FIELDS, document.getElementById('payload-fields'));
+
+      // 有効期限判定
+      var expiryHtml = '';
+      if (payload.exp !== undefined) {
+        var now = Math.floor(Date.now() / 1000);
+        var expDate = formatTimestamp(payload.exp);
+        if (payload.exp < now) {
+          expiryHtml = '<span class="expiry-badge expiry-expired">期限切れ</span> <span style="font-size:0.85rem;color:var(--text-muted);">有効期限: ' + expDate + '（' + formatTimeAgo(now - payload.exp) + '前に失効）</span>';
+        } else {
+          expiryHtml = '<span class="expiry-badge expiry-valid">有効</span> <span style="font-size:0.85rem;color:var(--text-muted);">有効期限: ' + expDate + '（残り ' + formatTimeAgo(payload.exp - now) + '）</span>';
+        }
+      } else {
+        expiryHtml = '<span class="expiry-badge expiry-unknown">有効期限なし</span> <span style="font-size:0.85rem;color:var(--text-muted);">expフィールドが設定されていません</span>';
+      }
+      document.getElementById('expiry-info').innerHTML = expiryHtml;
+
+      // Signature表示
+      document.getElementById('signature-raw').textContent = parts[2];
+
+      resultEl.classList.add('show');
+    }
+
+    function formatTimeAgo(seconds) {
+      if (seconds < 60) return seconds + '秒';
+      var minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return minutes + '分';
+      var hours = Math.floor(minutes / 60);
+      if (hours < 24) return hours + '時間' + (minutes % 60 > 0 ? minutes % 60 + '分' : '');
+      var days = Math.floor(hours / 24);
+      if (days < 30) return days + '日';
+      var months = Math.floor(days / 30);
+      if (months < 12) return months + 'ヶ月';
+      var years = Math.floor(days / 365);
+      return years + '年';
+    }
+
+    function clearAll() {
+      document.getElementById('jwt-input').value = '';
+      document.getElementById('error-msg').classList.remove('show');
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    // Enter key (Ctrl+Enter) support
+    document.getElementById('jwt-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) decodeJWT();
+    });
+  </script>
+</body>
+</html>

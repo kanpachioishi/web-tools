@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>和暦西暦変換 - 令和/平成/昭和/大正/明治と西暦を相互変換｜SimpleToolkit</title>
+  <meta name="description" content="和暦（令和・平成・昭和・大正・明治）と西暦を瞬時に相互変換。干支も同時表示。年号一覧表つき。無料・登録不要のオンラインツール。">
+  <meta property="og:title" content="和暦西暦変換 - 令和/平成/昭和/大正/明治と西暦を相互変換｜SimpleToolkit">
+  <meta property="og:description" content="和暦と西暦を瞬時に相互変換。干支も同時表示。年号一覧表つき。無料・登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/wareki-converter/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "和暦西暦変換 - 令和/平成/昭和/大正/明治と西暦を相互変換",
+    "description": "和暦（令和・平成・昭和・大正・明治）と西暦を瞬時に相互変換。干支も同時表示。年号一覧表つき。無料・登録不要のオンラインツール。",
+    "url": "https://simpletoolkit.net/tools/wareki-converter/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "今年は令和何年ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2026年は令和8年です。令和は2019年5月1日に始まりました。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "令和と平成の境目はいつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "平成31年4月30日まで、令和元年は5月1日からです。2019年は平成31年かつ令和元年にあたります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "和暦の年号にはどんなものがありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "近代の主な年号は明治（1868年〜）、大正（1912年〜）、昭和（1926年〜）、平成（1989年〜）、令和（2019年〜）の5つです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての変換処理はブラウザ内で完結します。データが外部に送信されることはありません。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .today-banner {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .today-banner .today-label {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
+    .today-banner .today-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .today-banner .today-sub {
+      font-size: 1rem;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .converter-section {
+      margin-bottom: 24px;
+    }
+    .converter-section h3 {
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .input-row .input-field {
+      flex: 1;
+      min-width: 100px;
+    }
+    .input-field label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .arrow-icon {
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-align: center;
+      margin: 8px 0;
+    }
+
+    .result-box {
+      background: var(--bg);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: none;
+      margin-top: 12px;
+    }
+    .result-box.show { display: block; }
+    .result-box .result-main {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .result-box .result-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .era-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.9rem;
+    }
+    .era-table th, .era-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .era-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .era-table .current-era {
+      background: #eff6ff;
+    }
+
+    .full-table-container {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-top: 16px;
+    }
+    .full-table-container table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .full-table-container th, .full-table-container td {
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      text-align: center;
+    }
+    .full-table-container th {
+      background: var(--bg);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .full-table-container .highlight-year {
+      background: #fef3c7;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .today-banner .today-value { font-size: 1.6rem; }
+      .result-box .result-main { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>和暦西暦変換</h1>
+    <h2>令和・平成・昭和・大正・明治と西暦を相互変換</h2>
+    <p class="tool-description">和暦と西暦をリアルタイムに相互変換。干支も同時表示します。年号一覧表で明治元年から令和の現在まで一覧できます。無料・登録不要。</p>
+
+    <div id="today-banner" class="today-banner">
+      <div class="today-label">今年は...</div>
+      <div class="today-value" id="today-wareki"></div>
+      <div class="today-sub" id="today-sub"></div>
+    </div>
+
+    <div class="tool-area">
+      <!-- 西暦→和暦 -->
+      <div class="converter-section">
+        <h3>西暦 → 和暦変換</h3>
+        <div class="input-row">
+          <div class="input-field" style="max-width:200px;">
+            <label for="seireki-input">西暦</label>
+            <input type="number" id="seireki-input" placeholder="2026" min="1868" max="2100">
+          </div>
+          <div style="padding-bottom:4px;">
+            <button class="btn" onclick="convertSeirekiToWareki()">変換</button>
+          </div>
+        </div>
+        <div class="result-box" id="seireki-result">
+          <div class="result-main" id="seireki-result-main"></div>
+          <div class="result-sub" id="seireki-result-sub"></div>
+        </div>
+      </div>
+
+      <!-- 和暦→西暦 -->
+      <div class="converter-section">
+        <h3>和暦 → 西暦変換</h3>
+        <div class="input-row">
+          <div class="input-field" style="max-width:140px;">
+            <label for="era-select">年号</label>
+            <select id="era-select">
+              <option value="reiwa">令和</option>
+              <option value="heisei">平成</option>
+              <option value="showa">昭和</option>
+              <option value="taisho">大正</option>
+              <option value="meiji">明治</option>
+            </select>
+          </div>
+          <div class="input-field" style="max-width:120px;">
+            <label for="wareki-year-input">年</label>
+            <input type="number" id="wareki-year-input" placeholder="8" min="1" max="100">
+          </div>
+          <div style="padding-bottom:4px;">
+            <button class="btn" onclick="convertWarekiToSeireki()">変換</button>
+          </div>
+        </div>
+        <div class="result-box" id="wareki-result">
+          <div class="result-main" id="wareki-result-main"></div>
+          <div class="result-sub" id="wareki-result-sub"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 年号一覧 -->
+    <section style="margin-top:32px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">年号一覧</h2>
+      <table class="era-table">
+        <thead>
+          <tr>
+            <th>年号</th>
+            <th>開始日</th>
+            <th>終了日</th>
+            <th>西暦範囲</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="current-era">
+            <td><strong>令和</strong></td>
+            <td>2019年5月1日</td>
+            <td>現在</td>
+            <td>2019年〜</td>
+          </tr>
+          <tr>
+            <td>平成</td>
+            <td>1989年1月8日</td>
+            <td>2019年4月30日</td>
+            <td>1989年〜2019年</td>
+          </tr>
+          <tr>
+            <td>昭和</td>
+            <td>1926年12月25日</td>
+            <td>1989年1月7日</td>
+            <td>1926年〜1989年</td>
+          </tr>
+          <tr>
+            <td>大正</td>
+            <td>1912年7月30日</td>
+            <td>1926年12月24日</td>
+            <td>1912年〜1926年</td>
+          </tr>
+          <tr>
+            <td>明治</td>
+            <td>1868年1月25日</td>
+            <td>1912年7月29日</td>
+            <td>1868年〜1912年</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 年号対照表 -->
+    <section style="margin-top:32px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">西暦・和暦・干支 対照表</h2>
+      <div class="full-table-container" id="full-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>西暦</th>
+              <th>和暦</th>
+              <th>干支</th>
+            </tr>
+          </thead>
+          <tbody id="full-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unix-timestamp/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unixタイムスタンプ変換</h3>
+          <p>Unixタイムスタンプと日付を相互変換</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var ERAS = [
+      { name: '令和', key: 'reiwa', startYear: 2019, startMonth: 5, startDay: 1, endYear: null, endMonth: null, endDay: null },
+      { name: '平成', key: 'heisei', startYear: 1989, startMonth: 1, startDay: 8, endYear: 2019, endMonth: 4, endDay: 30 },
+      { name: '昭和', key: 'showa', startYear: 1926, startMonth: 12, startDay: 25, endYear: 1989, endMonth: 1, endDay: 7 },
+      { name: '大正', key: 'taisho', startYear: 1912, startMonth: 7, startDay: 30, endYear: 1926, endMonth: 12, endDay: 24 },
+      { name: '明治', key: 'meiji', startYear: 1868, startMonth: 1, startDay: 25, endYear: 1912, endMonth: 7, endDay: 29 }
+    ];
+
+    var ETO = ['子(ね)', '丑(うし)', '寅(とら)', '卯(う)', '辰(たつ)', '巳(み)', '午(うま)', '未(ひつじ)', '申(さる)', '酉(とり)', '戌(いぬ)', '亥(い)'];
+
+    function getEto(year) {
+      return ETO[(year - 4) % 12];
+    }
+
+    function seirekiToWareki(year) {
+      var results = [];
+      for (var i = 0; i < ERAS.length; i++) {
+        var era = ERAS[i];
+        if (year >= era.startYear && (era.endYear === null || year <= era.endYear)) {
+          var eraYear = year - era.startYear + 1;
+          var label = eraYear === 1 ? era.name + '元年' : era.name + eraYear + '年';
+          results.push(label);
+        }
+      }
+      return results;
+    }
+
+    function warekiToSeireki(eraKey, eraYear) {
+      for (var i = 0; i < ERAS.length; i++) {
+        if (ERAS[i].key === eraKey) {
+          return ERAS[i].startYear + eraYear - 1;
+        }
+      }
+      return null;
+    }
+
+    function convertSeirekiToWareki() {
+      var year = parseInt(document.getElementById('seireki-input').value);
+      if (isNaN(year) || year < 1868 || year > 2100) {
+        alert('1868年〜2100年の範囲で入力してください。');
+        return;
+      }
+      var warekiList = seirekiToWareki(year);
+      var eto = getEto(year);
+      var resultBox = document.getElementById('seireki-result');
+      if (warekiList.length > 0) {
+        document.getElementById('seireki-result-main').textContent = year + '年 = ' + warekiList.join(' / ');
+        document.getElementById('seireki-result-sub').textContent = '干支: ' + eto;
+      } else {
+        document.getElementById('seireki-result-main').textContent = year + '年は明治以前のため和暦データがありません';
+        document.getElementById('seireki-result-sub').textContent = '干支: ' + eto;
+      }
+      resultBox.classList.add('show');
+    }
+
+    function convertWarekiToSeireki() {
+      var eraKey = document.getElementById('era-select').value;
+      var eraYear = parseInt(document.getElementById('wareki-year-input').value);
+      if (isNaN(eraYear) || eraYear < 1) {
+        alert('年を正しく入力してください。');
+        return;
+      }
+      var seireki = warekiToSeireki(eraKey, eraYear);
+      if (seireki === null) {
+        alert('変換できませんでした。');
+        return;
+      }
+      var eraName = '';
+      for (var i = 0; i < ERAS.length; i++) {
+        if (ERAS[i].key === eraKey) eraName = ERAS[i].name;
+      }
+      var yearLabel = eraYear === 1 ? eraName + '元年' : eraName + eraYear + '年';
+
+      // 範囲チェック
+      var era = ERAS.find(function(e) { return e.key === eraKey; });
+      var warning = '';
+      if (era.endYear !== null && seireki > era.endYear) {
+        warning = '（※ この年は既に' + eraName + 'の期間外です）';
+      }
+
+      var eto = getEto(seireki);
+      var resultBox = document.getElementById('wareki-result');
+      document.getElementById('wareki-result-main').textContent = yearLabel + ' = 西暦' + seireki + '年' + (warning ? ' ' + warning : '');
+      document.getElementById('wareki-result-sub').textContent = '干支: ' + eto;
+      resultBox.classList.add('show');
+    }
+
+    // リアルタイム変換
+    document.getElementById('seireki-input').addEventListener('input', function() {
+      var val = parseInt(this.value);
+      if (!isNaN(val) && val >= 1868 && val <= 2100) {
+        convertSeirekiToWareki();
+      }
+    });
+    document.getElementById('wareki-year-input').addEventListener('input', function() {
+      var val = parseInt(this.value);
+      if (!isNaN(val) && val >= 1) {
+        convertWarekiToSeireki();
+      }
+    });
+    document.getElementById('era-select').addEventListener('change', function() {
+      var yearVal = parseInt(document.getElementById('wareki-year-input').value);
+      if (!isNaN(yearVal) && yearVal >= 1) {
+        convertWarekiToSeireki();
+      }
+    });
+
+    // Enter key support
+    document.getElementById('seireki-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') convertSeirekiToWareki();
+    });
+    document.getElementById('wareki-year-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') convertWarekiToSeireki();
+    });
+
+    // 今年の表示
+    function showToday() {
+      var now = new Date();
+      var year = now.getFullYear();
+      var warekiList = seirekiToWareki(year);
+      var eto = getEto(year);
+      document.getElementById('today-wareki').textContent = year + '年 = ' + warekiList[0];
+      document.getElementById('today-sub').textContent = '干支: ' + eto + '　|　' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+    }
+
+    // 対照表を生成
+    function buildFullTable() {
+      var tbody = document.getElementById('full-table-body');
+      var currentYear = new Date().getFullYear();
+      var html = '';
+      for (var y = currentYear + 5; y >= 1868; y--) {
+        var warekiList = seirekiToWareki(y);
+        var eto = getEto(y);
+        var cls = (y === currentYear) ? ' class="highlight-year"' : '';
+        html += '<tr' + cls + '><td>' + y + '</td><td>' + warekiList.join(' / ') + '</td><td>' + eto + '</td></tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    showToday();
+    buildFullTable();
+  </script>
+</body>
+</html>
