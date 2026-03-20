@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手書き風テキスト画像生成 - 便箋・原稿用紙に手書き文字を作成｜SimpleToolkit</title>
+  <meta name="description" content="テキストを入力するだけで手書き風の画像を自動生成。便箋、原稿用紙、ノート風の背景に日本語手書きフォントで描画。年賀状やSNS投稿に。無料・登録不要。">
+  <meta property="og:title" content="手書き風テキスト画像生成 - 便箋・原稿用紙に手書き文字を作成｜SimpleToolkit">
+  <meta property="og:description" content="テキストを入力するだけで手書き風の画像を自動生成。便箋、原稿用紙、ノート風の背景に日本語手書きフォントで描画。年賀状やSNS投稿に。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/handwriting/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "手書き風テキスト画像生成 - 便箋・原稿用紙に手書き文字を作成",
+    "description": "テキストを入力するだけで手書き風の画像を自動生成。便箋、原稿用紙、ノート風の背景に日本語手書きフォントで描画。年賀状やSNS投稿に。無料・登録不要。",
+    "url": "https://simpletoolkit.net/tools/handwriting/",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "手書き風テキスト画像とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "テキストを入力すると、手書き風フォントと微妙な文字のゆらぎ効果により、まるで手書きしたかのような画像を自動生成するツールです。便箋や原稿用紙、ノートなどの背景も選択できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのようなフォントが使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Zen Kurenaido（手書き風）、Yomogi（丸文字風）、Kaisei Opti（筆風）、Klee One（ペン字風）の4種類の日本語手書きフォントをご利用いただけます。すべてGoogle Fontsから提供されています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "生成した画像はどの形式でダウンロードできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PNG形式（透過対応・高画質）とJPG形式（ファイルサイズ小）の2種類でダウンロード可能です。用途に応じてお選びください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したテキストはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。入力したテキストや生成した画像が外部に送信されることはありません。安心してご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのような用途に使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "年賀状・暑中見舞いなどの挨拶状、SNS投稿用の画像、手紙風の画像作成、ブログやWebサイトの装飾、デザインのモックアップなど、さまざまな用途にお使いいただけます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Yomogi&family=Kaisei+Opti&family=Klee+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .setting-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .setting-item label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .setting-item select,
+    .setting-item input[type="color"],
+    .setting-item input[type="range"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .setting-item select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .setting-item input[type="color"] {
+      height: 40px;
+      padding: 4px;
+      cursor: pointer;
+    }
+    .range-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .range-wrapper input[type="range"] {
+      flex: 1;
+    }
+    .range-value {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-width: 40px;
+      text-align: right;
+    }
+    .setting-full {
+      grid-column: 1 / -1;
+    }
+    .textarea-wrapper {
+      margin-bottom: 20px;
+    }
+    .textarea-wrapper textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      font-family: inherit;
+    }
+    .textarea-wrapper textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    .checkbox-item label {
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .canvas-container {
+      margin: 20px 0;
+      text-align: center;
+      overflow-x: auto;
+    }
+    .canvas-container canvas {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-width: 100%;
+      height: auto;
+    }
+    .download-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .download-group select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .font-preview {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .font-preview-zen { font-family: 'Zen Kurenaido', sans-serif; }
+    .font-preview-yomogi { font-family: 'Yomogi', cursive; }
+    .font-preview-kaisei { font-family: 'Kaisei Opti', serif; }
+    .font-preview-klee { font-family: 'Klee One', cursive; }
+
+    @media (max-width: 600px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+      .download-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>手書き風テキスト画像生成</h1>
+    <h2>便箋・原稿用紙に手書き文字を無料で作成</h2>
+    <p class="tool-description">テキストを入力するだけで、手書き風の画像を自動生成します。便箋、原稿用紙、ノート風の背景に日本語手書きフォントで描画。年賀状やSNS投稿にも最適です。すべてブラウザ内で処理するため、入力テキストが外部に送信されることはありません。</p>
+
+    <div class="tool-area">
+      <div class="textarea-wrapper">
+        <label for="inputText" style="font-weight:600;margin-bottom:6px;display:block;">テキスト入力</label>
+        <textarea id="inputText" placeholder="ここにテキストを入力してください...&#10;改行もそのまま反映されます。">お疲れ様です。
+いつもお世話になっております。
+手書き風の文字が簡単に作れます。</textarea>
+      </div>
+
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label for="fontSelect">フォントスタイル</label>
+          <select id="fontSelect">
+            <option value="Zen Kurenaido">Zen Kurenaido（手書き風）</option>
+            <option value="Yomogi">Yomogi（丸文字風）</option>
+            <option value="Kaisei Opti">Kaisei Opti（筆風）</option>
+            <option value="Klee One" selected>Klee One（ペン字風）</option>
+          </select>
+          <div class="font-preview" id="fontPreview"><span class="font-preview-klee">あいうえお 手書き風テキスト ABC 123</span></div>
+        </div>
+
+        <div class="setting-item">
+          <label for="bgSelect">背景スタイル</label>
+          <select id="bgSelect">
+            <option value="white">白紙</option>
+            <option value="lined" selected>便箋風（横罫線入り）</option>
+            <option value="manuscript">原稿用紙風（400字詰め）</option>
+            <option value="grid">ノート風（方眼）</option>
+            <option value="letter">レターペーパー風（花柄縁取り）</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <label for="fontSize">フォントサイズ: <span id="fontSizeValue">28</span>px</label>
+          <div class="range-wrapper">
+            <input type="range" id="fontSize" min="16" max="72" value="28">
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label for="fontColor">文字色</label>
+          <input type="color" id="fontColor" value="#1a1a2e">
+        </div>
+
+        <div class="setting-item">
+          <label for="lineHeight">行間: <span id="lineHeightValue">1.8</span>倍</label>
+          <div class="range-wrapper">
+            <input type="range" id="lineHeight" min="1.0" max="3.0" step="0.1" value="1.8">
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label for="padding">余白: <span id="paddingValue">40</span>px</label>
+          <div class="range-wrapper">
+            <input type="range" id="padding" min="10" max="100" value="40">
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label for="canvasSize">画像サイズ</label>
+          <select id="canvasSize">
+            <option value="a4">A4（2480 x 3508）</option>
+            <option value="hagaki">はがき（1181 x 1748）</option>
+            <option value="sns_square" selected>SNS正方形（1080 x 1080）</option>
+            <option value="sns_landscape">SNS横長（1200 x 630）</option>
+            <option value="sns_portrait">SNS縦長（1080 x 1350）</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <label>&nbsp;</label>
+          <div class="checkbox-item">
+            <input type="checkbox" id="wobbleCheck" checked>
+            <label for="wobbleCheck">手書き風ゆらぎ効果</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-bottom:16px;">
+        <button class="btn" onclick="renderCanvas()">プレビュー更新</button>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <div class="download-group">
+        <select id="downloadFormat">
+          <option value="png">PNG（高画質・透過対応）</option>
+          <option value="jpg">JPG（ファイルサイズ小）</option>
+        </select>
+        <button class="btn" onclick="downloadImage()">画像をダウンロード</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">使い方</h2>
+      <ol style="line-height:2;">
+        <li>テキストエリアに文字を入力します（改行も反映されます）</li>
+        <li>フォント、背景、サイズなどをお好みで設定します</li>
+        <li>「プレビュー更新」ボタンで画像を確認します</li>
+        <li>PNG / JPG形式を選んで「画像をダウンロード」をクリックします</li>
+      </ol>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">活用シーン</h2>
+      <ul style="line-height:2;">
+        <li>年賀状・暑中見舞いなど季節の挨拶状</li>
+        <li>SNS投稿用の手書き風メッセージ画像</li>
+        <li>手紙やメモ風の画像を作成</li>
+        <li>ブログやWebサイトのアクセント画像</li>
+        <li>プレゼン資料の温かみのあるテキスト画像</li>
+      </ul>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QRコード生成</h3>
+          <p>URLやテキストからQRコードを生成</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換</h3>
+          <p>テキストの一括置換を簡単に</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var SIZES = {
+      a4: { w: 2480, h: 3508 },
+      hagaki: { w: 1181, h: 1748 },
+      sns_square: { w: 1080, h: 1080 },
+      sns_landscape: { w: 1200, h: 630 },
+      sns_portrait: { w: 1080, h: 1350 }
+    };
+
+    // Update range display values
+    document.getElementById('fontSize').addEventListener('input', function() {
+      document.getElementById('fontSizeValue').textContent = this.value;
+    });
+    document.getElementById('lineHeight').addEventListener('input', function() {
+      document.getElementById('lineHeightValue').textContent = this.value;
+    });
+    document.getElementById('padding').addEventListener('input', function() {
+      document.getElementById('paddingValue').textContent = this.value;
+    });
+
+    // Font preview update
+    document.getElementById('fontSelect').addEventListener('change', function() {
+      var previewEl = document.getElementById('fontPreview');
+      var classMap = {
+        'Zen Kurenaido': 'font-preview-zen',
+        'Yomogi': 'font-preview-yomogi',
+        'Kaisei Opti': 'font-preview-kaisei',
+        'Klee One': 'font-preview-klee'
+      };
+      previewEl.innerHTML = '<span class="' + classMap[this.value] + '">あいうえお 手書き風テキスト ABC 123</span>';
+    });
+
+    // Auto-render on setting changes
+    var autoRenderInputs = ['fontSelect', 'bgSelect', 'fontSize', 'fontColor', 'lineHeight', 'padding', 'canvasSize', 'wobbleCheck'];
+    autoRenderInputs.forEach(function(id) {
+      var el = document.getElementById(id);
+      el.addEventListener('change', function() { renderCanvas(); });
+      if (el.type === 'range') {
+        el.addEventListener('input', function() { renderCanvas(); });
+      }
+    });
+
+    var inputTextEl = document.getElementById('inputText');
+    var inputTimer = null;
+    inputTextEl.addEventListener('input', function() {
+      clearTimeout(inputTimer);
+      inputTimer = setTimeout(function() { renderCanvas(); }, 300);
+    });
+
+    function getCanvasSize() {
+      var sizeKey = document.getElementById('canvasSize').value;
+      return SIZES[sizeKey];
+    }
+
+    function drawBackground(w, h, bgType, padding, fontSize, lineHeightMul) {
+      // Fill white background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      var lineSpacing = fontSize * lineHeightMul;
+
+      if (bgType === 'lined') {
+        // Lined paper - horizontal lines
+        ctx.strokeStyle = '#c8d8e8';
+        ctx.lineWidth = 1;
+        var startY = padding + fontSize;
+        for (var y = startY; y < h - padding; y += lineSpacing) {
+          ctx.beginPath();
+          ctx.moveTo(padding * 0.5, y);
+          ctx.lineTo(w - padding * 0.5, y);
+          ctx.stroke();
+        }
+        // Left margin line
+        ctx.strokeStyle = '#e8a0a0';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(padding - 10, 0);
+        ctx.lineTo(padding - 10, h);
+        ctx.stroke();
+      } else if (bgType === 'manuscript') {
+        // Japanese manuscript paper (Genkoyoshi) 20x20 = 400 chars
+        var cols = 20;
+        var rows = 20;
+        var cellW = (w - padding * 2) / cols;
+        var cellH = (h - padding * 2) / rows;
+        ctx.strokeStyle = '#d4a0a0';
+        ctx.lineWidth = 1;
+        // Draw grid
+        for (var r = 0; r <= rows; r++) {
+          ctx.beginPath();
+          ctx.moveTo(padding, padding + r * cellH);
+          ctx.lineTo(w - padding, padding + r * cellH);
+          ctx.stroke();
+        }
+        for (var c = 0; c <= cols; c++) {
+          ctx.beginPath();
+          ctx.moveTo(padding + c * cellW, padding);
+          ctx.lineTo(padding + c * cellW, h - padding);
+          ctx.stroke();
+        }
+        // Center dotted lines (horizontal)
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = '#e0b8b8';
+        for (var r = 0; r < rows; r++) {
+          ctx.beginPath();
+          ctx.moveTo(padding, padding + r * cellH + cellH / 2);
+          ctx.lineTo(w - padding, padding + r * cellH + cellH / 2);
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+      } else if (bgType === 'grid') {
+        // Grid paper
+        var gridSize = 24;
+        ctx.strokeStyle = '#d0e0d0';
+        ctx.lineWidth = 0.5;
+        for (var x = padding; x < w - padding; x += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(x, padding);
+          ctx.lineTo(x, h - padding);
+          ctx.stroke();
+        }
+        for (var y = padding; y < h - padding; y += gridSize) {
+          ctx.beginPath();
+          ctx.moveTo(padding, y);
+          ctx.lineTo(w - padding, y);
+          ctx.stroke();
+        }
+      } else if (bgType === 'letter') {
+        // Letter paper with floral border
+        var borderW = 30;
+        // Outer border
+        ctx.strokeStyle = '#c8a8d8';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(borderW, borderW, w - borderW * 2, h - borderW * 2);
+        // Inner border
+        ctx.strokeStyle = '#d8c0e8';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(borderW + 8, borderW + 8, w - (borderW + 8) * 2, h - (borderW + 8) * 2);
+        // Draw decorative flowers at corners
+        drawFlower(ctx, borderW + 4, borderW + 4, 18, '#d8a0c8');
+        drawFlower(ctx, w - borderW - 4, borderW + 4, 18, '#a8c0d8');
+        drawFlower(ctx, borderW + 4, h - borderW - 4, 18, '#a8d8b8');
+        drawFlower(ctx, w - borderW - 4, h - borderW - 4, 18, '#d8c8a0');
+        // Small flowers along edges
+        var flowerSpacing = 80;
+        for (var x = borderW + flowerSpacing; x < w - borderW - flowerSpacing / 2; x += flowerSpacing) {
+          drawMiniFlower(ctx, x, borderW + 2, 6, '#e0c0d8');
+          drawMiniFlower(ctx, x, h - borderW - 2, 6, '#c0d8c0');
+        }
+        for (var y = borderW + flowerSpacing; y < h - borderW - flowerSpacing / 2; y += flowerSpacing) {
+          drawMiniFlower(ctx, borderW + 2, y, 6, '#c0c8e0');
+          drawMiniFlower(ctx, w - borderW - 2, y, 6, '#e0d8c0');
+        }
+      }
+    }
+
+    function drawFlower(ctx, cx, cy, r, color) {
+      ctx.fillStyle = color;
+      for (var i = 0; i < 5; i++) {
+        var angle = (i / 5) * Math.PI * 2 - Math.PI / 2;
+        ctx.beginPath();
+        ctx.ellipse(cx + Math.cos(angle) * r * 0.5, cy + Math.sin(angle) * r * 0.5, r * 0.45, r * 0.25, angle, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#f0e068';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 0.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawMiniFlower(ctx, cx, cy, r, color) {
+      ctx.fillStyle = color;
+      for (var i = 0; i < 5; i++) {
+        var angle = (i / 5) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.arc(cx + Math.cos(angle) * r * 0.4, cy + Math.sin(angle) * r * 0.4, r * 0.35, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#f8e888';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 0.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function renderCanvas() {
+      var text = document.getElementById('inputText').value;
+      var fontName = document.getElementById('fontSelect').value;
+      var bgType = document.getElementById('bgSelect').value;
+      var fontSize = parseInt(document.getElementById('fontSize').value);
+      var fontColor = document.getElementById('fontColor').value;
+      var lineHeightMul = parseFloat(document.getElementById('lineHeight').value);
+      var padding = parseInt(document.getElementById('padding').value);
+      var wobble = document.getElementById('wobbleCheck').checked;
+
+      var size = getCanvasSize();
+      canvas.width = size.w;
+      canvas.height = size.h;
+
+      // Scale for high-DPI but display smaller
+      canvas.style.maxWidth = Math.min(size.w, 600) + 'px';
+
+      drawBackground(size.w, size.h, bgType, padding, fontSize, lineHeightMul);
+
+      if (!text.trim()) return;
+
+      ctx.fillStyle = fontColor;
+      ctx.font = fontSize + 'px "' + fontName + '", sans-serif';
+      ctx.textBaseline = 'top';
+
+      var lines = text.split('\n');
+      var lineSpacing = fontSize * lineHeightMul;
+      var maxWidth = size.w - padding * 2;
+
+      if (bgType === 'manuscript') {
+        drawManuscriptText(text, fontName, fontSize, fontColor, padding, wobble, size.w, size.h);
+        return;
+      }
+
+      var curY = padding;
+
+      for (var li = 0; li < lines.length; li++) {
+        var line = lines[li];
+        if (line === '') {
+          curY += lineSpacing;
+          continue;
+        }
+
+        // Word wrap by character
+        var wrappedLines = wrapText(line, fontName, fontSize, maxWidth);
+        for (var wi = 0; wi < wrappedLines.length; wi++) {
+          var wLine = wrappedLines[wi];
+          if (curY + fontSize > size.h - padding) break;
+
+          if (wobble) {
+            drawWobbleText(wLine, padding, curY, fontName, fontSize, fontColor);
+          } else {
+            ctx.fillStyle = fontColor;
+            ctx.font = fontSize + 'px "' + fontName + '", sans-serif';
+            ctx.fillText(wLine, padding, curY);
+          }
+          curY += lineSpacing;
+        }
+      }
+    }
+
+    function wrapText(text, fontName, fontSize, maxWidth) {
+      ctx.font = fontSize + 'px "' + fontName + '", sans-serif';
+      var result = [];
+      var current = '';
+      for (var i = 0; i < text.length; i++) {
+        var test = current + text[i];
+        if (ctx.measureText(test).width > maxWidth && current.length > 0) {
+          result.push(current);
+          current = text[i];
+        } else {
+          current = test;
+        }
+      }
+      if (current) result.push(current);
+      return result;
+    }
+
+    function drawWobbleText(text, x, y, fontName, fontSize, fontColor) {
+      ctx.font = fontSize + 'px "' + fontName + '", sans-serif';
+      ctx.fillStyle = fontColor;
+      var curX = x;
+      for (var i = 0; i < text.length; i++) {
+        var char = text[i];
+        ctx.save();
+        var offsetX = (Math.random() - 0.5) * 2;
+        var offsetY = (Math.random() - 0.5) * 2;
+        var rotation = (Math.random() - 0.5) * 0.04;
+        var sizeVariation = (Math.random() - 0.5) * 1;
+        ctx.font = (fontSize + sizeVariation) + 'px "' + fontName + '", sans-serif';
+        ctx.translate(curX + offsetX, y + offsetY);
+        ctx.rotate(rotation);
+        ctx.fillText(char, 0, 0);
+        ctx.restore();
+        ctx.font = fontSize + 'px "' + fontName + '", sans-serif';
+        curX += ctx.measureText(char).width;
+      }
+    }
+
+    function drawManuscriptText(text, fontName, fontSize, fontColor, padding, wobble, canvasW, canvasH) {
+      var cols = 20;
+      var rows = 20;
+      var cellW = (canvasW - padding * 2) / cols;
+      var cellH = (canvasH - padding * 2) / rows;
+      var charSize = Math.min(cellW, cellH) * 0.7;
+
+      ctx.fillStyle = fontColor;
+      ctx.font = charSize + 'px "' + fontName + '", sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+
+      // Remove newlines and get plain text for manuscript
+      var plainText = text.replace(/\n/g, '');
+      var charIndex = 0;
+
+      for (var r = 0; r < rows && charIndex < plainText.length; r++) {
+        for (var c = 0; c < cols && charIndex < plainText.length; c++) {
+          var cx = padding + c * cellW + cellW / 2;
+          var cy = padding + r * cellH + cellH / 2;
+          var char = plainText[charIndex];
+
+          if (wobble) {
+            ctx.save();
+            var offsetX = (Math.random() - 0.5) * 2;
+            var offsetY = (Math.random() - 0.5) * 2;
+            var rotation = (Math.random() - 0.5) * 0.04;
+            ctx.translate(cx + offsetX, cy + offsetY);
+            ctx.rotate(rotation);
+            ctx.fillStyle = fontColor;
+            ctx.font = charSize + 'px "' + fontName + '", sans-serif';
+            ctx.fillText(char, 0, 0);
+            ctx.restore();
+          } else {
+            ctx.fillStyle = fontColor;
+            ctx.font = charSize + 'px "' + fontName + '", sans-serif';
+            ctx.fillText(char, cx, cy);
+          }
+          charIndex++;
+        }
+      }
+
+      ctx.textBaseline = 'top';
+      ctx.textAlign = 'start';
+    }
+
+    function downloadImage() {
+      var format = document.getElementById('downloadFormat').value;
+      var link = document.createElement('a');
+      if (format === 'png') {
+        link.download = 'handwriting.png';
+        link.href = canvas.toDataURL('image/png');
+      } else {
+        link.download = 'handwriting.jpg';
+        link.href = canvas.toDataURL('image/jpeg', 0.92);
+      }
+      link.click();
+    }
+
+    // Wait for fonts to load, then render
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function() {
+        renderCanvas();
+      });
+    } else {
+      setTimeout(renderCanvas, 1000);
+    }
+  </script>
+</body>
+</html>
