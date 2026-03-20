@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitwise Operation Visualizer - AND/OR/XOR/Shift | SimpleToolkit</title>
+  <meta name="description" content="Free online bitwise operation visualizer. Visualize AND, OR, XOR, NOT, and shift operations with interactive bit grids. Convert between decimal, hex, and binary. Supports 8/16/32-bit.">
+  <meta property="og:title" content="Bitwise Operation Visualizer - AND/OR/XOR/Shift | SimpleToolkit">
+  <meta property="og:description" content="Visualize bitwise operations (AND, OR, XOR, NOT, Shift) with interactive bit grids. Convert between decimal, hex, and binary in real time.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/bitwise-calc/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/bitwise-calc/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/bitwise-calc/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Bitwise Operation Visualizer - AND/OR/XOR/Shift",
+    "description": "Free online bitwise operation visualizer. Visualize AND, OR, XOR, NOT, and shift operations with interactive bit grids. Supports 8/16/32-bit.",
+    "url": "https://simpletoolkit.net/tools/bitwise-calc/en/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are bitwise operations?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bitwise operations treat integer values as binary bit sequences and perform logical operations on each bit. They include AND (&), OR (|), XOR (^), NOT (~), left shift (<<), and right shift (>>), and are widely used in low-level data processing, flag management, and cryptography."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between AND and OR operations?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AND produces 1 only when both bits are 1. OR produces 1 when either bit is 1. AND is commonly used for bit masking (extracting specific bits), while OR is used for setting bits (turning flags on)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When is XOR used?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "XOR (exclusive OR) returns 1 when the two bits differ. It is widely used in encryption, checksum calculations, value swapping, and difference detection. A particularly useful property is that XORing a value with itself produces 0."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all processing is done within your browser. Your data is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    /* Input format selector */
+    .format-selector {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .format-selector label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+    .format-btn {
+      padding: 6px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .format-btn:hover { border-color: var(--primary); }
+    .format-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Bit width selector */
+    .bitwidth-selector {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .bitwidth-selector label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+    .bw-btn {
+      padding: 6px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .bw-btn:hover { border-color: var(--primary); }
+    .bw-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Input fields */
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .input-row .field {
+      flex: 1;
+      min-width: 180px;
+    }
+    .input-row .field label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+    .input-row .field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: 'Courier New', monospace;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+    .input-row .field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Shift slider */
+    .shift-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .shift-row label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .shift-row input[type="range"] {
+      flex: 1;
+      min-width: 120px;
+      accent-color: var(--primary);
+    }
+    .shift-row .shift-val {
+      font-weight: 700;
+      font-size: 1rem;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    /* Bit visualization */
+    .bit-vis-section {
+      margin-top: 24px;
+    }
+    .op-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .op-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .op-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+    .op-values {
+      display: flex;
+      gap: 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+    .op-values span {
+      white-space: nowrap;
+    }
+    .op-values .val-label {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Bit grid */
+    .bit-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      justify-content: flex-end;
+    }
+    .bit-group {
+      display: flex;
+      gap: 2px;
+      margin-left: 6px;
+    }
+    .bit-group:first-child {
+      margin-left: 0;
+    }
+    .bit-cell {
+      width: 28px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 4px;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .bit-cell.bit-1 {
+      background: #2563eb;
+      color: #fff;
+    }
+    .bit-cell.bit-1-green {
+      background: #16a34a;
+      color: #fff;
+    }
+    .bit-cell.bit-0 {
+      background: #e2e8f0;
+      color: #94a3b8;
+    }
+    .bit-cell.clickable {
+      cursor: pointer;
+    }
+    .bit-cell.clickable:hover {
+      transform: scale(1.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .bit-index-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      justify-content: flex-end;
+      margin-top: 2px;
+    }
+    .bit-index-group {
+      display: flex;
+      gap: 2px;
+      margin-left: 6px;
+    }
+    .bit-index-group:first-child {
+      margin-left: 0;
+    }
+    .bit-index {
+      width: 28px;
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    /* Input bit grid */
+    .input-bits-area {
+      margin-top: 8px;
+    }
+    .input-bits-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .bit-cell {
+        width: 22px;
+        height: 26px;
+        font-size: 0.75rem;
+      }
+      .bit-index {
+        width: 22px;
+        font-size: 0.5rem;
+      }
+      .bit-group {
+        margin-left: 4px;
+      }
+      .bit-index-group {
+        margin-left: 4px;
+      }
+      .op-values {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .bit-cell {
+        width: 18px;
+        height: 22px;
+        font-size: 0.65rem;
+      }
+      .bit-index {
+        width: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Bitwise Operation Visualizer</h1>
+    <h2>Visualize AND/OR/XOR/NOT/Shift Operations - Free Online Tool</h2>
+    <p class="tool-description">Visualize bitwise operations (AND, OR, XOR, NOT, Shift) on two numbers with interactive bit grids. View results in decimal, hex, and binary simultaneously. Click individual bits to toggle them.</p>
+
+    <div class="tool-area">
+      <!-- Input format -->
+      <div class="format-selector">
+        <label>Input Format:</label>
+        <button class="format-btn active" onclick="setFormat('dec')" id="fmt-dec">Decimal</button>
+        <button class="format-btn" onclick="setFormat('hex')" id="fmt-hex">Hex</button>
+        <button class="format-btn" onclick="setFormat('bin')" id="fmt-bin">Binary</button>
+      </div>
+
+      <!-- Bit width -->
+      <div class="bitwidth-selector">
+        <label>Bit Width:</label>
+        <button class="bw-btn" onclick="setBitWidth(8)" id="bw-8">8-bit</button>
+        <button class="bw-btn active" onclick="setBitWidth(16)" id="bw-16">16-bit</button>
+        <button class="bw-btn" onclick="setBitWidth(32)" id="bw-32">32-bit</button>
+      </div>
+
+      <!-- Input A & B -->
+      <div class="input-row">
+        <div class="field">
+          <label for="input-a">Value A</label>
+          <input type="text" id="input-a" placeholder="42" autocomplete="off" spellcheck="false">
+          <div class="input-bits-area" id="bits-a-area">
+            <div class="input-bits-label">Bits of A (click to toggle):</div>
+            <div class="bit-grid" id="bits-a"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="input-b">Value B</label>
+          <input type="text" id="input-b" placeholder="15" autocomplete="off" spellcheck="false">
+          <div class="input-bits-area" id="bits-b-area">
+            <div class="input-bits-label">Bits of B (click to toggle):</div>
+            <div class="bit-grid" id="bits-b"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shift amount -->
+      <div class="shift-row">
+        <label for="shift-slider">Shift Amount (n):</label>
+        <input type="range" id="shift-slider" min="0" max="31" value="1">
+        <span class="shift-val" id="shift-val">1</span>
+      </div>
+
+      <!-- Results -->
+      <div class="bit-vis-section" id="results">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Bitwise Operation Basics</h2>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:24px;">
+        <h3 style="font-size:1rem;margin-bottom:12px;">Operation Types and Descriptions</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+          <thead>
+            <tr style="border-bottom:2px solid var(--border);">
+              <th style="text-align:left;padding:8px;">Operation</th>
+              <th style="text-align:left;padding:8px;">Symbol</th>
+              <th style="text-align:left;padding:8px;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">AND</td><td style="padding:8px;font-family:monospace;">&amp;</td><td style="padding:8px;">Result is 1 only if both bits are 1. Used for bit masking.</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">OR</td><td style="padding:8px;font-family:monospace;">|</td><td style="padding:8px;">Result is 1 if either bit is 1. Used for setting flags.</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">XOR</td><td style="padding:8px;font-family:monospace;">^</td><td style="padding:8px;">Result is 1 if bits differ. Used for encryption and swapping.</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">NOT</td><td style="padding:8px;font-family:monospace;">~</td><td style="padding:8px;">Inverts all bits. Used for complement calculations.</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">Left Shift</td><td style="padding:8px;font-family:monospace;">&lt;&lt;</td><td style="padding:8px;">Shifts bits left. Equivalent to multiplying by 2^n.</td></tr>
+            <tr><td style="padding:8px;font-weight:600;">Right Shift</td><td style="padding:8px;font-family:monospace;">&gt;&gt;</td><td style="padding:8px;">Shifts bits right. Equivalent to dividing by 2^n.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../hash-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Hash Generator</h3>
+          <p>Generate MD5/SHA-1/SHA-256 hash values</p>
+        </a>
+        <a href="../../base64/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64 Encoder/Decoder</h3>
+          <p>Encode and decode Base64 data</p>
+        </a>
+        <a href="../../unit-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, temperature, and more</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    var currentFormat = 'dec';
+    var bitWidth = 16;
+    var valueA = 0;
+    var valueB = 0;
+
+    var maxValues = { 8: 255, 16: 65535, 32: 4294967295 };
+
+    function setFormat(fmt) {
+      currentFormat = fmt;
+      document.querySelectorAll('.format-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('fmt-' + fmt).classList.add('active');
+      updateInputDisplay();
+    }
+
+    function setBitWidth(bw) {
+      bitWidth = bw;
+      document.querySelectorAll('.bw-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('bw-' + bw).classList.add('active');
+      // Clamp values
+      var mask = maxValues[bitWidth];
+      valueA = (valueA >>> 0) & mask;
+      valueB = (valueB >>> 0) & mask;
+      // Update shift slider max
+      document.getElementById('shift-slider').max = bitWidth - 1;
+      var sv = parseInt(document.getElementById('shift-slider').value);
+      if (sv >= bitWidth) {
+        document.getElementById('shift-slider').value = bitWidth - 1;
+        document.getElementById('shift-val').textContent = bitWidth - 1;
+      }
+      updateInputDisplay();
+      renderAll();
+    }
+
+    function formatNum(val, fmt) {
+      var v = val >>> 0;
+      if (fmt === 'hex') return '0x' + v.toString(16).toUpperCase();
+      if (fmt === 'bin') return '0b' + padBin(v);
+      return v.toString(10);
+    }
+
+    function padBin(v) {
+      var s = (v >>> 0).toString(2);
+      while (s.length < bitWidth) s = '0' + s;
+      return s;
+    }
+
+    function parseInput(str) {
+      str = str.trim();
+      if (str === '') return 0;
+      var val;
+      if (/^0x/i.test(str)) {
+        val = parseInt(str, 16);
+      } else if (/^0b/i.test(str)) {
+        val = parseInt(str.slice(2), 2);
+      } else {
+        val = parseInt(str, 10);
+      }
+      if (isNaN(val) || val < 0) return 0;
+      return (val >>> 0) & maxValues[bitWidth];
+    }
+
+    function updateInputDisplay() {
+      document.getElementById('input-a').value = formatNum(valueA, currentFormat);
+      document.getElementById('input-b').value = formatNum(valueB, currentFormat);
+      updatePlaceholders();
+    }
+
+    function updatePlaceholders() {
+      var ia = document.getElementById('input-a');
+      var ib = document.getElementById('input-b');
+      if (currentFormat === 'hex') {
+        ia.placeholder = '0x2A';
+        ib.placeholder = '0x0F';
+      } else if (currentFormat === 'bin') {
+        ia.placeholder = '0b101010';
+        ib.placeholder = '0b1111';
+      } else {
+        ia.placeholder = '42';
+        ib.placeholder = '15';
+      }
+    }
+
+    function makeBitGrid(val, containerId, clickable, varName) {
+      var container = document.getElementById(containerId);
+      container.innerHTML = '';
+      var binStr = padBin(val);
+      var groupSize = 4;
+      for (var g = 0; g < bitWidth; g += groupSize) {
+        var group = document.createElement('div');
+        group.className = 'bit-group';
+        for (var i = 0; i < groupSize && (g + i) < bitWidth; i++) {
+          var idx = g + i;
+          var bit = binStr[idx];
+          var cell = document.createElement('div');
+          cell.className = 'bit-cell ' + (bit === '1' ? (varName === 'b' ? 'bit-1-green' : 'bit-1') : 'bit-0');
+          if (clickable) cell.classList.add('clickable');
+          cell.textContent = bit;
+          if (clickable) {
+            (function(bitIndex, vn) {
+              cell.addEventListener('click', function() {
+                toggleBit(bitIndex, vn);
+              });
+            })(bitWidth - 1 - idx, varName);
+          }
+          group.appendChild(cell);
+        }
+        container.appendChild(group);
+      }
+    }
+
+    function makeBitGridResult(val, container, colorClass) {
+      container.innerHTML = '';
+      var binStr = padBin(val);
+      var groupSize = 4;
+      for (var g = 0; g < bitWidth; g += groupSize) {
+        var group = document.createElement('div');
+        group.className = 'bit-group';
+        for (var i = 0; i < groupSize && (g + i) < bitWidth; i++) {
+          var idx = g + i;
+          var bit = binStr[idx];
+          var cell = document.createElement('div');
+          cell.className = 'bit-cell ' + (bit === '1' ? colorClass : 'bit-0');
+          cell.textContent = bit;
+          group.appendChild(cell);
+        }
+        container.appendChild(group);
+      }
+    }
+
+    function toggleBit(bitIndex, varName) {
+      if (varName === 'a') {
+        valueA = ((valueA >>> 0) ^ (1 << bitIndex)) >>> 0 & maxValues[bitWidth];
+      } else {
+        valueB = ((valueB >>> 0) ^ (1 << bitIndex)) >>> 0 & maxValues[bitWidth];
+      }
+      updateInputDisplay();
+      renderAll();
+    }
+
+    function renderAll() {
+      var a = valueA >>> 0;
+      var b = valueB >>> 0;
+      var mask = maxValues[bitWidth];
+      var shift = parseInt(document.getElementById('shift-slider').value) || 0;
+
+      var ops = [
+        { name: 'A AND B', symbol: 'A & B', val: (a & b) >>> 0 & mask, color: 'bit-1' },
+        { name: 'A OR B', symbol: 'A | B', val: (a | b) >>> 0 & mask, color: 'bit-1' },
+        { name: 'A XOR B', symbol: 'A ^ B', val: (a ^ b) >>> 0 & mask, color: 'bit-1' },
+        { name: 'NOT A', symbol: '~A', val: (~a >>> 0) & mask, color: 'bit-1' },
+        { name: 'A << ' + shift, symbol: 'A << ' + shift, val: (a << shift) >>> 0 & mask, color: 'bit-1-green' },
+        { name: 'A >> ' + shift, symbol: 'A >> ' + shift, val: (a >>> shift) & mask, color: 'bit-1-green' }
+      ];
+
+      // Render input bit grids
+      makeBitGrid(a, 'bits-a', true, 'a');
+      makeBitGrid(b, 'bits-b', true, 'b');
+
+      // Render result blocks
+      var resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+
+      for (var i = 0; i < ops.length; i++) {
+        var op = ops[i];
+        var block = document.createElement('div');
+        block.className = 'op-block';
+
+        var header = document.createElement('div');
+        header.className = 'op-header';
+
+        var nameEl = document.createElement('div');
+        nameEl.className = 'op-name';
+        nameEl.textContent = op.name;
+
+        var valsEl = document.createElement('div');
+        valsEl.className = 'op-values';
+
+        var dec = document.createElement('span');
+        dec.innerHTML = '<span class="val-label">DEC:</span> ' + op.val.toString(10);
+        var hex = document.createElement('span');
+        hex.innerHTML = '<span class="val-label">HEX:</span> 0x' + op.val.toString(16).toUpperCase();
+        var bin = document.createElement('span');
+        bin.innerHTML = '<span class="val-label">BIN:</span> ' + padBin(op.val);
+
+        valsEl.appendChild(dec);
+        valsEl.appendChild(hex);
+        valsEl.appendChild(bin);
+
+        header.appendChild(nameEl);
+        header.appendChild(valsEl);
+        block.appendChild(header);
+
+        var bitGrid = document.createElement('div');
+        bitGrid.className = 'bit-grid';
+        makeBitGridResult(op.val, bitGrid, op.color);
+        block.appendChild(bitGrid);
+
+        resultsDiv.appendChild(block);
+      }
+    }
+
+    // Event listeners
+    document.getElementById('input-a').addEventListener('input', function() {
+      valueA = parseInput(this.value);
+      renderAll();
+    });
+    document.getElementById('input-b').addEventListener('input', function() {
+      valueB = parseInput(this.value);
+      renderAll();
+    });
+
+    document.getElementById('shift-slider').addEventListener('input', function() {
+      document.getElementById('shift-val').textContent = this.value;
+      renderAll();
+    });
+
+    // Init
+    updatePlaceholders();
+    valueA = 42;
+    valueB = 15;
+    updateInputDisplay();
+    renderAll();
+  </script>
+</body>
+</html>

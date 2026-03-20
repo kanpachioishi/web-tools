@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resistor Color Code Calculator - 4/5 Band Decoder | SimpleToolkit</title>
+  <meta name="description" content="Free online resistor color code calculator. Decode 4-band and 5-band resistor color codes to resistance values instantly. Includes reverse lookup and a complete color code reference chart.">
+  <meta property="og:title" content="Resistor Color Code Calculator - 4/5 Band Decoder | SimpleToolkit">
+  <meta property="og:description" content="Decode resistor color bands to resistance values. Supports 4-band and 5-band resistors with reverse lookup. Free online tool.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/resistor-color/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/resistor-color/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/resistor-color/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Resistor Color Code Calculator - 4/5 Band Decoder",
+    "description": "Free online resistor color code calculator. Decode 4-band and 5-band resistor color codes to resistance values instantly. Includes reverse lookup and a complete color code reference chart.",
+    "url": "https://simpletoolkit.net/tools/resistor-color/en/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I read resistor color codes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For a 4-band resistor, the first band is the tens digit, the second is the ones digit, the third is the multiplier (power of 10), and the fourth is the tolerance. For 5-band resistors, the first three bands are significant digits, the fourth is the multiplier, and the fifth is the tolerance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What do gold and silver bands mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Gold represents a multiplier of x0.1 (for sub-ohm values) and a tolerance of plus or minus 5%. Silver represents a multiplier of x0.01 and a tolerance of plus or minus 10%. These colors are not used for significant digit bands."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between 4-band and 5-band resistors?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "4-band resistors have 2 significant digits and lower precision (typically plus or minus 5% or 10%). 5-band resistors have 3 significant digits and higher precision (plus or minus 1% or 2%). 5-band resistors are used in precision circuits."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all processing is done within your browser. Your data is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    /* Mode selector */
+    .mode-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .mode-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .mode-btn:hover { border-color: var(--primary); }
+    .mode-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .mode-btn small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.75rem;
+      margin-top: 2px;
+      opacity: 0.8;
+    }
+
+    /* Band selector */
+    .band-selector-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .band-type-btn {
+      padding: 8px 20px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .band-type-btn:hover { border-color: var(--primary); }
+    .band-type-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Band selectors */
+    .band-selectors {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .band-field {
+      flex: 1;
+      min-width: 100px;
+    }
+    .band-field label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    .band-field select {
+      width: 100%;
+      padding: 10px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .band-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Resistor SVG visual */
+    .resistor-visual {
+      display: flex;
+      justify-content: center;
+      margin: 24px 0;
+    }
+    .resistor-svg {
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+    }
+
+    /* Result display */
+    .result-display {
+      text-align: center;
+      padding: 20px;
+      background: var(--bg);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      margin-top: 16px;
+    }
+    .result-display .result-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-display .result-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .result-display .result-tolerance {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Reverse lookup */
+    .reverse-section {
+      margin-top: 32px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .reverse-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .reverse-input-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .reverse-input-row .input-field {
+      flex: 1;
+      min-width: 120px;
+    }
+    .reverse-input-row label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    .reverse-input-row input,
+    .reverse-input-row select {
+      width: 100%;
+      padding: 10px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .reverse-input-row input:focus,
+    .reverse-input-row select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .reverse-result {
+      display: none;
+      margin-top: 16px;
+    }
+    .reverse-result.show {
+      display: block;
+    }
+    .reverse-bands {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .reverse-band-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .reverse-band-chip .color-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+    }
+
+    /* Color code table */
+    .color-table-section {
+      margin-top: 32px;
+    }
+    .color-table-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .color-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .color-table th,
+    .color-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .color-table th {
+      background: #f1f5f9;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .color-table .color-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+    }
+    .color-swatch {
+      width: 24px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .band-selectors {
+        gap: 8px;
+      }
+      .band-field {
+        min-width: 80px;
+      }
+      .result-display .result-value {
+        font-size: 1.5rem;
+      }
+      .reverse-input-row {
+        flex-direction: column;
+      }
+      .color-table {
+        font-size: 0.75rem;
+      }
+      .color-table th,
+      .color-table td {
+        padding: 5px 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Resistor Color Code Calculator</h1>
+    <h2>4-Band / 5-Band Decoder - Free Online Tool</h2>
+    <p class="tool-description">Select the color bands on your resistor to instantly calculate the resistance value. Use the reverse lookup to find color bands from a resistance value. All processing happens in your browser -- no data is sent externally.</p>
+
+    <div class="tool-area">
+      <!-- Mode tabs -->
+      <div class="mode-selector">
+        <button class="mode-btn active" onclick="setTab('forward')" id="tab-forward">
+          Color &rarr; Value
+          <small>Find resistance from colors</small>
+        </button>
+        <button class="mode-btn" onclick="setTab('reverse')" id="tab-reverse">
+          Value &rarr; Color
+          <small>Find colors from resistance</small>
+        </button>
+      </div>
+
+      <!-- Forward: Color to Value -->
+      <div id="panel-forward">
+        <!-- Band type selector -->
+        <h3 style="font-size:0.95rem; margin-bottom:8px;">Select Band Count</h3>
+        <div class="band-selector-group">
+          <button class="band-type-btn active" onclick="setBandCount(4)" id="btn-4band">4-Band</button>
+          <button class="band-type-btn" onclick="setBandCount(5)" id="btn-5band">5-Band</button>
+        </div>
+
+        <!-- Band color selectors -->
+        <div class="band-selectors" id="band-selectors">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Resistor visual -->
+        <div class="resistor-visual">
+          <svg class="resistor-svg" viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" id="resistor-svg">
+            <!-- Lead wires -->
+            <line x1="0" y1="70" x2="80" y2="70" stroke="#777" stroke-width="3"/>
+            <line x1="400" y1="70" x2="480" y2="70" stroke="#777" stroke-width="3"/>
+            <!-- Resistor body -->
+            <rect x="80" y="30" width="320" height="80" rx="16" ry="16" fill="#d2b48c" stroke="#a0845c" stroke-width="2"/>
+            <!-- Band stripes (will be updated by JS) -->
+            <rect id="band-stripe-1" x="120" y="30" width="20" height="80" rx="2" fill="#000"/>
+            <rect id="band-stripe-2" x="155" y="30" width="20" height="80" rx="2" fill="#a52a2a"/>
+            <rect id="band-stripe-3" x="190" y="30" width="20" height="80" rx="2" fill="#ff0000"/>
+            <rect id="band-stripe-4" x="225" y="30" width="20" height="80" rx="2" fill="#ffa500" style="display:none;"/>
+            <rect id="band-stripe-m" x="290" y="30" width="20" height="80" rx="2" fill="#ff0000"/>
+            <rect id="band-stripe-t" x="350" y="30" width="24" height="80" rx="2" fill="#d4a937"/>
+          </svg>
+        </div>
+
+        <!-- Result -->
+        <div class="result-display" id="forward-result">
+          <div class="result-label">Resistance</div>
+          <div class="result-value" id="forward-value">--</div>
+          <div class="result-tolerance" id="forward-tolerance"></div>
+        </div>
+      </div>
+
+      <!-- Reverse: Value to Color -->
+      <div id="panel-reverse" style="display:none;">
+        <div class="reverse-section" style="border:none; padding:0; background:transparent;">
+          <h3>Enter a resistance value to find the color bands</h3>
+          <div class="reverse-input-row">
+            <div class="input-field">
+              <label for="reverse-value">Resistance</label>
+              <input type="number" id="reverse-value" placeholder="e.g. 4700" step="any">
+            </div>
+            <div class="input-field">
+              <label for="reverse-unit">Unit</label>
+              <select id="reverse-unit">
+                <option value="1">&Omega;</option>
+                <option value="1000">k&Omega;</option>
+                <option value="1000000">M&Omega;</option>
+              </select>
+            </div>
+            <div class="input-field">
+              <label for="reverse-band-type">Band Count</label>
+              <select id="reverse-band-type">
+                <option value="4">4-Band</option>
+                <option value="5">5-Band</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn" onclick="reverseCalc()">Convert</button>
+            <button class="btn btn-secondary" onclick="clearReverse()">Clear</button>
+          </div>
+
+          <!-- Reverse result -->
+          <div class="reverse-result" id="reverse-result">
+            <div class="resistor-visual">
+              <svg class="resistor-svg" viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" id="reverse-resistor-svg">
+                <line x1="0" y1="70" x2="80" y2="70" stroke="#777" stroke-width="3"/>
+                <line x1="400" y1="70" x2="480" y2="70" stroke="#777" stroke-width="3"/>
+                <rect x="80" y="30" width="320" height="80" rx="16" ry="16" fill="#d2b48c" stroke="#a0845c" stroke-width="2"/>
+                <rect id="rev-stripe-1" x="120" y="30" width="20" height="80" rx="2" fill="#ccc"/>
+                <rect id="rev-stripe-2" x="155" y="30" width="20" height="80" rx="2" fill="#ccc"/>
+                <rect id="rev-stripe-3" x="190" y="30" width="20" height="80" rx="2" fill="#ccc" style="display:none;"/>
+                <rect id="rev-stripe-m" x="290" y="30" width="20" height="80" rx="2" fill="#ccc"/>
+                <rect id="rev-stripe-t" x="350" y="30" width="24" height="80" rx="2" fill="#ccc"/>
+              </svg>
+            </div>
+            <div class="reverse-bands" id="reverse-bands"></div>
+            <div class="result-display" style="margin-top:16px;">
+              <div class="result-label">Conversion Result</div>
+              <div class="result-value" id="reverse-result-value">--</div>
+              <div class="result-tolerance" id="reverse-result-tolerance"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color code reference table -->
+    <div class="color-table-section" style="margin-top:40px;">
+      <h2 style="font-size:1.2rem; margin-bottom:12px;">Color Code Reference Chart</h2>
+      <div style="overflow-x:auto;">
+        <table class="color-table">
+          <thead>
+            <tr>
+              <th>Color</th>
+              <th>Significant Figure</th>
+              <th>Multiplier</th>
+              <th>Tolerance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#000;"></span>Black</div></td>
+              <td>0</td><td>&times;1</td><td>-</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#8B4513;"></span>Brown</div></td>
+              <td>1</td><td>&times;10</td><td>&plusmn;1%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#FF0000;"></span>Red</div></td>
+              <td>2</td><td>&times;100</td><td>&plusmn;2%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#FF8C00;"></span>Orange</div></td>
+              <td>3</td><td>&times;1k</td><td>&plusmn;0.05%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#FFD700;"></span>Yellow</div></td>
+              <td>4</td><td>&times;10k</td><td>&plusmn;0.02%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#228B22;"></span>Green</div></td>
+              <td>5</td><td>&times;100k</td><td>&plusmn;0.5%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#0000FF;"></span>Blue</div></td>
+              <td>6</td><td>&times;1M</td><td>&plusmn;0.25%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#8B008B;"></span>Violet</div></td>
+              <td>7</td><td>&times;10M</td><td>&plusmn;0.1%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#808080;"></span>Gray</div></td>
+              <td>8</td><td>&times;100M</td><td>&plusmn;0.01%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#FFF;border:1px solid #999;"></span>White</div></td>
+              <td>9</td><td>&times;1G</td><td>-</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#D4A937;"></span>Gold</div></td>
+              <td>-</td><td>&times;0.1</td><td>&plusmn;5%</td>
+            </tr>
+            <tr>
+              <td><div class="color-cell"><span class="color-swatch" style="background:#C0C0C0;"></span>Silver</div></td>
+              <td>-</td><td>&times;0.01</td><td>&plusmn;10%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../ohms-law/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Ohm's Law Calculator</h3>
+          <p>Calculate voltage, current, and resistance</p>
+        </a>
+        <a href="../../led-resistor/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">LED Resistor Calculator</h3>
+          <p>Find the right resistor for your LED circuit</p>
+        </a>
+        <a href="../../color-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Color Code Converter</h3>
+          <p>Convert between HEX, RGB, and HSL color formats</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    // Color data
+    var COLORS = {
+      black:  { name: 'Black',  hex: '#000000', value: 0, multiplier: 1,        tolerance: null },
+      brown:  { name: 'Brown',  hex: '#8B4513', value: 1, multiplier: 10,       tolerance: 1 },
+      red:    { name: 'Red',    hex: '#FF0000', value: 2, multiplier: 100,      tolerance: 2 },
+      orange: { name: 'Orange', hex: '#FF8C00', value: 3, multiplier: 1000,     tolerance: 0.05 },
+      yellow: { name: 'Yellow', hex: '#FFD700', value: 4, multiplier: 10000,    tolerance: 0.02 },
+      green:  { name: 'Green',  hex: '#228B22', value: 5, multiplier: 100000,   tolerance: 0.5 },
+      blue:   { name: 'Blue',   hex: '#0000FF', value: 6, multiplier: 1000000,  tolerance: 0.25 },
+      violet: { name: 'Violet', hex: '#8B008B', value: 7, multiplier: 10000000, tolerance: 0.1 },
+      gray:   { name: 'Gray',   hex: '#808080', value: 8, multiplier: 100000000,tolerance: 0.01 },
+      white:  { name: 'White',  hex: '#FFFFFF', value: 9, multiplier: 1000000000,tolerance: null },
+      gold:   { name: 'Gold',   hex: '#D4A937', value: -1, multiplier: 0.1,     tolerance: 5 },
+      silver: { name: 'Silver', hex: '#C0C0C0', value: -1, multiplier: 0.01,    tolerance: 10 }
+    };
+
+    var DIGIT_KEYS = ['black','brown','red','orange','yellow','green','blue','violet','gray','white'];
+    var MULTIPLIER_KEYS = ['black','brown','red','orange','yellow','green','blue','violet','gray','white','gold','silver'];
+    var TOLERANCE_KEYS = ['brown','red','orange','yellow','green','blue','violet','gray','gold','silver'];
+
+    var bandCount = 4;
+    var currentTab = 'forward';
+
+    function setTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.mode-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('panel-forward').style.display = tab === 'forward' ? 'block' : 'none';
+      document.getElementById('panel-reverse').style.display = tab === 'reverse' ? 'block' : 'none';
+    }
+
+    function setBandCount(n) {
+      bandCount = n;
+      document.querySelectorAll('.band-type-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('btn-' + n + 'band').classList.add('active');
+      buildBandSelectors();
+      updateResistor();
+    }
+
+    function makeOption(key, selected) {
+      var c = COLORS[key];
+      var opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = c.name + ' (' + c.value + ')';
+      if (selected === key) opt.selected = true;
+      return opt;
+    }
+
+    function buildBandSelectors() {
+      var container = document.getElementById('band-selectors');
+      container.innerHTML = '';
+
+      var digitCount = bandCount === 4 ? 2 : 3;
+      var defaults4 = ['brown','black','red','gold'];
+      var defaults5 = ['brown','black','black','red','brown'];
+
+      for (var i = 0; i < digitCount; i++) {
+        var field = document.createElement('div');
+        field.className = 'band-field';
+        var label = document.createElement('label');
+        label.textContent = 'Band ' + (i + 1);
+        var sel = document.createElement('select');
+        sel.id = 'band-digit-' + i;
+        sel.onchange = updateResistor;
+        var def = bandCount === 4 ? defaults4[i] : defaults5[i];
+        DIGIT_KEYS.forEach(function(key) {
+          var c = COLORS[key];
+          var opt = document.createElement('option');
+          opt.value = key;
+          opt.textContent = c.name + ' (' + c.value + ')';
+          opt.style.backgroundColor = c.hex;
+          opt.style.color = (key === 'black' || key === 'blue' || key === 'violet') ? '#fff' : '#000';
+          if (key === def) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        field.appendChild(label);
+        field.appendChild(sel);
+        container.appendChild(field);
+      }
+
+      // Multiplier band
+      var mField = document.createElement('div');
+      mField.className = 'band-field';
+      var mLabel = document.createElement('label');
+      mLabel.textContent = 'Multiplier';
+      var mSel = document.createElement('select');
+      mSel.id = 'band-multiplier';
+      mSel.onchange = updateResistor;
+      var mDef = bandCount === 4 ? defaults4[2] : defaults5[3];
+      MULTIPLIER_KEYS.forEach(function(key) {
+        var c = COLORS[key];
+        var opt = document.createElement('option');
+        opt.value = key;
+        var mText = c.multiplier >= 1 ? '\u00d7' + formatMultiplier(c.multiplier) : '\u00d7' + c.multiplier;
+        opt.textContent = c.name + ' (' + mText + ')';
+        opt.style.backgroundColor = c.hex;
+        opt.style.color = (key === 'black' || key === 'blue' || key === 'violet') ? '#fff' : '#000';
+        if (key === mDef) opt.selected = true;
+        mSel.appendChild(opt);
+      });
+      mField.appendChild(mLabel);
+      mField.appendChild(mSel);
+      container.appendChild(mField);
+
+      // Tolerance band
+      var tField = document.createElement('div');
+      tField.className = 'band-field';
+      var tLabel = document.createElement('label');
+      tLabel.textContent = 'Tolerance';
+      var tSel = document.createElement('select');
+      tSel.id = 'band-tolerance';
+      tSel.onchange = updateResistor;
+      var tDef = bandCount === 4 ? defaults4[3] : defaults5[4];
+      TOLERANCE_KEYS.forEach(function(key) {
+        var c = COLORS[key];
+        var opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = c.name + ' (\u00b1' + c.tolerance + '%)';
+        opt.style.backgroundColor = c.hex;
+        opt.style.color = (key === 'black' || key === 'blue' || key === 'violet') ? '#fff' : '#000';
+        if (key === tDef) opt.selected = true;
+        tSel.appendChild(opt);
+      });
+      tField.appendChild(tLabel);
+      tField.appendChild(tSel);
+      container.appendChild(tField);
+    }
+
+    function formatMultiplier(m) {
+      if (m >= 1000000000) return (m / 1000000000) + 'G';
+      if (m >= 1000000) return (m / 1000000) + 'M';
+      if (m >= 1000) return (m / 1000) + 'k';
+      return String(m);
+    }
+
+    function formatResistance(val) {
+      if (val >= 1000000000) return parseFloat((val / 1000000000).toPrecision(4)) + ' G\u03A9';
+      if (val >= 1000000) return parseFloat((val / 1000000).toPrecision(4)) + ' M\u03A9';
+      if (val >= 1000) return parseFloat((val / 1000).toPrecision(4)) + ' k\u03A9';
+      if (val >= 1) return parseFloat(val.toPrecision(4)) + ' \u03A9';
+      return parseFloat(val.toPrecision(4)) + ' \u03A9';
+    }
+
+    function updateResistor() {
+      var digitCount = bandCount === 4 ? 2 : 3;
+      var digits = 0;
+      for (var i = 0; i < digitCount; i++) {
+        var key = document.getElementById('band-digit-' + i).value;
+        digits = digits * 10 + COLORS[key].value;
+      }
+      var multKey = document.getElementById('band-multiplier').value;
+      var tolKey = document.getElementById('band-tolerance').value;
+      var resistance = digits * COLORS[multKey].multiplier;
+      var tolerance = COLORS[tolKey].tolerance;
+
+      document.getElementById('forward-value').textContent = formatResistance(resistance);
+      document.getElementById('forward-tolerance').textContent = '\u00b1' + tolerance + '%';
+
+      // Update SVG stripes
+      updateSVGStripes('band-stripe', digitCount, multKey, tolKey);
+    }
+
+    function updateSVGStripes(prefix, digitCount, multKey, tolKey) {
+      if (digitCount === 2) {
+        // 4 band
+        var s1 = document.getElementById(prefix + '-1');
+        var s2 = document.getElementById(prefix + '-2');
+        var s3 = document.getElementById(prefix + '-3');
+        var s4 = document.getElementById(prefix + '-4');
+        var sm = document.getElementById(prefix + '-m');
+        var st = document.getElementById(prefix + '-t');
+
+        s1.setAttribute('fill', COLORS[document.getElementById('band-digit-0').value].hex);
+        s1.setAttribute('x', '120');
+        s1.style.display = '';
+        s2.setAttribute('fill', COLORS[document.getElementById('band-digit-1').value].hex);
+        s2.setAttribute('x', '155');
+        s2.style.display = '';
+        s3.style.display = 'none';
+        if (s4) s4.style.display = 'none';
+        sm.setAttribute('fill', COLORS[multKey].hex);
+        sm.setAttribute('x', '220');
+        sm.style.display = '';
+        st.setAttribute('fill', COLORS[tolKey].hex);
+        st.setAttribute('x', '340');
+        st.style.display = '';
+
+        [s1,s2,sm,st].forEach(function(el) {
+          var fill = el.getAttribute('fill');
+          if (fill === '#FFFFFF' || fill === '#FFD700' || fill === '#D4A937' || fill === '#C0C0C0') {
+            el.setAttribute('stroke', '#999');
+            el.setAttribute('stroke-width', '1');
+          } else {
+            el.removeAttribute('stroke');
+            el.removeAttribute('stroke-width');
+          }
+        });
+      } else {
+        // 5 band
+        var s1 = document.getElementById(prefix + '-1');
+        var s2 = document.getElementById(prefix + '-2');
+        var s3 = document.getElementById(prefix + '-3');
+        var s4 = document.getElementById(prefix + '-4');
+        var sm = document.getElementById(prefix + '-m');
+        var st = document.getElementById(prefix + '-t');
+
+        s1.setAttribute('fill', COLORS[document.getElementById('band-digit-0').value].hex);
+        s1.setAttribute('x', '110');
+        s1.style.display = '';
+        s2.setAttribute('fill', COLORS[document.getElementById('band-digit-1').value].hex);
+        s2.setAttribute('x', '140');
+        s2.style.display = '';
+        s3.setAttribute('fill', COLORS[document.getElementById('band-digit-2').value].hex);
+        s3.setAttribute('x', '170');
+        s3.style.display = '';
+        if (s4) s4.style.display = 'none';
+        sm.setAttribute('fill', COLORS[multKey].hex);
+        sm.setAttribute('x', '230');
+        sm.style.display = '';
+        st.setAttribute('fill', COLORS[tolKey].hex);
+        st.setAttribute('x', '340');
+        st.style.display = '';
+
+        [s1,s2,s3,sm,st].forEach(function(el) {
+          var fill = el.getAttribute('fill');
+          if (fill === '#FFFFFF' || fill === '#FFD700' || fill === '#D4A937' || fill === '#C0C0C0') {
+            el.setAttribute('stroke', '#999');
+            el.setAttribute('stroke-width', '1');
+          } else {
+            el.removeAttribute('stroke');
+            el.removeAttribute('stroke-width');
+          }
+        });
+      }
+    }
+
+    // Reverse calculation
+    function reverseCalc() {
+      var rawVal = parseFloat(document.getElementById('reverse-value').value);
+      if (isNaN(rawVal) || rawVal <= 0) {
+        alert('Please enter a positive number.');
+        return;
+      }
+      var unit = parseFloat(document.getElementById('reverse-unit').value);
+      var ohms = rawVal * unit;
+      var revBandCount = parseInt(document.getElementById('reverse-band-type').value);
+
+      var result = valueToColorBands(ohms, revBandCount);
+      if (!result) {
+        alert('This resistance value cannot be represented by color codes. Please enter a standard value closer to the E-series.');
+        return;
+      }
+
+      // Display result
+      var container = document.getElementById('reverse-bands');
+      container.innerHTML = '';
+      result.bands.forEach(function(b, i) {
+        var chip = document.createElement('div');
+        chip.className = 'reverse-band-chip';
+        var dot = document.createElement('span');
+        dot.className = 'color-dot';
+        dot.style.backgroundColor = COLORS[b].hex;
+        if (b === 'white' || b === 'yellow' || b === 'gold' || b === 'silver') {
+          dot.style.border = '1px solid #999';
+        }
+        var label = document.createTextNode(COLORS[b].name);
+        chip.appendChild(dot);
+        chip.appendChild(label);
+        container.appendChild(chip);
+      });
+
+      // Update reverse SVG
+      updateReverseSVG(result.bands, revBandCount);
+
+      document.getElementById('reverse-result-value').textContent = formatResistance(result.actualValue);
+      document.getElementById('reverse-result-tolerance').textContent = result.tolerance ? '\u00b1' + result.tolerance + '%' : '';
+      document.getElementById('reverse-result').classList.add('show');
+    }
+
+    function valueToColorBands(ohms, numBands) {
+      var digitCount = numBands === 4 ? 2 : 3;
+
+      // Find multiplier
+      var bestMult = null;
+      var bestDigits = null;
+
+      for (var mi = 0; mi < MULTIPLIER_KEYS.length; mi++) {
+        var mKey = MULTIPLIER_KEYS[mi];
+        var mult = COLORS[mKey].multiplier;
+        var digits = ohms / mult;
+
+        if (digitCount === 2) {
+          if (digits >= 10 && digits <= 99 && Math.abs(digits - Math.round(digits)) < 0.001) {
+            bestMult = mKey;
+            bestDigits = Math.round(digits);
+            break;
+          }
+        } else {
+          if (digits >= 100 && digits <= 999 && Math.abs(digits - Math.round(digits)) < 0.001) {
+            bestMult = mKey;
+            bestDigits = Math.round(digits);
+            break;
+          }
+        }
+      }
+
+      if (bestMult === null) return null;
+
+      var bands = [];
+      var dStr = String(bestDigits);
+      for (var i = 0; i < dStr.length; i++) {
+        var d = parseInt(dStr[i]);
+        bands.push(DIGIT_KEYS[d]);
+      }
+      bands.push(bestMult);
+
+      // Default tolerance: gold (5%) for 4-band, brown (1%) for 5-band
+      var tolKey = numBands === 4 ? 'gold' : 'brown';
+      bands.push(tolKey);
+
+      return {
+        bands: bands,
+        actualValue: bestDigits * COLORS[bestMult].multiplier,
+        tolerance: COLORS[tolKey].tolerance
+      };
+    }
+
+    function updateReverseSVG(bands, numBands) {
+      var digitCount = numBands === 4 ? 2 : 3;
+      var s1 = document.getElementById('rev-stripe-1');
+      var s2 = document.getElementById('rev-stripe-2');
+      var s3 = document.getElementById('rev-stripe-3');
+      var sm = document.getElementById('rev-stripe-m');
+      var st = document.getElementById('rev-stripe-t');
+
+      if (digitCount === 2) {
+        s1.setAttribute('fill', COLORS[bands[0]].hex); s1.setAttribute('x','120'); s1.style.display = '';
+        s2.setAttribute('fill', COLORS[bands[1]].hex); s2.setAttribute('x','155'); s2.style.display = '';
+        s3.style.display = 'none';
+        sm.setAttribute('fill', COLORS[bands[2]].hex); sm.setAttribute('x','220'); sm.style.display = '';
+        st.setAttribute('fill', COLORS[bands[3]].hex); st.setAttribute('x','340'); st.style.display = '';
+      } else {
+        s1.setAttribute('fill', COLORS[bands[0]].hex); s1.setAttribute('x','110'); s1.style.display = '';
+        s2.setAttribute('fill', COLORS[bands[1]].hex); s2.setAttribute('x','140'); s2.style.display = '';
+        s3.setAttribute('fill', COLORS[bands[2]].hex); s3.setAttribute('x','170'); s3.style.display = '';
+        sm.setAttribute('fill', COLORS[bands[3]].hex); sm.setAttribute('x','230'); sm.style.display = '';
+        st.setAttribute('fill', COLORS[bands[4]].hex); st.setAttribute('x','340'); st.style.display = '';
+      }
+
+      // Add strokes for light colors
+      [s1,s2,s3,sm,st].forEach(function(el) {
+        if (el.style.display === 'none') return;
+        var fill = el.getAttribute('fill');
+        if (fill === '#FFFFFF' || fill === '#FFD700' || fill === '#D4A937' || fill === '#C0C0C0') {
+          el.setAttribute('stroke', '#999');
+          el.setAttribute('stroke-width', '1');
+        } else {
+          el.removeAttribute('stroke');
+          el.removeAttribute('stroke-width');
+        }
+      });
+    }
+
+    function clearReverse() {
+      document.getElementById('reverse-value').value = '';
+      document.getElementById('reverse-result').classList.remove('show');
+    }
+
+    // Reverse input event
+    document.getElementById('reverse-value').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') reverseCalc();
+    });
+
+    // Initialize
+    buildBandSelectors();
+    updateResistor();
+  </script>
+</body>
+</html>

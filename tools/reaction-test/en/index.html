@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reaction Time Test - Test Your Reflexes | SimpleToolkit</title>
+  <meta name="description" content="Click as soon as the screen turns green! Measure your reaction time in milliseconds. Accurate results based on 5-round average. Share on social media. Free, no registration required.">
+  <meta property="og:title" content="Reaction Time Test - Test Your Reflexes | SimpleToolkit">
+  <meta property="og:description" content="Click as soon as the screen turns green! Measure your reaction time in milliseconds. Share on social media. Free, no registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/reaction-test/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/reaction-test/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/reaction-test/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Reaction Time Test - Test Your Reflexes",
+    "description": "Click as soon as the screen turns green! Measure your reaction time in milliseconds. Accurate results based on 5-round average. Free, no registration required.",
+    "url": "https://simpletoolkit.net/tools/reaction-test/en/",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a reaction time test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It is a test that measures the time it takes for you to click (or tap) the moment the screen changes from red to green, measured in milliseconds. It can be used as an indicator of your reflexes and concentration."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is an average reaction time?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The average human reaction time to visual stimuli is around 200-250 milliseconds. Under 200ms is considered excellent, and under 150ms is superhuman."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can reaction time be improved with practice?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, reaction time can be improved through training. Getting enough sleep, regular exercise, and concentration training are all effective. You can track your progress by taking this test regularly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all processing is done within your browser. Your best record is saved in your device's local storage but is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .test-area {
+      width: 100%;
+      min-height: 320px;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: background-color 0.05s;
+      padding: 40px 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .test-area.state-idle {
+      background: #3b82f6;
+      color: #fff;
+    }
+    .test-area.state-waiting {
+      background: #ef4444;
+      color: #fff;
+    }
+    .test-area.state-ready {
+      background: #22c55e;
+      color: #fff;
+    }
+    .test-area.state-result {
+      background: #6366f1;
+      color: #fff;
+    }
+    .test-area.state-early {
+      background: #f97316;
+      color: #fff;
+    }
+    .test-area-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .test-area-sub {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      text-align: center;
+    }
+    .test-area-time {
+      font-size: 4rem;
+      font-weight: 900;
+      margin: 8px 0;
+    }
+    .test-area-rating {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    /* Progress dots */
+    .progress-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .progress-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .progress-dot.done {
+      background: #22c55e;
+      border-color: #22c55e;
+      color: #fff;
+    }
+    .progress-dot.current {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+    }
+
+    /* Final result */
+    .final-result {
+      display: none;
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+    }
+    .final-result.show {
+      display: block;
+    }
+    .final-result h2 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+    }
+    .final-avg {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .final-avg small {
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+    .final-rating {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 8px 0 16px;
+    }
+    .result-details {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .result-detail-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 20px;
+      min-width: 100px;
+    }
+    .result-detail-item .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .result-detail-item .value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Share / Best record */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .btn-share {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-share:hover {
+      background: #333;
+    }
+    .btn-retry {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-retry:hover {
+      opacity: 0.9;
+    }
+
+    /* Best record */
+    .best-record {
+      text-align: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .best-record .best-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .best-record .best-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #eab308;
+    }
+
+    /* Rating table */
+    .rating-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .rating-table th, .rating-table td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: center;
+    }
+    .rating-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .rating-table .highlight-row {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .test-area {
+        min-height: 260px;
+        padding: 30px 16px;
+      }
+      .test-area-title { font-size: 1.5rem; }
+      .test-area-time { font-size: 3rem; }
+      .test-area-rating { font-size: 1.2rem; }
+      .final-avg { font-size: 2.5rem; }
+      .progress-dot { width: 32px; height: 32px; font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Reaction Time Test</h1>
+    <h2>Test Your Reflexes</h2>
+    <p class="tool-description">Click (or tap) the moment the screen changes from red to green, and measure your reaction time in milliseconds. Your score is based on the average of 5 rounds. Share your results on social media and compete with friends!</p>
+
+    <div class="tool-area">
+      <!-- Progress -->
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-dot current" id="dot-1">1</div>
+        <div class="progress-dot" id="dot-2">2</div>
+        <div class="progress-dot" id="dot-3">3</div>
+        <div class="progress-dot" id="dot-4">4</div>
+        <div class="progress-dot" id="dot-5">5</div>
+      </div>
+
+      <!-- Test Area -->
+      <div class="test-area state-idle" id="test-area">
+        <div class="test-area-title" id="ta-title">Click to Start</div>
+        <div class="test-area-sub" id="ta-sub">Click as soon as the screen turns green!</div>
+        <div class="test-area-time" id="ta-time" style="display:none;"></div>
+        <div class="test-area-rating" id="ta-rating" style="display:none;"></div>
+      </div>
+
+      <!-- Best Record -->
+      <div class="best-record" id="best-record" style="display:none;">
+        <div class="best-label">Best Record (Average)</div>
+        <div class="best-value" id="best-value">---</div>
+      </div>
+
+      <!-- Final Result -->
+      <div class="final-result" id="final-result">
+        <h2>Final Result</h2>
+        <div class="final-avg" id="final-avg">--- <small>ms</small></div>
+        <div class="final-rating" id="final-rating"></div>
+        <div class="result-details" id="result-details"></div>
+        <div class="action-buttons">
+          <a class="btn-share" id="btn-share-x" href="#" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Share on X
+          </a>
+          <button class="btn-retry" onclick="resetAll()">Try Again</button>
+        </div>
+      </div>
+
+      <!-- Rating Reference -->
+      <table class="rating-table">
+        <thead>
+          <tr>
+            <th>Reaction Time</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Under 150ms</td><td>Superhuman!</td></tr>
+          <tr><td>150 - 199ms</td><td>Excellent!</td></tr>
+          <tr><td>200 - 249ms</td><td>Average</td></tr>
+          <tr><td>250 - 349ms</td><td>Keep Trying!</td></tr>
+          <tr><td>350ms+</td><td>Needs Work</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../password-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Password Generator</h3>
+          <p>Generate secure passwords with one click</p>
+        </a>
+        <a href="../../color-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Color Converter</h3>
+          <p>Convert between HEX, RGB, and HSL</p>
+        </a>
+        <a href="../../char-counter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and lines in real time</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    var state = 'idle'; // idle, waiting, ready, result, early, done
+    var round = 0;
+    var totalRounds = 5;
+    var results = [];
+    var startTime = 0;
+    var waitTimeout = null;
+
+    var testArea = document.getElementById('test-area');
+    var taTitle = document.getElementById('ta-title');
+    var taSub = document.getElementById('ta-sub');
+    var taTime = document.getElementById('ta-time');
+    var taRating = document.getElementById('ta-rating');
+
+    // Load best record
+    var bestRecord = localStorage.getItem('reaction-test-best-en');
+    if (bestRecord) {
+      document.getElementById('best-record').style.display = '';
+      document.getElementById('best-value').textContent = bestRecord + ' ms';
+    }
+
+    testArea.addEventListener('click', handleClick);
+    // Prevent context menu on long press (mobile)
+    testArea.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+    function handleClick() {
+      if (state === 'done') return;
+
+      if (state === 'idle') {
+        startRound();
+      } else if (state === 'waiting') {
+        // Too early
+        clearTimeout(waitTimeout);
+        state = 'early';
+        testArea.className = 'test-area state-early';
+        taTitle.textContent = 'Too early!';
+        taSub.textContent = 'Click to try again';
+        taTime.style.display = 'none';
+        taRating.style.display = 'none';
+      } else if (state === 'ready') {
+        // Measure reaction
+        var reactionTime = Math.round(performance.now() - startTime);
+        state = 'result';
+        results.push(reactionTime);
+        testArea.className = 'test-area state-result';
+        taTitle.textContent = '';
+        taSub.textContent = getRating(reactionTime);
+        taTime.style.display = '';
+        taTime.textContent = reactionTime + ' ms';
+        taRating.style.display = '';
+        taRating.textContent = (round < totalRounds) ? 'Click for next round' : 'Click to see results';
+
+        // Update progress dot
+        var dot = document.getElementById('dot-' + round);
+        dot.classList.remove('current');
+        dot.classList.add('done');
+        dot.textContent = reactionTime;
+
+        // Highlight rating table row
+        highlightRatingRow(reactionTime);
+      } else if (state === 'result') {
+        if (round >= totalRounds) {
+          showFinalResult();
+        } else {
+          startRound();
+        }
+      } else if (state === 'early') {
+        startRound();
+      }
+    }
+
+    function startRound() {
+      round++;
+      state = 'waiting';
+      testArea.className = 'test-area state-waiting';
+      taTitle.textContent = 'Wait...';
+      taSub.textContent = 'Wait for the screen to turn green';
+      taTime.style.display = 'none';
+      taRating.style.display = 'none';
+
+      // Update progress dot
+      if (round <= totalRounds) {
+        var dot = document.getElementById('dot-' + round);
+        dot.classList.add('current');
+      }
+
+      // Clear any previous highlight
+      clearRatingHighlight();
+
+      // Random wait: 2-5 seconds
+      var waitMs = 2000 + Math.random() * 3000;
+      waitTimeout = setTimeout(function() {
+        if (state !== 'waiting') return;
+        state = 'ready';
+        startTime = performance.now();
+        testArea.className = 'test-area state-ready';
+        taTitle.textContent = 'Click NOW!';
+        taSub.textContent = '';
+      }, waitMs);
+    }
+
+    function getRating(ms) {
+      if (ms < 150) return 'Superhuman!';
+      if (ms < 200) return 'Excellent!';
+      if (ms < 250) return 'Average';
+      if (ms < 350) return 'Keep Trying!';
+      return 'Needs Work';
+    }
+
+    function highlightRatingRow(ms) {
+      clearRatingHighlight();
+      var rows = document.querySelectorAll('.rating-table tbody tr');
+      var idx;
+      if (ms < 150) idx = 0;
+      else if (ms < 200) idx = 1;
+      else if (ms < 250) idx = 2;
+      else if (ms < 350) idx = 3;
+      else idx = 4;
+      rows[idx].classList.add('highlight-row');
+    }
+
+    function clearRatingHighlight() {
+      var rows = document.querySelectorAll('.rating-table tbody tr');
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].classList.remove('highlight-row');
+      }
+    }
+
+    function showFinalResult() {
+      state = 'done';
+      testArea.style.display = 'none';
+      document.getElementById('progress-bar').style.display = 'none';
+
+      var sum = 0;
+      var best = Infinity;
+      var worst = 0;
+      for (var i = 0; i < results.length; i++) {
+        sum += results[i];
+        if (results[i] < best) best = results[i];
+        if (results[i] > worst) worst = results[i];
+      }
+      var avg = Math.round(sum / results.length);
+
+      document.getElementById('final-avg').innerHTML = avg + ' <small>ms</small>';
+      var rating = getRating(avg);
+      document.getElementById('final-rating').textContent = rating;
+
+      // Highlight the matching row
+      highlightRatingRow(avg);
+
+      // Details
+      var detailsHtml = '';
+      for (var i = 0; i < results.length; i++) {
+        detailsHtml += '<div class="result-detail-item"><div class="label">Round ' + (i + 1) + '</div><div class="value">' + results[i] + 'ms</div></div>';
+      }
+      detailsHtml += '<div class="result-detail-item"><div class="label">Fastest</div><div class="value" style="color:#22c55e;">' + best + 'ms</div></div>';
+      detailsHtml += '<div class="result-detail-item"><div class="label">Slowest</div><div class="value" style="color:#ef4444;">' + worst + 'ms</div></div>';
+      document.getElementById('result-details').innerHTML = detailsHtml;
+
+      // Share link
+      var shareText = 'My reaction time is ' + avg + 'ms! (' + rating + ')\n#ReactionTimeTest\nsimpletoolkit.net/tools/reaction-test/en/';
+      var shareUrl = 'https://x.com/intent/tweet?text=' + encodeURIComponent(shareText);
+      document.getElementById('btn-share-x').href = shareUrl;
+
+      // Update best record
+      if (!bestRecord || avg < parseInt(bestRecord)) {
+        bestRecord = avg;
+        localStorage.setItem('reaction-test-best-en', avg);
+      }
+      document.getElementById('best-record').style.display = '';
+      document.getElementById('best-value').textContent = bestRecord + ' ms';
+
+      document.getElementById('final-result').classList.add('show');
+    }
+
+    function resetAll() {
+      state = 'idle';
+      round = 0;
+      results = [];
+      startTime = 0;
+      if (waitTimeout) clearTimeout(waitTimeout);
+
+      testArea.style.display = '';
+      testArea.className = 'test-area state-idle';
+      taTitle.textContent = 'Click to Start';
+      taSub.textContent = 'Click as soon as the screen turns green!';
+      taTime.style.display = 'none';
+      taRating.style.display = 'none';
+
+      document.getElementById('progress-bar').style.display = '';
+      var dots = document.querySelectorAll('.progress-dot');
+      for (var i = 0; i < dots.length; i++) {
+        dots[i].className = 'progress-dot';
+        dots[i].textContent = (i + 1);
+      }
+      dots[0].classList.add('current');
+
+      document.getElementById('final-result').classList.remove('show');
+      clearRatingHighlight();
+
+      // Reload best
+      bestRecord = localStorage.getItem('reaction-test-best-en');
+      if (bestRecord) {
+        document.getElementById('best-record').style.display = '';
+        document.getElementById('best-value').textContent = bestRecord + ' ms';
+      }
+    }
+  </script>
+</body>
+</html>

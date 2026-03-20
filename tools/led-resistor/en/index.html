@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED Resistor Calculator - Find the Right Resistor | SimpleToolkit</title>
+  <meta name="description" content="Free online LED resistor calculator. Enter supply voltage, LED forward voltage, and forward current to find the correct resistor value. Includes E24 series recommendation, power dissipation, and circuit diagram.">
+  <meta property="og:title" content="LED Resistor Calculator - Find the Right Resistor | SimpleToolkit">
+  <meta property="og:description" content="Calculate the resistor value needed for your LED circuit. Includes E24 series recommendation, power dissipation, and circuit diagram. Free online tool.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/led-resistor/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/led-resistor/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/led-resistor/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "LED Resistor Calculator - Find the Right Resistor",
+    "description": "Free online LED resistor calculator. Enter supply voltage, LED forward voltage, and forward current to find the correct resistor value. Includes E24 series recommendation, power dissipation, and circuit diagram.",
+    "url": "https://simpletoolkit.net/tools/led-resistor/en/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why does an LED need a resistor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LEDs do not have built-in current limiting, so connecting one directly to a power source will cause excessive current to flow and damage it. A series resistor limits the current to a safe level, allowing the LED to operate properly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the formula for calculating the LED resistor value?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "R = (Vs - Vf x n) / If, where Vs is supply voltage, Vf is forward voltage per LED, n is the number of series LEDs, and If is forward current. For example, with a 5V supply and a red LED (2.0V/20mA), R = (5 - 2.0) / 0.02 = 150 ohms."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the E24 series?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The E24 series is a standard set of preferred resistance values that divides the range 1 to 10 into 24 steps (1.0, 1.1, 1.2, 1.3, 1.5, ...). Commercial resistors are manufactured in these values, so it is common practice to select the nearest E24 value above the calculated resistance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I choose the wattage rating for the resistor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The power dissipated by the resistor is P = If squared x R. It is generally safe to use a resistor rated at least double the dissipated power. For example, if the dissipation is 60 mW, choose a 1/8W (125 mW) or larger resistor. This tool warns when dissipation exceeds 250 mW."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all calculations are performed entirely within your browser. Your data is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    /* Preset buttons */
+    .preset-section {
+      margin-bottom: 20px;
+    }
+    .preset-section h3 {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+    .preset-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .preset-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preset-btn:hover {
+      border-color: var(--primary);
+    }
+    .preset-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .preset-btn .led-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .preset-btn.active .led-dot {
+      box-shadow: 0 0 6px rgba(255,255,255,0.8);
+    }
+
+    /* Input group */
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit-suffix {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Result area */
+    .result-area {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-area.show {
+      display: block;
+    }
+    .result-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .result-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .result-card.highlight {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .result-card .result-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-card .result-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .result-card .result-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Warning */
+    .warning-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: var(--radius);
+      color: #b91c1c;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .warning-box.show {
+      display: block;
+    }
+    .error-box {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: var(--radius);
+      color: #b91c1c;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .error-box.show {
+      display: block;
+    }
+
+    /* Circuit diagram */
+    .diagram-section {
+      margin-top: 24px;
+      text-align: center;
+    }
+    .diagram-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .circuit-svg {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+    }
+
+    /* Formula section */
+    .formula-section {
+      margin-top: 28px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .formula-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .formula-main {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    .formula-main span {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .result-cards {
+        grid-template-columns: 1fr;
+      }
+      .preset-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>LED Resistor Calculator</h1>
+    <h2>Find the Right Resistor for Your LED Circuit - Free Online Tool</h2>
+    <p class="tool-description">Enter the supply voltage, LED forward voltage, forward current, and number of series LEDs to calculate the required resistance, E24 series recommended value, and power dissipation. Includes a circuit diagram for easy understanding.</p>
+
+    <div class="tool-area">
+      <!-- LED Presets -->
+      <div class="preset-section">
+        <h3>LED Presets</h3>
+        <div class="preset-btns">
+          <button class="preset-btn" onclick="setPreset(2.0, 20, 'red', this)" data-color="red">
+            <span class="led-dot" style="background:#ef4444;"></span> Red (2.0V / 20mA)
+          </button>
+          <button class="preset-btn" onclick="setPreset(2.1, 20, 'yellow', this)" data-color="yellow">
+            <span class="led-dot" style="background:#eab308;"></span> Yellow (2.1V / 20mA)
+          </button>
+          <button class="preset-btn" onclick="setPreset(2.1, 20, 'green', this)" data-color="green">
+            <span class="led-dot" style="background:#22c55e;"></span> Green (2.1V / 20mA)
+          </button>
+          <button class="preset-btn" onclick="setPreset(3.2, 20, 'blue', this)" data-color="blue">
+            <span class="led-dot" style="background:#3b82f6;"></span> Blue (3.2V / 20mA)
+          </button>
+          <button class="preset-btn" onclick="setPreset(3.2, 20, 'white', this)" data-color="white">
+            <span class="led-dot" style="background:#f1f5f9; border:1px solid #cbd5e1;"></span> White (3.2V / 20mA)
+          </button>
+        </div>
+      </div>
+
+      <!-- Input fields -->
+      <div class="input-group">
+        <div class="input-field">
+          <label for="input-vs">Supply Voltage (V)</label>
+          <input type="number" id="input-vs" placeholder="5" step="any" min="0" value="5">
+          <div class="unit-suffix">e.g. 3.3, 5, 9, 12</div>
+        </div>
+        <div class="input-field">
+          <label for="input-vf">LED Forward Voltage Vf (V)</label>
+          <input type="number" id="input-vf" placeholder="2.0" step="any" min="0">
+          <div class="unit-suffix">From the LED datasheet</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="input-if">LED Forward Current If (mA)</label>
+          <input type="number" id="input-if" placeholder="20" step="any" min="0">
+          <div class="unit-suffix">From the LED datasheet</div>
+        </div>
+        <div class="input-field">
+          <label for="input-n">Number of Series LEDs</label>
+          <select id="input-n">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">Calculate</button>
+        <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+      </div>
+
+      <!-- Error -->
+      <div class="error-box" id="error-box"></div>
+
+      <!-- Results -->
+      <div class="result-area" id="result-area">
+        <div class="result-cards">
+          <div class="result-card highlight">
+            <div class="result-label">Required Resistance (Calculated)</div>
+            <div class="result-value" id="res-exact">-</div>
+            <div class="result-sub" id="res-exact-sub"></div>
+          </div>
+          <div class="result-card highlight">
+            <div class="result-label">E24 Series Recommended</div>
+            <div class="result-value" id="res-e24">-</div>
+            <div class="result-sub" id="res-e24-sub"></div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Resistor Power Dissipation</div>
+            <div class="result-value" id="res-power">-</div>
+            <div class="result-sub" id="res-power-sub"></div>
+          </div>
+        </div>
+
+        <!-- Watt warning -->
+        <div class="warning-box" id="warning-box"></div>
+
+        <!-- Circuit diagram -->
+        <div class="diagram-section">
+          <h3>Circuit Diagram</h3>
+          <svg class="circuit-svg" id="circuit-svg" viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+          </svg>
+        </div>
+      </div>
+
+      <!-- Formula -->
+      <div class="formula-section">
+        <h3>Formula</h3>
+        <div class="formula-main">
+          R = (Vs - Vf &times; n) / If
+          <span>R: Resistance (&Omega;) / Vs: Supply Voltage (V) / Vf: LED Forward Voltage (V) / n: Number of Series LEDs / If: Forward Current (A)</span>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../ohms-law/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Ohm's Law Calculator</h3>
+          <p>Calculate voltage, current, and resistance</p>
+        </a>
+        <a href="../../resistor-color/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Resistor Color Code</h3>
+          <p>Decode resistor color bands to resistance values</p>
+        </a>
+        <a href="../../unit-converter/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, temperature, and more</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    // E24 series base values
+    var E24 = [1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1];
+
+    function findE24(ohms) {
+      if (ohms <= 0) return 0;
+      // Find the decade
+      var decade = 1;
+      while (ohms >= 10 * decade) decade *= 10;
+      while (ohms < decade) decade /= 10;
+
+      var bestVal = 0;
+      var bestDiff = Infinity;
+      // Check current decade and one above
+      for (var d = decade / 10; d <= decade * 10; d *= 10) {
+        for (var i = 0; i < E24.length; i++) {
+          var candidate = E24[i] * d;
+          // Prefer equal or higher value (safer for LED)
+          var diff = candidate - ohms;
+          if (diff >= 0 && diff < bestDiff) {
+            bestDiff = diff;
+            bestVal = candidate;
+          }
+        }
+      }
+      // If no higher value found, take closest
+      if (bestVal === 0) {
+        bestDiff = Infinity;
+        for (var d2 = decade / 10; d2 <= decade * 10; d2 *= 10) {
+          for (var j = 0; j < E24.length; j++) {
+            var c = E24[j] * d2;
+            if (Math.abs(c - ohms) < bestDiff) {
+              bestDiff = Math.abs(c - ohms);
+              bestVal = c;
+            }
+          }
+        }
+      }
+      return bestVal;
+    }
+
+    function formatResistance(ohms) {
+      if (ohms >= 1000000) return parseFloat((ohms / 1000000).toPrecision(4)) + ' M\u03A9';
+      if (ohms >= 1000) return parseFloat((ohms / 1000).toPrecision(4)) + ' k\u03A9';
+      return parseFloat(ohms.toPrecision(4)) + ' \u03A9';
+    }
+
+    function formatPower(mw) {
+      if (mw >= 1000) return parseFloat((mw / 1000).toPrecision(4)) + ' W';
+      return parseFloat(mw.toPrecision(4)) + ' mW';
+    }
+
+    var currentLedColor = '#ef4444';
+
+    function setPreset(vf, ifma, color, btn) {
+      document.getElementById('input-vf').value = vf;
+      document.getElementById('input-if').value = ifma;
+
+      // Update active state
+      document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      var colorMap = { red:'#ef4444', yellow:'#eab308', green:'#22c55e', blue:'#3b82f6', white:'#e2e8f0' };
+      currentLedColor = colorMap[color] || '#ef4444';
+
+      calculate();
+    }
+
+    function calculate() {
+      var vs = parseFloat(document.getElementById('input-vs').value);
+      var vf = parseFloat(document.getElementById('input-vf').value);
+      var ifma = parseFloat(document.getElementById('input-if').value);
+      var n = parseInt(document.getElementById('input-n').value);
+
+      var errorBox = document.getElementById('error-box');
+      var resultArea = document.getElementById('result-area');
+      errorBox.classList.remove('show');
+      resultArea.classList.remove('show');
+
+      if (isNaN(vs) || isNaN(vf) || isNaN(ifma) || vs <= 0 || vf <= 0 || ifma <= 0) {
+        return;
+      }
+
+      var totalVf = vf * n;
+      if (totalVf >= vs) {
+        errorBox.textContent = 'Error: Total LED forward voltage (' + totalVf.toFixed(1) + 'V) is equal to or exceeds the supply voltage (' + vs + 'V). Increase the supply voltage or reduce the number of LEDs.';
+        errorBox.classList.add('show');
+        return;
+      }
+
+      var ifA = ifma / 1000; // mA to A
+      var rExact = (vs - totalVf) / ifA;
+      var rE24 = findE24(rExact);
+
+      // Power with E24 resistor
+      var actualCurrent = (vs - totalVf) / rE24;
+      var powerMw = actualCurrent * actualCurrent * rE24 * 1000; // in mW
+
+      // Display results
+      document.getElementById('res-exact').textContent = formatResistance(rExact);
+      document.getElementById('res-exact-sub').textContent = parseFloat(rExact.toPrecision(6)) + ' \u03A9';
+
+      document.getElementById('res-e24').textContent = formatResistance(rE24);
+      var actualCurrentMa = actualCurrent * 1000;
+      document.getElementById('res-e24-sub').textContent = '\u2192 Actual current: ' + parseFloat(actualCurrentMa.toPrecision(4)) + ' mA';
+
+      document.getElementById('res-power').textContent = formatPower(powerMw);
+      document.getElementById('res-power-sub').textContent = 'Using E24 recommended value';
+
+      // Watt warning
+      var warningBox = document.getElementById('warning-box');
+      if (powerMw > 250) {
+        warningBox.textContent = '\u26A0 Warning: Resistor power dissipation is ' + formatPower(powerMw) + ', exceeding 250 mW. A 1/4W resistor is insufficient. Use a higher wattage resistor.';
+        warningBox.classList.add('show');
+      } else {
+        warningBox.classList.remove('show');
+      }
+
+      // Draw circuit
+      drawCircuit(vs, vf, n, rE24, actualCurrentMa);
+
+      resultArea.classList.add('show');
+    }
+
+    function drawCircuit(vs, vf, n, r, currentMa) {
+      var svg = document.getElementById('circuit-svg');
+      var ledCount = Math.min(n, 5);
+
+      // Calculate SVG width based on LED count
+      var ledSpacing = 50;
+      var ledsWidth = ledCount * ledSpacing;
+      var svgWidth = 200 + ledsWidth;
+      svg.setAttribute('viewBox', '0 0 ' + svgWidth + ' 240');
+
+      var html = '';
+      // Defs
+      html += '<defs>';
+      html += '<marker id="arrowG" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#16a34a"/></marker>';
+      html += '</defs>';
+
+      var topY = 40;
+      var botY = 200;
+      var leftX = 40;
+      var rightX = svgWidth - 40;
+      var midTopY = topY;
+      var midBotY = botY;
+
+      // Top wire
+      html += '<line x1="' + leftX + '" y1="' + topY + '" x2="' + rightX + '" y2="' + topY + '" stroke="#333" stroke-width="2.5"/>';
+      // Bottom wire
+      html += '<line x1="' + leftX + '" y1="' + botY + '" x2="' + rightX + '" y2="' + botY + '" stroke="#333" stroke-width="2.5"/>';
+      // Left wire
+      html += '<line x1="' + leftX + '" y1="' + topY + '" x2="' + leftX + '" y2="' + botY + '" stroke="#333" stroke-width="2.5"/>';
+      // Right wire
+      html += '<line x1="' + rightX + '" y1="' + topY + '" x2="' + rightX + '" y2="' + botY + '" stroke="#333" stroke-width="2.5"/>';
+
+      // Battery (left side)
+      var batY = 100;
+      html += '<rect x="' + (leftX - 12) + '" y="' + (batY - 15) + '" width="24" height="30" fill="white" stroke="none"/>';
+      html += '<line x1="' + (leftX - 8) + '" y1="' + (batY - 10) + '" x2="' + (leftX + 8) + '" y2="' + (batY - 10) + '" stroke="#333" stroke-width="3.5"/>';
+      html += '<line x1="' + (leftX - 4) + '" y1="' + (batY - 2) + '" x2="' + (leftX + 4) + '" y2="' + (batY - 2) + '" stroke="#333" stroke-width="2"/>';
+      html += '<line x1="' + (leftX - 8) + '" y1="' + (batY + 6) + '" x2="' + (leftX + 8) + '" y2="' + (batY + 6) + '" stroke="#333" stroke-width="3.5"/>';
+      html += '<line x1="' + (leftX - 4) + '" y1="' + (batY + 14) + '" x2="' + (leftX + 4) + '" y2="' + (batY + 14) + '" stroke="#333" stroke-width="2"/>';
+      // + / - labels
+      html += '<text x="' + (leftX) + '" y="' + (batY - 22) + '" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">+</text>';
+      html += '<text x="' + (leftX) + '" y="' + (batY + 30) + '" font-size="14" font-weight="bold" fill="#333" text-anchor="middle">\u2212</text>';
+      // Voltage label
+      html += '<text x="' + (leftX - 20) + '" y="' + batY + '" font-size="12" font-weight="bold" fill="#2563eb" text-anchor="end">' + vs + 'V</text>';
+
+      // Resistor (top wire, zigzag)
+      var rStartX = leftX + 30;
+      var rEndX = rStartX + 70;
+      html += '<rect x="' + rStartX + '" y="' + (topY - 12) + '" width="70" height="24" fill="white" stroke="none"/>';
+      html += '<polyline points="' + rStartX + ',' + topY + ' ' + (rStartX + 10) + ',' + (topY - 12) + ' ' + (rStartX + 22) + ',' + (topY + 12) + ' ' + (rStartX + 35) + ',' + (topY - 12) + ' ' + (rStartX + 47) + ',' + (topY + 12) + ' ' + (rStartX + 60) + ',' + (topY - 12) + ' ' + rEndX + ',' + topY + '" fill="none" stroke="#e65100" stroke-width="2.5"/>';
+      html += '<text x="' + ((rStartX + rEndX) / 2) + '" y="' + (topY - 18) + '" font-size="11" font-weight="bold" fill="#e65100" text-anchor="middle">' + formatResistance(r) + '</text>';
+
+      // LEDs (right side, vertical)
+      var ledStartY = topY + 30;
+      var ledEndY = botY - 30;
+      var ledAreaHeight = ledEndY - ledStartY;
+      var ledGap = ledAreaHeight / (ledCount + 1);
+
+      for (var i = 0; i < ledCount; i++) {
+        var ly = ledStartY + ledGap * (i + 1);
+        // LED triangle (pointing down)
+        var triSize = 12;
+        html += '<polygon points="' + (rightX - triSize) + ',' + (ly - triSize) + ' ' + (rightX + triSize) + ',' + (ly - triSize) + ' ' + rightX + ',' + (ly + triSize) + '" fill="' + currentLedColor + '" stroke="#333" stroke-width="1.5" opacity="0.8"/>';
+        // LED line (cathode)
+        html += '<line x1="' + (rightX - triSize) + '" y1="' + (ly + triSize) + '" x2="' + (rightX + triSize) + '" y2="' + (ly + triSize) + '" stroke="#333" stroke-width="2.5"/>';
+        // Light rays
+        html += '<line x1="' + (rightX + triSize + 4) + '" y1="' + (ly - 6) + '" x2="' + (rightX + triSize + 12) + '" y2="' + (ly - 12) + '" stroke="' + currentLedColor + '" stroke-width="1.5"/>';
+        html += '<line x1="' + (rightX + triSize + 6) + '" y1="' + (ly + 2) + '" x2="' + (rightX + triSize + 14) + '" y2="' + (ly - 2) + '" stroke="' + currentLedColor + '" stroke-width="1.5"/>';
+      }
+
+      // Current arrow (bottom)
+      var arrowX1 = rightX - 30;
+      var arrowX2 = leftX + 30;
+      html += '<line x1="' + arrowX1 + '" y1="' + botY + '" x2="' + arrowX2 + '" y2="' + botY + '" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowG)"/>';
+      html += '<text x="' + ((arrowX1 + arrowX2) / 2) + '" y="' + (botY + 20) + '" font-size="11" font-weight="bold" fill="#16a34a" text-anchor="middle">' + parseFloat(currentMa.toPrecision(3)) + ' mA</text>';
+
+      // GND label
+      html += '<text x="' + leftX + '" y="' + (botY + 20) + '" font-size="11" fill="#666" text-anchor="middle">GND</text>';
+
+      svg.innerHTML = html;
+    }
+
+    function clearForm() {
+      document.getElementById('input-vs').value = '5';
+      document.getElementById('input-vf').value = '';
+      document.getElementById('input-if').value = '';
+      document.getElementById('input-n').value = '1';
+      document.getElementById('result-area').classList.remove('show');
+      document.getElementById('error-box').classList.remove('show');
+      document.getElementById('warning-box').classList.remove('show');
+      document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('active'); });
+    }
+
+    // Real-time calculation
+    ['input-vs', 'input-vf', 'input-if'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', function() { calculate(); });
+    });
+    document.getElementById('input-n').addEventListener('change', function() { calculate(); });
+  </script>
+</body>
+</html>
