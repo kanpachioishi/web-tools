@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>進数変換ツール - 2進数/8進数/10進数/16進数 相互変換｜SimpleToolkit</title>
+  <meta name="description" content="2進数・8進数・10進数・16進数をリアルタイムに相互変換。大きな数値にも対応、ビット表示・ASCII対応表付き。プログラマー必携の無料オンライン進数変換ツール。">
+  <meta property="og:title" content="進数変換ツール - 2進数/8進数/10進数/16進数 相互変換｜SimpleToolkit">
+  <meta property="og:description" content="2進数・8進数・10進数・16進数をリアルタイムに相互変換。大きな数値にも対応、ビット表示・ASCII対応表付き。無料オンラインツール。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/radix-converter/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "進数変換ツール - 2進数/8進数/10進数/16進数 相互変換",
+    "description": "2進数・8進数・10進数・16進数をリアルタイムに相互変換。大きな数値にも対応、ビット表示・ASCII対応表付き。プログラマー必携の無料オンライン進数変換ツール。",
+    "url": "https://simpletoolkit.net/tools/radix-converter/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "進数（基数）とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "進数（基数）とは、数値を表現するために使用する数字の種類の数のことです。例えば10進数は0-9の10種類、2進数は0と1の2種類、16進数は0-9とA-Fの16種類の記号を使って数値を表現します。コンピュータ内部では2進数が使われ、人間が読みやすいように8進数や16進数に変換して扱うことが多いです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "16進数はどのような場面で使われますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "16進数はプログラミングやWebデザインなど多くの場面で使われます。代表的な例として、CSSのカラーコード（#FF0000は赤）、メモリアドレスの表記、MACアドレス、UUIDなどがあります。2進数の4桁が16進数の1桁に対応するため、バイナリデータを人間が読みやすい形式で表現するのに適しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "2進数から10進数に変換する方法は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2進数から10進数への変換は、各桁に2のべき乗を掛けて合計します。例えば2進数の1011は、右から順に 1×2^0 + 1×2^1 + 0×2^2 + 1×2^3 = 1 + 2 + 0 + 8 = 11（10進数）となります。このツールではリアルタイムに自動変換されるため、手計算は不要です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "8進数は何に使われますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "8進数はLinux/UnixのファイルパーミッションがASCII対応表付き。代表的な使用例として、chmodコマンドでのアクセス権設定（例：755は rwxr-xr-x）があります。また、C言語やPythonでは先頭に0oを付けて8進数リテラルを表記します（例：0o777）。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての変換処理はブラウザ内で完結します。入力データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .converter-field {
+      margin-bottom: 16px;
+    }
+    .converter-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+    .converter-field .field-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .converter-field .field-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .converter-field .field-prefix {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    .input-wrapper {
+      display: flex;
+      gap: 8px;
+    }
+    .converter-field input {
+      flex: 1;
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: 'Courier New', Consolas, monospace;
+      background: var(--bg);
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+    .converter-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .converter-field input.error {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .error-msg.show {
+      display: block;
+    }
+    .copy-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: var(--bg);
+      color: var(--text);
+      border-color: var(--primary);
+    }
+    .copy-btn.copied {
+      background: #f0fdf4;
+      color: #16a34a;
+      border-color: #16a34a;
+    }
+
+    /* Bit display */
+    .bit-section {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .bit-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .bit-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .bit-toggle button {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .bit-toggle button.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .bit-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      font-family: 'Courier New', Consolas, monospace;
+      font-size: 1.1rem;
+    }
+    .bit-cell {
+      width: 28px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .bit-cell.one {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .bit-separator {
+      width: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .bit-labels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      margin-top: 2px;
+    }
+    .bit-label {
+      width: 28px;
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+    .bit-label-sep {
+      width: 8px;
+    }
+    .bit-overflow {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    /* Quick reference table */
+    .ref-table-container {
+      margin-top: 32px;
+      overflow-x: auto;
+    }
+    .ref-table-container h3 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      font-family: 'Courier New', Consolas, monospace;
+    }
+    .ref-table th, .ref-table td {
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      text-align: center;
+    }
+    .ref-table th {
+      background: var(--bg);
+      font-weight: 600;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      position: sticky;
+      top: 0;
+    }
+    .ref-table tbody tr:hover {
+      background: #f1f5f9;
+    }
+    .tab-buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .tab-buttons button {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .tab-buttons button.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .bit-cell {
+        width: 22px;
+        height: 26px;
+        font-size: 0.9rem;
+      }
+      .bit-label {
+        width: 22px;
+        font-size: 0.5rem;
+      }
+      .bit-separator { width: 6px; }
+      .bit-label-sep { width: 6px; }
+      .ref-table { font-size: 0.75rem; }
+      .ref-table th, .ref-table td { padding: 4px 6px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>進数変換ツール</h1>
+    <h2>2進数・8進数・10進数・16進数 相互変換</h2>
+    <p class="tool-description">2進数・8進数・10進数・16進数をリアルタイムに相互変換できる無料オンラインツールです。BigInt対応で大きな数値も正確に変換。ビット表示やASCII対応表も搭載し、プログラミングや情報技術の学習に役立ちます。</p>
+
+    <div class="tool-area">
+      <div class="converter-field">
+        <div class="field-header">
+          <span class="field-label">10進数 (Decimal)</span>
+          <span class="field-prefix">接頭辞なし</span>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" id="dec-input" placeholder="例: 255" inputmode="numeric">
+          <button class="copy-btn" onclick="copyValue('dec-input', this)">コピー</button>
+        </div>
+        <div class="error-msg" id="dec-error">10進数には 0-9 の数字のみ入力できます</div>
+      </div>
+
+      <div class="converter-field">
+        <div class="field-header">
+          <span class="field-label">2進数 (Binary)</span>
+          <span class="field-prefix">0b</span>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" id="bin-input" placeholder="例: 1111 1111" inputmode="numeric">
+          <button class="copy-btn" onclick="copyValue('bin-input', this)">コピー</button>
+        </div>
+        <div class="error-msg" id="bin-error">2進数には 0 と 1 のみ入力できます</div>
+      </div>
+
+      <div class="converter-field">
+        <div class="field-header">
+          <span class="field-label">8進数 (Octal)</span>
+          <span class="field-prefix">0o</span>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" id="oct-input" placeholder="例: 377" inputmode="numeric">
+          <button class="copy-btn" onclick="copyValue('oct-input', this)">コピー</button>
+        </div>
+        <div class="error-msg" id="oct-error">8進数には 0-7 の数字のみ入力できます</div>
+      </div>
+
+      <div class="converter-field">
+        <div class="field-header">
+          <span class="field-label">16進数 (Hexadecimal)</span>
+          <span class="field-prefix">0x</span>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" id="hex-input" placeholder="例: FF" style="text-transform: uppercase;">
+          <button class="copy-btn" onclick="copyValue('hex-input', this)">コピー</button>
+        </div>
+        <div class="error-msg" id="hex-error">16進数には 0-9 と A-F のみ入力できます</div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <!-- Bit Display -->
+      <div class="bit-section">
+        <h3>ビット表示</h3>
+        <div class="bit-toggle">
+          <button class="active" onclick="setBitWidth(8, this)">8 bit</button>
+          <button onclick="setBitWidth(16, this)">16 bit</button>
+          <button onclick="setBitWidth(32, this)">32 bit</button>
+        </div>
+        <div class="bit-display" id="bit-display"></div>
+        <div class="bit-labels" id="bit-labels"></div>
+        <div class="bit-overflow" id="bit-overflow"></div>
+      </div>
+    </div>
+
+    <!-- Quick Reference Tables -->
+    <div class="ref-table-container">
+      <h3>進数変換 早見表</h3>
+      <div class="tab-buttons">
+        <button class="active" onclick="showTab('basic', this)">基本 (0-15)</button>
+        <button onclick="showTab('powers', this)">2のべき乗</button>
+        <button onclick="showTab('ascii', this)">ASCII (0-127)</button>
+      </div>
+
+      <div class="tab-content active" id="tab-basic">
+        <table class="ref-table">
+          <thead>
+            <tr><th>10進</th><th>2進</th><th>8進</th><th>16進</th></tr>
+          </thead>
+          <tbody id="basic-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="tab-content" id="tab-powers">
+        <table class="ref-table">
+          <thead>
+            <tr><th>2^n</th><th>10進</th><th>16進</th><th>用途の例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2^0</td><td>1</td><td>1</td><td>-</td></tr>
+            <tr><td>2^1</td><td>2</td><td>2</td><td>-</td></tr>
+            <tr><td>2^2</td><td>4</td><td>4</td><td>-</td></tr>
+            <tr><td>2^3</td><td>8</td><td>8</td><td>-</td></tr>
+            <tr><td>2^4</td><td>16</td><td>10</td><td>16進数1桁</td></tr>
+            <tr><td>2^7</td><td>128</td><td>80</td><td>ASCII範囲</td></tr>
+            <tr><td>2^8</td><td>256</td><td>100</td><td>1バイト</td></tr>
+            <tr><td>2^10</td><td>1,024</td><td>400</td><td>1 KB</td></tr>
+            <tr><td>2^16</td><td>65,536</td><td>10000</td><td>ポート番号上限</td></tr>
+            <tr><td>2^20</td><td>1,048,576</td><td>100000</td><td>1 MB</td></tr>
+            <tr><td>2^24</td><td>16,777,216</td><td>1000000</td><td>RGBカラー</td></tr>
+            <tr><td>2^32</td><td>4,294,967,296</td><td>100000000</td><td>IPv4アドレス空間</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-content" id="tab-ascii">
+        <table class="ref-table">
+          <thead>
+            <tr><th>10進</th><th>16進</th><th>文字</th><th>説明</th></tr>
+          </thead>
+          <tbody id="ascii-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ生成ツール</h3>
+          <p>MD5, SHA-1, SHA-256などのハッシュ値を生成</p>
+        </a>
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>Base64形式のエンコード・デコードを変換</p>
+        </a>
+        <a href="../color-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">カラーコード変換</h3>
+          <p>HEX・RGB・HSLのカラーコードを相互変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var currentBitWidth = 8;
+    var currentValue = null; // BigInt or null
+
+    // Validation patterns
+    var patterns = {
+      dec: /^[0-9]+$/,
+      bin: /^[01\s]+$/,
+      oct: /^[0-7]+$/,
+      hex: /^[0-9a-fA-F\s]+$/
+    };
+
+    // Get input elements
+    var decInput = document.getElementById('dec-input');
+    var binInput = document.getElementById('bin-input');
+    var octInput = document.getElementById('oct-input');
+    var hexInput = document.getElementById('hex-input');
+
+    // Format binary with 4-digit grouping
+    function formatBin(val) {
+      if (!val) return '';
+      var s = val.toString(2);
+      var result = '';
+      for (var i = s.length; i > 0; i -= 4) {
+        var start = Math.max(0, i - 4);
+        result = s.substring(start, i) + (result ? ' ' + result : '');
+      }
+      return result;
+    }
+
+    // Format hex with 2-digit grouping
+    function formatHex(val) {
+      if (!val) return '';
+      var s = val.toString(16).toUpperCase();
+      var result = '';
+      for (var i = s.length; i > 0; i -= 2) {
+        var start = Math.max(0, i - 2);
+        result = s.substring(start, i) + (result ? ' ' + result : '');
+      }
+      return result;
+    }
+
+    function clearError(base) {
+      document.getElementById(base + '-error').classList.remove('show');
+      document.getElementById(base + '-input').classList.remove('error');
+    }
+
+    function showError(base) {
+      document.getElementById(base + '-error').classList.add('show');
+      document.getElementById(base + '-input').classList.add('error');
+    }
+
+    function convert(source) {
+      var raw = document.getElementById(source + '-input').value.trim();
+
+      // Clear all errors
+      ['dec', 'bin', 'oct', 'hex'].forEach(function(b) { clearError(b); });
+
+      if (raw === '') {
+        currentValue = null;
+        ['dec', 'bin', 'oct', 'hex'].forEach(function(b) {
+          if (b !== source) document.getElementById(b + '-input').value = '';
+        });
+        updateBitDisplay();
+        return;
+      }
+
+      // Remove spaces for processing
+      var clean = raw.replace(/\s+/g, '');
+
+      // Validate
+      if (!patterns[source].test(clean)) {
+        showError(source);
+        return;
+      }
+
+      // Parse to BigInt
+      var value;
+      try {
+        switch (source) {
+          case 'dec': value = BigInt(clean); break;
+          case 'bin': value = BigInt('0b' + clean); break;
+          case 'oct': value = BigInt('0o' + clean); break;
+          case 'hex': value = BigInt('0x' + clean); break;
+        }
+      } catch (e) {
+        showError(source);
+        return;
+      }
+
+      if (value < 0n) {
+        showError(source);
+        return;
+      }
+
+      currentValue = value;
+
+      // Update other fields
+      if (source !== 'dec') decInput.value = value.toString(10);
+      if (source !== 'bin') binInput.value = formatBin(value);
+      if (source !== 'oct') octInput.value = value.toString(8);
+      if (source !== 'hex') hexInput.value = formatHex(value);
+
+      updateBitDisplay();
+    }
+
+    // Event listeners
+    decInput.addEventListener('input', function() { convert('dec'); });
+    binInput.addEventListener('input', function() { convert('bin'); });
+    octInput.addEventListener('input', function() { convert('oct'); });
+    hexInput.addEventListener('input', function() { convert('hex'); });
+
+    function clearAll() {
+      decInput.value = '';
+      binInput.value = '';
+      octInput.value = '';
+      hexInput.value = '';
+      currentValue = null;
+      ['dec', 'bin', 'oct', 'hex'].forEach(function(b) { clearError(b); });
+      updateBitDisplay();
+    }
+
+    function copyValue(inputId, btn) {
+      var input = document.getElementById(inputId);
+      var text = input.value.replace(/\s+/g, '');
+      if (!text) return;
+
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'OK!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.textContent = 'コピー';
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    }
+
+    // Bit display
+    function setBitWidth(width, btn) {
+      currentBitWidth = width;
+      var buttons = document.querySelectorAll('.bit-toggle button');
+      buttons.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      updateBitDisplay();
+    }
+
+    function updateBitDisplay() {
+      var display = document.getElementById('bit-display');
+      var labels = document.getElementById('bit-labels');
+      var overflow = document.getElementById('bit-overflow');
+
+      if (currentValue === null || currentValue === 0n) {
+        // Show empty bits
+        var html = '';
+        var labelHtml = '';
+        for (var i = currentBitWidth - 1; i >= 0; i--) {
+          html += '<div class="bit-cell">0</div>';
+          labelHtml += '<div class="bit-label">' + i + '</div>';
+          if (i > 0 && i % 4 === 0) {
+            html += '<div class="bit-separator"></div>';
+            labelHtml += '<div class="bit-label-sep"></div>';
+          }
+        }
+        display.innerHTML = html;
+        labels.innerHTML = labelHtml;
+        overflow.textContent = '';
+        return;
+      }
+
+      var maxVal = (1n << BigInt(currentBitWidth)) - 1n;
+      var isOverflow = currentValue > maxVal;
+
+      var displayValue = isOverflow ? currentValue & maxVal : currentValue;
+      var binStr = displayValue.toString(2).padStart(currentBitWidth, '0');
+
+      // If value needs more bits, show only the last bitWidth bits
+      if (binStr.length > currentBitWidth) {
+        binStr = binStr.slice(binStr.length - currentBitWidth);
+      }
+
+      var html = '';
+      var labelHtml = '';
+      for (var i = 0; i < currentBitWidth; i++) {
+        var bitIndex = currentBitWidth - 1 - i;
+        var bit = binStr[i];
+        html += '<div class="bit-cell' + (bit === '1' ? ' one' : '') + '">' + bit + '</div>';
+        labelHtml += '<div class="bit-label">' + bitIndex + '</div>';
+        if (bitIndex > 0 && bitIndex % 4 === 0) {
+          html += '<div class="bit-separator"></div>';
+          labelHtml += '<div class="bit-label-sep"></div>';
+        }
+      }
+
+      display.innerHTML = html;
+      labels.innerHTML = labelHtml;
+      overflow.textContent = isOverflow ? '* 値が' + currentBitWidth + 'ビットの範囲を超えています（下位' + currentBitWidth + 'ビットを表示）' : '';
+    }
+
+    // Build basic reference table (0-15)
+    function buildBasicTable() {
+      var tbody = document.getElementById('basic-table-body');
+      var html = '';
+      for (var i = 0; i <= 15; i++) {
+        html += '<tr>';
+        html += '<td>' + i + '</td>';
+        html += '<td>' + i.toString(2).padStart(4, '0') + '</td>';
+        html += '<td>' + i.toString(8) + '</td>';
+        html += '<td>' + i.toString(16).toUpperCase() + '</td>';
+        html += '</tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    // Build ASCII reference table
+    function buildAsciiTable() {
+      var tbody = document.getElementById('ascii-table-body');
+      var html = '';
+      var controlChars = {
+        0: 'NUL (null)', 1: 'SOH', 2: 'STX', 3: 'ETX', 4: 'EOT', 5: 'ENQ', 6: 'ACK', 7: 'BEL (bell)',
+        8: 'BS (backspace)', 9: 'HT (tab)', 10: 'LF (改行)', 11: 'VT', 12: 'FF', 13: 'CR (復帰)',
+        14: 'SO', 15: 'SI', 16: 'DLE', 17: 'DC1', 18: 'DC2', 19: 'DC3', 20: 'DC4', 21: 'NAK',
+        22: 'SYN', 23: 'ETB', 24: 'CAN', 25: 'EM', 26: 'SUB', 27: 'ESC', 28: 'FS', 29: 'GS',
+        30: 'RS', 31: 'US', 32: 'SP (空白)', 127: 'DEL'
+      };
+
+      for (var i = 0; i <= 127; i++) {
+        var char, desc;
+        if (i <= 32 || i === 127) {
+          char = '-';
+          desc = controlChars[i] || '';
+        } else {
+          char = String.fromCharCode(i);
+          desc = '';
+          // Add common descriptions
+          if (i >= 48 && i <= 57) desc = '数字';
+          else if (i >= 65 && i <= 90) desc = '英大文字';
+          else if (i >= 97 && i <= 122) desc = '英小文字';
+          else desc = '記号';
+        }
+        html += '<tr>';
+        html += '<td>' + i + '</td>';
+        html += '<td>' + i.toString(16).toUpperCase().padStart(2, '0') + '</td>';
+        html += '<td>' + char + '</td>';
+        html += '<td style="text-align:left;font-family:sans-serif;">' + desc + '</td>';
+        html += '</tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    // Tab switching
+    function showTab(tabName, btn) {
+      document.querySelectorAll('.tab-content').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-buttons button').forEach(function(b) {
+        b.classList.remove('active');
+      });
+      document.getElementById('tab-' + tabName).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Initialize
+    buildBasicTable();
+    buildAsciiTable();
+    updateBitDisplay();
+  </script>
+</body>
+</html>

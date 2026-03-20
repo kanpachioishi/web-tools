@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ビット演算ビジュアライザー - AND/OR/XOR/NOT/シフト演算を視覚的に確認｜無料オンラインツール｜SimpleToolkit</title>
+  <meta name="description" content="ビット演算(AND, OR, XOR, NOT, シフト)の結果をビット列で視覚的に表示。10進・16進・2進の相互変換、ビットクリックでトグル可能。8/16/32bit対応の無料オンラインツール。">
+  <meta property="og:title" content="ビット演算ビジュアライザー - AND/OR/XOR/NOT/シフト演算を視覚的に確認｜SimpleToolkit">
+  <meta property="og:description" content="ビット演算の結果をビット列で色分け表示。10進・16進・2進の3形式で同時確認。ビットクリックでトグル可能な無料ツール。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/bitwise-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ビット演算ビジュアライザー",
+    "description": "ビット演算(AND, OR, XOR, NOT, シフト)の結果をビット列で視覚的に表示。10進・16進・2進の相互変換、ビットクリックでトグル可能。8/16/32bit対応の無料オンラインツール。",
+    "url": "https://simpletoolkit.net/tools/bitwise-calc/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "ビット演算とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ビット演算とは、整数値を2進数のビット列として扱い、各ビットに対して論理演算を行う操作です。AND(&)、OR(|)、XOR(^)、NOT(~)、左シフト(<<)、右シフト(>>)などがあり、低レベルなデータ処理やフラグ管理、暗号処理などで広く使われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "AND演算とOR演算の違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AND演算は両方のビットが1の場合のみ結果が1になります。OR演算はどちらか一方でも1であれば結果が1になります。ANDはビットマスク（特定ビットの抽出）に、ORはビットの設定（フラグを立てる）に使われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "XOR演算はどんな場面で使いますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "XOR(排他的論理和)は2つのビットが異なる場合に1を返します。暗号化、チェックサム計算、値の交換（スワップ）、差分検出などで広く利用されます。同じ値でXORすると0になる性質が特に有用です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。入力データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    /* Input format selector */
+    .format-selector {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .format-selector label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+    .format-btn {
+      padding: 6px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .format-btn:hover { border-color: var(--primary); }
+    .format-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Bit width selector */
+    .bitwidth-selector {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .bitwidth-selector label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-right: 8px;
+    }
+    .bw-btn {
+      padding: 6px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .bw-btn:hover { border-color: var(--primary); }
+    .bw-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Input fields */
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .input-row .field {
+      flex: 1;
+      min-width: 180px;
+    }
+    .input-row .field label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+    .input-row .field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: 'Courier New', monospace;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+    .input-row .field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Shift slider */
+    .shift-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .shift-row label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .shift-row input[type="range"] {
+      flex: 1;
+      min-width: 120px;
+      accent-color: var(--primary);
+    }
+    .shift-row .shift-val {
+      font-weight: 700;
+      font-size: 1rem;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    /* Bit visualization */
+    .bit-vis-section {
+      margin-top: 24px;
+    }
+    .op-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .op-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .op-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+    .op-values {
+      display: flex;
+      gap: 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+    .op-values span {
+      white-space: nowrap;
+    }
+    .op-values .val-label {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Bit grid */
+    .bit-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      justify-content: flex-end;
+    }
+    .bit-group {
+      display: flex;
+      gap: 2px;
+      margin-left: 6px;
+    }
+    .bit-group:first-child {
+      margin-left: 0;
+    }
+    .bit-cell {
+      width: 28px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 4px;
+      user-select: none;
+      transition: all 0.15s;
+    }
+    .bit-cell.bit-1 {
+      background: #2563eb;
+      color: #fff;
+    }
+    .bit-cell.bit-1-green {
+      background: #16a34a;
+      color: #fff;
+    }
+    .bit-cell.bit-0 {
+      background: #e2e8f0;
+      color: #94a3b8;
+    }
+    .bit-cell.clickable {
+      cursor: pointer;
+    }
+    .bit-cell.clickable:hover {
+      transform: scale(1.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .bit-index-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      justify-content: flex-end;
+      margin-top: 2px;
+    }
+    .bit-index-group {
+      display: flex;
+      gap: 2px;
+      margin-left: 6px;
+    }
+    .bit-index-group:first-child {
+      margin-left: 0;
+    }
+    .bit-index {
+      width: 28px;
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    /* Input bit grid */
+    .input-bits-area {
+      margin-top: 8px;
+    }
+    .input-bits-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .bit-cell {
+        width: 22px;
+        height: 26px;
+        font-size: 0.75rem;
+      }
+      .bit-index {
+        width: 22px;
+        font-size: 0.5rem;
+      }
+      .bit-group {
+        margin-left: 4px;
+      }
+      .bit-index-group {
+        margin-left: 4px;
+      }
+      .op-values {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .bit-cell {
+        width: 18px;
+        height: 22px;
+        font-size: 0.65rem;
+      }
+      .bit-index {
+        width: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>ビット演算ビジュアライザー</h1>
+    <h2>AND/OR/XOR/NOT/シフト演算を視覚的に確認 - 無料オンラインツール</h2>
+    <p class="tool-description">2つの数値に対するビット演算(AND, OR, XOR, NOT, シフト)の結果をビット列で視覚的に表示します。10進・16進・2進の3形式で同時確認でき、各ビットをクリックしてトグルできます。</p>
+
+    <div class="tool-area">
+      <!-- Input format -->
+      <div class="format-selector">
+        <label>入力形式:</label>
+        <button class="format-btn active" onclick="setFormat('dec')" id="fmt-dec">10進</button>
+        <button class="format-btn" onclick="setFormat('hex')" id="fmt-hex">16進</button>
+        <button class="format-btn" onclick="setFormat('bin')" id="fmt-bin">2進</button>
+      </div>
+
+      <!-- Bit width -->
+      <div class="bitwidth-selector">
+        <label>ビット幅:</label>
+        <button class="bw-btn" onclick="setBitWidth(8)" id="bw-8">8bit</button>
+        <button class="bw-btn active" onclick="setBitWidth(16)" id="bw-16">16bit</button>
+        <button class="bw-btn" onclick="setBitWidth(32)" id="bw-32">32bit</button>
+      </div>
+
+      <!-- Input A & B -->
+      <div class="input-row">
+        <div class="field">
+          <label for="input-a">値 A</label>
+          <input type="text" id="input-a" placeholder="42" autocomplete="off" spellcheck="false">
+          <div class="input-bits-area" id="bits-a-area">
+            <div class="input-bits-label">A のビット列 (クリックでトグル):</div>
+            <div class="bit-grid" id="bits-a"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="input-b">値 B</label>
+          <input type="text" id="input-b" placeholder="15" autocomplete="off" spellcheck="false">
+          <div class="input-bits-area" id="bits-b-area">
+            <div class="input-bits-label">B のビット列 (クリックでトグル):</div>
+            <div class="bit-grid" id="bits-b"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shift amount -->
+      <div class="shift-row">
+        <label for="shift-slider">シフト量 (n):</label>
+        <input type="range" id="shift-slider" min="0" max="31" value="1">
+        <span class="shift-val" id="shift-val">1</span>
+      </div>
+
+      <!-- Results -->
+      <div class="bit-vis-section" id="results">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">ビット演算の基本</h2>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:24px;">
+        <h3 style="font-size:1rem;margin-bottom:12px;">演算の種類と意味</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+          <thead>
+            <tr style="border-bottom:2px solid var(--border);">
+              <th style="text-align:left;padding:8px;">演算</th>
+              <th style="text-align:left;padding:8px;">記号</th>
+              <th style="text-align:left;padding:8px;">説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">AND</td><td style="padding:8px;font-family:monospace;">&amp;</td><td style="padding:8px;">両方1なら1。ビットマスクに使用</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">OR</td><td style="padding:8px;font-family:monospace;">|</td><td style="padding:8px;">どちらか1なら1。フラグ設定に使用</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">XOR</td><td style="padding:8px;font-family:monospace;">^</td><td style="padding:8px;">異なれば1。暗号化・スワップに使用</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">NOT</td><td style="padding:8px;font-family:monospace;">~</td><td style="padding:8px;">ビット反転。補数の計算に使用</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px;font-weight:600;">左シフト</td><td style="padding:8px;font-family:monospace;">&lt;&lt;</td><td style="padding:8px;">ビットを左へ移動。2のn乗倍に相当</td></tr>
+            <tr><td style="padding:8px;font-weight:600;">右シフト</td><td style="padding:8px;font-family:monospace;">&gt;&gt;</td><td style="padding:8px;">ビットを右へ移動。2のn乗で割るのに相当</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ生成</h3>
+          <p>MD5/SHA-1/SHA-256などのハッシュ値を生成</p>
+        </a>
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>テキストやデータのBase64変換</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var currentFormat = 'dec';
+    var bitWidth = 16;
+    var valueA = 0;
+    var valueB = 0;
+
+    var maxValues = { 8: 255, 16: 65535, 32: 4294967295 };
+
+    function setFormat(fmt) {
+      currentFormat = fmt;
+      document.querySelectorAll('.format-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('fmt-' + fmt).classList.add('active');
+      updateInputDisplay();
+    }
+
+    function setBitWidth(bw) {
+      bitWidth = bw;
+      document.querySelectorAll('.bw-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('bw-' + bw).classList.add('active');
+      // Clamp values
+      var mask = maxValues[bitWidth];
+      valueA = (valueA >>> 0) & mask;
+      valueB = (valueB >>> 0) & mask;
+      // Update shift slider max
+      document.getElementById('shift-slider').max = bitWidth - 1;
+      var sv = parseInt(document.getElementById('shift-slider').value);
+      if (sv >= bitWidth) {
+        document.getElementById('shift-slider').value = bitWidth - 1;
+        document.getElementById('shift-val').textContent = bitWidth - 1;
+      }
+      updateInputDisplay();
+      renderAll();
+    }
+
+    function formatNum(val, fmt) {
+      var v = val >>> 0;
+      if (fmt === 'hex') return '0x' + v.toString(16).toUpperCase();
+      if (fmt === 'bin') return '0b' + padBin(v);
+      return v.toString(10);
+    }
+
+    function padBin(v) {
+      var s = (v >>> 0).toString(2);
+      while (s.length < bitWidth) s = '0' + s;
+      return s;
+    }
+
+    function parseInput(str) {
+      str = str.trim();
+      if (str === '') return 0;
+      var val;
+      if (/^0x/i.test(str)) {
+        val = parseInt(str, 16);
+      } else if (/^0b/i.test(str)) {
+        val = parseInt(str.slice(2), 2);
+      } else {
+        val = parseInt(str, 10);
+      }
+      if (isNaN(val) || val < 0) return 0;
+      return (val >>> 0) & maxValues[bitWidth];
+    }
+
+    function updateInputDisplay() {
+      document.getElementById('input-a').value = formatNum(valueA, currentFormat);
+      document.getElementById('input-b').value = formatNum(valueB, currentFormat);
+      updatePlaceholders();
+    }
+
+    function updatePlaceholders() {
+      var ia = document.getElementById('input-a');
+      var ib = document.getElementById('input-b');
+      if (currentFormat === 'hex') {
+        ia.placeholder = '0x2A';
+        ib.placeholder = '0x0F';
+      } else if (currentFormat === 'bin') {
+        ia.placeholder = '0b101010';
+        ib.placeholder = '0b1111';
+      } else {
+        ia.placeholder = '42';
+        ib.placeholder = '15';
+      }
+    }
+
+    function makeBitGrid(val, containerId, clickable, varName) {
+      var container = document.getElementById(containerId);
+      container.innerHTML = '';
+      var binStr = padBin(val);
+      var groupSize = 4;
+      for (var g = 0; g < bitWidth; g += groupSize) {
+        var group = document.createElement('div');
+        group.className = 'bit-group';
+        for (var i = 0; i < groupSize && (g + i) < bitWidth; i++) {
+          var idx = g + i;
+          var bit = binStr[idx];
+          var cell = document.createElement('div');
+          cell.className = 'bit-cell ' + (bit === '1' ? (varName === 'b' ? 'bit-1-green' : 'bit-1') : 'bit-0');
+          if (clickable) cell.classList.add('clickable');
+          cell.textContent = bit;
+          if (clickable) {
+            (function(bitIndex, vn) {
+              cell.addEventListener('click', function() {
+                toggleBit(bitIndex, vn);
+              });
+            })(bitWidth - 1 - idx, varName);
+          }
+          group.appendChild(cell);
+        }
+        container.appendChild(group);
+      }
+    }
+
+    function makeBitGridResult(val, container, colorClass) {
+      container.innerHTML = '';
+      var binStr = padBin(val);
+      var groupSize = 4;
+      for (var g = 0; g < bitWidth; g += groupSize) {
+        var group = document.createElement('div');
+        group.className = 'bit-group';
+        for (var i = 0; i < groupSize && (g + i) < bitWidth; i++) {
+          var idx = g + i;
+          var bit = binStr[idx];
+          var cell = document.createElement('div');
+          cell.className = 'bit-cell ' + (bit === '1' ? colorClass : 'bit-0');
+          cell.textContent = bit;
+          group.appendChild(cell);
+        }
+        container.appendChild(group);
+      }
+    }
+
+    function toggleBit(bitIndex, varName) {
+      if (varName === 'a') {
+        valueA = ((valueA >>> 0) ^ (1 << bitIndex)) >>> 0 & maxValues[bitWidth];
+      } else {
+        valueB = ((valueB >>> 0) ^ (1 << bitIndex)) >>> 0 & maxValues[bitWidth];
+      }
+      updateInputDisplay();
+      renderAll();
+    }
+
+    function renderAll() {
+      var a = valueA >>> 0;
+      var b = valueB >>> 0;
+      var mask = maxValues[bitWidth];
+      var shift = parseInt(document.getElementById('shift-slider').value) || 0;
+
+      var ops = [
+        { name: 'A AND B', symbol: 'A & B', val: (a & b) >>> 0 & mask, color: 'bit-1' },
+        { name: 'A OR B', symbol: 'A | B', val: (a | b) >>> 0 & mask, color: 'bit-1' },
+        { name: 'A XOR B', symbol: 'A ^ B', val: (a ^ b) >>> 0 & mask, color: 'bit-1' },
+        { name: 'NOT A', symbol: '~A', val: (~a >>> 0) & mask, color: 'bit-1' },
+        { name: 'A << ' + shift, symbol: 'A << ' + shift, val: (a << shift) >>> 0 & mask, color: 'bit-1-green' },
+        { name: 'A >> ' + shift, symbol: 'A >> ' + shift, val: (a >>> shift) & mask, color: 'bit-1-green' }
+      ];
+
+      // Render input bit grids
+      makeBitGrid(a, 'bits-a', true, 'a');
+      makeBitGrid(b, 'bits-b', true, 'b');
+
+      // Render result blocks
+      var resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+
+      for (var i = 0; i < ops.length; i++) {
+        var op = ops[i];
+        var block = document.createElement('div');
+        block.className = 'op-block';
+
+        var header = document.createElement('div');
+        header.className = 'op-header';
+
+        var nameEl = document.createElement('div');
+        nameEl.className = 'op-name';
+        nameEl.textContent = op.name;
+
+        var valsEl = document.createElement('div');
+        valsEl.className = 'op-values';
+
+        var dec = document.createElement('span');
+        dec.innerHTML = '<span class="val-label">DEC:</span> ' + op.val.toString(10);
+        var hex = document.createElement('span');
+        hex.innerHTML = '<span class="val-label">HEX:</span> 0x' + op.val.toString(16).toUpperCase();
+        var bin = document.createElement('span');
+        bin.innerHTML = '<span class="val-label">BIN:</span> ' + padBin(op.val);
+
+        valsEl.appendChild(dec);
+        valsEl.appendChild(hex);
+        valsEl.appendChild(bin);
+
+        header.appendChild(nameEl);
+        header.appendChild(valsEl);
+        block.appendChild(header);
+
+        var bitGrid = document.createElement('div');
+        bitGrid.className = 'bit-grid';
+        makeBitGridResult(op.val, bitGrid, op.color);
+        block.appendChild(bitGrid);
+
+        resultsDiv.appendChild(block);
+      }
+    }
+
+    // Event listeners
+    document.getElementById('input-a').addEventListener('input', function() {
+      valueA = parseInput(this.value);
+      renderAll();
+    });
+    document.getElementById('input-b').addEventListener('input', function() {
+      valueB = parseInput(this.value);
+      renderAll();
+    });
+
+    document.getElementById('shift-slider').addEventListener('input', function() {
+      document.getElementById('shift-val').textContent = this.value;
+      renderAll();
+    });
+
+    // Init
+    updatePlaceholders();
+    valueA = 42;
+    valueB = 15;
+    updateInputDisplay();
+    renderAll();
+  </script>
+</body>
+</html>

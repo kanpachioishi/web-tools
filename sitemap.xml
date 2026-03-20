@@ -231,6 +231,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://simpletoolkit.net/tools/radix-converter/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/ohms-law/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/led-resistor/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/resistor-color/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/bitwise-calc/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://simpletoolkit.net/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

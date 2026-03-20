@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オームの法則計算機 - 電圧・電流・抵抗を自動計算｜SimpleToolkit</title>
+  <meta name="description" content="電圧(V)・電流(I)・抵抗(R)のうち2つを入力すれば残りを自動計算。電力(W)も同時に表示。回路図付きで直感的に理解できるオームの法則計算ツール。">
+  <meta property="og:title" content="オームの法則計算機 - 電圧・電流・抵抗を自動計算｜SimpleToolkit">
+  <meta property="og:description" content="電圧(V)・電流(I)・抵抗(R)のうち2つを入力すれば残りを自動計算。電力(W)も同時に表示。回路図付きで直感的に理解できる無料ツール。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/ohms-law/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "オームの法則計算機 - 電圧・電流・抵抗を自動計算",
+    "description": "電圧(V)・電流(I)・抵抗(R)のうち2つを入力すれば残りを自動計算。電力(W)も同時に表示。回路図付きで直感的に理解できるオームの法則計算ツール。",
+    "url": "https://simpletoolkit.net/tools/ohms-law/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "オームの法則とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "オームの法則は電気回路の基本法則で、電圧(V) = 電流(I) × 抵抗(R) という関係を表します。1827年にドイツの物理学者ゲオルク・オームが発見しました。この法則により、3つの値のうち2つが分かれば残りの1つを計算できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "電力（ワット）はどう計算しますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "電力(P)はワット(W)で表され、P = V × I（電圧 × 電流）で計算できます。オームの法則と組み合わせると、P = I²× R や P = V²/ R でも求められます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "mA（ミリアンペア）とA（アンペア）の変換方法は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "1A = 1000mA です。ミリアンペアからアンペアに変換するには1000で割り、アンペアからミリアンペアに変換するには1000を掛けます。本ツールでは単位を自動変換して表示します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。入力データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    /* Mode selector */
+    .mode-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .mode-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .mode-btn:hover {
+      border-color: var(--primary);
+    }
+    .mode-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .mode-btn small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.75rem;
+      margin-top: 2px;
+      opacity: 0.8;
+    }
+
+    /* Input group */
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .input-field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      flex: 1;
+    }
+    .input-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field input:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .input-field select {
+      padding: 10px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Result area */
+    .result-area {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-area.show {
+      display: block;
+    }
+    .result-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .result-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .result-card.highlight {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .result-card .result-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-card .result-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .result-card .result-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Circuit diagram */
+    .diagram-section {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      justify-content: center;
+    }
+    .diagram-box {
+      flex: 1;
+      min-width: 260px;
+      max-width: 400px;
+      text-align: center;
+    }
+    .diagram-box h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .circuit-svg, .wheel-svg {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+    }
+
+    /* Formula section */
+    .formula-section {
+      margin-top: 28px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .formula-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .formula-item {
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .formula-item span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .result-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+      .mode-btn {
+        min-width: 100px;
+        padding: 8px 6px;
+        font-size: 0.8rem;
+      }
+      .diagram-section {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>オームの法則計算機</h1>
+    <h2>電圧・電流・抵抗を無料オンライン自動計算</h2>
+    <p class="tool-description">電圧(V)・電流(I)・抵抗(R)のうち2つの値を入力すると、残りの値と電力(W)を自動計算します。回路図とオームの法則ホイール付きで直感的に理解できます。</p>
+
+    <div class="tool-area">
+      <!-- Mode selector -->
+      <h3 style="font-size:0.95rem; margin-bottom:8px;">計算モードを選択</h3>
+      <div class="mode-selector">
+        <button class="mode-btn active" onclick="setMode('vr')" id="mode-vr">
+          V と R から計算
+          <small>電流 I を求める</small>
+        </button>
+        <button class="mode-btn" onclick="setMode('vi')" id="mode-vi">
+          V と I から計算
+          <small>抵抗 R を求める</small>
+        </button>
+        <button class="mode-btn" onclick="setMode('ir')" id="mode-ir">
+          I と R から計算
+          <small>電圧 V を求める</small>
+        </button>
+      </div>
+
+      <!-- Input fields -->
+      <div class="input-group">
+        <div class="input-field" id="field-v">
+          <label for="input-v">電圧 V</label>
+          <div class="input-row">
+            <input type="number" id="input-v" placeholder="5" step="any">
+            <select id="unit-v" onchange="calculate()">
+              <option value="1">V</option>
+              <option value="0.001">mV</option>
+              <option value="1000">kV</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-field" id="field-i">
+          <label for="input-i">電流 I</label>
+          <div class="input-row">
+            <input type="number" id="input-i" placeholder="0.5" step="any">
+            <select id="unit-i" onchange="calculate()">
+              <option value="1">A</option>
+              <option value="0.001">mA</option>
+              <option value="0.000001">&mu;A</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-field" id="field-r">
+          <label for="input-r">抵抗 R</label>
+          <div class="input-row">
+            <input type="number" id="input-r" placeholder="10" step="any">
+            <select id="unit-r" onchange="calculate()">
+              <option value="1">&Omega;</option>
+              <option value="1000">k&Omega;</option>
+              <option value="1000000">M&Omega;</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">計算する</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <!-- Results -->
+      <div class="result-area" id="result-area">
+        <div class="result-cards">
+          <div class="result-card" id="card-v">
+            <div class="result-label">電圧 V</div>
+            <div class="result-value" id="res-v">-</div>
+            <div class="result-sub" id="res-v-sub"></div>
+          </div>
+          <div class="result-card" id="card-i">
+            <div class="result-label">電流 I</div>
+            <div class="result-value" id="res-i">-</div>
+            <div class="result-sub" id="res-i-sub"></div>
+          </div>
+          <div class="result-card" id="card-r">
+            <div class="result-label">抵抗 R</div>
+            <div class="result-value" id="res-r">-</div>
+            <div class="result-sub" id="res-r-sub"></div>
+          </div>
+          <div class="result-card" id="card-p">
+            <div class="result-label">電力 P</div>
+            <div class="result-value" id="res-p">-</div>
+            <div class="result-sub" id="res-p-sub"></div>
+          </div>
+        </div>
+
+        <!-- Diagrams -->
+        <div class="diagram-section">
+          <div class="diagram-box">
+            <h3>回路図</h3>
+            <svg class="circuit-svg" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+              <!-- Wires -->
+              <line x1="60" y1="40" x2="260" y2="40" stroke="#333" stroke-width="2.5"/>
+              <line x1="60" y1="180" x2="260" y2="180" stroke="#333" stroke-width="2.5"/>
+              <line x1="60" y1="40" x2="60" y2="180" stroke="#333" stroke-width="2.5"/>
+              <line x1="260" y1="40" x2="260" y2="180" stroke="#333" stroke-width="2.5"/>
+
+              <!-- Battery (left side) -->
+              <line x1="50" y1="95" x2="70" y2="95" stroke="#333" stroke-width="3"/>
+              <line x1="45" y1="115" x2="75" y2="115" stroke="#333" stroke-width="1.5"/>
+              <line x1="50" y1="105" x2="70" y2="105" stroke="#333" stroke-width="3"/>
+              <line x1="45" y1="125" x2="75" y2="125" stroke="#333" stroke-width="1.5"/>
+              <rect x="48" y="85" width="24" height="50" fill="white" stroke="none"/>
+              <line x1="52" y1="90" x2="68" y2="90" stroke="#333" stroke-width="3.5"/>
+              <line x1="56" y1="100" x2="64" y2="100" stroke="#333" stroke-width="2"/>
+              <line x1="52" y1="110" x2="68" y2="110" stroke="#333" stroke-width="3.5"/>
+              <line x1="56" y1="120" x2="64" y2="120" stroke="#333" stroke-width="2"/>
+              <text x="28" y="110" font-size="14" font-weight="bold" fill="#2563eb" id="circuit-v-label">V</text>
+
+              <!-- Resistor (top, zigzag) -->
+              <rect x="120" y="28" width="80" height="24" fill="white" stroke="none"/>
+              <polyline points="120,40 130,28 145,52 160,28 175,52 190,28 200,40" fill="none" stroke="#333" stroke-width="2.5"/>
+              <text x="155" y="22" font-size="14" font-weight="bold" fill="#e65100" text-anchor="middle" id="circuit-r-label">R</text>
+
+              <!-- Current arrow (bottom) -->
+              <line x1="180" y1="180" x2="100" y2="180" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowGreen)"/>
+              <text x="140" y="204" font-size="14" font-weight="bold" fill="#16a34a" text-anchor="middle" id="circuit-i-label">I</text>
+
+              <!-- Arrow marker -->
+              <defs>
+                <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+                </marker>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="diagram-box">
+            <h3>オームの法則ホイール</h3>
+            <svg class="wheel-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+              <!-- Outer circle -->
+              <circle cx="140" cy="140" r="130" fill="none" stroke="#e2e8f0" stroke-width="3"/>
+
+              <!-- Inner dividing lines -->
+              <line x1="140" y1="10" x2="140" y2="270" stroke="#e2e8f0" stroke-width="2"/>
+              <line x1="10" y1="140" x2="270" y2="140" stroke="#e2e8f0" stroke-width="2"/>
+
+              <!-- Center circle for V=IR -->
+              <circle cx="140" cy="140" r="50" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="2"/>
+              <text x="140" y="133" font-size="16" font-weight="bold" fill="#2563eb" text-anchor="middle">V = I x R</text>
+              <text x="140" y="153" font-size="12" fill="#2563eb" text-anchor="middle">P = V x I</text>
+
+              <!-- Top-left: V formulas -->
+              <text x="70" y="55" font-size="14" font-weight="bold" fill="#2563eb" text-anchor="middle">V</text>
+              <text x="70" y="75" font-size="11" fill="#555" text-anchor="middle">I x R</text>
+              <text x="70" y="92" font-size="11" fill="#555" text-anchor="middle">P / I</text>
+              <text x="70" y="109" font-size="11" fill="#555" text-anchor="middle">&radic;(P x R)</text>
+
+              <!-- Top-right: I formulas -->
+              <text x="210" y="55" font-size="14" font-weight="bold" fill="#16a34a" text-anchor="middle">I</text>
+              <text x="210" y="75" font-size="11" fill="#555" text-anchor="middle">V / R</text>
+              <text x="210" y="92" font-size="11" fill="#555" text-anchor="middle">P / V</text>
+              <text x="210" y="109" font-size="11" fill="#555" text-anchor="middle">&radic;(P / R)</text>
+
+              <!-- Bottom-left: R formulas -->
+              <text x="70" y="180" font-size="14" font-weight="bold" fill="#e65100" text-anchor="middle">R</text>
+              <text x="70" y="200" font-size="11" fill="#555" text-anchor="middle">V / I</text>
+              <text x="70" y="217" font-size="11" fill="#555" text-anchor="middle">V&#xb2; / P</text>
+              <text x="70" y="234" font-size="11" fill="#555" text-anchor="middle">P / I&#xb2;</text>
+
+              <!-- Bottom-right: P formulas -->
+              <text x="210" y="180" font-size="14" font-weight="bold" fill="#9333ea" text-anchor="middle">P</text>
+              <text x="210" y="200" font-size="11" fill="#555" text-anchor="middle">V x I</text>
+              <text x="210" y="217" font-size="11" fill="#555" text-anchor="middle">I&#xb2; x R</text>
+              <text x="210" y="234" font-size="11" fill="#555" text-anchor="middle">V&#xb2; / R</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formula reference -->
+      <div class="formula-section">
+        <h3>基本公式</h3>
+        <div class="formula-grid">
+          <div class="formula-item">V = I &times; R<span>電圧 = 電流 &times; 抵抗</span></div>
+          <div class="formula-item">I = V / R<span>電流 = 電圧 / 抵抗</span></div>
+          <div class="formula-item">R = V / I<span>抵抗 = 電圧 / 電流</span></div>
+          <div class="formula-item">P = V &times; I<span>電力 = 電圧 &times; 電流</span></div>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI計算</h3>
+          <p>身長と体重からBMIを瞬時に計算</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ生成</h3>
+          <p>MD5/SHA-1/SHA-256などのハッシュ値を生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var currentMode = 'vr'; // vr, vi, ir
+
+    function setMode(mode) {
+      currentMode = mode;
+
+      // Update button styles
+      document.querySelectorAll('.mode-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      document.getElementById('mode-' + mode).classList.add('active');
+
+      // Enable/disable inputs based on mode
+      var inputV = document.getElementById('input-v');
+      var inputI = document.getElementById('input-i');
+      var inputR = document.getElementById('input-r');
+
+      inputV.disabled = false;
+      inputI.disabled = false;
+      inputR.disabled = false;
+
+      if (mode === 'vr') {
+        inputI.disabled = true;
+        inputI.value = '';
+      } else if (mode === 'vi') {
+        inputR.disabled = true;
+        inputR.value = '';
+      } else if (mode === 'ir') {
+        inputV.disabled = true;
+        inputV.value = '';
+      }
+
+      // Recalculate if possible
+      calculate();
+    }
+
+    function getInputValue(id, unitId) {
+      var raw = parseFloat(document.getElementById(id).value);
+      if (isNaN(raw)) return NaN;
+      var multiplier = parseFloat(document.getElementById(unitId).value);
+      return raw * multiplier;
+    }
+
+    function formatValue(val, unit, units) {
+      // units: array of { threshold, suffix, divisor }
+      if (!units) return val.toPrecision(6).replace(/\.?0+$/, '') + ' ' + unit;
+
+      for (var i = 0; i < units.length; i++) {
+        var u = units[i];
+        var absVal = Math.abs(val);
+        if (absVal >= u.min && absVal < u.max) {
+          var displayed = val / u.divisor;
+          return displayed.toPrecision(6).replace(/\.?0+$/, '') + ' ' + u.suffix;
+        }
+      }
+      return val.toPrecision(6).replace(/\.?0+$/, '') + ' ' + unit;
+    }
+
+    var voltageUnits = [
+      { min: 0, max: 0.001, divisor: 0.000001, suffix: '\u00B5V' },
+      { min: 0.001, max: 1, divisor: 0.001, suffix: 'mV' },
+      { min: 1, max: 1000, divisor: 1, suffix: 'V' },
+      { min: 1000, max: Infinity, divisor: 1000, suffix: 'kV' }
+    ];
+
+    var currentUnits = [
+      { min: 0, max: 0.000001, divisor: 0.000000001, suffix: 'nA' },
+      { min: 0.000001, max: 0.001, divisor: 0.000001, suffix: '\u00B5A' },
+      { min: 0.001, max: 1, divisor: 0.001, suffix: 'mA' },
+      { min: 1, max: Infinity, divisor: 1, suffix: 'A' }
+    ];
+
+    var resistanceUnits = [
+      { min: 0, max: 1000, divisor: 1, suffix: '\u03A9' },
+      { min: 1000, max: 1000000, divisor: 1000, suffix: 'k\u03A9' },
+      { min: 1000000, max: Infinity, divisor: 1000000, suffix: 'M\u03A9' }
+    ];
+
+    var powerUnits = [
+      { min: 0, max: 0.001, divisor: 0.000001, suffix: '\u00B5W' },
+      { min: 0.001, max: 1, divisor: 0.001, suffix: 'mW' },
+      { min: 1, max: 1000, divisor: 1, suffix: 'W' },
+      { min: 1000, max: Infinity, divisor: 1000, suffix: 'kW' }
+    ];
+
+    function formatAuto(val, unitArray) {
+      if (val === 0) return '0 ' + unitArray[0].suffix;
+      var absVal = Math.abs(val);
+      for (var i = 0; i < unitArray.length; i++) {
+        if (absVal >= unitArray[i].min && absVal < unitArray[i].max) {
+          var displayed = val / unitArray[i].divisor;
+          // Smart rounding
+          if (Math.abs(displayed) >= 100) {
+            return parseFloat(displayed.toFixed(2)) + ' ' + unitArray[i].suffix;
+          } else if (Math.abs(displayed) >= 1) {
+            return parseFloat(displayed.toFixed(4)) + ' ' + unitArray[i].suffix;
+          } else {
+            return parseFloat(displayed.toPrecision(4)) + ' ' + unitArray[i].suffix;
+          }
+        }
+      }
+      return parseFloat(val.toPrecision(4)) + ' ' + unitArray[unitArray.length - 1].suffix;
+    }
+
+    function formatRaw(val, unit) {
+      if (Math.abs(val) >= 100) return parseFloat(val.toFixed(4)) + ' ' + unit;
+      if (Math.abs(val) >= 1) return parseFloat(val.toFixed(6)) + ' ' + unit;
+      return parseFloat(val.toPrecision(6)) + ' ' + unit;
+    }
+
+    function calculate() {
+      var V, I, R, P;
+
+      if (currentMode === 'vr') {
+        V = getInputValue('input-v', 'unit-v');
+        R = getInputValue('input-r', 'unit-r');
+        if (isNaN(V) || isNaN(R) || R === 0) {
+          document.getElementById('result-area').classList.remove('show');
+          return;
+        }
+        I = V / R;
+        P = V * I;
+      } else if (currentMode === 'vi') {
+        V = getInputValue('input-v', 'unit-v');
+        I = getInputValue('input-i', 'unit-i');
+        if (isNaN(V) || isNaN(I) || I === 0) {
+          document.getElementById('result-area').classList.remove('show');
+          return;
+        }
+        R = V / I;
+        P = V * I;
+      } else if (currentMode === 'ir') {
+        I = getInputValue('input-i', 'unit-i');
+        R = getInputValue('input-r', 'unit-r');
+        if (isNaN(I) || isNaN(R)) {
+          document.getElementById('result-area').classList.remove('show');
+          return;
+        }
+        V = I * R;
+        P = V * I;
+      }
+
+      // Display results
+      document.getElementById('res-v').textContent = formatAuto(V, voltageUnits);
+      document.getElementById('res-i').textContent = formatAuto(I, currentUnits);
+      document.getElementById('res-r').textContent = formatAuto(R, resistanceUnits);
+      document.getElementById('res-p').textContent = formatAuto(P, powerUnits);
+
+      // Sub values (raw SI units)
+      document.getElementById('res-v-sub').textContent = formatRaw(V, 'V');
+      document.getElementById('res-i-sub').textContent = formatRaw(I, 'A');
+      document.getElementById('res-r-sub').textContent = formatRaw(R, '\u03A9');
+      document.getElementById('res-p-sub').textContent = formatRaw(P, 'W');
+
+      // Highlight calculated card
+      var cards = ['card-v', 'card-i', 'card-r', 'card-p'];
+      cards.forEach(function(id) {
+        document.getElementById(id).classList.remove('highlight');
+      });
+      document.getElementById('card-p').classList.add('highlight');
+      if (currentMode === 'vr') {
+        document.getElementById('card-i').classList.add('highlight');
+      } else if (currentMode === 'vi') {
+        document.getElementById('card-r').classList.add('highlight');
+      } else if (currentMode === 'ir') {
+        document.getElementById('card-v').classList.add('highlight');
+      }
+
+      // Update circuit labels
+      document.getElementById('circuit-v-label').textContent = formatAuto(V, voltageUnits);
+      document.getElementById('circuit-i-label').textContent = formatAuto(I, currentUnits);
+      document.getElementById('circuit-r-label').textContent = formatAuto(R, resistanceUnits);
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function clearForm() {
+      document.getElementById('input-v').value = '';
+      document.getElementById('input-i').value = '';
+      document.getElementById('input-r').value = '';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    // Real-time calculation on input
+    ['input-v', 'input-i', 'input-r'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', function() {
+        calculate();
+      });
+      document.getElementById(id).addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calculate();
+      });
+    });
+
+    // Initialize mode
+    setMode('vr');
+  </script>
+</body>
+</html>
