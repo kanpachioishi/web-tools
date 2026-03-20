@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>口調変換ツール - ギャル語/武士語/関西弁に無料オンライン変換｜SimpleToolkit</title>
+  <meta name="description" content="文章をギャル語・武士語・関西弁・猫語・敬語・タメ口に一発変換！コピー＆SNSシェア対応。登録不要・無料のオンライン口調変換ツール。">
+  <meta property="og:title" content="口調変換ツール - ギャル語/武士語/関西弁に無料オンライン変換｜SimpleToolkit">
+  <meta property="og:description" content="文章をギャル語・武士語・関西弁・猫語・敬語・タメ口に一発変換！コピー＆SNSシェア対応。登録不要・無料。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/tone-converter/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "口調変換ツール - ギャル語/武士語/関西弁に無料オンライン変換",
+    "description": "文章をギャル語・武士語・関西弁・猫語・敬語・タメ口に一発変換。登録不要・無料のオンライン口調変換ツール。",
+    "url": "https://simpletoolkit.net/tools/tone-converter/",
+    "applicationCategory": "EntertainmentApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "口調変換ツールとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "入力した文章をギャル語・武士語・関西弁・猫語・敬語・タメ口など、さまざまな口調に自動変換するツールです。ルールベースの変換で、AIやサーバーは使用しません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "変換できる口調の種類は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ギャル語、武士語、関西弁、猫語、敬語からタメ口、タメ口から敬語の6種類に対応しています。ボタンを押すだけで簡単に変換できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したテキストは外部に送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての変換処理はブラウザ内で完結します。入力したテキストがサーバーや外部サービスに送信されることはありません。安心してご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "SNSでシェアできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、変換結果をX（Twitter）やLINEで簡単にシェアできるボタンを用意しています。面白い変換結果をぜひ友達にシェアしてください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .tone-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tone-btn {
+      padding: 10px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tone-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .tone-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .tone-btn .tone-emoji {
+      margin-right: 4px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--bg);
+      color: var(--text);
+      resize: vertical;
+      line-height: 1.6;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .result-area {
+      display: none;
+      margin-top: 20px;
+    }
+    .result-area.show {
+      display: block;
+    }
+    .result-box {
+      background: var(--bg);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 16px;
+      min-height: 80px;
+      font-size: 1rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .result-label {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .action-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .action-btn.copied {
+      border-color: #16a34a;
+      color: #16a34a;
+    }
+    .share-x { border-color: #000; color: #000; }
+    .share-x:hover { background: #000; color: #fff; }
+    .share-line { border-color: #06c755; color: #06c755; }
+    .share-line:hover { background: #06c755; color: #fff; }
+
+    .example-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .example-text:hover {
+      color: var(--primary);
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .tone-btn {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>口調変換ツール</h1>
+    <h2>ギャル語・武士語・関西弁・猫語に無料オンライン変換</h2>
+    <p class="tool-description">入力した文章をさまざまな口調に一発変換！ギャル語・武士語・関西弁・猫語・敬語・タメ口の6種類に対応。面白い変換結果をSNSでシェアしよう。すべてブラウザ内で処理、登録不要・完全無料。</p>
+
+    <div class="tool-area">
+      <label style="font-weight:600;margin-bottom:8px;display:block;">変換する口調を選択</label>
+      <div class="tone-buttons">
+        <button class="tone-btn active" data-tone="gal" onclick="selectTone(this)"><span class="tone-emoji">&#x1F484;</span>ギャル語</button>
+        <button class="tone-btn" data-tone="samurai" onclick="selectTone(this)"><span class="tone-emoji">&#x2694;&#xFE0F;</span>武士語</button>
+        <button class="tone-btn" data-tone="kansai" onclick="selectTone(this)"><span class="tone-emoji">&#x1F363;</span>関西弁</button>
+        <button class="tone-btn" data-tone="cat" onclick="selectTone(this)"><span class="tone-emoji">&#x1F431;</span>猫語</button>
+        <button class="tone-btn" data-tone="casual" onclick="selectTone(this)"><span class="tone-emoji">&#x270C;&#xFE0F;</span>敬語→タメ口</button>
+        <button class="tone-btn" data-tone="polite" onclick="selectTone(this)"><span class="tone-emoji">&#x1F64F;</span>タメ口→敬語</button>
+      </div>
+
+      <label for="input-text" style="font-weight:600;margin-bottom:8px;display:block;">変換する文章を入力</label>
+      <textarea id="input-text" placeholder="ここに文章を入力してください...&#10;&#10;例: 今日はすごいいい天気ですね。本当に嬉しいです。"></textarea>
+      <div class="char-count"><span id="char-count">0</span> 文字</div>
+      <p class="example-text" onclick="insertExample()">&#x1F4DD; サンプル文章を入力する</p>
+
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn" onclick="convertTone()">変換する</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="result-label" id="result-label"></div>
+        <div class="result-box" id="result-box"></div>
+        <div class="action-buttons">
+          <button class="action-btn" id="copy-btn" onclick="copyResult()">&#x1F4CB; コピー</button>
+          <a class="action-btn share-x" id="share-x" href="#" target="_blank" rel="noopener">&#x1D54F; でシェア</a>
+          <a class="action-btn share-line" id="share-line" href="#" target="_blank" rel="noopener">LINE でシェア</a>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>文字列の一括置換・正規表現にも対応</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../zenkaku-hankaku/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">全角半角変換</h3>
+          <p>全角・半角を相互に一発変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var currentTone = 'gal';
+
+    function selectTone(el) {
+      var buttons = document.querySelectorAll('.tone-btn');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('active');
+      }
+      el.classList.add('active');
+      currentTone = el.getAttribute('data-tone');
+      // Auto-convert if there's already text and a result is showing
+      if (document.getElementById('result-area').classList.contains('show') && document.getElementById('input-text').value.trim()) {
+        convertTone();
+      }
+    }
+
+    function insertExample() {
+      document.getElementById('input-text').value = '今日はすごいいい天気ですね。本当に嬉しいです。明日も天気がいいといいですね。私はあなたと一緒に出かけたいです。ご飯を食べるのが楽しみです。それは本当にすごいことだと思います。';
+      updateCharCount();
+    }
+
+    function updateCharCount() {
+      var text = document.getElementById('input-text').value;
+      document.getElementById('char-count').textContent = text.length;
+    }
+
+    document.getElementById('input-text').addEventListener('input', updateCharCount);
+
+    var toneNames = {
+      gal: 'ギャル語',
+      samurai: '武士語',
+      kansai: '関西弁',
+      cat: '猫語',
+      casual: 'タメ口',
+      polite: '敬語'
+    };
+
+    function convertTone() {
+      var text = document.getElementById('input-text').value.trim();
+      if (!text) {
+        alert('文章を入力してください。');
+        return;
+      }
+
+      var result = '';
+      switch (currentTone) {
+        case 'gal':
+          result = toGal(text);
+          break;
+        case 'samurai':
+          result = toSamurai(text);
+          break;
+        case 'kansai':
+          result = toKansai(text);
+          break;
+        case 'cat':
+          result = toCat(text);
+          break;
+        case 'casual':
+          result = toCasual(text);
+          break;
+        case 'polite':
+          result = toPolite(text);
+          break;
+      }
+
+      document.getElementById('result-label').textContent = toneNames[currentTone] + 'に変換';
+      document.getElementById('result-box').textContent = result;
+      document.getElementById('result-area').classList.add('show');
+
+      // Update share links
+      var shareText = '【口調変換ツール】' + toneNames[currentTone] + 'に変換してみた！\n\n' + result.substring(0, 100) + (result.length > 100 ? '...' : '');
+      var shareUrl = 'https://simpletoolkit.net/tools/tone-converter/';
+      document.getElementById('share-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(shareUrl);
+      document.getElementById('share-line').href = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(shareText);
+    }
+
+    // --- Conversion functions ---
+
+    function toGal(text) {
+      var t = text;
+      // Longer patterns first
+      t = t.replace(/すごい/g, 'まぢヤバい');
+      t = t.replace(/すごく/g, 'まぢヤバく');
+      t = t.replace(/本当に/g, 'マヂで');
+      t = t.replace(/本当/g, 'マヂ');
+      t = t.replace(/とても/g, 'めっちゃ');
+      t = t.replace(/ありがとう/g, 'あざーす');
+      t = t.replace(/おはよう/g, 'おはよ～');
+      t = t.replace(/こんにちは/g, 'やっほー');
+      t = t.replace(/かわいい/g, 'かわゆす');
+      t = t.replace(/うれしい/g, 'うれぴー');
+      t = t.replace(/嬉しい/g, 'うれぴー');
+      t = t.replace(/楽しい/g, 'たのぴー');
+      t = t.replace(/楽しみ/g, 'たのしみぃ');
+      t = t.replace(/ました/g, 'たょ');
+      t = t.replace(/ません/g, 'なぃょ');
+      t = t.replace(/ですね/g, 'だょね');
+      t = t.replace(/ですか/g, 'なの？');
+      t = t.replace(/ですよ/g, 'だょ');
+      t = t.replace(/です/g, 'だょ');
+      t = t.replace(/ますね/g, 'まぁすね');
+      t = t.replace(/ますか/g, 'まぁすか');
+      t = t.replace(/ます/g, 'まぁす');
+      t = t.replace(/ない/g, 'なぃ');
+      t = t.replace(/思います/g, '思うょ');
+      t = t.replace(/思う/g, '思うょ');
+      // Add endings
+      var suffixes = ['☆', '♡', '～♪', 'っ！', 'ぉ☆'];
+      t = t.replace(/。/g, function() {
+        return suffixes[Math.floor(Math.random() * suffixes.length)];
+      });
+      return t;
+    }
+
+    function toSamurai(text) {
+      var t = text;
+      t = t.replace(/私は/g, '拙者は');
+      t = t.replace(/私の/g, '拙者の');
+      t = t.replace(/私が/g, '拙者が');
+      t = t.replace(/私も/g, '拙者も');
+      t = t.replace(/あなた/g, 'そなた');
+      t = t.replace(/食べる/g, '食す');
+      t = t.replace(/食べた/g, '食した');
+      t = t.replace(/食べて/g, '食して');
+      t = t.replace(/食べたい/g, '食したい');
+      t = t.replace(/すごい/g, '誠に見事な');
+      t = t.replace(/すごく/g, '誠に');
+      t = t.replace(/本当に/g, '真に');
+      t = t.replace(/本当/g, '真');
+      t = t.replace(/ありがとう/g, 'かたじけない');
+      t = t.replace(/すみません/g, '申し訳ござらぬ');
+      t = t.replace(/ごめん/g, '許されよ');
+      t = t.replace(/嬉しい/g, '喜ばしい');
+      t = t.replace(/楽しい/g, '愉快である');
+      t = t.replace(/楽しみ/g, '心待ちにしておる');
+      t = t.replace(/出かけたい/g, '出陣したい');
+      t = t.replace(/ました/g, 'たでござる');
+      t = t.replace(/ません/g, 'ぬでござる');
+      t = t.replace(/ですね/g, 'でござるな');
+      t = t.replace(/ですか/g, 'でござるか');
+      t = t.replace(/ですよ/g, 'でござるよ');
+      t = t.replace(/です/g, 'でござる');
+      t = t.replace(/ますね/g, 'まするな');
+      t = t.replace(/ますか/g, 'まするか');
+      t = t.replace(/ます/g, 'まする');
+      t = t.replace(/ない/g, 'ござらぬ');
+      t = t.replace(/だと思う/g, 'であろう');
+      t = t.replace(/思います/g, '思うでござる');
+      t = t.replace(/思う/g, '思うでござる');
+      return t;
+    }
+
+    function toKansai(text) {
+      var t = text;
+      t = t.replace(/すごい/g, 'めっちゃ');
+      t = t.replace(/すごく/g, 'めっちゃ');
+      t = t.replace(/本当に/g, 'ほんまに');
+      t = t.replace(/本当/g, 'ほんま');
+      t = t.replace(/とても/g, 'めっちゃ');
+      t = t.replace(/ありがとう/g, 'おおきに');
+      t = t.replace(/だから/g, 'やから');
+      t = t.replace(/だけど/g, 'やけど');
+      t = t.replace(/だって/g, 'やって');
+      t = t.replace(/嬉しい/g, 'うれしいわぁ');
+      t = t.replace(/楽しい/g, 'おもろい');
+      t = t.replace(/楽しみ/g, '楽しみやわ');
+      t = t.replace(/ました/g, 'ましたで');
+      t = t.replace(/ません/g, 'まへん');
+      t = t.replace(/ですね/g, 'やね');
+      t = t.replace(/ですか/g, 'でっか');
+      t = t.replace(/ですよ/g, 'やで');
+      t = t.replace(/です/g, 'やで');
+      t = t.replace(/ますね/g, 'まっせな');
+      t = t.replace(/ますか/g, 'まっか');
+      t = t.replace(/ます/g, 'まっせ');
+      t = t.replace(/ない/g, 'あらへん');
+      t = t.replace(/だと思う/g, 'やと思うわ');
+      t = t.replace(/思います/g, '思うで');
+      t = t.replace(/思う/g, '思うわ');
+      t = t.replace(/いいね/g, 'ええやん');
+      t = t.replace(/いい/g, 'ええ');
+      return t;
+    }
+
+    function toCat(text) {
+      var t = text;
+      // Replace な with にゃ (but not inside certain words)
+      t = t.replace(/な/g, 'にゃ');
+      // Fix common broken words from な→にゃ replacement
+      t = t.replace(/にゃい/g, 'ないにゃ');
+      // Add cat endings to sentences
+      var catEndings = ['にゃん', 'にゃ～', 'にゃ！', 'にゃんにゃん'];
+      t = t.replace(/。/g, function() {
+        return catEndings[Math.floor(Math.random() * catEndings.length)];
+      });
+      t = t.replace(/！/g, 'にゃ！');
+      t = t.replace(/？/g, 'にゃ？');
+      return t;
+    }
+
+    function toCasual(text) {
+      var t = text;
+      t = t.replace(/いたします/g, 'するよ');
+      t = t.replace(/いただけますでしょうか/g, 'くれない？');
+      t = t.replace(/いただけますか/g, 'くれる？');
+      t = t.replace(/いただきます/g, 'もらうね');
+      t = t.replace(/でしょうか/g, 'かな？');
+      t = t.replace(/でしょう/g, 'でしょ');
+      t = t.replace(/ございます/g, 'あるよ');
+      t = t.replace(/ください/g, 'して');
+      t = t.replace(/ました/g, 'したよ');
+      t = t.replace(/ません/g, 'ないよ');
+      t = t.replace(/ですね/g, 'だね');
+      t = t.replace(/ですか/g, 'なの？');
+      t = t.replace(/ですよ/g, 'だよ');
+      t = t.replace(/です/g, 'だよ');
+      t = t.replace(/ますね/g, 'るね');
+      t = t.replace(/ますか/g, 'る？');
+      t = t.replace(/ます/g, 'るよ');
+      t = t.replace(/申し上げ/g, '言う');
+      t = t.replace(/存じ/g, '知って');
+      t = t.replace(/おっしゃ/g, '言');
+      return t;
+    }
+
+    function toPolite(text) {
+      var t = text;
+      t = t.replace(/じゃん/g, 'ですよね');
+      t = t.replace(/だよね/g, 'ですよね');
+      t = t.replace(/だよな/g, 'ですよね');
+      t = t.replace(/だよ/g, 'です');
+      t = t.replace(/だね/g, 'ですね');
+      t = t.replace(/だな/g, 'ですね');
+      t = t.replace(/だぜ/g, 'ですよ');
+      t = t.replace(/だろ/g, 'でしょう');
+      t = t.replace(/するよ/g, 'します');
+      t = t.replace(/するね/g, 'しますね');
+      t = t.replace(/してよ/g, 'してください');
+      t = t.replace(/して！/g, 'してください！');
+      t = t.replace(/しろよ/g, 'してください');
+      t = t.replace(/くれる？/g, 'いただけますか？');
+      t = t.replace(/くれない？/g, 'いただけますか？');
+      t = t.replace(/やばい/g, '素晴らしい');
+      t = t.replace(/ヤバい/g, '素晴らしい');
+      t = t.replace(/マジ/g, '本当に');
+      t = t.replace(/まじ/g, '本当に');
+      t = t.replace(/めっちゃ/g, 'とても');
+      t = t.replace(/超/g, 'とても');
+      t = t.replace(/うまい/g, '美味しい');
+      t = t.replace(/すげー/g, 'すごい');
+      t = t.replace(/すげぇ/g, 'すごい');
+      return t;
+    }
+
+    function copyResult() {
+      var resultText = document.getElementById('result-box').textContent;
+      navigator.clipboard.writeText(resultText).then(function() {
+        var btn = document.getElementById('copy-btn');
+        btn.classList.add('copied');
+        btn.innerHTML = '&#x2705; コピーしました';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          btn.innerHTML = '&#x1F4CB; コピー';
+        }, 2000);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('result-area').classList.remove('show');
+      updateCharCount();
+    }
+
+    // Enter key support (Ctrl+Enter to convert)
+    document.getElementById('input-text').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        convertTone();
+      }
+    });
+  </script>
+</body>
+</html>

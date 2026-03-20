@@ -276,6 +276,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://simpletoolkit.net/tools/pdf-tools/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/reaction-test/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/readability/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/tone-converter/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/english-score/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://simpletoolkit.net/tools/prefecture-quiz/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://simpletoolkit.net/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

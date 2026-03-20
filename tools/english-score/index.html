@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英語テストスコア換算 - TOEIC/TOEFL/IELTS/英検/CEFR対照表｜SimpleToolkit</title>
+  <meta name="description" content="TOEIC・TOEFL iBT・IELTS・英検・CEFRのスコアを無料で一括換算。公式対照表ベースの換算結果を即表示。留学・大学入試に必要なスコア目安も確認できます。">
+  <meta property="og:title" content="英語テストスコア換算 - TOEIC/TOEFL/IELTS/英検/CEFR対照表｜SimpleToolkit">
+  <meta property="og:description" content="TOEIC・TOEFL iBT・IELTS・英検・CEFRのスコアを無料で一括換算。公式対照表ベースの換算結果を即表示。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/english-score/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "英語テストスコア換算 - TOEIC/TOEFL/IELTS/英検/CEFR対照表",
+    "description": "TOEIC・TOEFL iBT・IELTS・英検・CEFRのスコアを無料で一括換算。公式対照表ベースの換算結果を即表示。留学・大学入試に必要なスコア目安も確認できます。",
+    "url": "https://simpletoolkit.net/tools/english-score/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "TOEICとTOEFL iBTのスコアはどう換算できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "TOEICとTOEFL iBTはCEFR（ヨーロッパ言語共通参照枠）を基準に換算できます。例えばTOEIC 785〜944点はTOEFL iBT 95〜113点に相当し、いずれもCEFR C1レベルです。ただし試験の形式が異なるため、あくまで概算となります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "英検とIELTSのスコア換算はできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "英検もIELTSもCEFRレベルに対応付けられています。英検準1級はCEFR B2〜C1、IELTS 5.5〜8.0に概ね相当します。英検2級はCEFR B1〜B2、IELTS 4.0〜6.5程度です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "CEFRとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CEFR（Common European Framework of Reference for Languages）はヨーロッパ言語共通参照枠と呼ばれ、言語能力をA1（入門）からC2（熟達）の6段階で評価する国際基準です。異なる英語テスト間のスコア換算の共通基準として広く使われています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "換算結果はどの程度正確ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "本ツールの換算はCEFRを基準とした公式対照表に基づいていますが、各テストは出題形式や評価基準が異なるため、あくまで概算（目安）です。出願や就職活動の際は、各機関が求める具体的なスコア要件を直接確認してください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したスコアデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての換算処理はブラウザ内で完結します。入力されたスコアが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+    .input-row .input-field {
+      flex: 1;
+      min-width: 160px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    .input-field select,
+    .input-field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field select:focus,
+    .input-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .score-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Result */
+    .convert-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .convert-result.show {
+      display: block;
+    }
+    .cefr-badge {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .cefr-level {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .cefr-label {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .cefr-desc {
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-top: 8px;
+      padding: 12px 16px;
+      background: var(--bg);
+      border-radius: var(--radius);
+      border-left: 4px solid var(--primary);
+    }
+
+    .score-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .score-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .score-card.active {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .score-card .sc-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .score-card .sc-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .score-card .sc-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Full table */
+    .full-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.85rem;
+    }
+    .full-table th, .full-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .full-table th {
+      background: var(--bg);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .full-table .highlight-row {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    /* Requirement table */
+    .req-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+    .req-table th, .req-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .req-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .cefr-level { font-size: 2.2rem; }
+      .score-cards { grid-template-columns: 1fr 1fr; }
+      .full-table, .req-table { font-size: 0.75rem; }
+      .full-table th, .full-table td,
+      .req-table th, .req-table td { padding: 6px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>英語テストスコア換算</h1>
+    <h2>TOEIC / TOEFL iBT / IELTS / 英検 / CEFR 対照表</h2>
+    <p class="tool-description">TOEIC・TOEFL iBT・IELTS・英検・CEFRのスコアを一括換算。テスト種類を選んでスコアを入力するだけで、他のすべてのテストの相当スコアとCEFRレベルを表示します。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-row">
+        <div class="input-field">
+          <label for="test-type">テスト種類</label>
+          <select id="test-type" onchange="updateScoreHint()">
+            <option value="toeic">TOEIC L&R</option>
+            <option value="toefl">TOEFL iBT</option>
+            <option value="ielts">IELTS</option>
+            <option value="eiken">英検</option>
+            <option value="cefr">CEFR</option>
+          </select>
+        </div>
+        <div class="input-field" id="score-input-wrap">
+          <label for="score-value">スコア</label>
+          <input type="number" id="score-value" placeholder="730">
+          <div class="score-hint" id="score-hint">10〜990（5点刻み）</div>
+        </div>
+        <div class="input-field" id="select-input-wrap" style="display:none;">
+          <label for="score-select">レベル</label>
+          <select id="score-select"></select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="convertScore()">換算する</button>
+        <button class="btn btn-secondary" onclick="clearResult()">クリア</button>
+      </div>
+
+      <div class="convert-result" id="convert-result">
+        <div class="cefr-badge">
+          <div class="cefr-level" id="result-cefr"></div>
+          <div class="cefr-label" id="result-cefr-label"></div>
+        </div>
+        <div class="cefr-desc" id="result-cefr-desc"></div>
+
+        <h3 style="margin-top:24px;font-size:1.1rem;">換算結果</h3>
+        <div class="score-cards" id="score-cards"></div>
+      </div>
+    </div>
+
+    <!-- Full conversion table -->
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">スコア換算対照表（全体）</h2>
+      <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">CEFRレベルを基準とした各テストのスコア対照表です。換算はあくまで概算（目安）です。</p>
+      <div style="overflow-x:auto;">
+        <table class="full-table" id="full-table">
+          <thead>
+            <tr>
+              <th>CEFR</th>
+              <th>TOEIC L&R</th>
+              <th>TOEFL iBT</th>
+              <th>IELTS</th>
+              <th>英検</th>
+              <th>レベル概要</th>
+            </tr>
+          </thead>
+          <tbody id="full-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CEFR level descriptions -->
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">CEFRレベル別 できること</h2>
+      <div id="cefr-descriptions"></div>
+    </section>
+
+    <!-- Required scores -->
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">大学入試・留学に必要なスコア目安</h2>
+      <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:12px;">代表的な大学・留学先で求められるスコアの目安です。最新の出願要件は各機関の公式サイトでご確認ください。</p>
+      <div style="overflow-x:auto;">
+        <table class="req-table">
+          <thead>
+            <tr>
+              <th>目的</th>
+              <th>TOEIC</th>
+              <th>TOEFL iBT</th>
+              <th>IELTS</th>
+              <th>英検</th>
+              <th>CEFR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>大学入試（一般）</td>
+              <td>550〜</td>
+              <td>60〜</td>
+              <td>5.0〜</td>
+              <td>2級〜</td>
+              <td>B1〜B2</td>
+            </tr>
+            <tr>
+              <td>大学入試（難関大）</td>
+              <td>785〜</td>
+              <td>80〜</td>
+              <td>6.0〜</td>
+              <td>準1級〜</td>
+              <td>B2〜C1</td>
+            </tr>
+            <tr>
+              <td>大学院入試</td>
+              <td>700〜</td>
+              <td>80〜</td>
+              <td>6.0〜</td>
+              <td>準1級</td>
+              <td>B2〜</td>
+            </tr>
+            <tr>
+              <td>海外大学留学（英語圏）</td>
+              <td>-</td>
+              <td>80〜100</td>
+              <td>6.0〜7.0</td>
+              <td>-</td>
+              <td>B2〜C1</td>
+            </tr>
+            <tr>
+              <td>海外大学院留学</td>
+              <td>-</td>
+              <td>90〜110</td>
+              <td>6.5〜7.5</td>
+              <td>-</td>
+              <td>C1〜</td>
+            </tr>
+            <tr>
+              <td>就職活動（一般企業）</td>
+              <td>600〜</td>
+              <td>-</td>
+              <td>-</td>
+              <td>2級</td>
+              <td>B1〜B2</td>
+            </tr>
+            <tr>
+              <td>就職活動（外資系）</td>
+              <td>860〜</td>
+              <td>100〜</td>
+              <td>7.0〜</td>
+              <td>1級</td>
+              <td>C1〜</td>
+            </tr>
+            <tr>
+              <td>昇進・海外赴任</td>
+              <td>730〜</td>
+              <td>-</td>
+              <td>-</td>
+              <td>準1級</td>
+              <td>B2〜</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // Conversion data: CEFR-based mapping
+    var conversionTable = [
+      {
+        cefr: 'C2',
+        cefrName: '熟達した言語使用者（Mastery）',
+        toeicMin: 945, toeicMax: 990,
+        toeflMin: 114, toeflMax: 120,
+        ieltsMin: 8.5, ieltsMax: 9.0,
+        eiken: '1級',
+        desc: '聞いたり読んだりしたほぼ全てのものを容易に理解できる。様々な話し言葉や書き言葉から得た情報をまとめ、根拠も論点も一貫した方法で再構成できる。自然に、流暢かつ正確に自己表現ができる。'
+      },
+      {
+        cefr: 'C1',
+        cefrName: '熟達した言語使用者（Proficiency）',
+        toeicMin: 785, toeicMax: 944,
+        toeflMin: 95, toeflMax: 113,
+        ieltsMin: 7.0, ieltsMax: 8.0,
+        eiken: '準1級',
+        desc: '広範囲にわたる高度な内容の長い文章を理解し、含意を把握できる。言葉を探しているという印象を与えずに、流暢に自己表現ができる。社会的、学問的、職業上の目的に応じた柔軟かつ効果的な言葉遣いができる。'
+      },
+      {
+        cefr: 'B2',
+        cefrName: '自立した言語使用者（Upper Intermediate）',
+        toeicMin: 550, toeicMax: 784,
+        toeflMin: 72, toeflMax: 94,
+        ieltsMin: 5.5, ieltsMax: 6.5,
+        eiken: '2級',
+        desc: '自分の専門分野の技術的な議論も含めて、抽象的かつ具体的な話題の複雑な文章の主要な内容を理解できる。お互いに緊張せずにネイティブスピーカーとやり取りができるくらい流暢かつ自然である。'
+      },
+      {
+        cefr: 'B1',
+        cefrName: '自立した言語使用者（Intermediate）',
+        toeicMin: 385, toeicMax: 549,
+        toeflMin: 42, toeflMax: 71,
+        ieltsMin: 4.0, ieltsMax: 5.0,
+        eiken: '準2級',
+        desc: '仕事、学校、娯楽で普段出会うような身近な話題について、標準的な話し方であれば主要点を理解できる。その言葉が話されている地域を旅行中に起こりそうな状況に対処できる。'
+      },
+      {
+        cefr: 'A2',
+        cefrName: '基礎段階の言語使用者（Elementary）',
+        toeicMin: 225, toeicMax: 384,
+        toeflMin: null, toeflMax: null,
+        ieltsMin: 3.0, ieltsMax: 3.5,
+        eiken: '3級',
+        desc: 'ごく基本的な個人的情報や家族情報、買い物、近所、仕事など、直接的関係がある領域に関する文やよく使われる表現が理解できる。簡単で日常的な範囲なら情報交換に応じることができる。'
+      },
+      {
+        cefr: 'A1',
+        cefrName: '基礎段階の言語使用者（Beginner）',
+        toeicMin: 120, toeicMax: 224,
+        toeflMin: null, toeflMax: null,
+        ieltsMin: null, ieltsMax: null,
+        eiken: '4〜5級',
+        desc: 'よく使われる日常的表現と基本的な言い回しは理解し、用いることもできる。自分や他人を紹介することができ、どこに住んでいるか、誰と知り合いか、持ち物などの個人的情報について質問をしたり答えたりできる。'
+      }
+    ];
+
+    var eikenOptions = ['1級', '準1級', '2級', '準2級', '3級', '4〜5級'];
+    var cefrOptions = ['C2', 'C1', 'B2', 'B1', 'A2', 'A1'];
+
+    function updateScoreHint() {
+      var testType = document.getElementById('test-type').value;
+      var numWrap = document.getElementById('score-input-wrap');
+      var selWrap = document.getElementById('select-input-wrap');
+      var hint = document.getElementById('score-hint');
+      var scoreInput = document.getElementById('score-value');
+      var scoreSelect = document.getElementById('score-select');
+
+      if (testType === 'eiken' || testType === 'cefr') {
+        numWrap.style.display = 'none';
+        selWrap.style.display = '';
+        scoreSelect.innerHTML = '';
+        var opts = testType === 'eiken' ? eikenOptions : cefrOptions;
+        for (var i = 0; i < opts.length; i++) {
+          var o = document.createElement('option');
+          o.value = opts[i];
+          o.textContent = opts[i];
+          scoreSelect.appendChild(o);
+        }
+      } else {
+        numWrap.style.display = '';
+        selWrap.style.display = 'none';
+        if (testType === 'toeic') {
+          hint.textContent = '10〜990';
+          scoreInput.placeholder = '730';
+          scoreInput.min = 10; scoreInput.max = 990; scoreInput.step = 5;
+        } else if (testType === 'toefl') {
+          hint.textContent = '0〜120';
+          scoreInput.placeholder = '80';
+          scoreInput.min = 0; scoreInput.max = 120; scoreInput.step = 1;
+        } else if (testType === 'ielts') {
+          hint.textContent = '1.0〜9.0（0.5刻み）';
+          scoreInput.placeholder = '6.0';
+          scoreInput.min = 1; scoreInput.max = 9; scoreInput.step = 0.5;
+        }
+      }
+    }
+
+    function findCEFRLevel(testType, value) {
+      for (var i = 0; i < conversionTable.length; i++) {
+        var row = conversionTable[i];
+        if (testType === 'toeic') {
+          if (value >= row.toeicMin && value <= row.toeicMax) return i;
+        } else if (testType === 'toefl') {
+          if (row.toeflMin !== null && value >= row.toeflMin && value <= row.toeflMax) return i;
+        } else if (testType === 'ielts') {
+          if (row.ieltsMin !== null && value >= row.ieltsMin && value <= row.ieltsMax) return i;
+        } else if (testType === 'eiken') {
+          if (row.eiken === value) return i;
+        } else if (testType === 'cefr') {
+          if (row.cefr === value) return i;
+        }
+      }
+      // For numeric scores outside defined ranges, find closest
+      if (testType === 'toeic') {
+        if (value < 120) return 5; // A1
+        if (value > 990) return 0; // C2
+        // between ranges - find closest lower bound
+        for (var i = 0; i < conversionTable.length; i++) {
+          if (value >= conversionTable[i].toeicMin) return i;
+        }
+      } else if (testType === 'toefl') {
+        if (value < 42) return -1; // below measurable
+        if (value > 120) return 0;
+        for (var i = 0; i < conversionTable.length; i++) {
+          if (conversionTable[i].toeflMin !== null && value >= conversionTable[i].toeflMin) return i;
+        }
+      } else if (testType === 'ielts') {
+        if (value < 3.0) return -1;
+        if (value > 9.0) return 0;
+        for (var i = 0; i < conversionTable.length; i++) {
+          if (conversionTable[i].ieltsMin !== null && value >= conversionTable[i].ieltsMin) return i;
+        }
+      }
+      return -1;
+    }
+
+    function convertScore() {
+      var testType = document.getElementById('test-type').value;
+      var value;
+
+      if (testType === 'eiken' || testType === 'cefr') {
+        value = document.getElementById('score-select').value;
+      } else {
+        value = parseFloat(document.getElementById('score-value').value);
+        if (isNaN(value)) {
+          alert('スコアを入力してください。');
+          return;
+        }
+        // Validate range
+        if (testType === 'toeic' && (value < 10 || value > 990)) {
+          alert('TOEICのスコアは10〜990の範囲で入力してください。');
+          return;
+        }
+        if (testType === 'toefl' && (value < 0 || value > 120)) {
+          alert('TOEFL iBTのスコアは0〜120の範囲で入力してください。');
+          return;
+        }
+        if (testType === 'ielts' && (value < 1 || value > 9)) {
+          alert('IELTSのスコアは1.0〜9.0の範囲で入力してください。');
+          return;
+        }
+      }
+
+      var levelIndex = findCEFRLevel(testType, value);
+      if (levelIndex === -1) {
+        alert('入力されたスコアに対応するCEFRレベルが見つかりませんでした。スコアを確認してください。');
+        return;
+      }
+
+      var row = conversionTable[levelIndex];
+
+      // Display CEFR
+      document.getElementById('result-cefr').textContent = row.cefr;
+      document.getElementById('result-cefr-label').textContent = row.cefrName;
+      document.getElementById('result-cefr-desc').textContent = row.desc;
+
+      // Build score cards
+      var cardsHtml = '';
+      var tests = [
+        { key: 'toeic', label: 'TOEIC L&R', value: row.toeicMin + '〜' + row.toeicMax },
+        { key: 'toefl', label: 'TOEFL iBT', value: row.toeflMin !== null ? row.toeflMin + '〜' + row.toeflMax : '対象外' },
+        { key: 'ielts', label: 'IELTS', value: row.ieltsMin !== null ? row.ieltsMin.toFixed(1) + '〜' + row.ieltsMax.toFixed(1) : '対象外' },
+        { key: 'eiken', label: '英検', value: row.eiken },
+        { key: 'cefr', label: 'CEFR', value: row.cefr }
+      ];
+
+      for (var i = 0; i < tests.length; i++) {
+        var t = tests[i];
+        var isActive = (t.key === testType) ? ' active' : '';
+        var note = (t.key === testType) ? '<div class="sc-note">入力テスト</div>' : '';
+        cardsHtml += '<div class="score-card' + isActive + '">' +
+          '<div class="sc-label">' + t.label + '</div>' +
+          '<div class="sc-value">' + t.value + '</div>' +
+          note + '</div>';
+      }
+      document.getElementById('score-cards').innerHTML = cardsHtml;
+
+      // Highlight row in full table
+      highlightFullTable(levelIndex);
+
+      document.getElementById('convert-result').classList.add('show');
+    }
+
+    function clearResult() {
+      document.getElementById('score-value').value = '';
+      document.getElementById('convert-result').classList.remove('show');
+      highlightFullTable(-1);
+    }
+
+    function highlightFullTable(activeIndex) {
+      var rows = document.getElementById('full-table-body').querySelectorAll('tr');
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].className = (i === activeIndex) ? 'highlight-row' : '';
+      }
+    }
+
+    // Build full table and CEFR descriptions on load
+    function buildFullTable() {
+      var tbody = document.getElementById('full-table-body');
+      var html = '';
+      for (var i = 0; i < conversionTable.length; i++) {
+        var r = conversionTable[i];
+        html += '<tr>' +
+          '<td><strong>' + r.cefr + '</strong></td>' +
+          '<td>' + r.toeicMin + '〜' + r.toeicMax + '</td>' +
+          '<td>' + (r.toeflMin !== null ? r.toeflMin + '〜' + r.toeflMax : '-') + '</td>' +
+          '<td>' + (r.ieltsMin !== null ? r.ieltsMin.toFixed(1) + '〜' + r.ieltsMax.toFixed(1) : '-') + '</td>' +
+          '<td>' + r.eiken + '</td>' +
+          '<td style="text-align:left;font-size:0.8rem;">' + r.desc.substring(0, 50) + '...</td>' +
+          '</tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    function buildCEFRDescriptions() {
+      var container = document.getElementById('cefr-descriptions');
+      var html = '';
+      for (var i = 0; i < conversionTable.length; i++) {
+        var r = conversionTable[i];
+        html += '<div style="margin-bottom:16px;padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);">' +
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
+          '<span style="font-size:1.5rem;font-weight:800;color:var(--primary);">' + r.cefr + '</span>' +
+          '<span style="font-size:0.9rem;color:var(--text-muted);">' + r.cefrName + '</span>' +
+          '</div>' +
+          '<p style="margin:0;font-size:0.9rem;line-height:1.6;">' + r.desc + '</p>' +
+          '</div>';
+      }
+      container.innerHTML = html;
+    }
+
+    // Initialize
+    updateScoreHint();
+    buildFullTable();
+    buildCEFRDescriptions();
+
+    // Enter key support
+    document.getElementById('score-value').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') convertScore();
+    });
+  </script>
+</body>
+</html>

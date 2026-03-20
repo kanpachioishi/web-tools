@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>都道府県クイズ - 県庁所在地・シルエット・特産品｜無料オンライン｜SimpleToolkit</title>
+  <meta name="description" content="都道府県クイズで日本地理を楽しく学ぼう！県庁所在地・シルエット・特産品の3モードで全47都道府県に挑戦。10問ランダム出題、タイマー付き。無料・登録不要。">
+  <meta property="og:title" content="都道府県クイズ - 県庁所在地・シルエット・特産品｜SimpleToolkit">
+  <meta property="og:description" content="都道府県クイズで日本地理を楽しく学ぼう！県庁所在地・シルエット・特産品の3モードで全47都道府県に挑戦。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/prefecture-quiz/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "都道府県クイズ - 県庁所在地・シルエット・特産品",
+    "description": "都道府県クイズで日本地理を楽しく学ぼう！県庁所在地・シルエット・特産品の3モードで全47都道府県に挑戦。10問ランダム出題、タイマー付き。無料・登録不要。",
+    "url": "https://simpletoolkit.net/tools/prefecture-quiz/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "都道府県クイズは何問出題されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "各モード10問ずつランダムに出題されます。県庁所在地・シルエット・特産品の3つのモードから選べます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "都道府県クイズにはどんなモードがありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "県庁所在地クイズ（都道府県名から県庁所在地を当てる）、シルエットクイズ（都道府県の形から名前を当てる）、特産品クイズ（特産品からどの都道府県か当てる）の3モードがあります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "制限時間はありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "1問あたり15秒の制限時間があります。時間切れの場合は不正解となり、正解が表示されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スマートフォンでも遊べますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、スマートフォン・タブレット・PCなど、すべてのデバイスのブラウザで快適に遊べます。アプリのインストールは不要です。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .mode-select {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .mode-btn {
+      padding: 16px 12px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .mode-btn:hover {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .mode-btn .mode-icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .mode-btn .mode-desc {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Quiz area */
+    .quiz-area { display: none; }
+    .quiz-area.active { display: block; }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .quiz-progress {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .quiz-timer {
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: #f1f5f9;
+      color: var(--text);
+      min-width: 50px;
+      text-align: center;
+    }
+    .quiz-timer.warning { background: #fef2f2; color: #dc2626; }
+    .quiz-score {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .question-text {
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 24px 0;
+      min-height: 2.6em;
+    }
+
+    .silhouette-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .silhouette-container svg {
+      max-width: 200px;
+      max-height: 200px;
+      fill: #334155;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .choice-btn {
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .choice-btn:hover:not(.disabled) {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .choice-btn.correct {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      color: #16a34a;
+      animation: flashCorrect 0.5s;
+    }
+    .choice-btn.incorrect {
+      border-color: #dc2626;
+      background: #fef2f2;
+      color: #dc2626;
+      animation: flashIncorrect 0.5s;
+    }
+    .choice-btn.disabled {
+      cursor: default;
+      opacity: 0.7;
+    }
+    .choice-btn.show-correct {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    @keyframes flashCorrect {
+      0%, 100% { background: #f0fdf4; }
+      50% { background: #bbf7d0; }
+    }
+    @keyframes flashIncorrect {
+      0%, 100% { background: #fef2f2; }
+      50% { background: #fecaca; }
+    }
+
+    /* Result */
+    .result-area { display: none; text-align: center; }
+    .result-area.active { display: block; }
+
+    .result-score {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 16px 0 8px;
+    }
+    .result-label {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .result-message {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 12px 0 24px;
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      display: inline-block;
+    }
+    .result-excellent { background: #f0fdf4; color: #16a34a; }
+    .result-good { background: #eff6ff; color: #2563eb; }
+    .result-ok { background: #fefce8; color: #ca8a04; }
+    .result-poor { background: #fef2f2; color: #dc2626; }
+
+    .share-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .share-x { background: #000; }
+    .share-line { background: #06c755; }
+    .share-copy { background: #64748b; }
+    .share-btn:hover { opacity: 0.85; }
+
+    .answer-review {
+      margin-top: 24px;
+      text-align: left;
+    }
+    .answer-review h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .review-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .review-icon { font-size: 1.2rem; width: 24px; text-align: center; }
+    .review-q { flex: 1; }
+    .review-a { font-weight: 600; color: var(--text-muted); }
+
+    @media (max-width: 600px) {
+      .mode-select { grid-template-columns: 1fr; }
+      .choices { grid-template-columns: 1fr; }
+      .question-text { font-size: 1.1rem; }
+      .result-score { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>都道府県クイズ</h1>
+    <h2>県庁所在地・シルエット・特産品で日本地理に挑戦！</h2>
+    <p class="tool-description">全47都道府県から10問ランダム出題。県庁所在地・シルエット・特産品の3モードで楽しく学べます。1問15秒の制限時間付き。結果をSNSでシェアして友達と競おう！</p>
+
+    <div class="tool-area">
+      <!-- Mode Select -->
+      <div id="mode-select" class="mode-select">
+        <button class="mode-btn" onclick="startQuiz('capital')">
+          <span class="mode-icon">🏛️</span>
+          県庁所在地クイズ
+          <span class="mode-desc">都道府県名→県庁所在地を当てる</span>
+        </button>
+        <button class="mode-btn" onclick="startQuiz('silhouette')">
+          <span class="mode-icon">🗾</span>
+          シルエットクイズ
+          <span class="mode-desc">形を見て都道府県を当てる</span>
+        </button>
+        <button class="mode-btn" onclick="startQuiz('specialty')">
+          <span class="mode-icon">🍎</span>
+          特産品クイズ
+          <span class="mode-desc">特産品→都道府県を当てる</span>
+        </button>
+      </div>
+
+      <!-- Quiz Area -->
+      <div id="quiz-area" class="quiz-area">
+        <div class="quiz-header">
+          <span class="quiz-progress" id="quiz-progress">1 / 10</span>
+          <span class="quiz-score" id="quiz-score">正解: 0</span>
+          <span class="quiz-timer" id="quiz-timer">15</span>
+        </div>
+        <div class="question-text" id="question-text"></div>
+        <div class="silhouette-container" id="silhouette-container" style="display:none;"></div>
+        <div class="choices" id="choices"></div>
+      </div>
+
+      <!-- Result Area -->
+      <div id="result-area" class="result-area">
+        <div class="result-label">あなたのスコア</div>
+        <div class="result-score" id="result-score"></div>
+        <div class="result-label">10問中</div>
+        <div class="result-message" id="result-message"></div>
+        <div class="share-buttons">
+          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener">X(Twitter)でシェア</a>
+          <a class="share-btn share-line" id="share-line" href="#" target="_blank" rel="noopener">LINEでシェア</a>
+          <button class="share-btn share-copy" onclick="copyResult()">結果をコピー</button>
+        </div>
+        <div class="btn-group" style="margin-top:16px;">
+          <button class="btn" onclick="backToModeSelect()">モード選択に戻る</button>
+          <button class="btn btn-secondary" onclick="retryQuiz()">もう一度挑戦</button>
+        </div>
+        <div class="answer-review" id="answer-review"></div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+  // ===== 47 Prefecture Data =====
+  var prefectures = [
+    { name: "北海道", capital: "札幌市", region: "北海道", specialties: ["ジンギスカン","メロン"], silhouette: "M60,5 L80,8 95,3 110,10 115,25 120,15 130,20 135,35 125,45 130,55 120,60 110,55 100,65 85,60 75,65 60,55 50,60 40,50 35,40 25,35 20,25 30,15 45,10Z" },
+    { name: "青森県", capital: "青森市", region: "東北", specialties: ["りんご","にんにく"], silhouette: "M30,10 L55,5 80,8 100,15 95,35 90,50 100,60 85,70 70,80 55,75 40,80 25,70 15,55 10,40 15,25Z" },
+    { name: "岩手県", capital: "盛岡市", region: "東北", specialties: ["わんこそば","南部鉄器"], silhouette: "M35,5 L65,8 85,5 95,20 100,40 95,60 90,80 80,95 60,100 40,95 30,80 25,60 20,40 25,20Z" },
+    { name: "宮城県", capital: "仙台市", region: "東北", specialties: ["牛タン","笹かまぼこ"], silhouette: "M25,15 L50,5 75,10 95,20 100,40 90,55 95,70 80,75 60,80 40,75 25,65 15,50 20,35Z" },
+    { name: "秋田県", capital: "秋田市", region: "東北", specialties: ["きりたんぽ","稲庭うどん"], silhouette: "M40,5 L65,10 80,5 90,20 85,40 90,60 85,80 75,95 55,100 40,90 30,75 25,55 30,35 35,20Z" },
+    { name: "山形県", capital: "山形市", region: "東北", specialties: ["さくらんぼ","芋煮"], silhouette: "M45,5 L65,10 75,5 85,20 80,40 85,55 80,75 70,90 55,95 40,85 30,70 25,50 30,30 35,15Z" },
+    { name: "福島県", capital: "福島市", region: "東北", specialties: ["桃","喜多方ラーメン"], silhouette: "M10,20 L35,10 60,5 85,10 100,20 105,40 100,55 85,60 60,65 35,60 15,55 5,40Z" },
+    { name: "茨城県", capital: "水戸市", region: "関東", specialties: ["納豆","メロン"], silhouette: "M25,10 L55,5 80,15 90,35 85,55 90,75 75,85 55,80 35,85 20,70 15,50 20,30Z" },
+    { name: "栃木県", capital: "宇都宮市", region: "関東", specialties: ["餃子","いちご"], silhouette: "M15,15 L40,5 70,8 90,15 95,35 90,55 85,75 65,80 40,85 20,75 10,55 10,35Z" },
+    { name: "群馬県", capital: "前橋市", region: "関東", specialties: ["こんにゃく","焼きまんじゅう"], silhouette: "M15,30 L30,10 55,5 75,15 90,10 100,25 95,45 80,55 55,50 65,70 45,75 25,65 10,50Z" },
+    { name: "埼玉県", capital: "さいたま市", region: "関東", specialties: ["草加せんべい","深谷ねぎ"], silhouette: "M10,20 L35,10 60,5 85,10 105,20 100,40 90,55 65,55 40,60 15,50 5,35Z" },
+    { name: "千葉県", capital: "千葉市", region: "関東", specialties: ["落花生","梨"], silhouette: "M40,5 L60,10 75,25 80,45 85,65 75,80 60,95 50,85 35,90 30,75 20,60 25,40 30,20Z" },
+    { name: "東京都", capital: "新宿区", region: "関東", specialties: ["もんじゃ焼き","東京ばな奈"], silhouette: "M10,25 L30,10 55,5 80,15 90,30 85,50 65,55 40,55 20,50 5,40Z" },
+    { name: "神奈川県", capital: "横浜市", region: "関東", specialties: ["シウマイ","かまぼこ"], silhouette: "M10,15 L35,5 60,10 85,5 100,20 95,40 80,55 55,50 70,65 50,70 30,60 10,45Z" },
+    { name: "新潟県", capital: "新潟市", region: "中部", specialties: ["コシヒカリ","笹団子"], silhouette: "M5,45 L15,30 30,20 50,15 65,5 80,10 95,20 100,35 90,45 75,50 55,55 35,60 20,55Z" },
+    { name: "富山県", capital: "富山市", region: "中部", specialties: ["ますの寿し","白エビ"], silhouette: "M15,20 L40,5 65,10 85,20 95,40 80,55 55,55 30,50 10,40Z" },
+    { name: "石川県", capital: "金沢市", region: "中部", specialties: ["加賀友禅","治部煮"], silhouette: "M40,5 L55,15 50,30 55,50 50,70 45,85 35,95 30,80 25,60 20,40 25,20 35,10Z" },
+    { name: "福井県", capital: "福井市", region: "中部", specialties: ["越前がに","恐竜博物館"], silhouette: "M10,15 L35,5 60,10 80,25 75,45 60,55 40,60 50,75 35,80 20,65 10,45 5,30Z" },
+    { name: "山梨県", capital: "甲府市", region: "中部", specialties: ["ぶどう","ほうとう"], silhouette: "M15,25 L35,10 60,5 80,15 95,30 85,50 65,55 40,60 20,50 10,40Z" },
+    { name: "長野県", capital: "長野市", region: "中部", specialties: ["信州そば","おやき"], silhouette: "M40,5 L60,10 70,5 80,20 85,40 80,60 75,80 65,95 50,100 40,85 35,65 25,50 30,30 35,15Z" },
+    { name: "岐阜県", capital: "岐阜市", region: "中部", specialties: ["飛騨牛","鮎"], silhouette: "M20,20 L40,5 65,10 85,5 100,20 95,40 80,50 60,55 70,70 50,75 30,65 15,50 10,35Z" },
+    { name: "静岡県", capital: "静岡市", region: "中部", specialties: ["お茶","うなぎ"], silhouette: "M5,20 L25,10 50,5 75,10 100,15 110,30 100,40 75,45 50,40 25,45 10,35Z" },
+    { name: "愛知県", capital: "名古屋市", region: "中部", specialties: ["味噌カツ","手羽先"], silhouette: "M20,10 L45,5 70,10 85,25 90,45 75,55 55,50 35,60 45,75 30,80 15,65 10,45 15,25Z" },
+    { name: "三重県", capital: "津市", region: "近畿", specialties: ["松阪牛","伊勢えび"], silhouette: "M35,5 L55,10 65,25 60,45 65,60 55,75 45,90 35,95 30,80 25,60 20,40 25,20Z" },
+    { name: "滋賀県", capital: "大津市", region: "近畿", specialties: ["近江牛","鮒ずし"], silhouette: "M30,5 L55,10 70,25 75,45 70,65 55,75 35,70 20,55 15,35 20,20Z" },
+    { name: "京都府", capital: "京都市", region: "近畿", specialties: ["八ツ橋","宇治抹茶"], silhouette: "M20,15 L45,5 70,10 80,25 75,45 60,50 70,65 55,75 35,70 15,55 10,35Z" },
+    { name: "大阪府", capital: "大阪市", region: "近畿", specialties: ["たこ焼き","お好み焼き"], silhouette: "M25,10 L50,5 70,15 80,35 75,55 60,65 40,60 20,50 15,30Z" },
+    { name: "兵庫県", capital: "神戸市", region: "近畿", specialties: ["神戸牛","明石焼き"], silhouette: "M5,25 L20,10 45,5 70,10 85,25 90,40 80,55 60,50 35,55 15,50 5,40Z" },
+    { name: "奈良県", capital: "奈良市", region: "近畿", specialties: ["柿の葉寿司","鹿せんべい"], silhouette: "M30,5 L55,10 70,25 75,45 70,65 60,80 45,85 30,75 20,55 15,35 20,15Z" },
+    { name: "和歌山県", capital: "和歌山市", region: "近畿", specialties: ["みかん","梅干し"], silhouette: "M10,15 L35,5 60,10 80,20 90,40 80,60 65,70 45,65 25,55 30,40 15,35Z" },
+    { name: "鳥取県", capital: "鳥取市", region: "中国", specialties: ["二十世紀梨","松葉がに"], silhouette: "M5,20 L25,10 50,5 75,10 95,20 90,40 70,45 45,40 20,45 5,35Z" },
+    { name: "島根県", capital: "松江市", region: "中国", specialties: ["出雲そば","しじみ"], silhouette: "M5,20 L30,10 55,5 80,10 105,15 100,30 75,35 50,30 25,35 5,30Z" },
+    { name: "岡山県", capital: "岡山市", region: "中国", specialties: ["きびだんご","白桃"], silhouette: "M10,15 L35,5 60,10 85,15 90,35 80,50 55,55 30,50 10,40Z" },
+    { name: "広島県", capital: "広島市", region: "中国", specialties: ["お好み焼き","もみじ饅頭"], silhouette: "M5,20 L30,10 55,5 80,15 95,30 85,50 60,45 35,50 10,40Z" },
+    { name: "山口県", capital: "山口市", region: "中国", specialties: ["ふぐ","外郎"], silhouette: "M10,25 L30,10 55,5 75,15 85,30 75,45 50,50 30,55 40,70 20,70 5,55 10,40Z" },
+    { name: "徳島県", capital: "徳島市", region: "四国", specialties: ["すだち","鳴門金時"], silhouette: "M5,20 L30,5 55,10 80,5 95,20 90,40 65,45 40,40 15,45 5,35Z" },
+    { name: "香川県", capital: "高松市", region: "四国", specialties: ["讃岐うどん","オリーブ"], silhouette: "M10,15 L35,5 60,10 80,15 85,30 70,40 45,35 20,40 5,30Z" },
+    { name: "愛媛県", capital: "松山市", region: "四国", specialties: ["みかん","鯛めし"], silhouette: "M15,15 L40,5 60,10 80,25 85,45 70,55 45,50 55,70 35,75 15,60 5,40 10,25Z" },
+    { name: "高知県", capital: "高知市", region: "四国", specialties: ["カツオ","ゆず"], silhouette: "M5,15 L25,5 50,10 75,5 100,15 105,30 90,40 65,35 40,40 15,35 5,25Z" },
+    { name: "福岡県", capital: "福岡市", region: "九州", specialties: ["明太子","ラーメン"], silhouette: "M15,20 L35,5 60,10 80,5 95,20 90,40 70,50 45,55 20,45 5,35Z" },
+    { name: "佐賀県", capital: "佐賀市", region: "九州", specialties: ["呼子イカ","佐賀牛"], silhouette: "M10,15 L35,5 60,10 80,20 85,35 65,45 40,40 15,40 5,30Z" },
+    { name: "長崎県", capital: "長崎市", region: "九州", specialties: ["カステラ","ちゃんぽん"], silhouette: "M25,5 L40,15 55,10 50,30 60,45 50,55 35,65 45,80 30,85 20,70 10,50 15,30Z" },
+    { name: "熊本県", capital: "熊本市", region: "九州", specialties: ["馬刺し","辛子蓮根"], silhouette: "M15,10 L40,5 65,10 85,20 90,40 80,60 60,65 75,80 55,85 35,75 20,60 10,40 10,25Z" },
+    { name: "大分県", capital: "大分市", region: "九州", specialties: ["とり天","かぼす"], silhouette: "M10,20 L35,5 60,10 85,20 95,35 80,50 55,55 30,50 10,40Z" },
+    { name: "宮崎県", capital: "宮崎市", region: "九州", specialties: ["チキン南蛮","マンゴー"], silhouette: "M25,5 L50,10 65,5 75,20 80,40 75,60 70,80 60,95 45,90 35,70 25,50 20,30Z" },
+    { name: "鹿児島県", capital: "鹿児島市", region: "九州", specialties: ["黒豚","さつまあげ"], silhouette: "M20,5 L45,10 65,5 80,20 75,40 65,55 55,70 70,85 50,95 35,80 20,60 10,40 15,20Z" },
+    { name: "沖縄県", capital: "那覇市", region: "九州", specialties: ["ソーキそば","紅芋タルト"], silhouette: "M20,10 L40,5 55,15 70,10 85,20 80,35 90,50 75,60 60,55 45,65 30,55 15,40 10,25Z" }
+  ];
+
+  // ===== Quiz State =====
+  var currentMode = '';
+  var questions = [];
+  var currentQuestion = 0;
+  var score = 0;
+  var timer = null;
+  var timeLeft = 15;
+  var answered = false;
+  var reviewData = [];
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function startQuiz(mode) {
+    currentMode = mode;
+    currentQuestion = 0;
+    score = 0;
+    reviewData = [];
+    questions = shuffle(prefectures).slice(0, 10);
+    document.getElementById('mode-select').style.display = 'none';
+    document.getElementById('result-area').classList.remove('active');
+    document.getElementById('quiz-area').classList.add('active');
+    showQuestion();
+  }
+
+  function generateChoices(correctAnswer, allAnswers) {
+    var wrong = shuffle(allAnswers.filter(function(a) { return a !== correctAnswer; })).slice(0, 3);
+    var choices = shuffle([correctAnswer].concat(wrong));
+    return choices;
+  }
+
+  function showQuestion() {
+    answered = false;
+    var q = questions[currentQuestion];
+    var questionText = '';
+    var correctAnswer = '';
+    var allAnswers = [];
+    var showSilhouette = false;
+
+    if (currentMode === 'capital') {
+      questionText = '「' + q.name + '」の県庁所在地は？';
+      correctAnswer = q.capital;
+      allAnswers = prefectures.map(function(p) { return p.capital; });
+      // Remove duplicates
+      allAnswers = allAnswers.filter(function(v, i, a) { return a.indexOf(v) === i; });
+    } else if (currentMode === 'silhouette') {
+      questionText = 'この都道府県はどこ？';
+      correctAnswer = q.name;
+      allAnswers = prefectures.map(function(p) { return p.name; });
+      showSilhouette = true;
+    } else if (currentMode === 'specialty') {
+      var spec = q.specialties[Math.floor(Math.random() * q.specialties.length)];
+      questionText = '「' + spec + '」が有名な都道府県は？';
+      correctAnswer = q.name;
+      allAnswers = prefectures.map(function(p) { return p.name; });
+    }
+
+    document.getElementById('quiz-progress').textContent = (currentQuestion + 1) + ' / 10';
+    document.getElementById('quiz-score').textContent = '正解: ' + score;
+    document.getElementById('question-text').textContent = questionText;
+
+    var silContainer = document.getElementById('silhouette-container');
+    if (showSilhouette) {
+      silContainer.style.display = 'block';
+      silContainer.innerHTML = '<svg viewBox="0 0 120 110" xmlns="http://www.w3.org/2000/svg"><path d="' + q.silhouette + '"/></svg>';
+    } else {
+      silContainer.style.display = 'none';
+    }
+
+    var choices = generateChoices(correctAnswer, allAnswers);
+    var choicesEl = document.getElementById('choices');
+    choicesEl.innerHTML = '';
+    choices.forEach(function(c) {
+      var btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = c;
+      btn.onclick = function() { selectAnswer(c, correctAnswer); };
+      choicesEl.appendChild(btn);
+    });
+
+    startTimer();
+  }
+
+  function startTimer() {
+    timeLeft = 15;
+    var timerEl = document.getElementById('quiz-timer');
+    timerEl.textContent = timeLeft;
+    timerEl.classList.remove('warning');
+    clearInterval(timer);
+    timer = setInterval(function() {
+      timeLeft--;
+      timerEl.textContent = timeLeft;
+      if (timeLeft <= 5) timerEl.classList.add('warning');
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        timeUp();
+      }
+    }, 1000);
+  }
+
+  function timeUp() {
+    if (answered) return;
+    answered = true;
+    var q = questions[currentQuestion];
+    var correctAnswer = '';
+    if (currentMode === 'capital') correctAnswer = q.capital;
+    else correctAnswer = q.name;
+
+    var btns = document.querySelectorAll('.choice-btn');
+    btns.forEach(function(btn) {
+      btn.classList.add('disabled');
+      if (btn.textContent === correctAnswer) btn.classList.add('show-correct');
+    });
+
+    reviewData.push({ question: document.getElementById('question-text').textContent, correct: false, answer: '時間切れ', correctAnswer: correctAnswer });
+
+    setTimeout(nextQuestion, 1500);
+  }
+
+  function selectAnswer(selected, correct) {
+    if (answered) return;
+    answered = true;
+    clearInterval(timer);
+
+    var isCorrect = selected === correct;
+    if (isCorrect) score++;
+
+    var btns = document.querySelectorAll('.choice-btn');
+    btns.forEach(function(btn) {
+      btn.classList.add('disabled');
+      if (btn.textContent === correct) btn.classList.add('correct');
+      if (btn.textContent === selected && !isCorrect) btn.classList.add('incorrect');
+    });
+
+    reviewData.push({ question: document.getElementById('question-text').textContent, correct: isCorrect, answer: selected, correctAnswer: correct });
+
+    setTimeout(nextQuestion, 1200);
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion >= 10) {
+      showResult();
+    } else {
+      showQuestion();
+    }
+  }
+
+  function showResult() {
+    clearInterval(timer);
+    document.getElementById('quiz-area').classList.remove('active');
+    document.getElementById('result-area').classList.add('active');
+    document.getElementById('result-score').textContent = score;
+
+    var msgEl = document.getElementById('result-message');
+    if (score === 10) {
+      msgEl.textContent = '満点！日本地理マスター！';
+      msgEl.className = 'result-message result-excellent';
+    } else if (score >= 7) {
+      msgEl.textContent = 'すごい！かなり詳しいですね！';
+      msgEl.className = 'result-message result-good';
+    } else if (score >= 4) {
+      msgEl.textContent = 'まずまず！もう少し頑張ろう！';
+      msgEl.className = 'result-message result-ok';
+    } else {
+      msgEl.textContent = 'もっと勉強して再挑戦！';
+      msgEl.className = 'result-message result-poor';
+    }
+
+    var modeLabel = currentMode === 'capital' ? '県庁所在地' : currentMode === 'silhouette' ? 'シルエット' : '特産品';
+    var shareText = '都道府県クイズ（' + modeLabel + '）で' + score + '/10問正解しました！🗾\n#都道府県クイズ #SimpleToolkit';
+    var shareUrl = 'https://simpletoolkit.net/tools/prefecture-quiz/';
+
+    document.getElementById('share-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(shareUrl);
+    document.getElementById('share-line').href = 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(shareText);
+
+    // Answer review
+    var reviewHtml = '<h3>回答の振り返り</h3>';
+    reviewData.forEach(function(r, i) {
+      reviewHtml += '<div class="review-item">';
+      reviewHtml += '<span class="review-icon">' + (r.correct ? '⭕' : '❌') + '</span>';
+      reviewHtml += '<span class="review-q">Q' + (i + 1) + '. ' + r.question + '</span>';
+      if (!r.correct) {
+        reviewHtml += '<span class="review-a">正解: ' + r.correctAnswer + '</span>';
+      }
+      reviewHtml += '</div>';
+    });
+    document.getElementById('answer-review').innerHTML = reviewHtml;
+  }
+
+  function copyResult() {
+    var modeLabel = currentMode === 'capital' ? '県庁所在地' : currentMode === 'silhouette' ? 'シルエット' : '特産品';
+    var text = '都道府県クイズ（' + modeLabel + '）で' + score + '/10問正解しました！\nhttps://simpletoolkit.net/tools/prefecture-quiz/';
+    navigator.clipboard.writeText(text).then(function() {
+      alert('コピーしました！');
+    });
+  }
+
+  function backToModeSelect() {
+    clearInterval(timer);
+    document.getElementById('quiz-area').classList.remove('active');
+    document.getElementById('result-area').classList.remove('active');
+    document.getElementById('mode-select').style.display = 'grid';
+  }
+
+  function retryQuiz() {
+    startQuiz(currentMode);
+  }
+  </script>
+</body>
+</html>
