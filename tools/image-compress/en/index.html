@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Compressor - Compress Images Online Free | SimpleToolkit</title>
+  <meta name="description" content="Compress images in your browser for free. Supports JPEG, WebP, and PNG output. Adjust quality with a slider. No server upload, no registration required.">
+  <meta property="og:title" content="Image Compressor - Compress Images Online Free | SimpleToolkit">
+  <meta property="og:description" content="Compress images in your browser for free. Supports JPEG, WebP, and PNG output. No server upload, no registration.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/image-compress/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/image-compress/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/image-compress/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image Compressor - Compress Images Online Free",
+    "description": "Compress images in your browser for free. Supports JPEG, WebP, and PNG output. Adjust quality with a slider. No server upload, no registration required.",
+    "url": "https://simpletoolkit.net/tools/image-compress/en/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Are my images uploaded to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all compression is done entirely in your browser. Your images are never sent to any external server."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What image formats are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can upload any browser-compatible image format including JPEG, PNG, WebP, GIF, BMP, and SVG. Output formats available are JPEG, WebP, and PNG."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much compression can I achieve?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can adjust quality from 1% to 100% using the slider. At the default 80% setting, you can significantly reduce file size while maintaining near-original visual quality."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I compress multiple images at once?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can upload and compress multiple images simultaneously. Download them individually or as a single ZIP file."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .privacy-notice {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .privacy-notice::before {
+      content: '\1F512';
+      font-size: 1.2rem;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 20px;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .drop-zone-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .drop-zone-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .drop-zone-text strong {
+      color: var(--primary);
+    }
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .control-group {
+      flex: 1;
+      min-width: 160px;
+    }
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .slider-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .slider-wrapper input[type="range"] {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--border);
+      border-radius: 3px;
+      outline: none;
+    }
+    .slider-wrapper input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+    }
+    .slider-wrapper input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: none;
+    }
+    .quality-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      min-width: 45px;
+      text-align: right;
+      color: var(--primary);
+    }
+
+    .image-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .image-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .image-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .image-item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+    .image-item-stats {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .size-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .size-original {
+      color: var(--text-muted);
+    }
+    .size-arrow {
+      color: var(--text-muted);
+    }
+    .size-compressed {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .size-reduction {
+      background: #dcfce7;
+      color: #166534;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .size-increase {
+      background: #fef2f2;
+      color: #991b1b;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .preview-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .preview-box {
+      text-align: center;
+    }
+    .preview-box .preview-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .preview-box img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+    }
+
+    .image-item .btn-group {
+      margin-top: 8px;
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.85rem;
+    }
+    .btn-danger {
+      background: #ef4444;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .batch-actions {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .batch-actions.show {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .batch-summary {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .batch-summary strong {
+      color: var(--text);
+    }
+
+    .processing-overlay {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+    }
+    .processing-overlay.show {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .preview-container {
+        grid-template-columns: 1fr;
+      }
+      .controls-row {
+        flex-direction: column;
+      }
+      .image-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .drop-zone {
+        padding: 24px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Image Compressor</h1>
+    <h2>Compress Images Online for Free</h2>
+    <p class="tool-description">Drag and drop images to compress them instantly. Adjust quality with a slider and export as JPEG, WebP, or PNG. All processing happens in your browser -- your images are never uploaded to any server.</p>
+
+    <div class="tool-area">
+      <div class="privacy-notice">
+        All processing happens in your browser. Your images are never sent to any server.
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <span class="drop-zone-icon">&#128247;</span>
+        <div class="drop-zone-text">
+          Drag &amp; drop images here<br>
+          or <strong>click to select files</strong>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple>
+      </div>
+
+      <div class="controls-row">
+        <div class="control-group">
+          <label for="qualitySlider">Quality</label>
+          <div class="slider-wrapper">
+            <input type="range" id="qualitySlider" min="1" max="100" value="80">
+            <span class="quality-value" id="qualityValue">80%</span>
+          </div>
+        </div>
+        <div class="control-group" style="flex:0 0 auto; min-width:140px;">
+          <label for="outputFormat">Output Format</label>
+          <select id="outputFormat">
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+            <option value="image/png">PNG</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="processing-overlay" id="processing">
+        Processing...
+      </div>
+
+      <div class="image-list" id="imageList"></div>
+
+      <div class="batch-actions" id="batchActions">
+        <div class="batch-summary" id="batchSummary"></div>
+        <div class="btn-group" style="margin-top:0;">
+          <button class="btn btn-sm" onclick="downloadAll()">Download All</button>
+          <button class="btn btn-sm" onclick="downloadAllZip()">Download as ZIP</button>
+          <button class="btn btn-secondary btn-sm" onclick="clearAll()">Clear All</button>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QR Code Generator</h3>
+          <p>Generate QR codes from text or URLs</p>
+        </a>
+        <a href="../../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64 Encoder/Decoder</h3>
+          <p>Encode and decode Base64 strings</p>
+        </a>
+        <a href="../../color-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Color Code Converter</h3>
+          <p>Convert between HEX, RGB, and HSL</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3/dist/jszip.min.js"></script>
+  <script>
+    var images = [];
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var qualitySlider = document.getElementById('qualitySlider');
+    var qualityValue = document.getElementById('qualityValue');
+    var outputFormat = document.getElementById('outputFormat');
+    var imageList = document.getElementById('imageList');
+    var batchActions = document.getElementById('batchActions');
+    var batchSummary = document.getElementById('batchSummary');
+    var processing = document.getElementById('processing');
+
+    dropZone.addEventListener('click', function() {
+      fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      var files = e.dataTransfer.files;
+      handleFiles(files);
+    });
+
+    fileInput.addEventListener('change', function() {
+      handleFiles(fileInput.files);
+      fileInput.value = '';
+    });
+
+    qualitySlider.addEventListener('input', function() {
+      qualityValue.textContent = qualitySlider.value + '%';
+      recompressAll();
+    });
+
+    outputFormat.addEventListener('change', function() {
+      recompressAll();
+    });
+
+    function handleFiles(files) {
+      var imageFiles = [];
+      for (var i = 0; i < files.length; i++) {
+        if (files[i].type.startsWith('image/')) {
+          imageFiles.push(files[i]);
+        }
+      }
+      if (imageFiles.length === 0) return;
+
+      processing.classList.add('show');
+      var processed = 0;
+
+      imageFiles.forEach(function(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            var entry = {
+              id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+              name: file.name,
+              originalSize: file.size,
+              originalDataUrl: e.target.result,
+              width: img.width,
+              height: img.height,
+              imgElement: img,
+              compressedBlob: null,
+              compressedDataUrl: null
+            };
+            images.push(entry);
+            compressImage(entry, function() {
+              processed++;
+              if (processed === imageFiles.length) {
+                processing.classList.remove('show');
+                renderAll();
+              }
+            });
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function compressImage(entry, callback) {
+      var canvas = document.createElement('canvas');
+      canvas.width = entry.width;
+      canvas.height = entry.height;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(entry.imgElement, 0, 0);
+
+      var format = outputFormat.value;
+      var quality = parseInt(qualitySlider.value) / 100;
+
+      canvas.toBlob(function(blob) {
+        entry.compressedBlob = blob;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          entry.compressedDataUrl = e.target.result;
+          entry.compressedSize = blob.size;
+          if (callback) callback();
+        };
+        reader.readAsDataURL(blob);
+      }, format, quality);
+    }
+
+    function recompressAll() {
+      if (images.length === 0) return;
+      var done = 0;
+      images.forEach(function(entry) {
+        compressImage(entry, function() {
+          done++;
+          if (done === images.length) {
+            renderAll();
+          }
+        });
+      });
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function getExtension() {
+      var format = outputFormat.value;
+      if (format === 'image/jpeg') return '.jpg';
+      if (format === 'image/webp') return '.webp';
+      return '.png';
+    }
+
+    function renderAll() {
+      imageList.innerHTML = '';
+      var totalOriginal = 0;
+      var totalCompressed = 0;
+
+      images.forEach(function(entry) {
+        totalOriginal += entry.originalSize;
+        totalCompressed += entry.compressedSize;
+
+        var reduction = ((1 - entry.compressedSize / entry.originalSize) * 100);
+        var isReduction = reduction >= 0;
+        var reductionText = isReduction
+          ? reduction.toFixed(1) + '% smaller'
+          : Math.abs(reduction).toFixed(1) + '% larger';
+        var reductionClass = isReduction ? 'size-reduction' : 'size-increase';
+
+        var div = document.createElement('div');
+        div.className = 'image-item';
+        div.innerHTML =
+          '<div class="image-item-header">' +
+            '<div class="image-item-name">' + escapeHtml(entry.name) + '</div>' +
+            '<div class="image-item-stats">' +
+              '<div class="size-info">' +
+                '<span class="size-original">' + formatSize(entry.originalSize) + '</span>' +
+                '<span class="size-arrow">&rarr;</span>' +
+                '<span class="size-compressed">' + formatSize(entry.compressedSize) + '</span>' +
+              '</div>' +
+              '<span class="' + reductionClass + '">' + reductionText + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="preview-container">' +
+            '<div class="preview-box">' +
+              '<div class="preview-label">Before</div>' +
+              '<img src="' + entry.originalDataUrl + '" alt="Original">' +
+            '</div>' +
+            '<div class="preview-box">' +
+              '<div class="preview-label">After</div>' +
+              '<img src="' + entry.compressedDataUrl + '" alt="Compressed">' +
+            '</div>' +
+          '</div>' +
+          '<div class="btn-group">' +
+            '<button class="btn btn-sm" onclick="downloadOne(\'' + entry.id + '\')">Download</button>' +
+            '<button class="btn btn-secondary btn-sm btn-danger" onclick="removeOne(\'' + entry.id + '\')">Remove</button>' +
+          '</div>';
+        imageList.appendChild(div);
+      });
+
+      if (images.length > 0) {
+        var totalReduction = ((1 - totalCompressed / totalOriginal) * 100).toFixed(1);
+        batchSummary.innerHTML = '<strong>' + images.length + '</strong> image(s) | Total: ' + formatSize(totalOriginal) + ' &rarr; ' + formatSize(totalCompressed) + ' (' + totalReduction + '% smaller)';
+        batchActions.classList.add('show');
+      } else {
+        batchActions.classList.remove('show');
+      }
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function downloadOne(id) {
+      var entry = images.find(function(e) { return e.id === id; });
+      if (!entry) return;
+      var ext = getExtension();
+      var baseName = entry.name.replace(/\.[^.]+$/, '');
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(entry.compressedBlob);
+      a.download = baseName + '_compressed' + ext;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function removeOne(id) {
+      images = images.filter(function(e) { return e.id !== id; });
+      renderAll();
+    }
+
+    function downloadAll() {
+      images.forEach(function(entry) {
+        downloadOne(entry.id);
+      });
+    }
+
+    function downloadAllZip() {
+      if (typeof JSZip === 'undefined') {
+        alert('ZIP library is still loading. Please try again in a moment.');
+        return;
+      }
+      var zip = new JSZip();
+      var ext = getExtension();
+      images.forEach(function(entry) {
+        var baseName = entry.name.replace(/\.[^.]+$/, '');
+        zip.file(baseName + '_compressed' + ext, entry.compressedBlob);
+      });
+      zip.generateAsync({ type: 'blob' }).then(function(blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'compressed_images.zip';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    }
+
+    function clearAll() {
+      images = [];
+      imageList.innerHTML = '';
+      batchActions.classList.remove('show');
+    }
+  </script>
+</body>
+</html>

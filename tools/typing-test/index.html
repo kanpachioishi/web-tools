@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タイピングテスト - タイピング速度を測定｜SimpleToolkit</title>
+  <meta name="description" content="無料オンラインタイピングテスト。ローマ字入力でタイピング速度(WPM)と正確率を測定。30秒/60秒/120秒から選べる制限時間、ランク判定、ベスト記録保存機能付き。">
+  <meta property="og:title" content="タイピングテスト - タイピング速度を測定｜SimpleToolkit">
+  <meta property="og:description" content="無料オンラインタイピングテスト。ローマ字入力でタイピング速度(WPM)と正確率を測定。ランク判定付き。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/typing-test/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/typing-test/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/typing-test/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "タイピングテスト - タイピング速度を測定",
+    "description": "無料オンラインタイピングテスト。ローマ字入力でタイピング速度(WPM)と正確率を測定。ランク判定・ベスト記録保存機能付き。",
+    "url": "https://simpletoolkit.net/tools/typing-test/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "タイピングテストのWPMとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "WPM（Words Per Minute）は1分間に入力できる単語数を表す指標です。一般的に英語では1単語=5文字として計算します。日本語のローマ字入力でも同様に、入力した文字数を5で割った値をWPMとして算出します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "タイピング速度の平均はどのくらいですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一般的なタイピング速度は30〜40WPM程度です。オフィスワーカーの平均は40〜60WPM、プロのタイピストは80WPM以上、トップレベルでは120WPM以上に達します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。入力データが外部に送信されることはありません。ベスト記録はお使いのブラウザのLocalStorageに保存されます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .time-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .time-btn {
+      padding: 8px 20px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .time-btn:hover { border-color: var(--primary); }
+    .time-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .typing-stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      text-align: center;
+      flex: 1;
+      min-width: 80px;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px; }
+    .stat-value { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+    .typing-area {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      min-height: 120px;
+      position: relative;
+      cursor: text;
+    }
+    .typing-area:focus-within { border-color: var(--primary); }
+    .hiragana-line {
+      font-size: 1.4rem;
+      line-height: 1.8;
+      margin-bottom: 8px;
+      letter-spacing: 0.1em;
+      color: var(--text);
+    }
+    .romaji-line {
+      font-size: 1.2rem;
+      line-height: 2;
+      letter-spacing: 0.05em;
+      font-family: monospace;
+    }
+    .romaji-line .char { display: inline; transition: color 0.1s; }
+    .romaji-line .char.correct { color: #16a34a; }
+    .romaji-line .char.incorrect { color: #dc2626; text-decoration: underline; }
+    .romaji-line .char.current { background: rgba(99, 102, 241, 0.2); border-bottom: 2px solid var(--primary); }
+    .romaji-line .char.pending { color: var(--text-muted); }
+    .hiragana-line .h-char { display: inline; }
+    .hiragana-line .h-char.h-done { color: #16a34a; }
+    .hiragana-line .h-char.h-current { background: rgba(99, 102, 241, 0.15); border-radius: 4px; padding: 0 2px; }
+    .hiragana-line .h-char.h-pending { color: var(--text-muted); }
+    .typing-input {
+      position: absolute; opacity: 0; width: 0; height: 0; top: 0; left: 0;
+    }
+    .typing-prompt {
+      text-align: center; color: var(--text-muted); font-size: 1rem; padding: 20px;
+    }
+    .result-panel { display: none; margin-top: 24px; }
+    .result-panel.show { display: block; }
+    .result-main { text-align: center; margin-bottom: 24px; }
+    .result-wpm { font-size: 4rem; font-weight: 800; color: var(--primary); line-height: 1.2; }
+    .result-wpm-label { font-size: 1rem; color: var(--text-muted); }
+    .result-rank {
+      display: inline-block; font-size: 2rem; font-weight: 800;
+      padding: 8px 24px; border-radius: 12px; margin-top: 8px;
+    }
+    .rank-s { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #fff; }
+    .rank-a { background: linear-gradient(135deg, #f472b6, #ec4899); color: #fff; }
+    .rank-b { background: linear-gradient(135deg, #60a5fa, #3b82f6); color: #fff; }
+    .rank-c { background: linear-gradient(135deg, #34d399, #10b981); color: #fff; }
+    .rank-d { background: linear-gradient(135deg, #9ca3af, #6b7280); color: #fff; }
+    .result-details {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px;
+    }
+    .result-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px; text-align: center;
+    }
+    .result-card .rc-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .result-card .rc-value { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+    .best-record {
+      margin-top: 16px; padding: 12px 16px; background: #fefce8;
+      border: 1px solid #fde047; border-radius: var(--radius); font-size: 0.9rem; text-align: center;
+    }
+    .share-buttons {
+      display: flex; gap: 12px; margin-top: 16px; justify-content: center; flex-wrap: wrap;
+    }
+    .share-btn {
+      padding: 10px 20px; border: none; border-radius: var(--radius); font-size: 0.9rem;
+      cursor: pointer; color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .share-x { background: #000; }
+    .share-copy { background: var(--primary); }
+    .rank-table {
+      width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem;
+    }
+    .rank-table th, .rank-table td {
+      border: 1px solid var(--border); padding: 8px 12px; text-align: center;
+    }
+    .rank-table th { background: var(--bg); font-weight: 600; }
+    @media (max-width: 600px) {
+      .hiragana-line { font-size: 1.1rem; }
+      .romaji-line { font-size: 1rem; }
+      .typing-area { padding: 16px; }
+      .result-wpm { font-size: 3rem; }
+      .result-details { grid-template-columns: 1fr; }
+      .stat-item { min-width: 60px; padding: 8px 10px; }
+      .stat-value { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>タイピングテスト</h1>
+    <h2>無料オンラインタイピング速度測定</h2>
+    <p class="tool-description">ローマ字入力でタイピング速度を測定できる無料ツール。WPM（1分間あたりの入力単語数）と正確率を計測し、S〜Dのランクで評価します。制限時間は30秒/60秒/120秒から選択可能。</p>
+    <p style="margin-bottom:8px;"><a href="en/" style="color:var(--primary);">English version</a></p>
+
+    <div class="tool-area">
+      <h3 style="margin-top:0;margin-bottom:12px;">制限時間</h3>
+      <div class="time-selector">
+        <button class="time-btn" onclick="setTime(30)" data-time="30">30秒</button>
+        <button class="time-btn active" onclick="setTime(60)" data-time="60">60秒</button>
+        <button class="time-btn" onclick="setTime(120)" data-time="120">120秒</button>
+      </div>
+
+      <div class="typing-stats">
+        <div class="stat-item">
+          <div class="stat-label">残り時間</div>
+          <div class="stat-value" id="timer">60</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">WPM</div>
+          <div class="stat-value" id="live-wpm">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">正確率</div>
+          <div class="stat-value" id="live-accuracy">100%</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">タイプ数</div>
+          <div class="stat-value" id="live-count">0</div>
+        </div>
+      </div>
+
+      <div class="typing-area" id="typing-area" onclick="focusInput()">
+        <div class="typing-prompt" id="typing-prompt">ここをクリックして入力を開始してください</div>
+        <div id="text-display" style="display:none;">
+          <div class="hiragana-line" id="hiragana-display"></div>
+          <div class="romaji-line" id="romaji-display"></div>
+        </div>
+        <input type="text" class="typing-input" id="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="resetTest()">リセット</button>
+      </div>
+
+      <div class="result-panel" id="result-panel">
+        <div class="result-main">
+          <div class="result-wpm" id="result-wpm">0</div>
+          <div class="result-wpm-label">WPM</div>
+          <div class="result-rank" id="result-rank"></div>
+        </div>
+        <div class="result-details">
+          <div class="result-card">
+            <div class="rc-label">正確率</div>
+            <div class="rc-value" id="result-accuracy">0%</div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">タイプ数</div>
+            <div class="rc-value" id="result-total">0</div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">正タイプ</div>
+            <div class="rc-value" id="result-correct">0</div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">ミスタイプ</div>
+            <div class="rc-value" id="result-miss">0</div>
+          </div>
+        </div>
+        <div class="best-record" id="best-record" style="display:none;"></div>
+        <div class="share-buttons">
+          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener">X(Twitter)でシェア</a>
+          <button class="share-btn share-copy" id="share-copy" onclick="copyResult()">結果をコピー</button>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">ランク判定基準</h2>
+      <table class="rank-table">
+        <thead><tr><th>ランク</th><th>WPM</th><th>レベル</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:#f59e0b;">S</td><td>80以上</td><td>プロレベル</td></tr>
+          <tr><td style="font-weight:700;color:#ec4899;">A</td><td>60〜79</td><td>上級者</td></tr>
+          <tr><td style="font-weight:700;color:#3b82f6;">B</td><td>40〜59</td><td>中級者</td></tr>
+          <tr><td style="font-weight:700;color:#10b981;">C</td><td>20〜39</td><td>初級者</td></tr>
+          <tr><td style="font-weight:700;color:#6b7280;">D</td><td>20未満</td><td>初心者</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト差分比較</h3>
+          <p>2つのテキストの違いを視覚的に比較</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換</h3>
+          <p>テキストの一括置換ツール</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // Sentences: each has hiragana display and romaji to type
+    // romaji uses the most common input method
+    var sentences = [
+      { hira: "きょうはとてもいいてんきです", roma: "kyouhatomoiitenkidesu" },
+      { hira: "ぷろぐらみんぐはたのしい", roma: "puroguraminnguhatanosii" },
+      { hira: "おはようございます", roma: "ohayougozaimasu" },
+      { hira: "ありがとうございました", roma: "arigatougozaimasita" },
+      { hira: "はじめましてよろしくおねがいします", roma: "hajimemasiteyorosikuonegaisimasu" },
+      { hira: "きれいなはながさいている", roma: "kireinahanagasaiteiru" },
+      { hira: "あしたはあめがふるでしょう", roma: "asitahaamegarurudesyou" },
+      { hira: "でんしゃにのっておでかけする", roma: "densyaninotteodekakesuru" },
+      { hira: "おいしいりょうりをたべたい", roma: "oisiiryouriowotabetai" },
+      { hira: "としょかんでほんをよむ", roma: "tosyokandehonwoyomu" },
+      { hira: "がっこうでべんきょうする", roma: "gakkoudebenkyousuru" },
+      { hira: "やまにのぼってけしきをみる", roma: "yamaninobottekesikiomiru" },
+      { hira: "うみでおよぐのがすきです", roma: "umideoyogunogasukidesu" },
+      { hira: "えいがをみにいきましょう", roma: "eigawominiiikimasiyou" },
+      { hira: "しゅくだいをおわらせる", roma: "syukudaiwoowaraseru" },
+      { hira: "かぜにきをつけてください", roma: "kazenikiwotsuketekudasai" },
+      { hira: "しんかんせんはとてもはやい", roma: "sinkansenhatotemoahayai" },
+      { hira: "こうえんでさんぽをする", roma: "kouendesanpowosuru" },
+      { hira: "おかあさんにでんわする", roma: "okaasannidenwasuru" },
+      { hira: "にちようびはやすみです", roma: "nitiyoubihayasumidesu" },
+      { hira: "ともだちとあそびにいく", roma: "tomodatitoasobiniiku" },
+      { hira: "じてんしゃでかいものにいく", roma: "jitensyadekaimononiiku" },
+      { hira: "たいぴんぐのれんしゅうをする", roma: "taipingunorennsyuuwosuru" },
+      { hira: "こんぴゅーたーをつかう", roma: "konpyuutaawotsukau" },
+      { hira: "いんたーねっとでしらべる", roma: "intaanettodesiraberu" }
+    ];
+
+    var timeLimit = 60;
+    var timer = null;
+    var timeLeft = 60;
+    var started = false;
+    var finished = false;
+    var currentRomaji = "";
+    var currentPos = 0;
+    var totalKeystrokes = 0;
+    var correctKeystrokes = 0;
+    var missKeystrokes = 0;
+    var startTime = null;
+    var romajiChars = [];
+    var sentenceQueue = [];
+    var currentSentenceIndex = 0;
+    var romajiOffsets = []; // maps romaji position to sentence index
+
+    function shuffleArray(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    function buildText() {
+      sentenceQueue = shuffleArray(sentences);
+      currentSentenceIndex = 0;
+      // Build a long romaji string from multiple sentences
+      var romajiParts = [];
+      var offsets = [];
+      for (var i = 0; i < sentenceQueue.length; i++) {
+        if (i > 0) {
+          romajiParts.push(" ");
+          offsets.push(-1); // space separator
+        }
+        var r = sentenceQueue[i].roma;
+        for (var j = 0; j < r.length; j++) {
+          romajiParts.push(r[j]);
+          offsets.push(i);
+        }
+      }
+      currentRomaji = romajiParts.join("");
+      romajiOffsets = offsets;
+    }
+
+    function renderDisplay() {
+      // Render hiragana line
+      var hiraEl = document.getElementById('hiragana-display');
+      hiraEl.innerHTML = '';
+      for (var i = 0; i < sentenceQueue.length; i++) {
+        if (i > 0) {
+          var spacer = document.createElement('span');
+          spacer.textContent = '　';
+          hiraEl.appendChild(spacer);
+        }
+        var span = document.createElement('span');
+        span.className = 'h-char h-pending';
+        span.textContent = sentenceQueue[i].hira;
+        span.setAttribute('data-idx', i);
+        hiraEl.appendChild(span);
+      }
+      updateHiraganaHighlight();
+
+      // Render romaji line
+      var romaEl = document.getElementById('romaji-display');
+      romaEl.innerHTML = '';
+      romajiChars = [];
+      for (var i = 0; i < currentRomaji.length; i++) {
+        var span = document.createElement('span');
+        span.className = 'char pending';
+        span.textContent = currentRomaji[i];
+        romaEl.appendChild(span);
+        romajiChars.push(span);
+      }
+      if (romajiChars.length > 0 && !finished) {
+        romajiChars[0].classList.add('current');
+        romajiChars[0].classList.remove('pending');
+      }
+    }
+
+    function updateHiraganaHighlight() {
+      var hiraEl = document.getElementById('hiragana-display');
+      var spans = hiraEl.querySelectorAll('.h-char');
+      // Determine which sentence the current position is in
+      var currentSIdx = currentPos < romajiOffsets.length ? romajiOffsets[currentPos] : sentenceQueue.length;
+      if (currentSIdx === -1) currentSIdx = currentPos > 0 ? romajiOffsets[currentPos - 1] + 1 : 0;
+      for (var i = 0; i < spans.length; i++) {
+        var idx = parseInt(spans[i].getAttribute('data-idx'));
+        if (idx < currentSIdx) {
+          spans[i].className = 'h-char h-done';
+        } else if (idx === currentSIdx) {
+          spans[i].className = 'h-char h-current';
+        } else {
+          spans[i].className = 'h-char h-pending';
+        }
+      }
+    }
+
+    function setTime(t) {
+      var btns = document.querySelectorAll('.time-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('active', parseInt(btns[i].getAttribute('data-time')) === t);
+      }
+      timeLimit = t;
+      resetTest();
+    }
+
+    function resetTest() {
+      clearInterval(timer);
+      timer = null;
+      started = false;
+      finished = false;
+      timeLeft = timeLimit;
+      currentPos = 0;
+      totalKeystrokes = 0;
+      correctKeystrokes = 0;
+      missKeystrokes = 0;
+      startTime = null;
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('live-wpm').textContent = '0';
+      document.getElementById('live-accuracy').textContent = '100%';
+      document.getElementById('live-count').textContent = '0';
+      document.getElementById('result-panel').classList.remove('show');
+      document.getElementById('typing-prompt').style.display = 'block';
+      document.getElementById('text-display').style.display = 'none';
+      buildText();
+      renderDisplay();
+    }
+
+    function focusInput() {
+      if (finished) return;
+      var input = document.getElementById('typing-input');
+      input.focus();
+      if (!started && !finished) {
+        document.getElementById('typing-prompt').style.display = 'none';
+        document.getElementById('text-display').style.display = 'block';
+      }
+    }
+
+    function startTimer() {
+      started = true;
+      startTime = Date.now();
+      timer = setInterval(function() {
+        var elapsed = Math.floor((Date.now() - startTime) / 1000);
+        timeLeft = Math.max(0, timeLimit - elapsed);
+        document.getElementById('timer').textContent = timeLeft;
+        updateLiveStats();
+        if (timeLeft <= 0) finishTest();
+      }, 100);
+    }
+
+    function updateLiveStats() {
+      if (!startTime) return;
+      var elapsed = (Date.now() - startTime) / 1000 / 60;
+      if (elapsed > 0) {
+        var wpm = Math.round((correctKeystrokes / 5) / elapsed);
+        document.getElementById('live-wpm').textContent = wpm;
+      }
+      var accuracy = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 100;
+      document.getElementById('live-accuracy').textContent = accuracy + '%';
+      document.getElementById('live-count').textContent = totalKeystrokes;
+    }
+
+    function finishTest() {
+      clearInterval(timer);
+      finished = true;
+      var elapsed = (Date.now() - startTime) / 1000 / 60;
+      var wpm = elapsed > 0 ? Math.round((correctKeystrokes / 5) / elapsed) : 0;
+      var accuracy = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 0;
+
+      var rank, rankClass;
+      if (wpm >= 80) { rank = 'S'; rankClass = 'rank-s'; }
+      else if (wpm >= 60) { rank = 'A'; rankClass = 'rank-a'; }
+      else if (wpm >= 40) { rank = 'B'; rankClass = 'rank-b'; }
+      else if (wpm >= 20) { rank = 'C'; rankClass = 'rank-c'; }
+      else { rank = 'D'; rankClass = 'rank-d'; }
+
+      document.getElementById('result-wpm').textContent = wpm;
+      var rankEl = document.getElementById('result-rank');
+      rankEl.textContent = 'ランク ' + rank;
+      rankEl.className = 'result-rank ' + rankClass;
+      document.getElementById('result-accuracy').textContent = accuracy + '%';
+      document.getElementById('result-total').textContent = totalKeystrokes;
+      document.getElementById('result-correct').textContent = correctKeystrokes;
+      document.getElementById('result-miss').textContent = missKeystrokes;
+      document.getElementById('result-panel').classList.add('show');
+
+      // Best record
+      var storageKey = 'typing_best_ja_' + timeLimit;
+      var best = parseInt(localStorage.getItem(storageKey) || '0');
+      var bestEl = document.getElementById('best-record');
+      if (wpm > best) {
+        localStorage.setItem(storageKey, wpm);
+        bestEl.textContent = '新記録! ' + wpm + ' WPM (前回ベスト: ' + (best || '-') + ' WPM)';
+        bestEl.style.display = 'block';
+      } else if (best > 0) {
+        bestEl.textContent = 'ベスト記録: ' + best + ' WPM';
+        bestEl.style.display = 'block';
+      }
+
+      var shareText = 'タイピング速度 ' + wpm + ' WPM (正確率 ' + accuracy + '%) ランク' + rank + 'でした!\nhttps://simpletoolkit.net/tools/typing-test/';
+      document.getElementById('share-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText);
+      window._shareText = shareText;
+    }
+
+    function copyResult() {
+      if (window._shareText) {
+        navigator.clipboard.writeText(window._shareText).then(function() {
+          var btn = document.getElementById('share-copy');
+          btn.textContent = 'コピーしました!';
+          setTimeout(function() { btn.textContent = '結果をコピー'; }, 2000);
+        });
+      }
+    }
+
+    document.getElementById('typing-input').addEventListener('keydown', function(e) {
+      if (finished) return;
+      if (e.key === 'Tab' || e.key === 'Escape') return;
+      if (e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta' || e.key === 'CapsLock') return;
+
+      if (!started) startTimer();
+
+      if (e.key.length === 1) {
+        e.preventDefault();
+        totalKeystrokes++;
+        var expected = currentRomaji[currentPos];
+        if (e.key === expected) {
+          correctKeystrokes++;
+          romajiChars[currentPos].className = 'char correct';
+          currentPos++;
+          if (currentPos < romajiChars.length) {
+            romajiChars[currentPos].className = 'char current';
+          }
+          updateHiraganaHighlight();
+          if (currentPos >= currentRomaji.length) {
+            buildText();
+            currentPos = 0;
+            renderDisplay();
+          }
+        } else {
+          missKeystrokes++;
+          romajiChars[currentPos].className = 'char incorrect current';
+          setTimeout(function() {
+            if (!finished && currentPos < romajiChars.length) {
+              romajiChars[currentPos].className = 'char current';
+            }
+          }, 300);
+        }
+        updateLiveStats();
+      }
+    });
+
+    // Init
+    buildText();
+    renderDisplay();
+  </script>
+</body>
+</html>

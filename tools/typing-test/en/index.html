@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Speed Test - Test Your WPM | SimpleToolkit</title>
+  <meta name="description" content="Free online typing speed test. Measure your WPM (Words Per Minute) and accuracy with 30s/60s/120s time limits. Track your best scores and share results.">
+  <meta property="og:title" content="Typing Speed Test - Test Your WPM | SimpleToolkit">
+  <meta property="og:description" content="Free online typing speed test. Measure your WPM and accuracy. Rank your typing skills from S to D.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/typing-test/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/typing-test/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/typing-test/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Typing Speed Test - Test Your WPM",
+    "description": "Free online typing speed test. Measure your WPM (Words Per Minute) and accuracy with customizable time limits.",
+    "url": "https://simpletoolkit.net/tools/typing-test/en/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is WPM in typing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "WPM stands for Words Per Minute, a standard measure of typing speed. It is calculated by dividing the total number of correctly typed characters by 5 (the average word length) and then by the elapsed time in minutes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the average typing speed?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The average typing speed is around 40 WPM. Office workers typically type at 40-60 WPM. Professional typists can reach 80+ WPM, while top typists exceed 120 WPM."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all processing happens entirely in your browser. No data is sent externally. Your best scores are saved in your browser's LocalStorage."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .time-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .time-btn {
+      padding: 8px 20px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .time-btn:hover {
+      border-color: var(--primary);
+    }
+    .time-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+    .typing-stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      text-align: center;
+      flex: 1;
+      min-width: 80px;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .typing-area {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      min-height: 120px;
+      font-size: 1.2rem;
+      line-height: 2;
+      letter-spacing: 0.02em;
+      position: relative;
+      cursor: text;
+    }
+    .typing-area:focus-within {
+      border-color: var(--primary);
+    }
+    .typing-area .char {
+      display: inline;
+      transition: color 0.1s;
+    }
+    .typing-area .char.correct {
+      color: #16a34a;
+    }
+    .typing-area .char.incorrect {
+      color: #dc2626;
+      text-decoration: underline;
+    }
+    .typing-area .char.current {
+      background: rgba(99, 102, 241, 0.2);
+      border-bottom: 2px solid var(--primary);
+    }
+    .typing-area .char.pending {
+      color: var(--text-muted);
+    }
+    .typing-input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      top: 0;
+      left: 0;
+    }
+    .typing-prompt {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1rem;
+      padding: 20px;
+    }
+    .result-panel {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-panel.show {
+      display: block;
+    }
+    .result-main {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .result-wpm {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .result-wpm-label {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+    .result-rank {
+      display: inline-block;
+      font-size: 2rem;
+      font-weight: 800;
+      padding: 8px 24px;
+      border-radius: 12px;
+      margin-top: 8px;
+    }
+    .rank-s { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #fff; }
+    .rank-a { background: linear-gradient(135deg, #f472b6, #ec4899); color: #fff; }
+    .rank-b { background: linear-gradient(135deg, #60a5fa, #3b82f6); color: #fff; }
+    .rank-c { background: linear-gradient(135deg, #34d399, #10b981); color: #fff; }
+    .rank-d { background: linear-gradient(135deg, #9ca3af, #6b7280); color: #fff; }
+    .result-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .result-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .result-card .rc-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-card .rc-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .best-record {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fefce8;
+      border: 1px solid #fde047;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .share-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .share-x { background: #000; }
+    .share-copy { background: var(--primary); }
+    .rank-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .rank-table th, .rank-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .rank-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    @media (max-width: 600px) {
+      .typing-area { font-size: 1rem; padding: 16px; }
+      .result-wpm { font-size: 3rem; }
+      .result-details { grid-template-columns: 1fr; }
+      .stat-item { min-width: 60px; padding: 8px 10px; }
+      .stat-value { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Typing Speed Test</h1>
+    <h2>Free Online WPM Typing Test</h2>
+    <p class="tool-description">Test your typing speed with this free online tool. Measure your WPM (Words Per Minute) and accuracy. Choose from 30s, 60s, or 120s time limits and get ranked from S to D.</p>
+    <p style="margin-bottom:8px;"><a href="../" style="color:var(--primary);">Japanese version (日本語版)</a></p>
+
+    <div class="tool-area">
+      <h3 style="margin-top:0;margin-bottom:12px;">Time Limit</h3>
+      <div class="time-selector">
+        <button class="time-btn" onclick="setTime(30)" data-time="30">30s</button>
+        <button class="time-btn active" onclick="setTime(60)" data-time="60">60s</button>
+        <button class="time-btn" onclick="setTime(120)" data-time="120">120s</button>
+      </div>
+
+      <div class="typing-stats">
+        <div class="stat-item">
+          <div class="stat-label">Time Left</div>
+          <div class="stat-value" id="timer">60</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">WPM</div>
+          <div class="stat-value" id="live-wpm">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-value" id="live-accuracy">100%</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Keystrokes</div>
+          <div class="stat-value" id="live-count">0</div>
+        </div>
+      </div>
+
+      <div class="typing-area" id="typing-area" onclick="focusInput()">
+        <div class="typing-prompt" id="typing-prompt">Click here to start typing</div>
+        <div id="text-display" style="display:none;"></div>
+        <input type="text" class="typing-input" id="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="resetTest()">Reset</button>
+      </div>
+
+      <div class="result-panel" id="result-panel">
+        <div class="result-main">
+          <div class="result-wpm" id="result-wpm">0</div>
+          <div class="result-wpm-label">WPM</div>
+          <div class="result-rank" id="result-rank"></div>
+        </div>
+        <div class="result-details">
+          <div class="result-card">
+            <div class="rc-label">Accuracy</div>
+            <div class="rc-value" id="result-accuracy">0%</div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">Total Keystrokes</div>
+            <div class="rc-value" id="result-total">0</div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">Correct</div>
+            <div class="rc-value" id="result-correct">0</div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">Mistakes</div>
+            <div class="rc-value" id="result-miss">0</div>
+          </div>
+        </div>
+        <div class="best-record" id="best-record" style="display:none;"></div>
+        <div class="share-buttons">
+          <a class="share-btn share-x" id="share-x" href="#" target="_blank" rel="noopener">Share on X (Twitter)</a>
+          <button class="share-btn share-copy" id="share-copy" onclick="copyResult()">Copy Result</button>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Rank Criteria</h2>
+      <table class="rank-table">
+        <thead>
+          <tr><th>Rank</th><th>WPM</th><th>Level</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:#f59e0b;">S</td><td>80+</td><td>Professional</td></tr>
+          <tr><td style="font-weight:700;color:#ec4899;">A</td><td>60-79</td><td>Advanced</td></tr>
+          <tr><td style="font-weight:700;color:#3b82f6;">B</td><td>40-59</td><td>Intermediate</td></tr>
+          <tr><td style="font-weight:700;color:#10b981;">C</td><td>20-39</td><td>Beginner</td></tr>
+          <tr><td style="font-weight:700;color:#6b7280;">D</td><td>Below 20</td><td>Novice</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, and lines in real-time</p>
+        </a>
+        <a href="../../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Text Diff</h3>
+          <p>Visually compare differences between two texts</p>
+        </a>
+        <a href="../../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Password Generator</h3>
+          <p>Generate secure passwords with one click</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    var sentences = [
+      "The quick brown fox jumps over the lazy dog near the river bank.",
+      "Programming is the art of telling a computer what to do step by step.",
+      "She sells seashells by the seashore on a warm sunny day in summer.",
+      "A journey of a thousand miles begins with a single step forward.",
+      "The best way to predict the future is to create it with your own hands.",
+      "Technology is best when it brings people together and creates connections.",
+      "In the middle of every difficulty lies a great opportunity for growth.",
+      "Success is not final and failure is not fatal it is the courage to continue.",
+      "The only limit to our realization of tomorrow is our doubts of today.",
+      "Life is what happens when you are busy making other plans for the future.",
+      "Every great developer you know got there by solving problems they were unqualified to solve.",
+      "Simple things should be simple and complex things should be possible to achieve.",
+      "The secret of getting ahead is getting started with whatever you have right now.",
+      "It does not matter how slowly you go as long as you do not stop moving forward.",
+      "Learning to code is useful no matter what your career ambitions happen to be.",
+      "Good code is its own best documentation so write it clearly and with purpose.",
+      "The only way to do great work is to love what you do every single day.",
+      "Innovation distinguishes between a leader and a follower in any industry.",
+      "Stay hungry and stay foolish because that is how great things are built.",
+      "First solve the problem and then write the code to implement the solution.",
+      "Talk is cheap so show me the code and let the results speak for themselves.",
+      "Any fool can write code that a computer can understand but good programmers write code that humans can understand.",
+      "The most important property of a program is whether it accomplishes the intention of its user.",
+      "Before software can be reusable it first has to be usable by real people."
+    ];
+
+    var timeLimit = 60;
+    var timer = null;
+    var timeLeft = 60;
+    var started = false;
+    var finished = false;
+    var currentText = "";
+    var currentPos = 0;
+    var totalKeystrokes = 0;
+    var correctKeystrokes = 0;
+    var missKeystrokes = 0;
+    var startTime = null;
+    var displayChars = [];
+
+    function shuffleArray(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    function generateText() {
+      var shuffled = shuffleArray(sentences);
+      return shuffled.join(" ");
+    }
+
+    function setTime(t) {
+      var btns = document.querySelectorAll('.time-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('active', parseInt(btns[i].getAttribute('data-time')) === t);
+      }
+      timeLimit = t;
+      resetTest();
+    }
+
+    function resetTest() {
+      clearInterval(timer);
+      timer = null;
+      started = false;
+      finished = false;
+      timeLeft = timeLimit;
+      currentPos = 0;
+      totalKeystrokes = 0;
+      correctKeystrokes = 0;
+      missKeystrokes = 0;
+      startTime = null;
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('live-wpm').textContent = '0';
+      document.getElementById('live-accuracy').textContent = '100%';
+      document.getElementById('live-count').textContent = '0';
+      document.getElementById('result-panel').classList.remove('show');
+      document.getElementById('typing-prompt').style.display = 'block';
+      document.getElementById('text-display').style.display = 'none';
+      currentText = generateText();
+      renderText();
+    }
+
+    function renderText() {
+      var display = document.getElementById('text-display');
+      display.innerHTML = '';
+      displayChars = [];
+      for (var i = 0; i < currentText.length; i++) {
+        var span = document.createElement('span');
+        span.className = 'char pending';
+        span.textContent = currentText[i];
+        display.appendChild(span);
+        displayChars.push(span);
+      }
+      if (displayChars.length > 0 && !finished) {
+        displayChars[0].classList.add('current');
+        displayChars[0].classList.remove('pending');
+      }
+    }
+
+    function focusInput() {
+      if (finished) return;
+      var input = document.getElementById('typing-input');
+      input.focus();
+      if (!started && !finished) {
+        document.getElementById('typing-prompt').style.display = 'none';
+        document.getElementById('text-display').style.display = 'block';
+        if (!currentText) {
+          currentText = generateText();
+          renderText();
+        }
+      }
+    }
+
+    function startTimer() {
+      started = true;
+      startTime = Date.now();
+      timer = setInterval(function() {
+        var elapsed = Math.floor((Date.now() - startTime) / 1000);
+        timeLeft = Math.max(0, timeLimit - elapsed);
+        document.getElementById('timer').textContent = timeLeft;
+        updateLiveStats();
+        if (timeLeft <= 0) {
+          finishTest();
+        }
+      }, 100);
+    }
+
+    function updateLiveStats() {
+      if (!startTime) return;
+      var elapsed = (Date.now() - startTime) / 1000 / 60;
+      if (elapsed > 0) {
+        var wpm = Math.round((correctKeystrokes / 5) / elapsed);
+        document.getElementById('live-wpm').textContent = wpm;
+      }
+      var accuracy = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 100;
+      document.getElementById('live-accuracy').textContent = accuracy + '%';
+      document.getElementById('live-count').textContent = totalKeystrokes;
+    }
+
+    function finishTest() {
+      clearInterval(timer);
+      finished = true;
+      var elapsed = (Date.now() - startTime) / 1000 / 60;
+      var wpm = elapsed > 0 ? Math.round((correctKeystrokes / 5) / elapsed) : 0;
+      var accuracy = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 0;
+
+      var rank, rankClass;
+      if (wpm >= 80) { rank = 'S'; rankClass = 'rank-s'; }
+      else if (wpm >= 60) { rank = 'A'; rankClass = 'rank-a'; }
+      else if (wpm >= 40) { rank = 'B'; rankClass = 'rank-b'; }
+      else if (wpm >= 20) { rank = 'C'; rankClass = 'rank-c'; }
+      else { rank = 'D'; rankClass = 'rank-d'; }
+
+      document.getElementById('result-wpm').textContent = wpm;
+      var rankEl = document.getElementById('result-rank');
+      rankEl.textContent = 'Rank ' + rank;
+      rankEl.className = 'result-rank ' + rankClass;
+      document.getElementById('result-accuracy').textContent = accuracy + '%';
+      document.getElementById('result-total').textContent = totalKeystrokes;
+      document.getElementById('result-correct').textContent = correctKeystrokes;
+      document.getElementById('result-miss').textContent = missKeystrokes;
+      document.getElementById('result-panel').classList.add('show');
+
+      // Best record
+      var storageKey = 'typing_best_en_' + timeLimit;
+      var best = parseInt(localStorage.getItem(storageKey) || '0');
+      var bestEl = document.getElementById('best-record');
+      if (wpm > best) {
+        localStorage.setItem(storageKey, wpm);
+        bestEl.textContent = 'New Record! ' + wpm + ' WPM (Previous best: ' + (best || '-') + ' WPM)';
+        bestEl.style.display = 'block';
+      } else if (best > 0) {
+        bestEl.textContent = 'Best Record: ' + best + ' WPM';
+        bestEl.style.display = 'block';
+      }
+
+      // Share
+      var shareText = 'My typing speed: ' + wpm + ' WPM (Accuracy: ' + accuracy + '%) Rank ' + rank + '!\nhttps://simpletoolkit.net/tools/typing-test/en/';
+      document.getElementById('share-x').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText);
+      window._shareText = shareText;
+    }
+
+    function copyResult() {
+      if (window._shareText) {
+        navigator.clipboard.writeText(window._shareText).then(function() {
+          var btn = document.getElementById('share-copy');
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy Result'; }, 2000);
+        });
+      }
+    }
+
+    document.getElementById('typing-input').addEventListener('keydown', function(e) {
+      if (finished) return;
+      if (e.key === 'Tab' || e.key === 'Escape') return;
+      if (e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta' || e.key === 'CapsLock') return;
+
+      if (!started) startTimer();
+
+      if (e.key.length === 1) {
+        e.preventDefault();
+        totalKeystrokes++;
+        var expected = currentText[currentPos];
+        if (e.key === expected) {
+          correctKeystrokes++;
+          displayChars[currentPos].className = 'char correct';
+          currentPos++;
+          if (currentPos < displayChars.length) {
+            displayChars[currentPos].className = 'char current';
+          }
+          if (currentPos >= currentText.length) {
+            currentText = generateText();
+            currentPos = 0;
+            renderText();
+          }
+        } else {
+          missKeystrokes++;
+          displayChars[currentPos].className = 'char incorrect current';
+          setTimeout(function() {
+            if (!finished && currentPos < displayChars.length) {
+              displayChars[currentPos].className = 'char current';
+            }
+          }, 300);
+        }
+        updateLiveStats();
+      }
+    });
+
+    // Initial setup
+    currentText = generateText();
+    renderText();
+  </script>
+</body>
+</html>
