@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行列計算ツール - 行列式・逆行列・固有値をオンラインで計算｜SimpleToolkit</title>
+  <meta name="description" content="行列の行列式、逆行列、固有値、転置をオンラインで瞬時に計算。2x2〜4x4対応。線形代数の学習・確認に最適な無料行列計算ツール。">
+  <meta property="og:title" content="行列計算ツール - 行列式・逆行列・固有値をオンラインで計算｜SimpleToolkit">
+  <meta property="og:description" content="行列の行列式、逆行列、固有値、転置をオンラインで瞬時に計算。2x2〜4x4対応。線形代数の学習・確認に最適な無料ツール。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/matrix-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "行列計算ツール - 行列式・逆行列・固有値をオンラインで計算",
+    "description": "行列の行列式、逆行列、固有値、転置をオンラインで瞬時に計算。2x2〜4x4対応。線形代数の学習・確認に最適な無料行列計算ツール。",
+    "url": "https://simpletoolkit.net/tools/matrix-calc/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "行列式（determinant）とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "行列式は正方行列に対して定義されるスカラー値で、行列の性質を表す重要な指標です。行列式が0でない場合、その行列は逆行列を持ちます（正則行列）。幾何学的には、行列による変換の面積・体積の拡大率を表します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "逆行列とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "逆行列とは、元の行列と掛け合わせると単位行列になる行列のことです。行列Aの逆行列はA⁻¹と表記され、A×A⁻¹ = A⁻¹×A = 単位行列 が成り立ちます。行列式が0の行列（特異行列）には逆行列が存在しません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "固有値とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "固有値とは、行列Aに対して Ax = λx を満たすスカラーλのことです。固有値は特性方程式 det(A - λI) = 0 を解くことで求められます。データ分析や物理学など多くの分野で重要な役割を果たします。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "行列のランクとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "行列のランク（階数）とは、行列の線形独立な行（または列）の最大数のことです。ランクは行簡約化（ガウスの消去法）によって求められ、連立方程式の解の個数や行列の性質を判定するのに使われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。入力データが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    /* Size selector */
+    .size-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .size-selector label {
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    .size-btn {
+      padding: 8px 18px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .size-btn:hover {
+      border-color: var(--primary);
+    }
+    .size-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Matrix grid */
+    .matrix-section {
+      margin-bottom: 20px;
+    }
+    .matrix-section h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .matrix-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .matrix-bracket {
+      font-size: 3rem;
+      font-weight: 100;
+      color: var(--text-muted);
+      line-height: 1;
+      user-select: none;
+    }
+    .matrix-grid {
+      display: inline-grid;
+      gap: 4px;
+      padding: 4px;
+    }
+    .matrix-grid input {
+      width: 64px;
+      height: 40px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.95rem;
+      background: var(--bg);
+      color: var(--text);
+      padding: 0 4px;
+    }
+    .matrix-grid input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.1);
+    }
+
+    /* Preset buttons */
+    .preset-btns {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .preset-btn {
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .preset-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Operation buttons */
+    .op-btns {
+      display: flex;
+      gap: 8px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .op-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .op-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    .op-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Display mode toggle */
+    .display-toggle {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .display-toggle label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .toggle-btn {
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .toggle-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Result area */
+    .result-area {
+      display: none;
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .result-area.show {
+      display: block;
+    }
+    .result-label {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+    .result-scalar {
+      font-size: 2rem;
+      font-weight: 800;
+      text-align: center;
+      margin: 16px 0;
+    }
+    .result-matrix-container {
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+      padding: 8px 0;
+    }
+    .result-matrix {
+      display: inline-grid;
+      gap: 2px;
+    }
+    .result-matrix-cell {
+      width: 80px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: var(--card-bg, #f8fafc);
+      border-radius: 4px;
+    }
+    .result-bracket {
+      font-size: 3rem;
+      font-weight: 100;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
+    .eigenvalue-list {
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 2;
+    }
+    .eigenvalue-item {
+      display: inline-block;
+      background: var(--card-bg, #f8fafc);
+      padding: 4px 16px;
+      border-radius: var(--radius);
+      margin: 4px;
+      font-weight: 600;
+    }
+    .error-msg {
+      color: #dc2626;
+      font-weight: 600;
+      text-align: center;
+      padding: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .matrix-grid input {
+        width: 52px;
+        height: 36px;
+        font-size: 0.85rem;
+      }
+      .result-matrix-cell {
+        width: 64px;
+        height: 36px;
+        font-size: 0.85rem;
+      }
+      .matrix-bracket, .result-bracket {
+        font-size: 2rem;
+      }
+      .op-btns {
+        gap: 6px;
+      }
+      .op-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>行列計算ツール</h1>
+    <h2>行列式・逆行列・固有値をオンラインで計算</h2>
+    <p class="tool-description">行列の行列式、逆行列、転置行列、固有値、ランク、トレースをオンラインで瞬時に計算。行列の加算・乗算にも対応。2x2〜4x4の行列に対応した、線形代数の学習・確認に最適な無料ツールです。</p>
+
+    <div class="tool-area">
+      <!-- サイズ選択 -->
+      <div class="size-selector">
+        <label>行列サイズ:</label>
+        <button class="size-btn active" onclick="setSize(2)" id="size-2">2x2</button>
+        <button class="size-btn" onclick="setSize(3)" id="size-3">3x3</button>
+        <button class="size-btn" onclick="setSize(4)" id="size-4">4x4</button>
+      </div>
+
+      <!-- 行列A -->
+      <div class="matrix-section" id="matrix-a-section">
+        <h3>行列 A</h3>
+        <div class="preset-btns">
+          <button class="preset-btn" onclick="setPreset('A','identity')">単位行列</button>
+          <button class="preset-btn" onclick="setPreset('A','zero')">ゼロ行列</button>
+          <button class="preset-btn" onclick="setPreset('A','random')">ランダム</button>
+          <button class="preset-btn" onclick="setPreset('A','clear')">クリア</button>
+        </div>
+        <div class="matrix-container">
+          <span class="matrix-bracket">[</span>
+          <div class="matrix-grid" id="matrix-a"></div>
+          <span class="matrix-bracket">]</span>
+        </div>
+      </div>
+
+      <!-- 行列B（加算・乗算時のみ表示） -->
+      <div class="matrix-section" id="matrix-b-section" style="display:none;">
+        <h3>行列 B</h3>
+        <div class="preset-btns">
+          <button class="preset-btn" onclick="setPreset('B','identity')">単位行列</button>
+          <button class="preset-btn" onclick="setPreset('B','zero')">ゼロ行列</button>
+          <button class="preset-btn" onclick="setPreset('B','random')">ランダム</button>
+          <button class="preset-btn" onclick="setPreset('B','clear')">クリア</button>
+        </div>
+        <div class="matrix-container">
+          <span class="matrix-bracket">[</span>
+          <div class="matrix-grid" id="matrix-b"></div>
+          <span class="matrix-bracket">]</span>
+        </div>
+      </div>
+
+      <!-- 演算ボタン -->
+      <div class="op-btns">
+        <button class="op-btn" onclick="compute('det')">行列式</button>
+        <button class="op-btn" onclick="compute('inv')">逆行列</button>
+        <button class="op-btn" onclick="compute('trans')">転置</button>
+        <button class="op-btn" onclick="compute('eigen')">固有値</button>
+        <button class="op-btn" onclick="compute('trace')">トレース</button>
+        <button class="op-btn" onclick="compute('rank')">ランク</button>
+        <button class="op-btn" onclick="compute('add')">A + B</button>
+        <button class="op-btn" onclick="compute('mul')">A × B</button>
+      </div>
+
+      <!-- 表示モード -->
+      <div class="display-toggle">
+        <label>表示形式:</label>
+        <button class="toggle-btn active" id="toggle-decimal" onclick="setDisplayMode('decimal')">小数</button>
+        <button class="toggle-btn" id="toggle-fraction" onclick="setDisplayMode('fraction')">分数</button>
+      </div>
+
+      <!-- 結果表示 -->
+      <div class="result-area" id="result-area">
+        <div class="result-label" id="result-label"></div>
+        <div id="result-content"></div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ生成ツール</h3>
+          <p>MD5・SHA-1・SHA-256などのハッシュ値を生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var currentSize = 2;
+    var displayMode = 'decimal';
+    var lastOp = null;
+    var lastResult = null;
+
+    // --- Matrix Grid Management ---
+    function buildGrid(id, n) {
+      var grid = document.getElementById(id);
+      grid.innerHTML = '';
+      grid.style.gridTemplateColumns = 'repeat(' + n + ', 1fr)';
+      for (var i = 0; i < n; i++) {
+        for (var j = 0; j < n; j++) {
+          var inp = document.createElement('input');
+          inp.type = 'number';
+          inp.step = 'any';
+          inp.id = id + '-' + i + '-' + j;
+          inp.setAttribute('aria-label', '行' + (i+1) + '列' + (j+1));
+          grid.appendChild(inp);
+        }
+      }
+    }
+
+    function setSize(n) {
+      currentSize = n;
+      document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('size-' + n).classList.add('active');
+      buildGrid('matrix-a', n);
+      buildGrid('matrix-b', n);
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    function readMatrix(id) {
+      var n = currentSize;
+      var m = [];
+      for (var i = 0; i < n; i++) {
+        m[i] = [];
+        for (var j = 0; j < n; j++) {
+          var v = parseFloat(document.getElementById(id + '-' + i + '-' + j).value);
+          if (isNaN(v)) v = 0;
+          m[i][j] = v;
+        }
+      }
+      return m;
+    }
+
+    function setPreset(which, type) {
+      var id = which === 'A' ? 'matrix-a' : 'matrix-b';
+      var n = currentSize;
+      for (var i = 0; i < n; i++) {
+        for (var j = 0; j < n; j++) {
+          var inp = document.getElementById(id + '-' + i + '-' + j);
+          if (type === 'identity') inp.value = (i === j) ? 1 : 0;
+          else if (type === 'zero') inp.value = 0;
+          else if (type === 'random') inp.value = Math.floor(Math.random() * 19) - 9;
+          else inp.value = '';
+        }
+      }
+    }
+
+    // --- Fraction utilities ---
+    function gcd(a, b) {
+      a = Math.abs(Math.round(a));
+      b = Math.abs(Math.round(b));
+      while (b) { var t = b; b = a % b; a = t; }
+      return a;
+    }
+
+    function toFraction(x) {
+      if (Math.abs(x - Math.round(x)) < 1e-9) return '' + Math.round(x);
+      var sign = x < 0 ? -1 : 1;
+      x = Math.abs(x);
+      // Try common denominators up to 10000
+      var bestNum = Math.round(x), bestDen = 1, bestErr = Math.abs(x - bestNum);
+      for (var den = 2; den <= 10000; den++) {
+        var num = Math.round(x * den);
+        var err = Math.abs(x - num / den);
+        if (err < bestErr) {
+          bestErr = err;
+          bestNum = num;
+          bestDen = den;
+          if (err < 1e-9) break;
+        }
+      }
+      if (bestDen === 1) return '' + (sign * bestNum);
+      var g = gcd(bestNum, bestDen);
+      bestNum /= g;
+      bestDen /= g;
+      return (sign < 0 ? '-' : '') + bestNum + '/' + bestDen;
+    }
+
+    function formatVal(x) {
+      if (displayMode === 'fraction') return toFraction(x);
+      // Round to avoid floating point noise
+      var r = Math.round(x * 1e10) / 1e10;
+      if (Math.abs(r) < 1e-10) return '0';
+      return '' + parseFloat(r.toPrecision(10));
+    }
+
+    function setDisplayMode(mode) {
+      displayMode = mode;
+      document.getElementById('toggle-decimal').classList.toggle('active', mode === 'decimal');
+      document.getElementById('toggle-fraction').classList.toggle('active', mode === 'fraction');
+      if (lastOp && lastResult !== null) renderResult(lastOp, lastResult);
+    }
+
+    // --- Linear Algebra Core ---
+
+    // Determinant by cofactor expansion
+    function det(m) {
+      var n = m.length;
+      if (n === 1) return m[0][0];
+      if (n === 2) return m[0][0]*m[1][1] - m[0][1]*m[1][0];
+      var d = 0;
+      for (var j = 0; j < n; j++) {
+        d += Math.pow(-1, j) * m[0][j] * det(minor(m, 0, j));
+      }
+      return d;
+    }
+
+    function minor(m, row, col) {
+      var r = [];
+      for (var i = 0; i < m.length; i++) {
+        if (i === row) continue;
+        var rr = [];
+        for (var j = 0; j < m.length; j++) {
+          if (j === col) continue;
+          rr.push(m[i][j]);
+        }
+        r.push(rr);
+      }
+      return r;
+    }
+
+    // Transpose
+    function transpose(m) {
+      var n = m.length;
+      var r = [];
+      for (var i = 0; i < n; i++) {
+        r[i] = [];
+        for (var j = 0; j < n; j++) r[i][j] = m[j][i];
+      }
+      return r;
+    }
+
+    // Inverse via adjugate / det
+    function inverse(m) {
+      var d = det(m);
+      if (Math.abs(d) < 1e-12) return null;
+      var n = m.length;
+      var adj = [];
+      for (var i = 0; i < n; i++) {
+        adj[i] = [];
+        for (var j = 0; j < n; j++) {
+          adj[i][j] = Math.pow(-1, i+j) * det(minor(m, i, j));
+        }
+      }
+      adj = transpose(adj);
+      for (var i = 0; i < n; i++)
+        for (var j = 0; j < n; j++)
+          adj[i][j] /= d;
+      return adj;
+    }
+
+    // Trace
+    function trace(m) {
+      var t = 0;
+      for (var i = 0; i < m.length; i++) t += m[i][i];
+      return t;
+    }
+
+    // Rank via Gaussian elimination
+    function rank(m) {
+      var n = m.length;
+      var c = m[0].length;
+      // Deep copy
+      var a = [];
+      for (var i = 0; i < n; i++) a[i] = m[i].slice();
+      var r = 0;
+      for (var col = 0; col < c && r < n; col++) {
+        // Find pivot
+        var pivot = -1;
+        var maxVal = 1e-10;
+        for (var i = r; i < n; i++) {
+          if (Math.abs(a[i][col]) > maxVal) {
+            maxVal = Math.abs(a[i][col]);
+            pivot = i;
+          }
+        }
+        if (pivot === -1) continue;
+        // Swap
+        var tmp = a[r]; a[r] = a[pivot]; a[pivot] = tmp;
+        // Eliminate
+        for (var i = 0; i < n; i++) {
+          if (i === r) continue;
+          var f = a[i][col] / a[r][col];
+          for (var j = col; j < c; j++) {
+            a[i][j] -= f * a[r][j];
+          }
+        }
+        r++;
+      }
+      return r;
+    }
+
+    // Matrix addition
+    function matAdd(a, b) {
+      var n = a.length;
+      var r = [];
+      for (var i = 0; i < n; i++) {
+        r[i] = [];
+        for (var j = 0; j < n; j++) r[i][j] = a[i][j] + b[i][j];
+      }
+      return r;
+    }
+
+    // Matrix multiplication
+    function matMul(a, b) {
+      var n = a.length;
+      var r = [];
+      for (var i = 0; i < n; i++) {
+        r[i] = [];
+        for (var j = 0; j < n; j++) {
+          var s = 0;
+          for (var k = 0; k < n; k++) s += a[i][k] * b[k][j];
+          r[i][j] = s;
+        }
+      }
+      return r;
+    }
+
+    // --- Eigenvalues ---
+    // 2x2: quadratic formula on characteristic polynomial
+    // 3x3: Newton's method on characteristic polynomial
+    // 4x4: Newton's method + deflation
+
+    // Characteristic polynomial coefficients for nxn (up to 4x4)
+    // det(A - λI) = 0
+    // We evaluate det(A - λI) numerically and use Newton's method
+
+    function charPolyEval(m, lambda) {
+      var n = m.length;
+      var ml = [];
+      for (var i = 0; i < n; i++) {
+        ml[i] = [];
+        for (var j = 0; j < n; j++) {
+          ml[i][j] = m[i][j] - (i === j ? lambda : 0);
+        }
+      }
+      return det(ml);
+    }
+
+    function charPolyDeriv(m, lambda) {
+      var h = 1e-7;
+      return (charPolyEval(m, lambda + h) - charPolyEval(m, lambda - h)) / (2 * h);
+    }
+
+    function eigenvalues2x2(m) {
+      var a = m[0][0], b = m[0][1], c = m[1][0], d = m[1][1];
+      var tr = a + d;
+      var dt = a * d - b * c;
+      var disc = tr * tr - 4 * dt;
+      if (disc >= 0) {
+        var sq = Math.sqrt(disc);
+        return [{ re: (tr + sq) / 2, im: 0 }, { re: (tr - sq) / 2, im: 0 }];
+      } else {
+        var sq = Math.sqrt(-disc);
+        return [{ re: tr / 2, im: sq / 2 }, { re: tr / 2, im: -sq / 2 }];
+      }
+    }
+
+    // Newton's method to find one real root of charPoly
+    function newtonRoot(m, guess, maxIter) {
+      var x = guess;
+      for (var i = 0; i < (maxIter || 200); i++) {
+        var f = charPolyEval(m, x);
+        var fp = charPolyDeriv(m, x);
+        if (Math.abs(fp) < 1e-15) { x += 0.1; continue; }
+        var dx = f / fp;
+        x -= dx;
+        if (Math.abs(dx) < 1e-12 && Math.abs(f) < 1e-10) break;
+      }
+      return x;
+    }
+
+    // Deflate: given matrix polynomial (as matrix) and known eigenvalue,
+    // produce reduced characteristic polynomial by dividing out (lambda - root)
+    // For simplicity, we use companion matrix approach or just find roots numerically
+
+    function eigenvaluesNxN(m) {
+      var n = m.length;
+      if (n === 2) return eigenvalues2x2(m);
+
+      // Get characteristic polynomial coefficients using Faddeev-LeVerrier
+      var coeffs = charPolyCoeffs(m);
+      // coeffs[0]*λ^n + coeffs[1]*λ^(n-1) + ... + coeffs[n] = 0
+
+      // Find roots using Durand-Kerner method (finds all roots including complex)
+      return durandKerner(coeffs, n);
+    }
+
+    // Faddeev-LeVerrier algorithm to get characteristic polynomial coefficients
+    function charPolyCoeffs(m) {
+      var n = m.length;
+      var coeffs = [1]; // leading coefficient (λ^n)
+      var M = identityMatrix(n);
+
+      for (var k = 1; k <= n; k++) {
+        // M = m * M (but M starts as previous result)
+        if (k === 1) {
+          M = copyMatrix(m);
+        } else {
+          // Add c_{k-1} * I to previous M, then multiply by m
+          var prev = M;
+          for (var i = 0; i < n; i++) prev[i][i] += coeffs[k-1];
+          M = matMul(m, prev);
+        }
+        coeffs[k] = -trace(M) / k;
+      }
+      return coeffs;
+    }
+
+    function identityMatrix(n) {
+      var m = [];
+      for (var i = 0; i < n; i++) {
+        m[i] = [];
+        for (var j = 0; j < n; j++) m[i][j] = (i === j) ? 1 : 0;
+      }
+      return m;
+    }
+
+    function copyMatrix(m) {
+      var r = [];
+      for (var i = 0; i < m.length; i++) r[i] = m[i].slice();
+      return r;
+    }
+
+    // Durand-Kerner method for polynomial root finding (all roots, complex)
+    function durandKerner(coeffs, n) {
+      // Normalize: coeffs[0] should be 1 (monic)
+      // p(z) = z^n + c1*z^(n-1) + ... + cn = 0
+      var c = [];
+      for (var i = 0; i <= n; i++) c[i] = coeffs[i] / coeffs[0];
+
+      // Initial guesses: spread on a circle
+      var roots = [];
+      var r0 = 1 + Math.abs(c[n]);
+      for (var k = 0; k < n; k++) {
+        var angle = 2 * Math.PI * k / n + 0.4;
+        roots.push({ re: r0 * Math.cos(angle), im: r0 * Math.sin(angle) });
+      }
+
+      // Iterate
+      for (var iter = 0; iter < 1000; iter++) {
+        var maxDelta = 0;
+        for (var i = 0; i < n; i++) {
+          // Evaluate p(roots[i])
+          var pval = complexPolyEval(c, n, roots[i]);
+          // Product of (roots[i] - roots[j]) for j != i
+          var denom = { re: 1, im: 0 };
+          for (var j = 0; j < n; j++) {
+            if (j === i) continue;
+            denom = complexMul(denom, complexSub(roots[i], roots[j]));
+          }
+          var delta = complexDiv(pval, denom);
+          roots[i] = complexSub(roots[i], delta);
+          maxDelta = Math.max(maxDelta, Math.sqrt(delta.re * delta.re + delta.im * delta.im));
+        }
+        if (maxDelta < 1e-12) break;
+      }
+
+      // Clean up near-zero imaginary parts
+      for (var i = 0; i < roots.length; i++) {
+        if (Math.abs(roots[i].im) < 1e-8) roots[i].im = 0;
+        roots[i].re = Math.round(roots[i].re * 1e10) / 1e10;
+        roots[i].im = Math.round(roots[i].im * 1e10) / 1e10;
+      }
+
+      return roots;
+    }
+
+    function complexPolyEval(c, n, z) {
+      // c[0]*z^n + c[1]*z^(n-1) + ... + c[n]
+      var result = { re: c[0], im: 0 };
+      for (var i = 1; i <= n; i++) {
+        result = complexMul(result, z);
+        result.re += c[i];
+      }
+      return result;
+    }
+
+    function complexMul(a, b) {
+      return { re: a.re * b.re - a.im * b.im, im: a.re * b.im + a.im * b.re };
+    }
+    function complexSub(a, b) {
+      return { re: a.re - b.re, im: a.im - b.im };
+    }
+    function complexDiv(a, b) {
+      var d = b.re * b.re + b.im * b.im;
+      if (d < 1e-30) return { re: 0, im: 0 };
+      return { re: (a.re * b.re + a.im * b.im) / d, im: (a.im * b.re - a.re * b.im) / d };
+    }
+
+    // --- Compute & Render ---
+    function compute(op) {
+      // Highlight active button
+      document.querySelectorAll('.op-btn').forEach(function(b) { b.classList.remove('active'); });
+      event.target.classList.add('active');
+
+      var needB = (op === 'add' || op === 'mul');
+      document.getElementById('matrix-b-section').style.display = needB ? 'block' : 'none';
+
+      var A = readMatrix('matrix-a');
+      var B = needB ? readMatrix('matrix-b') : null;
+      var result;
+
+      try {
+        switch (op) {
+          case 'det':
+            result = det(A);
+            break;
+          case 'inv':
+            result = inverse(A);
+            if (result === null) { showError('逆行列が存在しません（行列式 = 0）'); return; }
+            break;
+          case 'trans':
+            result = transpose(A);
+            break;
+          case 'eigen':
+            result = eigenvaluesNxN(A);
+            break;
+          case 'trace':
+            result = trace(A);
+            break;
+          case 'rank':
+            result = rank(A);
+            break;
+          case 'add':
+            result = matAdd(A, B);
+            break;
+          case 'mul':
+            result = matMul(A, B);
+            break;
+        }
+      } catch (e) {
+        showError('計算中にエラーが発生しました: ' + e.message);
+        return;
+      }
+
+      lastOp = op;
+      lastResult = result;
+      renderResult(op, result);
+    }
+
+    function showError(msg) {
+      var area = document.getElementById('result-area');
+      area.classList.add('show');
+      document.getElementById('result-label').textContent = 'エラー';
+      document.getElementById('result-content').innerHTML = '<div class="error-msg">' + msg + '</div>';
+    }
+
+    function renderResult(op, result) {
+      var area = document.getElementById('result-area');
+      var label = document.getElementById('result-label');
+      var content = document.getElementById('result-content');
+      area.classList.add('show');
+
+      var labels = {
+        det: '行列式 det(A)',
+        inv: '逆行列 A⁻¹',
+        trans: '転置行列 Aᵀ',
+        eigen: '固有値',
+        trace: 'トレース tr(A)',
+        rank: 'ランク rank(A)',
+        add: 'A + B',
+        mul: 'A × B'
+      };
+      label.textContent = labels[op] || op;
+
+      if (op === 'det' || op === 'trace' || op === 'rank') {
+        content.innerHTML = '<div class="result-scalar">' + formatVal(result) + '</div>';
+      } else if (op === 'eigen') {
+        var html = '<div class="eigenvalue-list">';
+        for (var i = 0; i < result.length; i++) {
+          var ev = result[i];
+          var str;
+          if (ev.im === 0) {
+            str = formatVal(ev.re);
+          } else {
+            var reStr = formatVal(ev.re);
+            var imAbs = Math.abs(ev.im);
+            var imStr = formatVal(imAbs);
+            str = reStr + (ev.im >= 0 ? ' + ' : ' - ') + imStr + 'i';
+          }
+          html += '<span class="eigenvalue-item">&lambda;<sub>' + (i+1) + '</sub> = ' + str + '</span>';
+        }
+        html += '</div>';
+        content.innerHTML = html;
+      } else {
+        // Matrix result
+        content.innerHTML = renderMatrixHTML(result);
+      }
+    }
+
+    function renderMatrixHTML(m) {
+      var n = m.length;
+      var cols = m[0].length;
+      var html = '<div class="result-matrix-container">';
+      html += '<span class="result-bracket">[</span>';
+      html += '<div class="result-matrix" style="grid-template-columns:repeat(' + cols + ',1fr)">';
+      for (var i = 0; i < n; i++) {
+        for (var j = 0; j < cols; j++) {
+          html += '<div class="result-matrix-cell">' + formatVal(m[i][j]) + '</div>';
+        }
+      }
+      html += '</div>';
+      html += '<span class="result-bracket">]</span>';
+      html += '</div>';
+      return html;
+    }
+
+    // --- Init ---
+    buildGrid('matrix-a', 2);
+    buildGrid('matrix-b', 2);
+  </script>
+</body>
+</html>
