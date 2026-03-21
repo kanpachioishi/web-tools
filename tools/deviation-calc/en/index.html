@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Standard Deviation Calculator - Calculate Z-Scores & Percentiles | Simple Toolkit</title>
+  <meta name="description" content="Calculate standard deviation, z-scores, and percentiles from test scores. Normal distribution graph shows your position. Individual and batch modes. Free.">
+  <meta property="og:title" content="Standard Deviation Calculator - Z-Scores & Percentiles | Simple Toolkit">
+  <meta property="og:description" content="Calculate standard deviation and z-scores. Normal distribution graph visualization. Free.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/deviation-calc/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/deviation-calc/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/deviation-calc/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Standard Deviation Calculator - Calculate Z-Scores & Percentiles",
+    "description": "Calculate standard deviation, z-scores, and percentiles from test scores. Normal distribution graph shows your position. Individual and batch modes. Free.",
+    "url": "https://simpletoolkit.net/tools/deviation-calc/en/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a Z-score?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Z-score indicates how many standard deviations a data point is from the mean. A Z-score of 0 means the value equals the mean. A Z-score of 1 means one standard deviation above the mean (top ~15.9%)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the formula?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Z-score = (Your Score - Mean) / Standard Deviation. For example, with mean 60, standard deviation 15, and score 75: (75-60)/15 = 1.0, meaning one standard deviation above the mean."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if I don't know the standard deviation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the Batch Mode - enter all scores separated by commas, and the tool will automatically calculate the mean, standard deviation, and your Z-score."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all calculations are done in your browser. No data is sent externally."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../../common/style.css">
+  <style>
+    .mode-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 20px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .mode-tab {
+      flex: 1;
+      padding: 12px 16px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--bg);
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .mode-tab.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .mode-panel { display: none; }
+    .mode-panel.active { display: block; }
+
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+      box-sizing: border-box;
+    }
+    .input-field input:focus, .input-field textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field textarea {
+      min-height: 80px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .input-field .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .result-area { display: none; margin-top: 24px; }
+    .result-area.show { display: block; }
+
+    .deviation-display {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .deviation-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .deviation-label {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .deviation-rank {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 8px;
+      padding: 4px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .stats-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-card .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .stat-card .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .canvas-container {
+      margin: 24px 0;
+      text-align: center;
+    }
+    .canvas-container canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .percentile-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .percentile-table th, .percentile-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .percentile-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .percentile-table .highlight-row {
+      background: #eff6ff;
+      font-weight: 600;
+    }
+
+    .explanation {
+      margin-top: 32px;
+      line-height: 1.8;
+    }
+    .explanation h2 {
+      font-size: 1.2rem;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    .explanation h3 {
+      font-size: 1.05rem;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    .formula-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 600px) {
+      .deviation-number { font-size: 2.5rem; }
+      .stats-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Standard Deviation Calculator</h1>
+    <h2>Calculate Z-Scores & Percentiles for Free</h2>
+    <p class="tool-description">Calculate standard deviation, z-scores, and percentile rankings from scores. Use Individual mode with known mean and standard deviation, or Batch mode with a list of all scores. Normal distribution graph shows your position visually.</p>
+
+    <div class="tool-area">
+      <div class="mode-tabs">
+        <button class="mode-tab active" onclick="switchMode('individual')">Individual Mode</button>
+        <button class="mode-tab" onclick="switchMode('simple')">Batch Mode</button>
+      </div>
+
+      <!-- Individual Mode -->
+      <div class="mode-panel active" id="panel-individual">
+        <div class="input-group">
+          <div class="input-field">
+            <label for="my-score">Your Score</label>
+            <input type="number" id="my-score" placeholder="75">
+          </div>
+          <div class="input-field">
+            <label for="avg-score">Mean</label>
+            <input type="number" id="avg-score" placeholder="60">
+          </div>
+          <div class="input-field">
+            <label for="std-dev">Standard Deviation</label>
+            <input type="number" id="std-dev" placeholder="15" step="0.1">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn" onclick="calcIndividual()">Calculate</button>
+          <button class="btn btn-secondary" onclick="clearIndividual()">Clear</button>
+        </div>
+      </div>
+
+      <!-- Batch Mode -->
+      <div class="mode-panel" id="panel-simple">
+        <div class="input-field" style="margin-bottom:12px;">
+          <label for="my-score-simple">Your Score</label>
+          <input type="number" id="my-score-simple" placeholder="75">
+        </div>
+        <div class="input-field">
+          <label for="all-scores">All Scores (comma-separated)</label>
+          <textarea id="all-scores" placeholder="45, 52, 60, 63, 67, 70, 72, 75, 80, 85, 90"></textarea>
+          <div class="hint">カンマまたはスペースで区切って入力してください。Your Scoreも含めてOKです。</div>
+        </div>
+        <div class="btn-group" style="margin-top:12px;">
+          <button class="btn" onclick="calcSimple()">Calculate</button>
+          <button class="btn btn-secondary" onclick="clearSimple()">Clear</button>
+        </div>
+      </div>
+
+      <!-- 結果表示 -->
+      <div class="result-area" id="result-area">
+        <div class="deviation-display">
+          <div class="deviation-label">Your Z-Score (scaled)</div>
+          <div class="deviation-number" id="deviation-value"></div>
+          <div class="deviation-rank" id="deviation-rank"></div>
+        </div>
+
+        <div class="stats-cards" id="stats-cards">
+          <div class="stat-card">
+            <div class="stat-label">Mean</div>
+            <div class="stat-value" id="stat-avg"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Standard Deviation</div>
+            <div class="stat-value" id="stat-std"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Top </div>
+            <div class="stat-value" id="stat-percentile"></div>
+          </div>
+        </div>
+
+        <div class="canvas-container">
+          <h3 style="font-size:1rem;margin-bottom:8px;">Position on Normal Distribution</h3>
+          <canvas id="distribution-canvas" width="600" height="280"></canvas>
+        </div>
+
+        <h3 style="font-size:1rem;margin-top:24px;margin-bottom:8px;">Scaled ScoreとTop %の換算表</h3>
+        <table class="percentile-table" id="percentile-table">
+          <thead>
+            <tr>
+              <th>Scaled Score</th>
+              <th>Top %</th>
+              <th>Approximate Ratio</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="explanation">
+      <h2>Scaled Scoreとは？</h2>
+      <p>Scaled Score（へんさち）とは、テストの点数が全体の中でどの位置にあるかを示す指標です。MeanをScaled Score50として、そこからどれだけ離れているかをStandard Deviationを基に数値化します。</p>
+      <p>日本の受験や模試で広く使われており、異なるテスト間で自分の成績の位置を比較できるのが大きなメリットです。</p>
+
+      <h2>Scaled Scoreの計算式</h2>
+      <div class="formula-box">Scaled Score = (Your Score - Mean) / Standard Deviation × 10 + 50</div>
+      <p>例えば、Mean60点・Standard Deviation15点のテストで75点を取った場合：</p>
+      <div class="formula-box">(75 - 60) / 15 × 10 + 50 = <strong>60.0</strong></div>
+
+      <h3>Standard Deviationとは？</h3>
+      <p>Standard Deviationは、データのばらつきの大きさを表す数値です。Standard Deviationが大きいほど点数のばらつきが大きく、小さいほど平均付近に集まっていることを意味します。</p>
+
+      <h2>Scaled Scoreの目安</h2>
+      <ul>
+        <li><strong>Scaled Score70以上</strong>：Top 約2.3%。Excellentな成績。</li>
+        <li><strong>Scaled Score60〜69</strong>：Top 約6.7〜15.9%。平均よりかなり上。</li>
+        <li><strong>Scaled Score50〜59</strong>：Top 約15.9〜50%。平均〜やや上。</li>
+        <li><strong>Scaled Score40〜49</strong>：Top 約50〜84.1%。平均〜やや下。</li>
+        <li><strong>Scaled Score30以下</strong>：Top 約97.7%以下。</li>
+      </ul>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, temperature units</p>
+        </a>
+        <a href="../../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI Calculator</h3>
+          <p>Calculate BMI from height and weight</p>
+        </a>
+        <a href="../../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Character Counter</h3>
+          <p>Count characters, words, lines in real time</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    // 正規分布の累積分布関数（近似）
+    function normalCDF(z) {
+      var a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
+      var a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
+      var sign = z < 0 ? -1 : 1;
+      z = Math.abs(z) / Math.sqrt(2);
+      var t = 1.0 / (1.0 + p * z);
+      var y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-z * z);
+      return 0.5 * (1.0 + sign * y);
+    }
+
+    // Scaled ScoreからTop %を計算
+    function deviationToPercentile(dev) {
+      var z = (dev - 50) / 10;
+      return (1 - normalCDF(z)) * 100;
+    }
+
+    // 正規分布の確率密度関数
+    function normalPDF(x) {
+      return Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI);
+    }
+
+    function switchMode(mode) {
+      var tabs = document.querySelectorAll('.mode-tab');
+      var panels = document.querySelectorAll('.mode-panel');
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      if (mode === 'individual') {
+        tabs[0].classList.add('active');
+        document.getElementById('panel-individual').classList.add('active');
+      } else {
+        tabs[1].classList.add('active');
+        document.getElementById('panel-simple').classList.add('active');
+      }
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    function calcIndividual() {
+      var score = parseFloat(document.getElementById('my-score').value);
+      var avg = parseFloat(document.getElementById('avg-score').value);
+      var std = parseFloat(document.getElementById('std-dev').value);
+      if (isNaN(score) || isNaN(avg) || isNaN(std)) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      if (std <= 0) {
+        alert('Standard Deviationは0より大きい値を入力してください。');
+        return;
+      }
+      showResult(score, avg, std);
+    }
+
+    function calcSimple() {
+      var myScore = parseFloat(document.getElementById('my-score-simple').value);
+      var rawText = document.getElementById('all-scores').value;
+      if (isNaN(myScore)) {
+        alert('Your Scoreを入力してください。');
+        return;
+      }
+      var scores = rawText.split(/[,\s\t\n]+/).map(function(s) { return parseFloat(s.trim()); }).filter(function(n) { return !isNaN(n); });
+      if (scores.length < 2) {
+        alert('Please enter scores for 2 or more people.');
+        return;
+      }
+      var sum = scores.reduce(function(a, b) { return a + b; }, 0);
+      var avg = sum / scores.length;
+      var variance = scores.reduce(function(a, b) { return a + (b - avg) * (b - avg); }, 0) / scores.length;
+      var std = Math.sqrt(variance);
+      if (std === 0) {
+        alert('全員が同じ点数のため、Calculateできません。');
+        return;
+      }
+      showResult(myScore, avg, std);
+    }
+
+    function showResult(score, avg, std) {
+      var deviation = (score - avg) / std * 10 + 50;
+      var devRounded = Math.round(deviation * 10) / 10;
+      var percentile = deviationToPercentile(deviation);
+      var percRounded = Math.round(percentile * 10) / 10;
+
+      document.getElementById('deviation-value').textContent = devRounded;
+      document.getElementById('stat-avg').textContent = Math.round(avg * 10) / 10;
+      document.getElementById('stat-std').textContent = Math.round(std * 10) / 10;
+      document.getElementById('stat-percentile').textContent = percRounded + '%';
+
+      // ランク表示
+      var rankText;
+      if (percentile <= 1) rankText = 'Top 1%以内 - 極めてVery Good';
+      else if (percentile <= 5) rankText = 'Top ' + percRounded + '% - Excellent';
+      else if (percentile <= 15) rankText = 'Top ' + percRounded + '% - Very Good';
+      else if (percentile <= 50) rankText = 'Top ' + percRounded + '% - Above Average';
+      else if (percentile <= 85) rankText = 'Top ' + percRounded + '% - Average';
+      else rankText = 'Top ' + percRounded + '%';
+      document.getElementById('deviation-rank').textContent = rankText;
+
+      drawDistribution(deviation);
+      buildPercentileTable(devRounded);
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function drawDistribution(deviation) {
+      var canvas = document.getElementById('distribution-canvas');
+      var ctx = canvas.getContext('2d');
+      var W = canvas.width, H = canvas.height;
+      var pad = { top: 20, bottom: 40, left: 40, right: 20 };
+      var plotW = W - pad.left - pad.right;
+      var plotH = H - pad.top - pad.bottom;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // 正規分布曲線を描画（Scaled Score25〜75の範囲 = z: -2.5〜2.5）
+      var zMin = -3.5, zMax = 3.5;
+      var maxPDF = normalPDF(0);
+
+      // 塗りつぶし
+      ctx.beginPath();
+      ctx.moveTo(pad.left, pad.top + plotH);
+      for (var i = 0; i <= plotW; i++) {
+        var z = zMin + (zMax - zMin) * (i / plotW);
+        var y = normalPDF(z);
+        ctx.lineTo(pad.left + i, pad.top + plotH - (y / maxPDF) * plotH * 0.9);
+      }
+      ctx.lineTo(pad.left + plotW, pad.top + plotH);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(59, 130, 246, 0.12)';
+      ctx.fill();
+
+      // 曲線
+      ctx.beginPath();
+      for (var i = 0; i <= plotW; i++) {
+        var z = zMin + (zMax - zMin) * (i / plotW);
+        var y = normalPDF(z);
+        var px = pad.left + i;
+        var py = pad.top + plotH - (y / maxPDF) * plotH * 0.9;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // マーカー（自分の位置）
+      var myZ = (deviation - 50) / 10;
+      var markerX = pad.left + ((myZ - zMin) / (zMax - zMin)) * plotW;
+      markerX = Math.max(pad.left, Math.min(pad.left + plotW, markerX));
+      var markerY = pad.top + plotH - (normalPDF(myZ) / maxPDF) * plotH * 0.9;
+
+      // マーカー線
+      ctx.beginPath();
+      ctx.moveTo(markerX, markerY);
+      ctx.lineTo(markerX, pad.top + plotH);
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // マーカー点
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, 7, 0, Math.PI * 2);
+      ctx.fillStyle = '#ef4444';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // マーカーラベル
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(Math.round(deviation * 10) / 10, markerX, markerY - 14);
+
+      // X軸ラベル（Scaled Score）
+      ctx.fillStyle = '#666';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      var devLabels = [25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75];
+      devLabels.forEach(function(d) {
+        var z = (d - 50) / 10;
+        var x = pad.left + ((z - zMin) / (zMax - zMin)) * plotW;
+        ctx.fillText(d, x, pad.top + plotH + 18);
+        // 目盛り線
+        ctx.beginPath();
+        ctx.moveTo(x, pad.top + plotH);
+        ctx.lineTo(x, pad.top + plotH + 4);
+        ctx.strokeStyle = '#ccc';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+
+      // X軸タイトル
+      ctx.fillStyle = '#999';
+      ctx.font = '11px sans-serif';
+      ctx.fillText('Scaled Score', pad.left + plotW / 2, pad.top + plotH + 34);
+
+      // ベースライン
+      ctx.beginPath();
+      ctx.moveTo(pad.left, pad.top + plotH);
+      ctx.lineTo(pad.left + plotW, pad.top + plotH);
+      ctx.strokeStyle = '#ccc';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    function buildPercentileTable(currentDev) {
+      var data = [
+        { dev: 80, desc: '4 in 1000' },
+        { dev: 75, desc: '13 in 1000' },
+        { dev: 70, desc: '1 in 50' },
+        { dev: 65, desc: '1 in 15' },
+        { dev: 60, desc: '1 in 6' },
+        { dev: 55, desc: '1 in 3' },
+        { dev: 50, desc: '1 in 2 (average)' },
+        { dev: 45, desc: '2 in 3' },
+        { dev: 40, desc: '5 in 6' },
+        { dev: 35, desc: '13 in 15' },
+        { dev: 30, desc: '49 in 50' }
+      ];
+      var tbody = document.querySelector('#percentile-table tbody');
+      tbody.innerHTML = '';
+      var currentRounded = Math.round(currentDev / 5) * 5;
+      data.forEach(function(row) {
+        var perc = deviationToPercentile(row.dev);
+        var tr = document.createElement('tr');
+        if (row.dev === currentRounded) tr.className = 'highlight-row';
+        tr.innerHTML = '<td>' + row.dev + '</td><td>' + (Math.round(perc * 100) / 100) + '%</td><td>' + row.desc + '</td>';
+        tbody.appendChild(tr);
+      });
+    }
+
+    function clearIndividual() {
+      document.getElementById('my-score').value = '';
+      document.getElementById('avg-score').value = '';
+      document.getElementById('std-dev').value = '';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    function clearSimple() {
+      document.getElementById('my-score-simple').value = '';
+      document.getElementById('all-scores').value = '';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    // Enter key support
+    ['my-score', 'avg-score', 'std-dev'].forEach(function(id) {
+      document.getElementById(id).addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calcIndividual();
+      });
+    });
+    document.getElementById('my-score-simple').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calcSimple();
+    });
+  </script>
+</body>
+</html>

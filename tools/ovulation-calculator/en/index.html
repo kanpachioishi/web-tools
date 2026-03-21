@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ovulation Calculator - Free Online Ovulation Predictor | Simple Toolkit</title>
+  <meta name="description" content="Enter your last period date and cycle length to predict ovulation date, fertile window, and next period. Calendar view included. Free, no registration.">
+  <meta property="og:title" content="Ovulation Calculator - Free Online Ovulation Predictor | Simple Toolkit">
+  <meta property="og:description" content="Predict ovulation date, fertile window, and next period. Calendar view. Free, no registration.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/ovulation-calculator/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/ovulation-calculator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/ovulation-calculator/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Ovulation Calculator - Free Online Ovulation Predictor",
+    "description": "Enter your last period date and cycle length to predict ovulation date, fertile window, and next period. Calendar view included. Free, no registration.",
+    "url": "https://simpletoolkit.net/tools/ovulation-calculator/en/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is the ovulation date calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ovulation typically occurs about 14 days before the next period (Ogino method). For a 28-day cycle, ovulation would be 14 days after the last period start date. Individual variations exist, so use as a guide."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When is the fertile window?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Generally, the 5 days before ovulation through 1 day after ovulation (about 6 days total) is the fertile window. The 1-2 days before ovulation are most fertile. Sperm can survive 3-5 days inside the body."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How accurate are these results?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This tool uses the Ogino method for general calculation. Actual ovulation dates can vary due to stress and health changes. For accurate determination, use basal body temperature tracking, ovulation test kits, or medical ultrasound."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all calculations are done in your browser. No data is sent externally."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 180px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input, .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus, .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .result-area {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-area.show { display: block; }
+    .date-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .date-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .date-card.highlight {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .date-card .card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .date-card .card-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .date-card .card-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .calendar-section {
+      margin-top: 20px;
+    }
+    .calendar-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      font-size: 0.85rem;
+    }
+    .cal-header {
+      text-align: center;
+      font-weight: 600;
+      padding: 8px 4px;
+      color: var(--text-muted);
+    }
+    .cal-day {
+      text-align: center;
+      padding: 8px 4px;
+      border-radius: 4px;
+      position: relative;
+    }
+    .cal-day.empty { background: transparent; }
+    .cal-day.period { background: #fecaca; color: #991b1b; }
+    .cal-day.fertile { background: #bbf7d0; color: #166534; }
+    .cal-day.ovulation { background: #86efac; color: #14532d; font-weight: 700; }
+    .cal-day.next-period { background: #fecaca; color: #991b1b; }
+    .cal-day.today { border: 2px solid var(--primary); }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+    }
+
+    .notice {
+      margin-top: 20px;
+      padding: 14px;
+      background: #fffbeb;
+      border: 1px solid #fbbf24;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+
+    @media (max-width: 600px) {
+      .date-cards { grid-template-columns: 1fr; }
+      .calendar { font-size: 0.75rem; }
+      .cal-day { padding: 6px 2px; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Ovulation Calculator</h1>
+    <h2>Free Online Ovulation Predictor</h2>
+    <p class="tool-description">Enter your last menstrual period date and cycle length to automatically calculate your ovulation date, fertile window, and next period date. Calendar view for easy visualization. Free, no registration, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="last-period">Last Menstrual Period</label>
+          <input type="date" id="last-period">
+        </div>
+        <div class="input-field">
+          <label for="cycle">Cycle Length</label>
+          <input type="number" id="cycle" placeholder="28" min="20" max="45" step="1" value="28">
+          <div class="unit"> days (typically 25-35)</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">Calculate Ovulation</button>
+        <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="date-cards">
+          <div class="date-card highlight">
+            <div class="card-label">Ovulation Date</div>
+            <div class="card-value" id="ovulation-date"></div>
+          </div>
+          <div class="date-card">
+            <div class="card-label">Fertile Window</div>
+            <div class="card-value" id="fertile-window"></div>
+          </div>
+          <div class="date-card">
+            <div class="card-label">Next Period Date</div>
+            <div class="card-value" id="next-period"></div>
+          </div>
+        </div>
+
+        <div class="calendar-section">
+          <h3>Calendar</h3>
+          <div id="calendar-container"></div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-color" style="background:#fecaca;"></div>Menstrual Period</div>
+            <div class="legend-item"><div class="legend-color" style="background:#bbf7d0;"></div>Fertile Window</div>
+            <div class="legend-item"><div class="legend-color" style="background:#86efac;"></div>Ovulation Date</div>
+          </div>
+        </div>
+
+        <div class="notice">
+          <strong>Note: </strong>This tool provides estimates based on the Ogino method. Actual ovulation dates may vary due to stress and health changes. For accurate determination, use basal body temperature tracking, ovulation test kits, or medical examinations. Do not use for contraception purposes.
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../bmi-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI Calculator</h3>
+          <p>Calculate BMI from height and weight</p>
+        </a>
+        <a href="../../age-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">/齢計算</h3>
+          <p>生/MonSunから正確な/齢を計算</p>
+        </a>
+        <a href="../../tdee-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">TDEE Calculator</h3>
+          <p>Calculate daily calorie expenditure</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    // Set default date to today
+    (function() {
+      var today = new Date();
+      var yyyy = today.getFullYear();
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
+      var dd = String(today.getDate()).padStart(2, '0');
+      document.getElementById('last-period').value = yyyy + '-' + mm + '-' + dd;
+    })();
+
+    function formatDate(d) {
+      return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
+    }
+
+    function formatDateShort(d) {
+      return (d.getMonth() + 1) + '/' + d.getDate();
+    }
+
+    function addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
+    function isSameDay(a, b) {
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    }
+
+    function calculate() {
+      var lastPeriodStr = document.getElementById('last-period').value;
+      var cycle = parseInt(document.getElementById('cycle').value);
+
+      if (!lastPeriodStr || !cycle || cycle < 20 || cycle > 45) {
+        alert('Last Menstrual PeriodとCycle Lengthを正しく入力してください。');
+        return;
+      }
+
+      var lastPeriod = new Date(lastPeriodStr + 'T00:00:00');
+      var ovulationDay = addDays(lastPeriod, cycle - 14);
+      var fertileStart = addDays(ovulationDay, -5);
+      var fertileEnd = addDays(ovulationDay, 1);
+      var nextPeriod = addDays(lastPeriod, cycle);
+      var periodEnd = addDays(lastPeriod, 5); // typical period: 5 days
+
+      document.getElementById('ovulation-date').textContent = formatDate(ovulationDay);
+      document.getElementById('fertile-window').textContent = formatDateShort(fertileStart) + ' 〜 ' + formatDateShort(fertileEnd);
+      document.getElementById('next-period').textContent = formatDate(nextPeriod);
+
+      // Build calendar
+      buildCalendar(lastPeriod, ovulationDay, fertileStart, fertileEnd, nextPeriod, periodEnd);
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function buildCalendar(lastPeriod, ovulation, fertileStart, fertileEnd, nextPeriod, periodEnd) {
+      var container = document.getElementById('calendar-container');
+      container.innerHTML = '';
+      var today = new Date();
+      today.setHours(0,0,0,0);
+
+      // Show 2 months starting from lastPeriod's month
+      var startMonth = new Date(lastPeriod.getFullYear(), lastPeriod.getMonth(), 1);
+
+      for (var m = 0; m < 2; m++) {
+        var currentMonth = new Date(startMonth.getFullYear(), startMonth.getMonth() + m, 1);
+        var monthLabel = document.createElement('h4');
+        monthLabel.style.cssText = 'font-size:0.95rem;margin:16px 0 8px;';
+        monthLabel.textContent = currentMonth.getFullYear() + '/' + (currentMonth.getMonth() + 1) + 'Mon';
+        container.appendChild(monthLabel);
+
+        var cal = document.createElement('div');
+        cal.className = 'calendar';
+
+        var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        for (var i = 0; i < 7; i++) {
+          var hdr = document.createElement('div');
+          hdr.className = 'cal-header';
+          hdr.textContent = dayNames[i];
+          if (i === 0) hdr.style.color = '#ef4444';
+          if (i === 6) hdr.style.color = '#3b82f6';
+          cal.appendChild(hdr);
+        }
+
+        var firstDay = currentMonth.getDay();
+        var daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
+
+        for (var e = 0; e < firstDay; e++) {
+          var empty = document.createElement('div');
+          empty.className = 'cal-day empty';
+          cal.appendChild(empty);
+        }
+
+        for (var d = 1; d <= daysInMonth; d++) {
+          var dateObj = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d);
+          var cell = document.createElement('div');
+          cell.className = 'cal-day';
+          cell.textContent = d;
+
+          // Color coding
+          if (dateObj >= lastPeriod && dateObj <= periodEnd) {
+            cell.classList.add('period');
+          }
+          if (isSameDay(dateObj, ovulation)) {
+            cell.classList.add('ovulation');
+          } else if (dateObj >= fertileStart && dateObj <= fertileEnd) {
+            cell.classList.add('fertile');
+          }
+          if (isSameDay(dateObj, nextPeriod)) {
+            cell.classList.add('next-period');
+          }
+          if (isSameDay(dateObj, today)) {
+            cell.classList.add('today');
+          }
+
+          cal.appendChild(cell);
+        }
+
+        container.appendChild(cal);
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('cycle').value = '28';
+      document.getElementById('result-area').classList.remove('show');
+    }
+  </script>
+</body>
+</html>
