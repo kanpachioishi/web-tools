@@ -1,13 +1,12 @@
 // 共通ヘッダー挿入 + テーマ切替 + AdSense
 (function() {
   // Google AdSense 広告コード挿入
-  // AdSense承認後、下記の ca-pub-XXXXXXXXXXXXXXXX を実際のパブリッシャーIDに置き換えてください
-  // const adsenseId = 'ca-pub-XXXXXXXXXXXXXXXX';
-  // const adScript = document.createElement('script');
-  // adScript.async = true;
-  // adScript.crossOrigin = 'anonymous';
-  // adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + adsenseId;
-  // document.head.appendChild(adScript);
+  const adsenseId = 'ca-pub-7333797273224249';
+  const adScript = document.createElement('script');
+  adScript.async = true;
+  adScript.crossOrigin = 'anonymous';
+  adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + adsenseId;
+  document.head.appendChild(adScript);
 
   // テーマの復元（ページ描画前に適用してフラッシュ防止）
   const saved = localStorage.getItem('theme');
