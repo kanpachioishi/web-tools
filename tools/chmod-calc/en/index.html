@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chmod Calculator - Linux File Permission Calculator | Simple Toolkit</title>
+  <meta name="description" content="Free online chmod calculator. Visually set Linux file permissions with checkboxes to auto-generate numeric, symbolic notation and chmod commands. Reverse lookup supported.">
+  <meta property="og:title" content="Chmod Calculator - Linux File Permission Calculator | Simple Toolkit">
+  <meta property="og:description" content="Visually calculate chmod permissions. Auto-generate numeric, symbolic notation and commands. Free, no registration.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/chmod-calc/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/chmod-calc/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/chmod-calc/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Chmod Calculator - Linux File Permission Calculator",
+    "description": "Free online chmod calculator. Visually set Linux file permissions with checkboxes to auto-generate numeric, symbolic notation and chmod commands.",
+    "url": "https://simpletoolkit.net/tools/chmod-calc/en/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is chmod?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "chmod is a Linux/Unix command to change file and directory access permissions. It sets Read, Write, and Execute permissions for three groups: Owner, Group, and Others."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does chmod 755 mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "chmod 755 grants the owner full permissions (read, write, execute), and group/others read and execute permissions. Commonly used for web server directories and scripts."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are permission numbers calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Read=4, Write=2, Execute=1. Sum the values: read+execute = 4+1 = 5, all permissions = 4+2+1 = 7. The three digits represent Owner, Group, Others respectively."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .perm-matrix { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .perm-matrix th, .perm-matrix td { border: 1px solid var(--border); padding: 10px 14px; text-align: center; }
+    .perm-matrix th { background: var(--bg); font-weight: 600; font-size: 0.9rem; }
+    .perm-matrix td:first-child { font-weight: 600; background: var(--bg); text-align: left; }
+    .perm-matrix input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+    .result-display { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+    .result-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .result-card .result-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+    .result-card .result-value { font-size: 1.6rem; font-weight: 800; color: var(--primary); font-family: 'Courier New', monospace; }
+    .cmd-box { background: #1e1e1e; color: #d4d4d4; border-radius: var(--radius); padding: 14px 18px; font-family: 'Courier New', monospace; font-size: 1rem; display: flex; justify-content: space-between; align-items: center; margin: 16px 0; }
+    .cmd-box .copy-btn { background: #3b3b3b; color: #d4d4d4; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; margin-left: 12px; }
+    .cmd-box .copy-btn:hover { background: #505050; }
+    .reverse-input { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .reverse-input label { font-weight: 600; }
+    .reverse-input input { width: 100px; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 1.2rem; font-family: 'Courier New', monospace; text-align: center; background: var(--bg); color: var(--text); }
+    .reverse-input input:focus { outline: none; border-color: var(--primary); }
+    .filename-input { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .filename-input label { font-weight: 600; white-space: nowrap; }
+    .filename-input input { flex: 1; min-width: 150px; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.95rem; font-family: 'Courier New', monospace; background: var(--bg); color: var(--text); }
+    .presets { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 16px 0; }
+    .preset-btn { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; cursor: pointer; text-align: left; transition: border-color 0.2s; }
+    .preset-btn:hover { border-color: var(--primary); }
+    .preset-btn .preset-value { font-size: 1.2rem; font-weight: 700; font-family: 'Courier New', monospace; color: var(--primary); }
+    .preset-btn .preset-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+    .ref-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 12px; }
+    .ref-table th, .ref-table td { border: 1px solid var(--border); padding: 8px 12px; text-align: center; }
+    .ref-table th { background: var(--bg); font-weight: 600; }
+    .ref-table td:first-child { font-family: 'Courier New', monospace; font-weight: 600; }
+    @media (max-width: 600px) { .result-display { grid-template-columns: 1fr; } .presets { grid-template-columns: 1fr 1fr; } }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Chmod Calculator</h1>
+    <h2>Linux File Permission Calculator - Free Online Tool</h2>
+    <p class="tool-description">Select permissions with checkboxes to auto-generate chmod numeric notation, symbolic notation, and commands. Reverse lookup from numeric values is also supported. A handy free tool for Linux/Unix file permission management.</p>
+
+    <div class="tool-area">
+      <h3 style="margin-top:0;margin-bottom:12px;">Permission Settings</h3>
+      <table class="perm-matrix">
+        <thead><tr><th></th><th>Read (4)</th><th>Write (2)</th><th>Execute (1)</th></tr></thead>
+        <tbody>
+          <tr><td>Owner</td><td><input type="checkbox" id="owner-r" checked onchange="calcFromCheckbox()"></td><td><input type="checkbox" id="owner-w" checked onchange="calcFromCheckbox()"></td><td><input type="checkbox" id="owner-x" checked onchange="calcFromCheckbox()"></td></tr>
+          <tr><td>Group</td><td><input type="checkbox" id="group-r" checked onchange="calcFromCheckbox()"></td><td><input type="checkbox" id="group-w" onchange="calcFromCheckbox()"></td><td><input type="checkbox" id="group-x" checked onchange="calcFromCheckbox()"></td></tr>
+          <tr><td>Others</td><td><input type="checkbox" id="others-r" checked onchange="calcFromCheckbox()"></td><td><input type="checkbox" id="others-w" onchange="calcFromCheckbox()"></td><td><input type="checkbox" id="others-x" checked onchange="calcFromCheckbox()"></td></tr>
+        </tbody>
+      </table>
+      <div class="reverse-input"><label for="octal-input">Enter numeric value:</label><input type="text" id="octal-input" value="755" maxlength="3" oninput="calcFromOctal()"></div>
+      <div class="result-display">
+        <div class="result-card"><div class="result-label">Numeric (Octal)</div><div class="result-value" id="octal-result">755</div></div>
+        <div class="result-card"><div class="result-label">Symbolic Notation</div><div class="result-value" id="symbolic-result">rwxr-xr-x</div></div>
+      </div>
+      <div class="filename-input"><label for="filename">Filename:</label><input type="text" id="filename" value="filename" oninput="updateCommand()"></div>
+      <div class="cmd-box"><span id="cmd-output">chmod 755 filename</span><button class="copy-btn" onclick="copyCommand()">Copy</button></div>
+      <h3 style="margin-top:28px;margin-bottom:12px;">Common Presets</h3>
+      <div class="presets">
+        <button class="preset-btn" onclick="applyPreset('644')"><div class="preset-value">644</div><div class="preset-desc">Regular files (owner write only)</div></button>
+        <button class="preset-btn" onclick="applyPreset('755')"><div class="preset-value">755</div><div class="preset-desc">Executables & directories</div></button>
+        <button class="preset-btn" onclick="applyPreset('777')"><div class="preset-value">777</div><div class="preset-desc">Full access (not recommended)</div></button>
+        <button class="preset-btn" onclick="applyPreset('600')"><div class="preset-value">600</div><div class="preset-desc">Private keys & config files</div></button>
+        <button class="preset-btn" onclick="applyPreset('700')"><div class="preset-value">700</div><div class="preset-desc">Owner-only full access</div></button>
+        <button class="preset-btn" onclick="applyPreset('444')"><div class="preset-value">444</div><div class="preset-desc">Read-only for all</div></button>
+        <button class="preset-btn" onclick="applyPreset('666')"><div class="preset-value">666</div><div class="preset-desc">Read-write for all (no execute)</div></button>
+        <button class="preset-btn" onclick="applyPreset('400')"><div class="preset-value">400</div><div class="preset-desc">SSH private key (owner read)</div></button>
+      </div>
+    </div>
+    <div class="tool-area" style="margin-top:24px;">
+      <h3 style="margin-top:0;margin-bottom:12px;">Recommended Permissions Reference</h3>
+      <h4 style="margin-bottom:8px;">Files</h4>
+      <table class="ref-table"><thead><tr><th>Permission</th><th>Symbolic</th><th>Use Case</th></tr></thead><tbody>
+        <tr><td>644</td><td>rw-r--r--</td><td>HTML, CSS, images</td></tr>
+        <tr><td>600</td><td>rw-------</td><td>Config files, passwords</td></tr>
+        <tr><td>400</td><td>r--------</td><td>SSH private key (id_rsa)</td></tr>
+        <tr><td>755</td><td>rwxr-xr-x</td><td>CGI, shell scripts</td></tr>
+      </tbody></table>
+      <h4 style="margin-top:20px;margin-bottom:8px;">Directories</h4>
+      <table class="ref-table"><thead><tr><th>Permission</th><th>Symbolic</th><th>Use Case</th></tr></thead><tbody>
+        <tr><td>755</td><td>rwxr-xr-x</td><td>Public directories (web root)</td></tr>
+        <tr><td>700</td><td>rwx------</td><td>Home directory, private folders</td></tr>
+        <tr><td>750</td><td>rwxr-x---</td><td>Group shared directories</td></tr>
+      </tbody></table>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../hash-generator/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Hash Generator</h3><p>Generate MD5/SHA-1/SHA-256 hashes</p></a>
+        <a href="../../password-generator/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Password Generator</h3><p>Generate secure random passwords</p></a>
+        <a href="../../base64/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Base64 Encoder/Decoder</h3><p>Encode and decode Base64 strings</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    var groups = ['owner', 'group', 'others'], perms = ['r', 'w', 'x'], permValues = { r: 4, w: 2, x: 1 };
+    function getOctalValue(g) { var v = 0; perms.forEach(function(p) { if (document.getElementById(g+'-'+p).checked) v += permValues[p]; }); return v; }
+    function getOctalString() { return groups.map(getOctalValue).join(''); }
+    function getSymbolic() { var r = ''; groups.forEach(function(g) { perms.forEach(function(p) { r += document.getElementById(g+'-'+p).checked ? p : '-'; }); }); return r; }
+    function updateDisplay() { var o = getOctalString(), s = getSymbolic(); document.getElementById('octal-result').textContent = o; document.getElementById('symbolic-result').textContent = s; document.getElementById('octal-input').value = o; updateCommand(); }
+    function updateCommand() { var o = getOctalString(), f = document.getElementById('filename').value || 'filename'; document.getElementById('cmd-output').textContent = 'chmod ' + o + ' ' + f; }
+    function calcFromCheckbox() { updateDisplay(); }
+    function calcFromOctal() { var v = document.getElementById('octal-input').value; if (!/^[0-7]{1,3}$/.test(v)) return; while (v.length < 3) v = '0' + v; var d = v.split('').map(Number); groups.forEach(function(g, i) { document.getElementById(g+'-r').checked = (d[i]&4)!==0; document.getElementById(g+'-w').checked = (d[i]&2)!==0; document.getElementById(g+'-x').checked = (d[i]&1)!==0; }); document.getElementById('octal-result').textContent = v; document.getElementById('symbolic-result').textContent = getSymbolic(); updateCommand(); }
+    function applyPreset(o) { document.getElementById('octal-input').value = o; calcFromOctal(); }
+    function copyCommand() { navigator.clipboard.writeText(document.getElementById('cmd-output').textContent).then(function() { var b = document.querySelector('.copy-btn'); b.textContent = 'Copied!'; setTimeout(function() { b.textContent = 'Copy'; }, 1500); }); }
+    updateDisplay();
+  </script>
+</body>
+</html>

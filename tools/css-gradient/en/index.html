@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Gradient Generator - Create Beautiful Gradients Online | Simple Toolkit</title>
+  <meta name="description" content="Free CSS gradient generator. Create linear, radial, and conic gradients visually. 20+ presets, random generation. Copy CSS code instantly.">
+  <meta property="og:title" content="CSS Gradient Generator - Create Beautiful Gradients Online | Simple Toolkit">
+  <meta property="og:description" content="Create linear, radial, and conic CSS gradients visually. 20+ presets, copy CSS code instantly. Free online tool.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/css-gradient/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/css-gradient/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/css-gradient/en/">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "CSS Gradient Generator", "description": "Create linear, radial, and conic CSS gradients visually with presets and random generation.", "url": "https://simpletoolkit.net/tools/css-gradient/en/", "applicationCategory": "DeveloperApplication", "operatingSystem": "All", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } }
+  </script>
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    { "@type": "Question", "name": "What is a CSS gradient?", "acceptedAnswer": { "@type": "Answer", "text": "CSS gradients create smooth color transitions as backgrounds using CSS code. Three types exist: linear-gradient (straight), radial-gradient (circular), and conic-gradient (cone-shaped). No images needed." } },
+    { "@type": "Question", "name": "Can I use the generated CSS directly?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, simply copy the generated CSS code and paste it into your stylesheet. The output uses standard CSS syntax supported by all major browsers." } }
+  ] }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .gradient-preview { width: 100%; height: 280px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; transition: background 0.3s ease; }
+    .controls-section { display: flex; flex-direction: column; gap: 16px; }
+    .control-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .control-row label { font-weight: 600; font-size: 0.9rem; min-width: 80px; }
+    .type-buttons { display: flex; gap: 6px; }
+    .type-btn { padding: 6px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .type-btn:hover { border-color: var(--primary); }
+    .type-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .angle-control { display: flex; align-items: center; gap: 8px; flex: 1; }
+    .angle-control input[type="range"] { flex: 1; min-width: 120px; }
+    .angle-control .angle-value { font-size: 0.9rem; font-weight: 600; min-width: 40px; text-align: right; }
+    .color-stops-header { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+    .color-stops-header h3 { font-size: 0.95rem; margin: 0; }
+    .add-stop-btn { padding: 4px 12px; border: 1px solid var(--primary); border-radius: var(--radius); background: transparent; color: var(--primary); cursor: pointer; font-size: 0.85rem; }
+    .add-stop-btn:hover { background: var(--primary); color: #fff; }
+    .color-stop-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .color-stop-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+    .color-stop-item input[type="color"] { width: 40px; height: 32px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; padding: 1px; }
+    .color-stop-item input[type="range"] { flex: 1; min-width: 80px; }
+    .color-stop-item .stop-position { font-size: 0.8rem; min-width: 36px; text-align: right; color: var(--text-muted); }
+    .color-stop-item .hex-display { font-size: 0.8rem; min-width: 62px; color: var(--text-muted); font-family: monospace; }
+    .remove-stop-btn { width: 28px; height: 28px; border: none; border-radius: 50%; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
+    .remove-stop-btn:hover { background: #fef2f2; color: #dc2626; }
+    .action-buttons { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .action-buttons .btn { flex: 1; min-width: 140px; }
+    .css-output { position: relative; margin-top: 20px; }
+    .css-output pre { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto; font-family: monospace; white-space: pre-wrap; word-break: break-all; }
+    .copy-btn { position: absolute; top: 8px; right: 8px; padding: 4px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); cursor: pointer; font-size: 0.8rem; }
+    .copy-btn.copied { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .presets-section { margin-top: 24px; }
+    .presets-section h3 { font-size: 1rem; margin-bottom: 12px; }
+    .presets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+    .preset-item { height: 64px; border-radius: var(--radius); cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+    .preset-item:hover { border-color: var(--primary); transform: scale(1.05); }
+    @media (max-width: 600px) { .gradient-preview { height: 180px; } .control-row { flex-direction: column; align-items: flex-start; } }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>CSS Gradient Generator</h1>
+    <h2>Create Beautiful Gradients - Free Online Tool</h2>
+    <p class="tool-description">Create linear, radial, and conic CSS gradients visually. Add/remove colors, adjust positions, choose from 20+ presets, or generate randomly. Copy the CSS code and use it instantly in your projects.</p>
+    <div class="tool-area">
+      <div class="gradient-preview" id="gradient-preview"></div>
+      <div class="controls-section">
+        <div class="control-row"><label>Type</label><div class="type-buttons" id="type-buttons"><button class="type-btn active" data-type="linear" onclick="setType('linear')">Linear</button><button class="type-btn" data-type="radial" onclick="setType('radial')">Radial</button><button class="type-btn" data-type="conic" onclick="setType('conic')">Conic</button></div></div>
+        <div class="control-row" id="angle-row"><label>Angle</label><div class="angle-control"><input type="range" id="angle-slider" min="0" max="360" value="135" oninput="updateAngle(this.value)"><span class="angle-value" id="angle-value">135&deg;</span></div></div>
+        <div class="color-stops-header"><h3>Color Stops</h3><button class="add-stop-btn" onclick="addColorStop()">+ Add Color</button></div>
+        <div class="color-stop-list" id="color-stop-list"></div>
+        <div class="action-buttons"><button class="btn" onclick="randomGradient()">Random</button><button class="btn btn-secondary" onclick="resetGradient()">Reset</button></div>
+      </div>
+      <div class="css-output"><h3 style="font-size:0.95rem;margin-bottom:8px;">Generated CSS</h3><button class="copy-btn" id="copy-btn" onclick="copyCSS()">Copy</button><pre id="css-code"></pre></div>
+      <div class="presets-section"><h3>Presets</h3><div class="presets-grid" id="presets-grid"></div></div>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../color-converter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Color Converter</h3><p>Convert HEX, RGB, HSL color codes</p></a>
+        <a href="../../char-counter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Character Counter</h3><p>Count characters, words, lines</p></a>
+        <a href="../../json-formatter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">JSON Formatter</h3><p>Format and validate JSON data</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    var gradientType='linear',angle=135,colorStops=[{color:'#667eea',position:0},{color:'#764ba2',position:100}];
+    var presets=[{name:'Sunset',stops:[{color:'#f093fb',position:0},{color:'#f5576c',position:100}],type:'linear',angle:135},{name:'Ocean',stops:[{color:'#4facfe',position:0},{color:'#00f2fe',position:100}],type:'linear',angle:135},{name:'Purple',stops:[{color:'#667eea',position:0},{color:'#764ba2',position:100}],type:'linear',angle:135},{name:'Flamingo',stops:[{color:'#f78ca0',position:0},{color:'#f9748f',position:19},{color:'#fd868c',position:60},{color:'#fe9a8b',position:100}],type:'linear',angle:135},{name:'Emerald',stops:[{color:'#43e97b',position:0},{color:'#38f9d7',position:100}],type:'linear',angle:135},{name:'Midnight',stops:[{color:'#0c3483',position:0},{color:'#a2b6df',position:45},{color:'#6b8cce',position:100}],type:'linear',angle:135},{name:'Peach',stops:[{color:'#ffecd2',position:0},{color:'#fcb69f',position:100}],type:'linear',angle:135},{name:'Lavender',stops:[{color:'#a18cd1',position:0},{color:'#fbc2eb',position:100}],type:'linear',angle:135},{name:'Cherry',stops:[{color:'#eb3349',position:0},{color:'#f45c43',position:100}],type:'linear',angle:135},{name:'Rainbow',stops:[{color:'#ff0000',position:0},{color:'#ff8800',position:17},{color:'#ffff00',position:33},{color:'#00ff00',position:50},{color:'#0088ff',position:67},{color:'#8800ff',position:83},{color:'#ff00ff',position:100}],type:'linear',angle:90},{name:'Gold',stops:[{color:'#f7971e',position:0},{color:'#ffd200',position:100}],type:'linear',angle:135},{name:'Neon',stops:[{color:'#00f260',position:0},{color:'#0575e6',position:100}],type:'linear',angle:135},{name:'Aurora',stops:[{color:'#a8edea',position:0},{color:'#fed6e3',position:100}],type:'linear',angle:135},{name:'Radial Sunset',stops:[{color:'#f5af19',position:0},{color:'#f12711',position:100}],type:'radial',angle:0},{name:'Conic Rainbow',stops:[{color:'#ff0000',position:0},{color:'#ffff00',position:25},{color:'#00ff00',position:50},{color:'#0000ff',position:75},{color:'#ff0000',position:100}],type:'conic',angle:0}];
+    function generateCSS(){var s=colorStops.map(function(c){return c.color+' '+c.position+'%'}).join(', ');if(gradientType==='linear')return'linear-gradient('+angle+'deg, '+s+')';if(gradientType==='radial')return'radial-gradient(circle, '+s+')';return'conic-gradient(from '+angle+'deg, '+s+')';}
+    function updatePreview(){var c=generateCSS();document.getElementById('gradient-preview').style.background=c;document.getElementById('css-code').textContent='background: '+c+';';}
+    function setType(t){gradientType=t;document.querySelectorAll('.type-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-type')===t)});document.getElementById('angle-row').style.display=t==='radial'?'none':'';updatePreview();}
+    function updateAngle(v){angle=parseInt(v);document.getElementById('angle-value').textContent=angle+'\u00B0';updatePreview();}
+    function renderColorStops(){var l=document.getElementById('color-stop-list');l.innerHTML='';for(var i=0;i<colorStops.length;i++){(function(idx){var s=colorStops[idx],item=document.createElement('div');item.className='color-stop-item';var ci=document.createElement('input');ci.type='color';ci.value=s.color;var hd=document.createElement('span');hd.className='hex-display';hd.textContent=s.color.toUpperCase();ci.addEventListener('input',function(){colorStops[idx].color=this.value;hd.textContent=this.value.toUpperCase();updatePreview()});var ri=document.createElement('input');ri.type='range';ri.min='0';ri.max='100';ri.value=s.position;var pl=document.createElement('span');pl.className='stop-position';pl.textContent=s.position+'%';ri.addEventListener('input',function(){colorStops[idx].position=parseInt(this.value);pl.textContent=this.value+'%';updatePreview()});item.appendChild(ci);item.appendChild(hd);item.appendChild(ri);item.appendChild(pl);if(colorStops.length>2){var rb=document.createElement('button');rb.className='remove-stop-btn';rb.innerHTML='&times;';rb.addEventListener('click',function(){colorStops.splice(idx,1);renderColorStops();updatePreview()});item.appendChild(rb)}l.appendChild(item)})(i)}}
+    function addColorStop(){if(colorStops.length>=10){alert('Maximum 10 colors.');return}var rc='#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');var np=Math.round((colorStops[colorStops.length-2].position+colorStops[colorStops.length-1].position)/2);colorStops.splice(colorStops.length-1,0,{color:rc,position:np});renderColorStops();updatePreview();}
+    function copyCSS(){var c=document.getElementById('css-code').textContent;navigator.clipboard.writeText(c).then(function(){var b=document.getElementById('copy-btn');b.textContent='Copied!';b.classList.add('copied');setTimeout(function(){b.textContent='Copy';b.classList.remove('copied')},2000)});}
+    function randomGradient(){var types=['linear','radial','conic'];gradientType=types[Math.floor(Math.random()*types.length)];angle=Math.floor(Math.random()*360);document.getElementById('angle-slider').value=angle;document.getElementById('angle-value').textContent=angle+'\u00B0';var n=2+Math.floor(Math.random()*3);colorStops=[];for(var i=0;i<n;i++)colorStops.push({color:'#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'),position:Math.round(i/(n-1)*100)});document.querySelectorAll('.type-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-type')===gradientType)});document.getElementById('angle-row').style.display=gradientType==='radial'?'none':'';renderColorStops();updatePreview();}
+    function resetGradient(){gradientType='linear';angle=135;colorStops=[{color:'#667eea',position:0},{color:'#764ba2',position:100}];document.getElementById('angle-slider').value=135;document.getElementById('angle-value').textContent='135\u00B0';setType('linear');renderColorStops();updatePreview();}
+    function applyPreset(i){var p=presets[i];gradientType=p.type;angle=p.angle;colorStops=p.stops.map(function(s){return{color:s.color,position:s.position}});document.getElementById('angle-slider').value=angle;document.getElementById('angle-value').textContent=angle+'\u00B0';document.querySelectorAll('.type-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-type')===gradientType)});document.getElementById('angle-row').style.display=gradientType==='radial'?'none':'';renderColorStops();updatePreview();}
+    function renderPresets(){var g=document.getElementById('presets-grid');g.innerHTML='';for(var i=0;i<presets.length;i++){(function(idx){var p=presets[idx],ss=p.stops.map(function(s){return s.color+' '+s.position+'%'}).join(', '),css;if(p.type==='linear')css='linear-gradient('+p.angle+'deg, '+ss+')';else if(p.type==='radial')css='radial-gradient(circle, '+ss+')';else css='conic-gradient(from '+p.angle+'deg, '+ss+')';var d=document.createElement('div');d.className='preset-item';d.style.background=css;d.title=p.name;d.addEventListener('click',function(){applyPreset(idx)});g.appendChild(d)})(i)}}
+    renderColorStops();renderPresets();updatePreview();
+  </script>
+</body>
+</html>

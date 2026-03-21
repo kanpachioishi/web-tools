@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electricity Cost Calculator - Free Online Power Cost Estimator | Simple Toolkit</title>
+  <meta name="description" content="Free online electricity cost calculator. Enter power consumption, usage hours, and electricity rate to instantly calculate hourly, daily, monthly, and yearly electricity costs.">
+  <meta property="og:title" content="Electricity Cost Calculator - Free Online Power Cost Estimator | Simple Toolkit">
+  <meta property="og:description" content="Calculate electricity costs from power consumption and usage hours. Free, no registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/electricity-cost/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/electricity-cost/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/electricity-cost/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Electricity Cost Calculator - Free Online Power Cost Estimator",
+    "description": "Calculate electricity costs from power consumption, usage hours, and electricity rate. Shows hourly, daily, monthly, and yearly costs.",
+    "url": "https://simpletoolkit.net/tools/electricity-cost/en/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do you calculate electricity cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Electricity cost = Power (W) / 1000 x Hours x Rate ($/kWh). For example, a 1000W hair dryer used for 1 hour at $0.12/kWh costs: 1000/1000 x 1 x 0.12 = $0.12."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the average electricity rate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The US national average is about $0.12/kWh, but rates vary significantly by state and provider. Check your electricity bill or provider's website for your exact rate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all calculations are performed entirely in your browser. Your data is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .input-group { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .input-group .input-field { flex: 1; min-width: 140px; }
+    .input-field label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9rem; }
+    .input-field input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 1rem; background: var(--bg); color: var(--text); }
+    .input-field input:focus { outline: none; border-color: var(--primary); }
+    .input-field .unit { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+    .presets { margin-bottom: 16px; }
+    .presets label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 6px; }
+    .preset-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+    .preset-btn { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--bg); color: var(--text); cursor: pointer; font-size: 0.85rem; transition: border-color 0.2s, background 0.2s; }
+    .preset-btn:hover { border-color: var(--primary); background: #eff6ff; }
+    .result-area { display: none; margin-top: 24px; }
+    .result-area.show { display: block; }
+    .cost-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .cost-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .cost-card .card-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .cost-card .card-value { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+    .detail-section { margin-top: 20px; padding: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); font-size: 0.9rem; }
+    .detail-section h3 { font-size: 1rem; margin: 0 0 8px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--border); }
+    .detail-row:last-child { border-bottom: none; }
+    @media (max-width: 600px) { .cost-cards { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Electricity Cost Calculator</h1>
+    <h2>Free Online Power Cost Estimator</h2>
+    <p class="tool-description">Enter the power consumption and daily usage hours of your appliance to instantly calculate electricity costs per hour, day, month, and year. Free, no registration required, works entirely in your browser.</p>
+
+    <div class="tool-area">
+      <div class="presets">
+        <label>Common Appliance Presets</label>
+        <div class="preset-btns">
+          <button class="preset-btn" onclick="setPreset('AC',1500,8)">AC Unit (1500W)</button>
+          <button class="preset-btn" onclick="setPreset('Fridge',150,24)">Refrigerator (150W)</button>
+          <button class="preset-btn" onclick="setPreset('Dryer',1200,0.25)">Hair Dryer (1200W)</button>
+          <button class="preset-btn" onclick="setPreset('TV',100,5)">TV (100W)</button>
+          <button class="preset-btn" onclick="setPreset('Washer',400,1)">Washing Machine (400W)</button>
+          <button class="preset-btn" onclick="setPreset('Microwave',1000,0.25)">Microwave (1000W)</button>
+          <button class="preset-btn" onclick="setPreset('PC',200,8)">PC (200W)</button>
+          <button class="preset-btn" onclick="setPreset('LED',10,8)">LED Light (10W)</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="watt">Power Consumption</label>
+          <input type="number" id="watt" placeholder="500" min="0" step="1">
+          <div class="unit">W (Watts)</div>
+        </div>
+        <div class="input-field">
+          <label for="hours">Daily Usage</label>
+          <input type="number" id="hours" placeholder="8" min="0" max="24" step="0.25">
+          <div class="unit">hours</div>
+        </div>
+        <div class="input-field">
+          <label for="price">Electricity Rate</label>
+          <input type="number" id="price" placeholder="0.12" min="0" step="0.01" value="0.12">
+          <div class="unit">$/kWh (US avg ~$0.12)</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">Calculate Cost</button>
+        <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="cost-cards">
+          <div class="cost-card">
+            <div class="card-label">Per Hour</div>
+            <div class="card-value" id="cost-hour"></div>
+          </div>
+          <div class="cost-card">
+            <div class="card-label">Per Day</div>
+            <div class="card-value" id="cost-day"></div>
+          </div>
+          <div class="cost-card">
+            <div class="card-label">Per Month (30 days)</div>
+            <div class="card-value" id="cost-month"></div>
+          </div>
+          <div class="cost-card">
+            <div class="card-label">Per Year (365 days)</div>
+            <div class="card-value" id="cost-year"></div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Calculation Details</h3>
+          <div class="detail-row"><span>Power Consumption</span><span id="detail-watt"></span></div>
+          <div class="detail-row"><span>Daily Usage</span><span id="detail-hours"></span></div>
+          <div class="detail-row"><span>Daily Energy Usage</span><span id="detail-kwh"></span></div>
+          <div class="detail-row"><span>Electricity Rate</span><span id="detail-price"></span></div>
+          <div class="detail-row" style="font-weight:700;"><span>Formula</span><span id="detail-formula"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../loan-calculator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Loan Calculator</h3>
+          <p>Calculate loan repayment amounts</p>
+        </a>
+        <a href="../../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, temperature, and more</p>
+        </a>
+        <a href="../../password-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Password Generator</h3>
+          <p>Generate secure random passwords</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function setPreset(name, watt, hours) {
+      document.getElementById('watt').value = watt;
+      document.getElementById('hours').value = hours;
+    }
+
+    function calculate() {
+      var watt = parseFloat(document.getElementById('watt').value);
+      var hours = parseFloat(document.getElementById('hours').value);
+      var price = parseFloat(document.getElementById('price').value);
+
+      if (!watt || watt < 0 || isNaN(hours) || hours < 0 || !price || price < 0) {
+        alert('Please enter valid values for power consumption, usage hours, and electricity rate.');
+        return;
+      }
+
+      var kwhPerDay = watt / 1000 * hours;
+      var costPerHour = watt / 1000 * price;
+      var costPerDay = kwhPerDay * price;
+      var costPerMonth = costPerDay * 30;
+      var costPerYear = costPerDay * 365;
+
+      document.getElementById('cost-hour').textContent = '$' + costPerHour.toFixed(4);
+      document.getElementById('cost-day').textContent = '$' + costPerDay.toFixed(2);
+      document.getElementById('cost-month').textContent = '$' + costPerMonth.toFixed(2);
+      document.getElementById('cost-year').textContent = '$' + costPerYear.toFixed(2);
+
+      document.getElementById('detail-watt').textContent = watt + ' W';
+      document.getElementById('detail-hours').textContent = hours + ' hours';
+      document.getElementById('detail-kwh').textContent = kwhPerDay.toFixed(3) + ' kWh';
+      document.getElementById('detail-price').textContent = '$' + price + '/kWh';
+      document.getElementById('detail-formula').textContent = watt + 'W / 1000 x ' + hours + 'h x $' + price + ' = $' + costPerDay.toFixed(2) + '/day';
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function clearForm() {
+      document.getElementById('watt').value = '';
+      document.getElementById('hours').value = '';
+      document.getElementById('price').value = '0.12';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    document.querySelectorAll('#watt, #hours, #price').forEach(function(el) {
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') calculate(); });
+    });
+  </script>
+</body>
+</html>

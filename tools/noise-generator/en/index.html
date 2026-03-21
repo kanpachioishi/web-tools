@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>White Noise Generator - Focus, Sleep & Relaxation Sound | Simple Toolkit</title>
+  <meta name="description" content="Free online white noise generator. Play white, pink, and brown noise in your browser for focus, sleep, and relaxation. Timer included. No downloads needed.">
+  <meta property="og:title" content="White Noise Generator - Focus, Sleep & Relaxation Sound | Simple Toolkit">
+  <meta property="og:description" content="Play white, pink, and brown noise for focus, sleep, and relaxation. Timer included. Free, no downloads.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/noise-generator/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/noise-generator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/noise-generator/en/">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "White Noise Generator", "description": "Generate white, pink, and brown noise in your browser for focus, sleep, and relaxation. Timer included.", "url": "https://simpletoolkit.net/tools/noise-generator/en/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "All", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } }
+  </script>
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    { "@type": "Question", "name": "What is white noise?", "acceptedAnswer": { "@type": "Answer", "text": "White noise contains all frequencies at equal volume, similar to TV static. It masks ambient sounds and is widely used for improving focus and helping babies sleep." } },
+    { "@type": "Question", "name": "What is the difference between pink and brown noise?", "acceptedAnswer": { "@type": "Answer", "text": "Pink noise has decreasing energy at higher frequencies (1/f), sounding like rain. It boosts focus. Brown noise has even stronger low frequencies (1/f2), resembling a waterfall, ideal for deep sleep and relaxation." } },
+    { "@type": "Question", "name": "Is any data sent to a server?", "acceptedAnswer": { "@type": "Answer", "text": "No, all audio is generated in real-time using the Web Audio API in your browser. No external communication occurs." } }
+  ] }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .noise-generator{transition:background-color .5s;border-radius:var(--radius);padding:24px}.noise-bg-white{background:#f0f0f0}.noise-bg-pink{background:#fce4ec}.noise-bg-brown{background:#efebe9}.noise-bg-tone{background:#e8eaf6}
+    .noise-types{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}.noise-type-btn{padding:14px 8px;border:2px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);cursor:pointer;text-align:center;transition:all .2s;font-size:.85rem;line-height:1.4}.noise-type-btn:hover{border-color:var(--primary)}.noise-type-btn.active{border-color:var(--primary);background:var(--primary);color:#fff}.noise-type-btn .noise-label{font-weight:600;display:block}.noise-type-btn .noise-desc{font-size:.75rem;opacity:.8;display:block;margin-top:2px}
+    .play-section{text-align:center;margin:28px 0}.play-btn{width:100px;height:100px;border-radius:50%;border:none;background:var(--primary);color:#fff;font-size:2.5rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,99,235,.3);transition:all .2s}.play-btn:hover{transform:scale(1.05)}.play-btn.playing{background:#dc2626;box-shadow:0 4px 16px rgba(220,38,38,.3)}.play-status{margin-top:10px;font-size:.9rem;color:var(--text-muted)}
+    .controls-section{margin:24px 0}.control-group{margin-bottom:20px}.control-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:600;font-size:.9rem}.control-value{font-weight:400;color:var(--primary)}.control-slider{width:100%;height:8px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:4px;outline:none}.control-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--primary);cursor:pointer}.control-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--primary);cursor:pointer;border:none}
+    .tone-freq-control{display:none}.tone-freq-control.show{display:block}
+    .timer-options{display:flex;gap:8px;flex-wrap:wrap}.timer-btn{padding:8px 16px;border:1px solid var(--border);border-radius:20px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.85rem;transition:all .2s}.timer-btn:hover{border-color:var(--primary)}.timer-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}.timer-display{text-align:center;margin-top:12px;font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;display:none}.timer-display.show{display:block}
+    .noise-info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:32px}.noise-info-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px}.noise-info-card h3{font-size:1rem;margin:0 0 8px}.noise-info-card p{font-size:.85rem;color:var(--text-muted);margin:0;line-height:1.6}
+    @media(max-width:600px){.noise-types{grid-template-columns:repeat(2,1fr)}.play-btn{width:80px;height:80px;font-size:2rem}.noise-generator{padding:16px}}
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>White Noise Generator</h1>
+    <h2>Focus, Sleep & Relaxation Sound Generator</h2>
+    <p class="tool-description">Generate white, pink, and brown noise directly in your browser. No file downloads needed - all audio is synthesized in real time. Perfect for improving focus, falling asleep, soothing babies, and relaxation. Timer included, completely free.</p>
+    <div class="tool-area noise-generator" id="noise-generator">
+      <div class="noise-types">
+        <button class="noise-type-btn active" data-type="white" onclick="selectNoiseType('white')"><span class="noise-label">White</span><span class="noise-desc">Sound masking</span></button>
+        <button class="noise-type-btn" data-type="pink" onclick="selectNoiseType('pink')"><span class="noise-label">Pink</span><span class="noise-desc">Focus boost</span></button>
+        <button class="noise-type-btn" data-type="brown" onclick="selectNoiseType('brown')"><span class="noise-label">Brown</span><span class="noise-desc">Deep sleep</span></button>
+        <button class="noise-type-btn" data-type="tone" onclick="selectNoiseType('tone')"><span class="noise-label">Pure Tone</span><span class="noise-desc">Custom frequency</span></button>
+      </div>
+      <div class="play-section"><button class="play-btn" id="play-btn" onclick="togglePlay()">&#9654;</button><div class="play-status" id="play-status">Press play to start</div></div>
+      <div class="controls-section">
+        <div class="control-group"><div class="control-label"><span>Volume</span><span class="control-value" id="volume-value">50%</span></div><input type="range" class="control-slider" id="volume-slider" min="0" max="100" value="50" oninput="updateVolume(this.value)"></div>
+        <div class="control-group tone-freq-control" id="tone-freq-control"><div class="control-label"><span>Frequency</span><span class="control-value" id="freq-value">440 Hz</span></div><input type="range" class="control-slider" id="freq-slider" min="20" max="20000" value="440" oninput="updateFrequency(this.value)"></div>
+        <div class="control-group"><div class="control-label"><span>Timer</span></div><div class="timer-options"><button class="timer-btn" data-minutes="15" onclick="setTimer(15)">15 min</button><button class="timer-btn" data-minutes="30" onclick="setTimer(30)">30 min</button><button class="timer-btn" data-minutes="60" onclick="setTimer(60)">60 min</button><button class="timer-btn" data-minutes="120" onclick="setTimer(120)">2 hours</button><button class="timer-btn active" data-minutes="0" onclick="setTimer(0)">Unlimited</button></div><div class="timer-display" id="timer-display">00:00</div></div>
+      </div>
+    </div>
+    <section style="margin-top:32px">
+      <h2 style="font-size:1.2rem;margin-bottom:16px">Noise Types & Benefits</h2>
+      <div class="noise-info-cards">
+        <div class="noise-info-card"><h3>White Noise</h3><p>Equal energy across all frequencies. Sounds like TV static. <strong>Masks ambient sounds</strong> effectively. Great for babies and office focus.</p></div>
+        <div class="noise-info-card"><h3>Pink Noise</h3><p>Decreasing energy at higher frequencies (1/f). Sounds like rain or a stream. <strong>Boosts focus and creativity</strong>. Promotes alpha brain waves.</p></div>
+        <div class="noise-info-card"><h3>Brown Noise</h3><p>Even stronger low frequencies (1/f&sup2;). Sounds like a waterfall or strong wind. <strong>Deep sleep and relaxation</strong>. Reduces stress and anxiety.</p></div>
+        <div class="noise-info-card"><h3>Pure Tone</h3><p>Single-frequency sine wave (20Hz-20kHz). Adjustable frequency. Used for <strong>tinnitus masking</strong>, hearing tests, and meditation.</p></div>
+      </div>
+    </section>
+    <section style="margin-top:40px">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../password-generator/en/" class="tool-card"><h3 style="font-size:1rem;margin:0">Password Generator</h3><p>Generate secure random passwords</p></a>
+        <a href="../../char-counter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0">Character Counter</h3><p>Count characters, words, lines</p></a>
+        <a href="../../unit-converter/" class="tool-card"><h3 style="font-size:1rem;margin:0">Unit Converter</h3><p>Convert length, weight, temperature</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    var audioCtx=null,noiseNode=null,gainNode=null,oscillatorNode=null,isPlaying=false,currentType='white',currentVolume=0.5,currentFreq=440,timerMinutes=0,timerInterval=null,timerRemaining=0;
+    var pinkB0=0,pinkB1=0,pinkB2=0,pinkB3=0,pinkB4=0,pinkB5=0,pinkB6=0,brownLast=0;
+    function selectNoiseType(t){currentType=t;document.querySelectorAll('.noise-type-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-type')===t)});document.getElementById('tone-freq-control').classList.toggle('show',t==='tone');document.getElementById('noise-generator').className='tool-area noise-generator noise-bg-'+t;if(isPlaying){stopAudio();startAudio()}}
+    function togglePlay(){if(isPlaying){stopAll()}else{startAudio();startTimer();isPlaying=true;updatePlayUI()}}
+    function startAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();gainNode=audioCtx.createGain();gainNode.gain.value=currentVolume;gainNode.connect(audioCtx.destination);if(currentType==='tone'){oscillatorNode=audioCtx.createOscillator();oscillatorNode.type='sine';oscillatorNode.frequency.value=currentFreq;oscillatorNode.connect(gainNode);oscillatorNode.start()}else{var bs=4096;noiseNode=audioCtx.createScriptProcessor(bs,1,1);pinkB0=0;pinkB1=0;pinkB2=0;pinkB3=0;pinkB4=0;pinkB5=0;pinkB6=0;brownLast=0;noiseNode.onaudioprocess=function(e){var o=e.outputBuffer.getChannelData(0);for(var i=0;i<o.length;i++){if(currentType==='white'){o[i]=Math.random()*2-1}else if(currentType==='pink'){var w=Math.random()*2-1;pinkB0=.99886*pinkB0+w*.0555179;pinkB1=.99332*pinkB1+w*.0750759;pinkB2=.969*pinkB2+w*.153852;pinkB3=.8665*pinkB3+w*.3104856;pinkB4=.55*pinkB4+w*.5329522;pinkB5=-.7616*pinkB5-w*.016898;o[i]=(pinkB0+pinkB1+pinkB2+pinkB3+pinkB4+pinkB5+pinkB6+w*.5362)*.11;pinkB6=w*.115926}else{var w=Math.random()*2-1;brownLast=(brownLast+.02*w)/1.02;o[i]=brownLast*3.5}}};noiseNode.connect(gainNode)}isPlaying=true}
+    function stopAudio(){if(noiseNode){noiseNode.disconnect();noiseNode=null}if(oscillatorNode){oscillatorNode.stop();oscillatorNode.disconnect();oscillatorNode=null}if(gainNode){gainNode.disconnect();gainNode=null}}
+    function stopAll(){stopAudio();stopTimerInterval();isPlaying=false;updatePlayUI()}
+    function updatePlayUI(){var b=document.getElementById('play-btn'),s=document.getElementById('play-status');if(isPlaying){b.innerHTML='&#9724;';b.classList.add('playing');var n={white:'White Noise',pink:'Pink Noise',brown:'Brown Noise',tone:'Pure Tone'};s.textContent=n[currentType]+' playing...'}else{b.innerHTML='&#9654;';b.classList.remove('playing');s.textContent='Press play to start'}}
+    function updateVolume(v){currentVolume=v/100;document.getElementById('volume-value').textContent=v+'%';if(gainNode)gainNode.gain.value=currentVolume}
+    function updateFrequency(v){currentFreq=parseInt(v);document.getElementById('freq-value').textContent=currentFreq>=1000?(currentFreq/1000).toFixed(1).replace(/\.0$/,'')+' kHz':currentFreq+' Hz';if(oscillatorNode)oscillatorNode.frequency.value=currentFreq}
+    function setTimer(m){timerMinutes=m;document.querySelectorAll('.timer-btn').forEach(function(b){b.classList.toggle('active',parseInt(b.getAttribute('data-minutes'))===m)});var d=document.getElementById('timer-display');if(m===0){d.classList.remove('show');stopTimerInterval()}else{timerRemaining=m*60;d.classList.add('show');updateTimerDisplay();if(isPlaying){stopTimerInterval();startTimer()}}}
+    function startTimer(){if(timerMinutes===0)return;timerRemaining=timerMinutes*60;updateTimerDisplay();document.getElementById('timer-display').classList.add('show');timerInterval=setInterval(function(){timerRemaining--;updateTimerDisplay();if(timerRemaining<=0){stopAll();document.getElementById('timer-display').classList.remove('show')}},1000)}
+    function stopTimerInterval(){if(timerInterval){clearInterval(timerInterval);timerInterval=null}}
+    function updateTimerDisplay(){var m=Math.floor(timerRemaining/60),s=timerRemaining%60,h=Math.floor(m/60);m=m%60;document.getElementById('timer-display').textContent=h>0?h+':'+(m<10?'0':'')+m+':'+(s<10?'0':'')+s:(m<10?'0':'')+m+':'+(s<10?'0':'')+s}
+    document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='TEXTAREA'){e.preventDefault();togglePlay()}});
+  </script>
+</body>
+</html>

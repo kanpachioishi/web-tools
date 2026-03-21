@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cron Expression Generator - Build & Parse Cron Expressions Online | Simple Toolkit</title>
+  <meta name="description" content="Free cron expression generator. Build crontab expressions with a visual GUI, parse existing cron expressions, and see next execution times. Presets included.">
+  <meta property="og:title" content="Cron Expression Generator - Build & Parse Cron Expressions Online | Simple Toolkit">
+  <meta property="og:description" content="Build crontab expressions with GUI, parse cron expressions, see next run times. Free, no registration.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/cron-builder/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/cron-builder/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/cron-builder/en/">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "Cron Expression Generator", "description": "Build and parse crontab expressions with visual GUI. Shows next execution times and includes common presets.", "url": "https://simpletoolkit.net/tools/cron-builder/en/", "applicationCategory": "DeveloperApplication", "operatingSystem": "All", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } }
+  </script>
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    { "@type": "Question", "name": "What is a cron expression?", "acceptedAnswer": { "@type": "Answer", "text": "A cron expression defines a schedule for recurring tasks in Linux/Unix systems. It consists of 5 fields separated by spaces: minute, hour, day of month, month, and day of week." } },
+    { "@type": "Question", "name": "What does * (asterisk) mean in cron?", "acceptedAnswer": { "@type": "Answer", "text": "The asterisk (*) means 'every value'. For example, * in the minute field means 'every minute', and * in the hour field means 'every hour'." } },
+    { "@type": "Question", "name": "How to run a cron job at midnight every day?", "acceptedAnswer": { "@type": "Answer", "text": "Use '0 0 * * *'. Minute=0, Hour=0, and all other fields set to * (every day/month/weekday)." } }
+  ] }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .cron-fields{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}.cron-field{text-align:center}.cron-field label{display:block;font-size:.8rem;font-weight:600;color:var(--text-muted);margin-bottom:4px}.cron-field select{width:100%;padding:8px 4px;border:1px solid var(--border);border-radius:var(--radius);font-size:.9rem;text-align:center;background:var(--bg);color:var(--text)}.cron-field .hint{font-size:.7rem;color:var(--text-muted);margin-top:2px}.cron-output{background:var(--bg);border:2px solid var(--primary);border-radius:var(--radius);padding:16px;text-align:center;margin:16px 0}.cron-output .cron-expression{font-family:'Courier New',monospace;font-size:1.8rem;font-weight:800;color:var(--primary);letter-spacing:4px}.cron-output .cron-description{font-size:.95rem;color:var(--text);margin-top:8px}.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:16px 0}.preset-btn{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);cursor:pointer;text-align:left;font-size:.85rem;transition:border-color .2s}.preset-btn:hover{border-color:var(--primary);background:#eff6ff}.preset-btn .preset-cron{font-family:'Courier New',monospace;font-weight:700;color:var(--primary);display:block;margin-bottom:2px}.preset-btn .preset-desc{font-size:.75rem;color:var(--text-muted)}.next-runs{margin-top:16px}.next-runs h3{font-size:.95rem;margin-bottom:8px}.next-runs ol{padding-left:20px;font-size:.9rem;line-height:2}.next-runs li{font-family:'Courier New',monospace}.reverse-section{margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}.reverse-input{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.reverse-input input{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius);font-family:'Courier New',monospace;font-size:1rem;background:var(--bg);color:var(--text)}.reverse-result{margin-top:12px;padding:12px 16px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);font-size:.9rem;display:none}.reverse-result.show{display:block}
+    .cron-syntax-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.85rem}.cron-syntax-table th,.cron-syntax-table td{border:1px solid var(--border);padding:8px 10px;text-align:left}.cron-syntax-table th{background:var(--bg);font-weight:600}
+    @media(max-width:600px){.cron-fields{gap:6px}.cron-field select{font-size:.8rem;padding:6px 2px}.cron-output .cron-expression{font-size:1.3rem;letter-spacing:2px}.preset-grid{grid-template-columns:1fr}}
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Cron Expression Generator</h1>
+    <h2>Build & Parse Crontab Expressions Online</h2>
+    <p class="tool-description">Build cron expressions by selecting fields with a GUI, or parse existing cron expressions into human-readable descriptions. Shows next scheduled execution times. Free, no registration required.</p>
+    <div class="tool-area">
+      <h3 style="font-size:1rem;margin-bottom:12px;">Builder Mode</h3>
+      <div class="cron-fields">
+        <div class="cron-field"><label>Minute</label><select id="cron-min" onchange="updateCron()"></select><div class="hint">0-59</div></div>
+        <div class="cron-field"><label>Hour</label><select id="cron-hour" onchange="updateCron()"></select><div class="hint">0-23</div></div>
+        <div class="cron-field"><label>Day</label><select id="cron-day" onchange="updateCron()"></select><div class="hint">1-31</div></div>
+        <div class="cron-field"><label>Month</label><select id="cron-month" onchange="updateCron()"></select><div class="hint">1-12</div></div>
+        <div class="cron-field"><label>Weekday</label><select id="cron-dow" onchange="updateCron()"></select><div class="hint">0-7</div></div>
+      </div>
+      <div class="cron-output"><div class="cron-expression" id="cron-expression">* * * * *</div><div class="cron-description" id="cron-description">Runs every minute</div></div>
+      <div class="next-runs"><h3>Next 5 Executions</h3><ol id="next-runs-list"></ol></div>
+      <h3 style="font-size:1rem;margin-top:24px;margin-bottom:8px;">Presets</h3>
+      <div class="preset-grid" id="preset-grid"></div>
+      <div class="reverse-section">
+        <h3 style="font-size:1rem;margin-bottom:8px;">Parse Cron Expression</h3>
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:8px;">Enter an existing cron expression to get a human-readable description.</p>
+        <div class="reverse-input"><input type="text" id="reverse-input" placeholder="0 3 * * 1" maxlength="50"><button class="btn" onclick="reverseCron()">Parse</button></div>
+        <div class="reverse-result" id="reverse-result"></div>
+      </div>
+    </div>
+    <div style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">Cron Expression Syntax Guide</h2>
+      <table class="cron-syntax-table">
+        <tr><th>Field</th><th>Range</th><th>Description</th></tr>
+        <tr><td>Minute</td><td>0-59</td><td>Minute to run</td></tr>
+        <tr><td>Hour</td><td>0-23</td><td>Hour to run (24h)</td></tr>
+        <tr><td>Day</td><td>1-31</td><td>Day of month</td></tr>
+        <tr><td>Month</td><td>1-12</td><td>Month to run</td></tr>
+        <tr><td>Weekday</td><td>0-7</td><td>Day of week (0,7=Sun)</td></tr>
+      </table>
+      <h3 style="font-size:1rem;margin-top:20px;">Special Characters</h3>
+      <ul style="font-size:.9rem;line-height:1.8;color:var(--text-muted);">
+        <li><code style="background:var(--bg);padding:2px 6px;border-radius:4px;">*</code> - Every value</li>
+        <li><code style="background:var(--bg);padding:2px 6px;border-radius:4px;">,</code> - Multiple values (e.g., 1,15)</li>
+        <li><code style="background:var(--bg);padding:2px 6px;border-radius:4px;">-</code> - Range (e.g., 1-5 = Mon-Fri)</li>
+        <li><code style="background:var(--bg);padding:2px 6px;border-radius:4px;">/</code> - Step (e.g., */5 = every 5 min)</li>
+      </ul>
+    </div>
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../unix-timestamp/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Unix Timestamp Converter</h3><p>Convert Unix timestamps and dates</p></a>
+        <a href="../../json-formatter/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">JSON Formatter</h3><p>Format and validate JSON</p></a>
+        <a href="../../regex-tester/en/" class="tool-card"><h3 style="font-size:1rem;margin:0;">Regex Tester</h3><p>Test regular expressions in real time</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    var PRESETS=[{cron:'* * * * *',desc:'Every minute'},{cron:'0 * * * *',desc:'Every hour at :00'},{cron:'0 0 * * *',desc:'Every day at midnight'},{cron:'0 3 * * *',desc:'Every day at 3:00 AM'},{cron:'0 9 * * 1-5',desc:'Weekdays at 9:00 AM'},{cron:'0 0 * * 1',desc:'Every Monday at midnight'},{cron:'0 0 1 * *',desc:'1st of every month'},{cron:'0 0 1 1 *',desc:'January 1st at midnight'},{cron:'*/5 * * * *',desc:'Every 5 minutes'},{cron:'*/10 * * * *',desc:'Every 10 minutes'},{cron:'*/15 * * * *',desc:'Every 15 minutes'},{cron:'0 */2 * * *',desc:'Every 2 hours'},{cron:'30 4 * * *',desc:'Every day at 4:30 AM'},{cron:'0 9,18 * * *',desc:'At 9 AM and 6 PM daily'},{cron:'0 0 * * 0',desc:'Every Sunday at midnight'},{cron:'0 0 15 * *',desc:'15th of every month'}];
+    var DOW_NAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    function initSelects(){var ms=document.getElementById('cron-min'),hs=document.getElementById('cron-hour'),ds=document.getElementById('cron-day'),mos=document.getElementById('cron-month'),dw=document.getElementById('cron-dow');
+    ms.innerHTML='<option value="*">* (every min)</option>';for(var i=0;i<60;i++)ms.innerHTML+='<option value="'+i+'">'+i+'</option>';ms.innerHTML+='<option value="*/5">*/5 (every 5)</option><option value="*/10">*/10 (every 10)</option><option value="*/15">*/15 (every 15)</option><option value="*/30">*/30 (every 30)</option>';
+    hs.innerHTML='<option value="*">* (every hour)</option>';for(var i=0;i<24;i++)hs.innerHTML+='<option value="'+i+'">'+i+':00</option>';hs.innerHTML+='<option value="*/2">*/2 (every 2h)</option><option value="*/3">*/3 (every 3h)</option><option value="*/6">*/6 (every 6h)</option>';
+    ds.innerHTML='<option value="*">* (every day)</option>';for(var i=1;i<=31;i++)ds.innerHTML+='<option value="'+i+'">'+i+'</option>';
+    mos.innerHTML='<option value="*">* (every month)</option>';var mNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];for(var i=1;i<=12;i++)mos.innerHTML+='<option value="'+i+'">'+mNames[i-1]+'</option>';
+    dw.innerHTML='<option value="*">* (every day)</option>';var dwL=['0 (Sun)','1 (Mon)','2 (Tue)','3 (Wed)','4 (Thu)','5 (Fri)','6 (Sat)'];for(var i=0;i<7;i++)dw.innerHTML+='<option value="'+i+'">'+dwL[i]+'</option>';dw.innerHTML+='<option value="1-5">1-5 (weekdays)</option><option value="0,6">0,6 (weekends)</option>';}
+    function initPresets(){var g=document.getElementById('preset-grid'),h='';for(var i=0;i<PRESETS.length;i++)h+='<button class="preset-btn" onclick="applyPreset(\''+PRESETS[i].cron+'\')"><span class="preset-cron">'+PRESETS[i].cron+'</span><span class="preset-desc">'+PRESETS[i].desc+'</span></button>';g.innerHTML=h;}
+    function applyPreset(c){var p=c.split(' '),f=['cron-min','cron-hour','cron-day','cron-month','cron-dow'];for(var i=0;i<5;i++){var s=document.getElementById(f[i]),found=false;for(var j=0;j<s.options.length;j++)if(s.options[j].value===p[i]){s.selectedIndex=j;found=true;break}if(!found)s.selectedIndex=0;}updateCron();}
+    function updateCron(){var m=document.getElementById('cron-min').value,h=document.getElementById('cron-hour').value,d=document.getElementById('cron-day').value,mo=document.getElementById('cron-month').value,dw=document.getElementById('cron-dow').value;var expr=m+' '+h+' '+d+' '+mo+' '+dw;document.getElementById('cron-expression').textContent=expr;document.getElementById('cron-description').textContent=describeCron(m,h,d,mo,dw);computeNextRuns(m,h,d,mo,dw);}
+    function describeCron(min,hour,day,month,dow){var p=[];if(dow!=='*'){if(dow==='1-5')p.push('weekdays');else if(dow==='0,6')p.push('weekends');else{var ds=dow.split(',').map(function(d){return DOW_NAMES[parseInt(d)]});p.push(ds.join(' and '))}}if(month!=='*')p.push('in month '+month);if(day!=='*')p.push('on day '+day);if(hour==='*')p.push('every hour');else if(hour.indexOf('/')>=0)p.push('every '+hour.split('/')[1]+' hours');else p.push('at '+hour.split(',').join(', ')+':00');if(min==='*')p.push('every minute');else if(min.indexOf('/')>=0)p.push('every '+min.split('/')[1]+' minutes');else p.push('at minute '+min);return 'Runs '+p.join(', ');}
+    function matchesCronField(v,f,mn,mx){if(f==='*')return true;var ps=f.split(',');for(var i=0;i<ps.length;i++){var p=ps[i];if(p.indexOf('/')>=0){var sp=p.split('/'),b=sp[0]==='*'?mn:parseInt(sp[0]),st=parseInt(sp[1]);if((v-b)%st===0&&v>=b)return true}else if(p.indexOf('-')>=0){var r=p.split('-');if(v>=parseInt(r[0])&&v<=parseInt(r[1]))return true}else{if(v===parseInt(p))return true}}return false;}
+    function computeNextRuns(min,hour,day,month,dow){var res=[],d=new Date();d.setSeconds(0);d.setMilliseconds(0);d.setMinutes(d.getMinutes()+1);for(var i=0;i<525600&&res.length<5;i++){if(matchesCronField(d.getMinutes(),min,0,59)&&matchesCronField(d.getHours(),hour,0,23)&&matchesCronField(d.getDate(),day,1,31)&&matchesCronField(d.getMonth()+1,month,1,12)&&matchesCronField(d.getDay(),dow,0,6))res.push(new Date(d));d.setMinutes(d.getMinutes()+1);}var ol=document.getElementById('next-runs-list');if(!res.length){ol.innerHTML='<li style="font-family:inherit">No matching execution found</li>';return}var h='';for(var i=0;i<res.length;i++){var r=res[i];h+='<li>'+r.getFullYear()+'/'+('0'+(r.getMonth()+1)).slice(-2)+'/'+('0'+r.getDate()).slice(-2)+' '+('0'+r.getHours()).slice(-2)+':'+('0'+r.getMinutes()).slice(-2)+' ('+DOW_NAMES[r.getDay()]+')</li>';}ol.innerHTML=h;}
+    function reverseCron(){var inp=document.getElementById('reverse-input').value.trim(),rel=document.getElementById('reverse-result');if(!inp){rel.classList.remove('show');return}var ps=inp.split(/\s+/);if(ps.length!==5){rel.innerHTML='<span style="color:#dc2626">Cron expressions must have 5 fields (minute hour day month weekday) separated by spaces.</span>';rel.classList.add('show');return}rel.innerHTML='<strong style="font-family:Courier New,monospace;color:var(--primary)">'+inp.replace(/</g,'&lt;')+'</strong><br><span style="font-size:1rem">'+describeCron(ps[0],ps[1],ps[2],ps[3],ps[4])+'</span>';rel.classList.add('show');}
+    document.getElementById('reverse-input').addEventListener('keydown',function(e){if(e.key==='Enter')reverseCron()});
+    initSelects();initPresets();updateCron();
+  </script>
+</body>
+</html>

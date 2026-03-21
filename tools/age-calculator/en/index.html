@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator - Calculate Your Exact Age Online | Simple Toolkit</title>
+  <meta name="description" content="Free online age calculator. Enter your birth date to instantly calculate your exact age in years, months, days, hours, and minutes. Next birthday countdown included.">
+  <meta property="og:title" content="Age Calculator - Calculate Your Exact Age Online | Simple Toolkit">
+  <meta property="og:description" content="Calculate your exact age in years, months, days, hours, and minutes. Next birthday countdown included. Free, no registration.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/age-calculator/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/age-calculator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/age-calculator/en/">
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "WebApplication", "name": "Age Calculator", "description": "Calculate exact age in years, months, days, hours, and minutes from birth date. Next birthday countdown included.", "url": "https://simpletoolkit.net/tools/age-calculator/en/", "applicationCategory": "UtilityApplication", "operatingSystem": "All", "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" } }
+  </script>
+  <script type="application/ld+json">
+  { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+    { "@type": "Question", "name": "How is exact age calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Exact age is calculated by finding the difference between your birth date and today's date, accounting for varying month lengths and leap years." } },
+    { "@type": "Question", "name": "Is my data sent to a server?", "acceptedAnswer": { "@type": "Answer", "text": "No, all calculations are performed entirely in your browser. Your birth date is never sent to any external server." } }
+  ] }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .input-area{display:flex;gap:16px;align-items:end;flex-wrap:wrap;margin-bottom:20px}
+    .input-field{flex:1;min-width:200px}
+    .input-field label{display:block;font-weight:600;margin-bottom:6px;font-size:.9rem}
+    .input-field input{width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius);font-size:1rem;background:var(--bg);color:var(--text)}
+    .input-field input:focus{outline:none;border-color:var(--primary)}
+    .result-area{display:none;margin-top:24px}.result-area.show{display:block}
+    .age-hero{text-align:center;padding:32px;background:linear-gradient(135deg,#eff6ff 0%,#f0fdf4 100%);border-radius:var(--radius);margin-bottom:24px}
+    .age-hero-value{font-size:3rem;font-weight:800;color:var(--primary);line-height:1.2}
+    .age-hero-label{font-size:.9rem;color:var(--text-muted);margin-top:4px}
+    .detail-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+    .detail-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+    .detail-card .dc-value{font-size:1.5rem;font-weight:700;color:var(--primary)}
+    .detail-card .dc-label{font-size:.8rem;color:var(--text-muted);margin-top:4px}
+    .alt-units{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+    .alt-unit{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;justify-content:space-between;align-items:center}
+    .alt-unit .au-label{color:var(--text-muted);font-size:.9rem}
+    .alt-unit .au-value{font-weight:700;color:var(--text);font-size:1rem}
+    .birthday-section{margin-top:24px;padding:20px;background:#fefce8;border:1px solid #fde68a;border-radius:var(--radius);text-align:center}
+    .birthday-section h3{font-size:1rem;margin:0 0 8px;color:#92400e}
+    .birthday-section .bd-value{font-size:1.2rem;font-weight:700;color:#b45309}
+    @media(max-width:600px){.detail-cards{grid-template-columns:1fr}.alt-units{grid-template-columns:1fr}.age-hero-value{font-size:2.2rem}}
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Age Calculator</h1>
+    <h2>Calculate Your Exact Age - Free Online Tool</h2>
+    <p class="tool-description">Enter your date of birth to instantly calculate your exact age in years, months, and days. Also shows your age in total months, weeks, days, hours, and minutes, plus a countdown to your next birthday. Free, no registration required.</p>
+    <div class="tool-area">
+      <div class="input-area">
+        <div class="input-field">
+          <label for="birth-date">Date of Birth</label>
+          <input type="date" id="birth-date">
+        </div>
+        <button class="btn" onclick="calculateAge()">Calculate Age</button>
+      </div>
+      <div class="result-area" id="result-area">
+        <div class="age-hero">
+          <div class="age-hero-value" id="age-main"></div>
+          <div class="age-hero-label">Your exact age</div>
+        </div>
+        <div class="detail-cards">
+          <div class="detail-card"><div class="dc-value" id="dc-years"></div><div class="dc-label">Years</div></div>
+          <div class="detail-card"><div class="dc-value" id="dc-months"></div><div class="dc-label">Months</div></div>
+          <div class="detail-card"><div class="dc-value" id="dc-days"></div><div class="dc-label">Days</div></div>
+        </div>
+        <h3 style="font-size:1rem;margin-bottom:12px">Your Age in Other Units</h3>
+        <div class="alt-units">
+          <div class="alt-unit"><span class="au-label">Total Months</span><span class="au-value" id="au-months"></span></div>
+          <div class="alt-unit"><span class="au-label">Total Weeks</span><span class="au-value" id="au-weeks"></span></div>
+          <div class="alt-unit"><span class="au-label">Total Days</span><span class="au-value" id="au-days"></span></div>
+          <div class="alt-unit"><span class="au-label">Total Hours</span><span class="au-value" id="au-hours"></span></div>
+          <div class="alt-unit"><span class="au-label">Total Minutes</span><span class="au-value" id="au-minutes"></span></div>
+          <div class="alt-unit"><span class="au-label">Total Seconds</span><span class="au-value" id="au-seconds"></span></div>
+        </div>
+        <div class="birthday-section">
+          <h3>Next Birthday Countdown</h3>
+          <div class="bd-value" id="next-birthday"></div>
+        </div>
+      </div>
+    </div>
+    <section style="margin-top:40px"><h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px">Other Tools</h2><div class="tool-grid">
+      <a href="../../bmi-calculator/en/" class="tool-card"><h3 style="font-size:1rem;margin:0">BMI Calculator</h3><p>Calculate your BMI instantly</p></a>
+      <a href="../../unix-timestamp/en/" class="tool-card"><h3 style="font-size:1rem;margin:0">Unix Timestamp Converter</h3><p>Convert Unix timestamps and dates</p></a>
+      <a href="../../unit-converter/" class="tool-card"><h3 style="font-size:1rem;margin:0">Unit Converter</h3><p>Convert length, weight, temperature</p></a>
+    </div></section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function calculateAge(){var bd=document.getElementById('birth-date').value;if(!bd){alert('Please select your date of birth.');return}var birth=new Date(bd),now=new Date();if(birth>now){alert('Birth date cannot be in the future.');return}
+    var years=now.getFullYear()-birth.getFullYear(),months=now.getMonth()-birth.getMonth(),days=now.getDate()-birth.getDate();if(days<0){months--;var pm=new Date(now.getFullYear(),now.getMonth(),0);days+=pm.getDate()}if(months<0){years--;months+=12}
+    document.getElementById('age-main').textContent=years+' years, '+months+' months, '+days+' days';document.getElementById('dc-years').textContent=years;document.getElementById('dc-months').textContent=months;document.getElementById('dc-days').textContent=days;
+    var totalMs=now-birth,totalDays=Math.floor(totalMs/86400000),totalWeeks=Math.floor(totalDays/7),totalMonths=years*12+months,totalHours=Math.floor(totalMs/3600000),totalMinutes=Math.floor(totalMs/60000),totalSeconds=Math.floor(totalMs/1000);
+    document.getElementById('au-months').textContent=totalMonths.toLocaleString();document.getElementById('au-weeks').textContent=totalWeeks.toLocaleString();document.getElementById('au-days').textContent=totalDays.toLocaleString();document.getElementById('au-hours').textContent=totalHours.toLocaleString();document.getElementById('au-minutes').textContent=totalMinutes.toLocaleString();document.getElementById('au-seconds').textContent=totalSeconds.toLocaleString();
+    var nextBd=new Date(now.getFullYear(),birth.getMonth(),birth.getDate());if(nextBd<=now)nextBd.setFullYear(nextBd.getFullYear()+1);var daysUntil=Math.ceil((nextBd-now)/86400000);if(daysUntil===0)document.getElementById('next-birthday').textContent='Happy Birthday! Today is your birthday!';else document.getElementById('next-birthday').textContent=daysUntil+' days until your next birthday ('+nextBd.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+')';
+    document.getElementById('result-area').classList.add('show')}
+    document.getElementById('birth-date').addEventListener('keydown',function(e){if(e.key==='Enter')calculateAge()});
+  </script>
+</body>
+</html>

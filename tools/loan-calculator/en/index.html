@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Calculator - Free Online Loan Repayment Simulator | Simple Toolkit</title>
+  <meta name="description" content="Free online loan calculator. Enter loan amount, interest rate, and term to instantly calculate monthly payments, total repayment, and total interest. Supports equal payment and equal principal methods.">
+  <meta property="og:title" content="Loan Calculator - Free Online Loan Repayment Simulator | Simple Toolkit">
+  <meta property="og:description" content="Enter loan amount, interest rate, and term to instantly calculate monthly payments. Supports equal payment and equal principal methods. Free, no registration required.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/loan-calculator/en/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/loan-calculator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/loan-calculator/en/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Loan Calculator - Free Online Loan Repayment Simulator",
+    "description": "Free online loan calculator. Enter loan amount, interest rate, and term to instantly calculate monthly payments, total repayment, and total interest.",
+    "url": "https://simpletoolkit.net/tools/loan-calculator/en/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the difference between equal payment and equal principal repayment?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Equal payment (amortized) keeps monthly payments constant, making budgeting easier. Equal principal repayment keeps the principal portion constant each month, with decreasing interest over time. Total interest paid is lower with equal principal repayment."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is the monthly payment calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For equal payment loans, the formula is: M = P * r * (1+r)^n / ((1+r)^n - 1), where P is the principal, r is the monthly interest rate, and n is the total number of payments."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, all calculations are performed entirely in your browser. Your financial data is never sent to any external server."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .input-group { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .input-group .input-field { flex: 1; min-width: 140px; }
+    .input-field label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.9rem; }
+    .input-field input, .input-field select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 1rem; background: var(--bg); color: var(--text); }
+    .input-field input:focus, .input-field select:focus { outline: none; border-color: var(--primary); }
+    .input-field .unit { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+    .method-selector { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .method-selector label { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 8px 16px; border: 2px solid var(--border); border-radius: var(--radius); font-weight: 600; font-size: 0.9rem; transition: border-color 0.2s, background 0.2s; }
+    .method-selector input[type="radio"] { display: none; }
+    .method-selector input[type="radio"]:checked + label { border-color: var(--primary); background: #eff6ff; }
+    .result-area { display: none; margin-top: 24px; }
+    .result-area.show { display: block; }
+    .summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+    .summary-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .summary-card .card-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .summary-card .card-value { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+    .schedule-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 16px; }
+    .schedule-table th, .schedule-table td { border: 1px solid var(--border); padding: 6px 10px; text-align: right; }
+    .schedule-table th { background: var(--bg); font-weight: 600; text-align: center; }
+    .schedule-table td:first-child { text-align: center; }
+    .schedule-wrapper { max-height: 400px; overflow-y: auto; }
+    @media (max-width: 600px) {
+      .summary-cards { grid-template-columns: 1fr; }
+      .schedule-table { font-size: 0.75rem; }
+      .schedule-table th, .schedule-table td { padding: 4px 6px; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../../common/header.js"></script>
+  <script src="../../../common/breadcrumb.js"></script>
+  <main>
+    <h1>Loan Calculator</h1>
+    <h2>Free Online Loan Repayment Simulator</h2>
+    <p class="tool-description">Simply enter the loan amount, interest rate, and repayment term to instantly simulate monthly payments, total repayment, and total interest. Supports both amortized (equal payment) and equal principal repayment methods. Perfect for mortgage, car loan, and education loan calculations. Free, no registration required.</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="principal">Loan Amount</label>
+          <input type="number" id="principal" placeholder="200000" min="1" step="1000">
+          <div class="unit">$ (USD)</div>
+        </div>
+        <div class="input-field">
+          <label for="rate">Annual Interest Rate</label>
+          <input type="number" id="rate" placeholder="5.0" min="0" max="100" step="0.01">
+          <div class="unit">%</div>
+        </div>
+        <div class="input-field">
+          <label for="years">Loan Term</label>
+          <input type="number" id="years" placeholder="30" min="1" max="50" step="1">
+          <div class="unit">years</div>
+        </div>
+      </div>
+
+      <div class="method-selector">
+        <span style="font-weight:600;margin-right:8px;line-height:2.2;">Repayment Method:</span>
+        <input type="radio" name="method" id="method-equal" value="equal" checked>
+        <label for="method-equal">Amortized (Equal Payment)</label>
+        <input type="radio" name="method" id="method-principal" value="principal">
+        <label for="method-principal">Equal Principal</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculateLoan()">Calculate</button>
+        <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="card-label">Monthly Payment</div>
+            <div class="card-value" id="monthly-payment"></div>
+          </div>
+          <div class="summary-card">
+            <div class="card-label">Total Repayment</div>
+            <div class="card-value" id="total-payment"></div>
+          </div>
+          <div class="summary-card">
+            <div class="card-label">Total Interest</div>
+            <div class="card-value" id="total-interest"></div>
+          </div>
+        </div>
+
+        <h3 style="font-size:1rem;margin-bottom:8px;">Repayment Schedule (Yearly)</h3>
+        <div class="schedule-wrapper">
+          <table class="schedule-table" id="schedule-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Annual Payment</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">Other Tools</h2>
+      <div class="tool-grid">
+        <a href="../../bmi-calculator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">BMI Calculator</h3>
+          <p>Calculate your Body Mass Index instantly</p>
+        </a>
+        <a href="../../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unit Converter</h3>
+          <p>Convert length, weight, temperature, and more</p>
+        </a>
+        <a href="../../password-generator/en/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Password Generator</h3>
+          <p>Generate secure random passwords instantly</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../../common/footer.js"></script>
+  <script>
+    function formatNumber(n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function calculateLoan() {
+      var P = parseFloat(document.getElementById('principal').value);
+      var annualRate = parseFloat(document.getElementById('rate').value);
+      var years = parseInt(document.getElementById('years').value);
+      var method = document.querySelector('input[name="method"]:checked').value;
+
+      if (!P || !annualRate || !years || P <= 0 || annualRate < 0 || years <= 0) {
+        alert('Please enter valid loan amount, interest rate, and term.');
+        return;
+      }
+
+      var monthlyRate = annualRate / 100 / 12;
+      var totalMonths = years * 12;
+      var schedule = [];
+      var totalPayment = 0;
+      var totalInterest = 0;
+
+      if (method === 'equal') {
+        var monthly;
+        if (monthlyRate === 0) {
+          monthly = P / totalMonths;
+        } else {
+          monthly = P * monthlyRate * Math.pow(1 + monthlyRate, totalMonths) / (Math.pow(1 + monthlyRate, totalMonths) - 1);
+        }
+        var remaining = P;
+        var yearPayment = 0, yearPrincipal = 0, yearInterest = 0;
+
+        for (var m = 1; m <= totalMonths; m++) {
+          var interestPart = remaining * monthlyRate;
+          var principalPart = monthly - interestPart;
+          remaining -= principalPart;
+          if (remaining < 0) remaining = 0;
+          yearPayment += monthly;
+          yearPrincipal += principalPart;
+          yearInterest += interestPart;
+          totalPayment += monthly;
+          totalInterest += interestPart;
+
+          if (m % 12 === 0 || m === totalMonths) {
+            schedule.push({ year: Math.ceil(m / 12), payment: yearPayment, principal: yearPrincipal, interest: yearInterest, remaining: Math.max(0, remaining) });
+            yearPayment = 0; yearPrincipal = 0; yearInterest = 0;
+          }
+        }
+        document.getElementById('monthly-payment').textContent = formatNumber(monthly);
+      } else {
+        var monthlyPrincipal = P / totalMonths;
+        var remaining = P;
+        var yearPayment = 0, yearPrincipalSum = 0, yearInterest = 0;
+        var firstMonthly = monthlyPrincipal + P * monthlyRate;
+
+        for (var m = 1; m <= totalMonths; m++) {
+          var interestPart = remaining * monthlyRate;
+          var monthlyTotal = monthlyPrincipal + interestPart;
+          remaining -= monthlyPrincipal;
+          if (remaining < 0) remaining = 0;
+          yearPayment += monthlyTotal;
+          yearPrincipalSum += monthlyPrincipal;
+          yearInterest += interestPart;
+          totalPayment += monthlyTotal;
+          totalInterest += interestPart;
+
+          if (m % 12 === 0 || m === totalMonths) {
+            schedule.push({ year: Math.ceil(m / 12), payment: yearPayment, principal: yearPrincipalSum, interest: yearInterest, remaining: Math.max(0, remaining) });
+            yearPayment = 0; yearPrincipalSum = 0; yearInterest = 0;
+          }
+        }
+        document.getElementById('monthly-payment').textContent = formatNumber(firstMonthly) + '~';
+      }
+
+      document.getElementById('total-payment').textContent = formatNumber(totalPayment);
+      document.getElementById('total-interest').textContent = formatNumber(totalInterest);
+
+      var tbody = document.getElementById('schedule-body');
+      tbody.innerHTML = '';
+      for (var i = 0; i < schedule.length; i++) {
+        var row = schedule[i];
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>Year ' + row.year + '</td>' +
+          '<td>' + formatNumber(row.payment) + '</td>' +
+          '<td>' + formatNumber(row.principal) + '</td>' +
+          '<td>' + formatNumber(row.interest) + '</td>' +
+          '<td>' + formatNumber(row.remaining) + '</td>';
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById('result-area').classList.add('show');
+    }
+
+    function clearForm() {
+      document.getElementById('principal').value = '';
+      document.getElementById('rate').value = '';
+      document.getElementById('years').value = '';
+      document.getElementById('result-area').classList.remove('show');
+    }
+
+    document.querySelectorAll('#principal, #rate, #years').forEach(function(el) {
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calculateLoan();
+      });
+    });
+  </script>
+</body>
+</html>
