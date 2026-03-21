@@ -15,7 +15,12 @@
   <script type="application/ld+json">
   { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
     { "@type": "Question", "name": "アスペクト比とは何ですか？", "acceptedAnswer": { "@type": "Answer", "text": "画像や画面の幅と高さの比率です。例えば16:9はワイドスクリーン、4:3は従来のディスプレイの比率です。" } },
-    { "@type": "Question", "name": "YouTubeの推奨アスペクト比は？", "acceptedAnswer": { "@type": "Answer", "text": "YouTubeの標準は16:9（1920x1080など）です。ショート動画は9:16（1080x1920）が推奨です。" } }
+    { "@type": "Question", "name": "YouTubeの推奨アスペクト比は？", "acceptedAnswer": { "@type": "Answer", "text": "YouTubeの標準は16:9（1920x1080など）です。ショート動画は9:16（1080x1920）が推奨です。" } },
+    { "@type": "Question", "name": "Instagramの投稿に最適なアスペクト比は？", "acceptedAnswer": { "@type": "Answer", "text": "Instagramのフィード投稿は1:1（正方形）、4:5（縦長）、1.91:1（横長）に対応しています。リールやストーリーズは9:16が推奨です。" } },
+    { "@type": "Question", "name": "アスペクト比を変えずにリサイズするには？", "acceptedAnswer": { "@type": "Answer", "text": "幅または高さの一方を決めて、もう一方を元のアスペクト比から計算します。本ツールのリサイズ計算機能で簡単に算出できます。" } },
+    { "@type": "Question", "name": "4Kのアスペクト比は？", "acceptedAnswer": { "@type": "Answer", "text": "4K（3840x2160）のアスペクト比は16:9です。映画向けの4K DCI（4096x2160）は約1.9:1（256:135）になります。" } },
+    { "@type": "Question", "name": "ウルトラワイドモニターのアスペクト比は？", "acceptedAnswer": { "@type": "Answer", "text": "ウルトラワイドモニターは21:9が一般的です。さらに横長のスーパーウルトラワイドでは32:9のモデルもあります。" } },
+    { "@type": "Question", "name": "印刷物に適したアスペクト比は？", "acceptedAnswer": { "@type": "Answer", "text": "A判用紙（A4など）は約1.414:1、写真のL判は3:2、名刺は約1.75:1です。用途に合わせた比率を選びましょう。" } }
   ] }
   </script>
   <link rel="stylesheet" href="../../common/style.css">
@@ -64,6 +69,62 @@
         <a href="../unit-converter/" class="tool-card"><h3 style="font-size:1rem;margin:0;">単位変換</h3><p>長さ・重さ・温度を変換</p></a>
         <a href="../color-converter/" class="tool-card"><h3 style="font-size:1rem;margin:0;">カラーコード変換</h3><p>HEX/RGB/HSLを変換</p></a>
       </div>
+    </section>
+
+    <section class="content-section">
+      <h2>アスペクト比とは？</h2>
+      <p>アスペクト比（画面比率）とは、画像や映像の幅と高さの比率を表す数値です。「16:9」や「4:3」のように、幅:高さの形式で表現されます。</p>
+      <p>テレビやモニターの画面、写真、動画、Webデザインなど、映像・画像に関わるあらゆる場面でアスペクト比は重要な概念です。例えば、YouTubeやNetflixの動画は16:9（ワイドスクリーン）が標準で、スマートフォンの縦向き撮影では9:16になります。Instagramの正方形投稿は1:1、映画館のシネマスコープは2.35:1など、メディアによって最適な比率が異なります。</p>
+      <p>アスペクト比を正しく理解することで、画像のリサイズ時に歪みを防いだり、各プラットフォームに最適なサイズで素材を準備したりできます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>幅と高さを入力：</strong>画像や動画のピクセル数（幅・高さ）を入力すると、アスペクト比と小数比が自動で計算されます。</li>
+        <li><strong>プリセットを選択：</strong>16:9、4:3、1:1などよく使われるアスペクト比をワンクリックで設定できます。</li>
+        <li><strong>リサイズ計算：</strong>新しい幅を入力すると、アスペクト比を維持したまま対応する高さを自動算出します。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>活用シーン</h2>
+      <ul>
+        <li>YouTube・TikTok・Instagramなど、各SNSに最適な動画サイズを確認したいとき</li>
+        <li>Webサイトに掲載する画像をアスペクト比を維持してリサイズしたいとき</li>
+        <li>プレゼン資料やバナー広告を作成する際に必要なサイズを計算したいとき</li>
+        <li>写真の印刷サイズ（L判・A4など）に合わせてトリミングする比率を知りたいとき</li>
+        <li>モニターやディスプレイの解像度からアスペクト比を確認したいとき</li>
+        <li>ゲーム開発や映像制作で、ターゲットデバイスの画面比率を確認したいとき</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>Instagramの投稿に最適なアスペクト比は？</summary>
+        <p>Instagramのフィード投稿は1:1（正方形、1080x1080）、4:5（縦長、1080x1350）、1.91:1（横長、1080x566）に対応しています。リールやストーリーズは9:16（1080x1920）が推奨されています。</p>
+      </details>
+      <details>
+        <summary>アスペクト比を変えずにリサイズするには？</summary>
+        <p>幅または高さの一方を決めて、もう一方を元のアスペクト比から計算します。例えば1920x1080（16:9）の画像を幅1280にリサイズするなら、高さは1280 x 9 / 16 = 720になります。本ツールのリサイズ計算機能で簡単に算出できます。</p>
+      </details>
+      <details>
+        <summary>4Kや8Kのアスペクト比は？</summary>
+        <p>4K UHD（3840x2160）と8K UHD（7680x4320）はどちらもアスペクト比16:9です。映画制作向けの4K DCI（4096x2160）は約1.9:1（256:135）になります。</p>
+      </details>
+      <details>
+        <summary>ウルトラワイドモニターのアスペクト比は？</summary>
+        <p>ウルトラワイドモニターは21:9（2560x1080や3440x1440）が一般的です。さらに横長のスーパーウルトラワイドでは32:9（5120x1440）のモデルもあります。</p>
+      </details>
+      <details>
+        <summary>印刷物に適したアスペクト比は？</summary>
+        <p>A判用紙（A4など）は約1.414:1、写真のL判（127x89mm）は約3:2、はがき（148x100mm）は約3:2、名刺（91x55mm）は約1.65:1です。印刷する媒体に合わせた比率で画像を準備しましょう。</p>
+      </details>
+      <details>
+        <summary>16:9と4:3の違いは？</summary>
+        <p>16:9はワイドスクリーン（横長）で、現在のテレビやPCモニター、YouTubeの標準です。4:3はスタンダード（従来型）で、昔のテレビやiPadに近い比率です。16:9のほうが横に広いため、映画や横長コンテンツに適しています。</p>
+      </details>
     </section>
   </main>
   <script src="../../common/footer.js"></script>

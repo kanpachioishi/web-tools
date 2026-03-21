@@ -49,6 +49,38 @@
           "@type": "Answer",
           "text": "ブラウザのメモリ内で処理するため、数MB程度のJSONであれば問題なく整形できます。"
         }
+      },
+      {
+        "@type": "Question",
+        "name": "JSONの圧縮（Minify）もできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、「圧縮する」ボタンで不要な空白や改行を除去したMinify済みJSONを生成できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したJSONデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。JSONデータが外部に送信されることはありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "JSONのバリデーション（構文チェック）はできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、不正なJSON形式を入力するとエラーメッセージが表示され、構文エラーの箇所を特定できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "インデント幅は変更できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "現在は2スペースのインデントで整形されます。整形後のテキストをコピーして、お好みのエディタで変更することも可能です。"
+        }
       }
     ]
   }
@@ -101,6 +133,47 @@
           <p>URLエンコードとデコードを相互変換</p>
         </a>
       </div>
+    </section>
+
+    <section class="content-section">
+      <h2>JSON整形・フォーマットとは？</h2>
+      <p>JSON（JavaScript Object Notation）整形とは、圧縮されたJSONデータにインデントや改行を加えて、人間が読みやすい形式に変換する処理のことです。APIのレスポンスやデータベースから取得したJSONは、通常改行や空白がない圧縮状態で返されるため、そのままでは内容を把握しにくいです。JSON整形ツール（JSONフォーマッター/JSONビューア）を使えば、ネスト構造が一目でわかるように見やすく整形できます。逆に、整形済みのJSONを圧縮（Minify）して通信量を削減することも可能です。本ツールではJSON構文のバリデーション機能も備えており、括弧の閉じ忘れやカンマの過不足などのエラーを検出してメッセージを表示します。Web開発、API開発、データ分析など、JSONを扱うあらゆる場面で役立つツールです。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>JSON整形ツールの使い方</h2>
+      <p>以下の手順で簡単にJSONを整形・圧縮できます。</p>
+      <ol>
+        <li><strong>JSONを入力</strong> — テキストエリアにJSONデータを貼り付けるか、直接入力します。APIレスポンスやファイルからコピーしたJSONをそのまま貼り付けてください。</li>
+        <li><strong>「整形する」をクリック</strong> — ボタンを押すと、2スペースのインデント付きで見やすく整形されたJSONが表示されます。</li>
+        <li><strong>圧縮する場合</strong> — 「圧縮する」ボタンを押すと、空白・改行を除去したMinify済みJSONが生成されます。</li>
+        <li><strong>エラーの確認</strong> — JSON形式に問題がある場合はエラーメッセージが表示されるので、修正箇所を確認してください。</li>
+        <li><strong>結果をコピー</strong> — 「コピー」ボタンで整形結果をクリップボードにコピーし、他のアプリケーションで利用できます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>活用シーン・ユースケース</h2>
+      <ul>
+        <li><strong>API開発・デバッグ</strong> — REST APIやGraphQLのレスポンスを整形して内容を確認。データ構造の把握やエラーの特定に便利です。</li>
+        <li><strong>設定ファイルの編集</strong> — package.json、tsconfig.json、AWS CLIの設定など、JSONベースの設定ファイルの確認・整形に活用できます。</li>
+        <li><strong>JSONバリデーション</strong> — JSONの構文エラーを検出。括弧の閉じ忘れ、カンマの過不足、クォートの不一致などを素早く発見できます。</li>
+        <li><strong>データ分析・確認</strong> — データベースやBIツールから取得したJSONデータの中身を見やすく展開して確認できます。</li>
+        <li><strong>通信量の最適化</strong> — 整形済みJSONを圧縮（Minify）することで、APIレスポンスやストレージの容量を削減できます。</li>
+        <li><strong>技術ドキュメントの作成</strong> — 整形されたJSONをドキュメントやSlack・Teamsに貼り付けて、チームメンバーと共有できます。</li>
+        <li><strong>学習・教育</strong> — JSONの構造を視覚的に理解するための学習ツールとして、プログラミング初心者の学習にも最適です。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>JSON整形ツールは無料ですか？</summary><p>はい、完全無料です。登録不要でブラウザだけで使えます。何度でも利用可能です。</p></details>
+      <details><summary>JSONのエラーを検出できますか？</summary><p>はい、不正なJSON形式を入力するとエラーメッセージが表示され、問題箇所を特定できます。括弧の対応やカンマの過不足など、よくあるミスを素早く発見できます。</p></details>
+      <details><summary>大きなJSONファイルも処理できますか？</summary><p>ブラウザのメモリ内で処理するため、数MB程度のJSONであれば問題なく整形できます。</p></details>
+      <details><summary>JSONの圧縮（Minify）もできますか？</summary><p>はい、「圧縮する」ボタンで不要な空白や改行を除去したMinify済みJSONを生成できます。通信量の削減やストレージの最適化に便利です。</p></details>
+      <details><summary>入力したJSONデータはサーバーに送信されますか？</summary><p>いいえ、すべての処理はブラウザ内で完結します。JSONデータが外部に送信されることはありません。機密データも安心してご利用ください。</p></details>
+      <details><summary>JSONのバリデーション（構文チェック）はできますか？</summary><p>はい、整形・圧縮ボタンを押した際に自動で構文チェックが行われ、エラーがあればメッセージで通知されます。</p></details>
+      <details><summary>インデント幅は変更できますか？</summary><p>現在は2スペースのインデントで整形されます。整形後のテキストをコピーして、お好みのエディタでインデント幅を調整することも可能です。</p></details>
     </section>
   </main>
   <script src="../../common/footer.js"></script>

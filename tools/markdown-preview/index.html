@@ -15,7 +15,11 @@
   <script type="application/ld+json">
   { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
     { "@type": "Question", "name": "どのMarkdown記法に対応していますか？", "acceptedAnswer": { "@type": "Answer", "text": "見出し、太字、斜体、リスト、コードブロック、リンク、画像、水平線に対応しています。" } },
-    { "@type": "Question", "name": "入力したテキストは保存されますか？", "acceptedAnswer": { "@type": "Answer", "text": "いいえ、すべてブラウザ内で処理され、外部に送信されることはありません。" } }
+    { "@type": "Question", "name": "入力したテキストは保存されますか？", "acceptedAnswer": { "@type": "Answer", "text": "いいえ、すべてブラウザ内で処理され、外部に送信されることはありません。" } },
+    { "@type": "Question", "name": "Markdownとは何ですか？", "acceptedAnswer": { "@type": "Answer", "text": "Markdownは、テキストに簡単な記号を付けることで見出しやリスト、太字などの書式を表現できる軽量マークアップ言語です。HTMLより簡潔に記述でき、GitHubやQiitaなどで広く使われています。" } },
+    { "@type": "Question", "name": "テーブル（表）の記法には対応していますか？", "acceptedAnswer": { "@type": "Answer", "text": "現在のバージョンでは見出し、太字、斜体、リスト、コードブロック、リンク、画像、引用、水平線に対応しています。テーブル記法は今後のアップデートで対応予定です。" } },
+    { "@type": "Question", "name": "スマートフォンでも使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "はい、レスポンシブデザインに対応しているため、スマートフォンやタブレットでも快適にご利用いただけます。モバイルでは入力欄とプレビューが縦に並びます。" } },
+    { "@type": "Question", "name": "プレビュー結果のHTMLをコピーできますか？", "acceptedAnswer": { "@type": "Answer", "text": "プレビュー表示されたHTMLはブラウザ上で確認用に表示されます。HTMLソースが必要な場合は、別途HTML変換ツールをご利用ください。" } }
   ] }
   </script>
   <link rel="stylesheet" href="../../common/style.css">
@@ -89,6 +93,44 @@ console.log(hello);
         <a href="../text-diff/" class="tool-card"><h3 style="font-size:1rem;margin:0;">テキスト差分比較</h3><p>2つのテキストの違いを比較</p></a>
         <a href="../json-formatter/" class="tool-card"><h3 style="font-size:1rem;margin:0;">JSON整形</h3><p>JSONを見やすく整形</p></a>
       </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Markdownとは？</h2>
+      <p>Markdown（マークダウン）は、2004年にJohn Gruberによって考案された軽量マークアップ言語です。テキストに「#」「**」「-」などの簡単な記号を付けることで、見出し・太字・リスト・リンクなどの書式を表現できます。HTMLと比べて記述が圧倒的にシンプルで、プレーンテキストのまま読みやすいという特徴があります。GitHub、Qiita、Zenn、Notion、Slackなど多くのプラットフォームで採用されており、エンジニアだけでなくライターやブロガーにも広く利用されています。READMEファイルやドキュメント、ブログ記事、技術メモなど、あらゆるテキストコンテンツの作成に適した記法です。本ツールでは入力したMarkdownをリアルタイムでHTMLに変換し、プレビュー表示します。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Markdownプレビューツールの使い方</h2>
+      <p>以下の簡単なステップで、Markdownのプレビューを確認できます。</p>
+      <ol>
+        <li><strong>左側のエディタにMarkdownを入力</strong> — テキストエリアにMarkdown記法で文章を入力します。既存のMarkdownテキストを貼り付けることも可能です。</li>
+        <li><strong>リアルタイムでプレビュー確認</strong> — 入力と同時に右側のプレビューエリアにHTMLレンダリング結果が表示されます。文字を入力するたびに即座に反映されます。</li>
+        <li><strong>記法を試してみる</strong> — 「# 見出し」「**太字**」「- リスト」「```コードブロック```」など、さまざまな記法を試して表示結果を確認できます。</li>
+        <li><strong>内容を確認・調整</strong> — プレビューを見ながら記法の誤りやレイアウトの崩れをチェックし、リアルタイムで修正します。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>活用シーン・ユースケース</h2>
+      <ul>
+        <li><strong>GitHub READMEの下書き</strong> — リポジトリのREADME.mdを作成・編集する際に、プレビューを確認しながら記述できます。</li>
+        <li><strong>ブログ記事の執筆</strong> — Markdownに対応したブログプラットフォーム（Qiita、Zenn、はてなブログなど）への投稿前に、表示を確認できます。</li>
+        <li><strong>技術ドキュメントの作成</strong> — APIドキュメントや設計書をMarkdownで書く際の、リアルタイムプレビューとして活用できます。</li>
+        <li><strong>Markdown記法の学習</strong> — Markdown初心者が記法を覚える際、入力結果をその場で確認しながら学習できます。</li>
+        <li><strong>メモ・議事録の整形確認</strong> — Markdownで書いた会議メモや議事録のレイアウトを、共有前に確認できます。</li>
+        <li><strong>プレゼン資料の下書き</strong> — Marpなど、Markdownベースのスライドツールで使う原稿の下書きや構成チェックに利用できます。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>Markdownとは何ですか？</summary><p>Markdownは、テキストに簡単な記号を付けることで見出しやリスト、太字などの書式を表現できる軽量マークアップ言語です。HTMLより簡潔に記述でき、GitHubやQiitaなどで広く使われています。特別なソフトウェアは不要で、テキストエディタがあれば誰でも書き始められます。</p></details>
+      <details><summary>どのMarkdown記法に対応していますか？</summary><p>見出し（h1〜h3）、太字、斜体、箇条書きリスト、コードブロック、インラインコード、リンク、画像、引用（blockquote）、水平線に対応しています。</p></details>
+      <details><summary>入力したテキストは保存されますか？</summary><p>いいえ、すべてお使いのブラウザ内で処理されます。入力したテキストがサーバーに送信されることはなく、プライバシーが保護されています。ページをリロードするとテキストはリセットされます。</p></details>
+      <details><summary>テーブル（表）の記法には対応していますか？</summary><p>現在のバージョンでは基本的なMarkdown記法に対応しています。テーブル記法（パイプ区切りの表）は今後のアップデートで対応予定です。</p></details>
+      <details><summary>スマートフォンでも使えますか？</summary><p>はい、レスポンシブデザインに対応しています。スマートフォンやタブレットでは、入力欄とプレビューが縦に並んで表示されるため、画面サイズを問わず快適にご利用いただけます。</p></details>
+      <details><summary>GFM（GitHub Flavored Markdown）に対応していますか？</summary><p>本ツールは標準的なMarkdown記法に対応しています。GFM固有の機能（タスクリスト、テーブル、取り消し線など）は一部未対応ですが、一般的な用途では十分にご活用いただけます。</p></details>
     </section>
   </main>
   <script src="../../common/footer.js"></script>

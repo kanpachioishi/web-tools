@@ -37,6 +37,46 @@
           "@type": "Answer",
           "text": "はい、生成されたHTMLソースコードをワンクリックでコピーできます。"
         }
+      },
+      {
+        "@type": "Question",
+        "name": "CSVとTSVの違いは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CSVはカンマ（,）で値を区切る形式、TSVはタブ文字で区切る形式です。Excelからコピーした場合はタブ区切りになることが多いです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Excelからコピーしたデータも変換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、Excelのセルをコピーするとタブ区切りテキストになるため、区切り文字を「タブ」に切り替えれば正しく変換できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "大量のデータでも変換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ブラウザ内で処理するため、数千行程度であれば問題なく変換可能です。非常に大きなファイルの場合はブラウザの性能に依存します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "生成されたHTMLはそのまま使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、標準的なHTMLのtableタグで生成されるため、ブログやWebサイトにそのまま貼り付けて使えます。CSSで自由にスタイルを調整できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ダブルクォーテーションを含むCSVに対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、RFC 4180に準拠したダブルクォーテーションによるフィールド囲みに対応しています。カンマを含む値も正しく処理されます。"
+        }
       }
     ]
   }
@@ -96,6 +136,45 @@
           <p>長さ・重さ・温度の単位を変換</p>
         </a>
       </div>
+    </section>
+
+    <section class="content-section">
+      <h2>CSVテーブル変換とは？</h2>
+      <p>CSV（Comma-Separated Values）は、データをカンマで区切って記録するテキスト形式のファイルフォーマットです。ExcelやGoogleスプレッドシートなどの表計算ソフト、データベースのエクスポート機能などで広く利用されています。CSVテーブル変換とは、このCSV形式のデータをHTMLのtableタグに変換し、Webページ上で見やすい表として表示することを指します。手作業でHTMLテーブルを書く手間を省き、大量のデータも瞬時にテーブル化できるため、ブログ記事の作成やWebサイトの更新作業を大幅に効率化できます。本ツールではカンマ区切りだけでなく、タブ区切り（TSV）やセミコロン区切りにも対応しており、さまざまなデータソースからの変換に柔軟に対応します。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>CSVテーブル変換ツールの使い方</h2>
+      <p>以下の簡単なステップで、CSVデータをHTMLテーブルに変換できます。</p>
+      <ol>
+        <li><strong>CSVデータを入力</strong> — テキストエリアにCSVデータを貼り付けるか、直接入力します。Excelからセルをコピーして貼り付けることも可能です。</li>
+        <li><strong>区切り文字を選択</strong> — データの区切り文字に合わせて「カンマ」「タブ」「セミコロン」のいずれかを選択します。Excelからのコピーはタブ区切りを選びましょう。</li>
+        <li><strong>ヘッダー設定を確認</strong> — 1行目をヘッダー（見出し行）として扱う場合はチェックを入れたままにします。</li>
+        <li><strong>「変換」ボタンをクリック</strong> — HTMLテーブルがプレビュー表示され、同時にHTMLソースコードも生成されます。</li>
+        <li><strong>HTMLをコピーして利用</strong> — 「HTMLをコピー」ボタンでソースコードをクリップボードにコピーし、ブログやWebサイトに貼り付けます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>活用シーン・ユースケース</h2>
+      <ul>
+        <li><strong>ブログ記事への表挿入</strong> — 商品比較表や料金表など、CSV形式でまとめたデータをHTMLテーブルに変換して記事に掲載できます。</li>
+        <li><strong>Excelデータの Web公開</strong> — Excelで管理しているデータをWebページに掲載する際、コピー＆ペーストだけで簡単にHTMLテーブル化できます。</li>
+        <li><strong>データベースのエクスポート結果を見やすく表示</strong> — MySQLやPostgreSQLからCSV出力したデータを、視覚的に確認しやすいテーブル形式に変換できます。</li>
+        <li><strong>レポートや報告書の作成</strong> — アンケート結果や集計データをHTMLテーブルにして、社内Wiki やドキュメントに埋め込めます。</li>
+        <li><strong>プレゼン資料の補足ページ作成</strong> — 数値データの一覧をWebページとして共有する際に、素早くテーブル化できます。</li>
+        <li><strong>CSVファイルの中身を確認</strong> — テキストエディタでは見づらいCSVデータを、テーブル表示で視覚的に確認できます。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>CSVとTSVの違いは何ですか？</summary><p>CSVはカンマ（,）で値を区切る形式、TSVはタブ文字で区切る形式です。Excelのセルをコピーして貼り付けた場合、タブ区切りになることが多いです。本ツールではどちらの形式にも対応しています。</p></details>
+      <details><summary>Excelからコピーしたデータも変換できますか？</summary><p>はい、Excelでセルを選択してコピーすると、タブ区切りのテキストとしてクリップボードに保存されます。区切り文字を「タブ」に切り替えてから貼り付けると、正しくHTMLテーブルに変換できます。</p></details>
+      <details><summary>大量のデータでも変換できますか？</summary><p>すべてブラウザ内で処理を行うため、数千行程度のデータであれば問題なく変換可能です。非常に大きなファイル（数万行以上）の場合は、ブラウザの性能に依存しますが、通常の用途では十分に対応できます。</p></details>
+      <details><summary>生成されたHTMLはそのまま使えますか？</summary><p>はい、標準的なHTMLのtableタグで構成されているため、WordPressなどのブログやWebサイトにそのまま貼り付けて使えます。CSSを追加すれば、デザインを自由にカスタマイズすることも可能です。</p></details>
+      <details><summary>ダブルクォーテーションを含むCSVに対応していますか？</summary><p>はい、RFC 4180に準拠したダブルクォーテーションによるフィールド囲みに対応しています。値の中にカンマやダブルクォーテーションが含まれていても正しく処理されます。</p></details>
+      <details><summary>変換結果のHTMLはレスポンシブ対応ですか？</summary><p>生成されるHTMLはシンプルなtableタグなので、レスポンシブ対応はCSSで別途設定する必要があります。overflow-xプロパティを使えば、スマートフォンでも横スクロールで表を閲覧できます。</p></details>
     </section>
   </main>
   <script src="../../common/footer.js"></script>

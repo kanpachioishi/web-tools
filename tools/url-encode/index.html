@@ -28,6 +28,38 @@
           "@type": "Answer",
           "text": "encodeURIはURL全体をエンコードし、encodeURIComponentはパラメータ値など部分的なエンコードに使います。"
         }
+      },
+      {
+        "@type": "Question",
+        "name": "URLエンコードとBase64エンコードの違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "URLエンコードはURL内で使えない文字を%XX形式に変換する方式で、主にWebブラウザやHTTPリクエストで使われます。Base64はバイナリデータをASCII文字列に変換する方式で、メールやAPIでのデータ送受信に使われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本語URLをエンコードする必要がある理由は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "URLにはASCII文字しか使えない仕様（RFC 3986）のため、日本語などのマルチバイト文字はパーセントエンコーディングで変換する必要があります。ブラウザが自動で変換する場合もありますが、プログラムで扱う際は明示的なエンコードが必要です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スペースは+と%20のどちらにエンコードされますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "encodeURIComponentではスペースは%20に変換されます。HTMLフォーム（application/x-www-form-urlencoded）では+に変換されます。一般的には%20が標準的です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。入力したテキストが外部に送信されることはありません。"
+        }
       }
     ]
   }
@@ -82,6 +114,60 @@
           <p>URLやテキストからQRコードを生成</p>
         </a>
       </div>
+    </section>
+
+    <section class="content-section">
+      <h2>URLエンコードとは？</h2>
+      <p>URLエンコード（パーセントエンコーディング）とは、URL内で使用できない文字を「%」と16進数の組み合わせに変換する仕組みです。例えば、日本語の「東京」は「%E6%9D%B1%E4%BA%AC」に変換されます。</p>
+      <p>URLにはASCII文字（英数字と一部の記号）しか使えないというRFC 3986の仕様があるため、日本語・スペース・特殊記号などはパーセントエンコーディングで変換する必要があります。Webブラウザのアドレスバーでは自動的に変換される場合もありますが、プログラムやAPIで扱う際には明示的にエンコード・デコードが必要になります。</p>
+      <p>JavaScriptでは<code>encodeURIComponent()</code>と<code>encodeURI()</code>の2つの関数が用意されており、用途に応じて使い分けます。パラメータ値のエンコードには<code>encodeURIComponent()</code>が推奨されます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>テキストを入力：</strong>上部の入力欄に、URLエンコードしたいテキストやURLを入力します。</li>
+        <li><strong>エンコード：</strong>「エンコード」ボタンをクリックすると、下部にパーセントエンコーディング済みの文字列が表示されます。</li>
+        <li><strong>デコード：</strong>パーセントエンコーディングされた文字列を復元したい場合は、下部の欄に入力して「デコード」ボタンをクリックします。</li>
+        <li><strong>エンコード方式の切替：</strong>「encodeURIComponent」チェックボックスで、encodeURIとencodeURIComponentを切り替えられます。</li>
+        <li><strong>コピー：</strong>結果をワンクリックでクリップボードにコピーできます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>活用シーン</h2>
+      <ul>
+        <li>日本語を含むURLをメールやチャットで共有する際のエンコード</li>
+        <li>APIのクエリパラメータに日本語や特殊文字を含める際の変換</li>
+        <li>受け取ったパーセントエンコーディング済みURLの中身を確認</li>
+        <li>HTMLフォームのPOSTデータやGETパラメータのデバッグ</li>
+        <li>Google AnalyticsのUTMパラメータに日本語を含める際の変換</li>
+        <li>Web開発でリダイレクトURLやコールバックURLを組み立てるとき</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>encodeURIとencodeURIComponentの違いは？</summary>
+        <p><code>encodeURI()</code>はURL全体をエンコードしますが、「:」「/」「?」「#」「&」「=」などURL構造に必要な文字はエンコードしません。<code>encodeURIComponent()</code>はこれらの文字もすべてエンコードするため、クエリパラメータの値など部分的なエンコードに適しています。</p>
+      </details>
+      <details>
+        <summary>URLエンコードとBase64エンコードの違いは？</summary>
+        <p>URLエンコードはURL内で使えない文字を%XX形式に変換する方式で、WebブラウザやHTTPリクエストで使用します。Base64はバイナリデータをASCII文字列（A-Z、a-z、0-9、+、/）に変換する方式で、メールやAPIでのデータ送信に使います。目的と用途が異なります。</p>
+      </details>
+      <details>
+        <summary>スペースは「+」と「%20」のどちらにエンコードされる？</summary>
+        <p><code>encodeURIComponent()</code>ではスペースは「%20」に変換されます。HTMLフォーム送信（application/x-www-form-urlencoded）では「+」に変換されます。RFC 3986の標準では「%20」が正式な表記です。</p>
+      </details>
+      <details>
+        <summary>日本語URLをエンコードする必要がある理由は？</summary>
+        <p>URLの仕様（RFC 3986）ではASCII文字のみが使用可能です。日本語などのマルチバイト文字をURLに含めるには、UTF-8でバイト列に変換した上で各バイトを%XX形式にエンコードする必要があります。</p>
+      </details>
+      <details>
+        <summary>入力したデータはサーバーに送信されますか？</summary>
+        <p>いいえ、このツールではすべての処理がお使いのブラウザ内で完結します。入力したテキストやURLが外部のサーバーに送信されることは一切ありません。安心してご利用ください。</p>
+      </details>
     </section>
   </main>
   <script src="../../common/footer.js"></script>

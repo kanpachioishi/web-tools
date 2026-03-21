@@ -41,6 +41,38 @@
           "@type": "Answer",
           "text": "どの形式でもCSSで使えますが、HEXが最も一般的です。透明度が必要な場合はRGBAやHSLAが便利です。"
         }
+      },
+      {
+        "@type": "Question",
+        "name": "RGBとRGBAの違いは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "RGBは赤(R)・緑(G)・青(B)の3つの値で色を表現します。RGBAはそれにアルファ値(A)を加えて透明度も指定できる拡張形式です。Aの値は0（完全透明）〜1（完全不透明）で指定します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "HSLカラーモデルのメリットは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "HSLは色相(Hue)・彩度(Saturation)・明度(Lightness)で色を表現するため、人間の直感に近い調整ができます。色相を変えずに明るさだけ変える、といった操作がHEXやRGBよりも容易です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "3桁のHEXコードと6桁のHEXコードの違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "3桁のHEXコード（例：#F00）は6桁の短縮形で、各桁が2回繰り返されます。#F00は#FF0000と同じ赤色です。6桁の方がより細かい色指定が可能で、16,777,216色を表現できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "カラーコードの変換結果をそのままCSSに使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、表示されるHEX・RGB・HSLの値はそのままCSSに記述できます。例えばHEXなら color: #2563eb; RGB なら color: rgb(37, 99, 235); HSL なら color: hsl(221, 83%, 53%); のように使えます。"
+        }
       }
     ]
   }
@@ -87,6 +119,45 @@
         <input type="color" id="color-picker" value="#2563eb" style="width:60px;height:40px;padding:2px;cursor:pointer;">
       </div>
     </div>
+    <section class="content-section">
+      <h2>カラーコード変換とは？</h2>
+      <p>カラーコード変換とは、色を表現する異なる形式（HEX、RGB、HSL）を相互に変換することです。Webデザインやアプリ開発では、ツールやフレームワークによって使用するカラーコード形式が異なるため、変換作業が頻繁に発生します。</p>
+      <p>HEX（ヘックス）は「#FF5733」のように16進数で色を表す形式で、CSSやデザインツールで最も一般的に使われています。RGB（アールジービー）は赤・緑・青の光の三原色をそれぞれ0〜255の数値で指定する形式で、プログラミングや画像処理で多用されます。HSL（エイチエスエル）は色相（Hue: 0〜360度）・彩度（Saturation: 0〜100%）・明度（Lightness: 0〜100%）で色を表現し、人間の色認識に最も近い直感的なモデルです。デザイナーが配色を調整する際にはHSLが特に便利で、色相を固定したまま明るさや鮮やかさだけを変えるといった操作が容易にできます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>カラーコード変換ツールの使い方</h2>
+      <p>HEX・RGB・HSLの変換はリアルタイムで行われ、どの入力欄からでも操作できます。</p>
+      <ol>
+        <li><strong>任意の形式で色を入力する</strong> — HEX入力欄（例：#2563eb）、RGB入力欄（例：R:37, G:99, B:235）、HSL入力欄（例：H:221, S:83, L:53）のいずれかに値を入力します。</li>
+        <li><strong>リアルタイムで変換結果を確認</strong> — 1つの形式を入力すると、残りの2つの形式が自動的に計算・表示されます。プレビューエリアに色も即座に反映されます。</li>
+        <li><strong>カラーピッカーで視覚的に選択</strong> — カラーピッカーをクリックしてブラウザの色選択ダイアログから直感的に色を選ぶこともできます。</li>
+        <li><strong>CSSにそのまま使用</strong> — 表示されたHEX・RGB・HSLの値をそのままCSSプロパティに記述できます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>カラーコード変換の活用シーン・ユースケース</h2>
+      <ul>
+        <li><strong>WebデザインのCSS記述</strong> — デザインカンプで指定されたHEXカラーをRGBやHSLに変換してCSSに記述します。透明度を使う場合はRGBA/HSLAへの変換が必要です。</li>
+        <li><strong>デザインツール間の色の受け渡し</strong> — FigmaではHEX、PhotoshopではRGBなど、ツールごとに主に使われる形式が異なるため、変換して正確な色を再現できます。</li>
+        <li><strong>配色パレットの作成</strong> — HSLモデルで色相を固定し、彩度や明度を段階的に変えることで、統一感のある配色バリエーションを作成できます。</li>
+        <li><strong>アクセシビリティのコントラスト確認</strong> — 背景色と文字色のRGB値からコントラスト比を計算し、WCAG基準を満たすかチェックする際の事前変換に使えます。</li>
+        <li><strong>ブランドカラーの管理</strong> — ブランドガイドラインのカラーをHEX・RGB・HSLすべての形式で確認・記録し、媒体ごとに適切な形式で使用できます。</li>
+        <li><strong>プログラミングでの色操作</strong> — JavaScriptやPythonで色を動的に操作する際、HSLに変換してから明度を変更し、再度HEXに戻すといった処理に活用できます。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>HEX、RGB、HSLの違いは何ですか？</summary><p>HEX（ヘックス）は16進数で色を表す形式（例：#FF0000）で、CSSで最も広く使われています。RGB（アールジービー）は赤・緑・青の値を0〜255で指定する形式（例：rgb(255,0,0)）で、プログラミングや画像処理で使用されます。HSL（エイチエスエル）は色相・彩度・明度で色を表す形式（例：hsl(0,100%,50%)）で、人間の直感に近い色指定が可能です。</p></details>
+      <details><summary>RGBとRGBAの違いは何ですか？</summary><p>RGBは赤(R)・緑(G)・青(B)の3要素で色を表現する形式です。RGBAはこれにアルファ値(A)を加え、透明度も指定できる拡張形式です。アルファ値は0（完全に透明）から1（完全に不透明）の範囲で指定します。半透明の背景色やオーバーレイの実装に使われます。</p></details>
+      <details><summary>HSLカラーモデルのメリットは何ですか？</summary><p>HSLは色相（Hue）・彩度（Saturation）・明度（Lightness）という人間の色認識に近いパラメータで色を指定できるのが最大のメリットです。「同じ色味で少し明るくしたい」「鮮やかさだけ下げたい」といった調整が、HEXやRGBよりも直感的に行えます。配色パレットの作成にも適しています。</p></details>
+      <details><summary>3桁のHEXコードと6桁のHEXコードの違いは？</summary><p>3桁のHEXコード（例：#F00）は6桁の短縮形です。各桁が2回繰り返され、#F00は#FF0000と同義です。3桁で表現できるのは4,096色に限られますが、6桁では16,777,216色（約1677万色）を表現できます。より正確な色指定には6桁を使用します。</p></details>
+      <details><summary>カラーコードの変換結果をそのままCSSに使えますか？</summary><p>はい、このツールで表示されるすべての値はCSSにそのまま使用できます。HEXなら「color: #2563eb;」、RGBなら「color: rgb(37, 99, 235);」、HSLなら「color: hsl(221, 83%, 53%);」のように記述できます。</p></details>
+      <details><summary>CSSではどのカラーコードを使うべきですか？</summary><p>どの形式でもCSSは対応していますが、用途に応じて使い分けるのがベストです。一般的にはHEXが最も普及しています。透明度が必要な場合はRGBAやHSLA、配色テーマを動的に変更する場合はHSLが適しています。チームの方針に合わせて統一するのがおすすめです。</p></details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-bottom:12px;">関連記事</h2>
       <a href="../../blog/color-code-guide/" class="tool-card" style="display:block;margin-bottom:8px;">

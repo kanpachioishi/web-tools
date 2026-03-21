@@ -49,6 +49,30 @@
           "@type": "Answer",
           "text": "このツールは英語（アルファベット）テキストの大文字・小文字変換に最適化されています。日本語テキストはそのまま出力されます。"
         }
+      },
+      {
+        "@type": "Question",
+        "name": "PascalCaseとcamelCaseの違いは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PascalCase（パスカルケース）は全ての単語の先頭を大文字にします（例：MyVariableName）。camelCaseは最初の単語だけ小文字で始めます（例：myVariableName）。PascalCaseはC#のクラス名やReactコンポーネント名で使われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "プログラミング言語ごとの命名規則はありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、言語ごとに推奨される命名規則があります。JavaScriptはcamelCase、PythonはsnakeCase、CSSクラスはkebab-case、JavaやC#のクラス名はPascalCaseが一般的です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "CONSTANT_CASEとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CONSTANT_CASE（コンスタントケース）はすべて大文字でアンダースコア区切りの命名規則です（例：MAX_RETRY_COUNT）。多くの言語で定数の命名に使われます。UPPERCASEに変換後、スペースをアンダースコアに置換することで作成できます。"
+        }
       }
     ]
   }
@@ -105,6 +129,44 @@
         <button class="btn btn-secondary" onclick="document.getElementById('input-text').value='';convertAll();">クリア</button>
       </div>
     </div>
+
+    <section class="content-section">
+      <h2>テキストケース変換（大文字小文字変換）とは？</h2>
+      <p>テキストケース変換とは、英語テキストの大文字・小文字の表記パターン（ケース）を別の形式に変換することです。プログラミングの世界では、変数名・関数名・クラス名・定数名などに使う命名規則（ネーミングコンベンション）として複数のケースが標準化されています。</p>
+      <p>代表的なケースには、すべて大文字のUPPERCASE、すべて小文字のlowercase、単語の頭文字を大文字にするTitle Case、2語目以降の頭文字を大文字にするcamelCase、アンダースコアで区切るsnake_case、ハイフンで区切るkebab-caseがあります。これらのケースを正しく使い分けることはコードの可読性と保守性を大きく左右するため、プログラマにとって必須の知識です。このツールでは入力テキストを6種類のケースに一括変換でき、変数名の命名やコードリファクタリングの効率を大幅に向上させます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>ケース変換ツールの使い方</h2>
+      <p>3ステップでテキストのケース変換が完了します。</p>
+      <ol>
+        <li><strong>テキストを入力する</strong> — 変換したい英語テキストを入力欄に入力します。スペース区切り、camelCase、snake_case、kebab-caseなど、どの形式から入力しても自動で単語を認識します。</li>
+        <li><strong>変換結果を確認する</strong> — 入力と同時にUPPERCASE、lowercase、Title Case、camelCase、snake_case、kebab-caseの6種類すべての変換結果がリアルタイムで表示されます。</li>
+        <li><strong>必要なケースをコピーする</strong> — 各ケースの横にある「コピー」ボタンをクリックすると、その変換結果がクリップボードにコピーされます。IDEやテキストエディタにそのまま貼り付けて使えます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>ケース変換の活用シーン・ユースケース</h2>
+      <ul>
+        <li><strong>プログラミングの変数名変換</strong> — JavaScriptのcamelCase変数名をPythonのsnake_caseに変換するなど、言語間で命名規則を変更する際に活用できます。</li>
+        <li><strong>CSSクラス名の生成</strong> — コンポーネント名やモジュール名をkebab-caseに変換して、BEM記法やCSS Modulesのクラス名を効率的に作成できます。</li>
+        <li><strong>API設計のフィールド名統一</strong> — RESTful APIのJSONフィールド名をcamelCaseまたはsnake_caseに統一する際に、一括変換で作業を効率化できます。</li>
+        <li><strong>データベースのカラム名作成</strong> — テーブル設計時にカラム名をsnake_caseに統一するため、設計書の項目名を変換して使用できます。</li>
+        <li><strong>ドキュメントの見出し作成</strong> — Title Caseに変換して英語ドキュメントやプレゼン資料の見出しをフォーマルな表記に整えられます。</li>
+        <li><strong>URLスラッグの生成</strong> — ブログ記事やWebページのURLに使うスラッグをkebab-caseで生成でき、SEOフレンドリーなURL構造を作れます。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>camelCaseとは何ですか？</summary><p>camelCase（キャメルケース）は、複数の単語を結合し最初の単語は小文字のまま、2番目以降の単語の先頭を大文字にする命名規則です。例えば「my variable name」は「myVariableName」になります。ラクダのこぶのように大文字が現れることからこの名前がつきました。JavaScriptやJavaの変数名・関数名で広く使われています。</p></details>
+      <details><summary>snake_caseとkebab-caseの違いは？</summary><p>snake_case（スネークケース）は単語をアンダースコア（_）で区切る形式で、Pythonの変数名やデータベースのカラム名で標準的に使われます。kebab-case（ケバブケース）は単語をハイフン（-）で区切る形式で、CSSクラス名やURLスラッグで多用されます。見た目の区切り文字が異なるだけですが、使用される場面が大きく異なります。</p></details>
+      <details><summary>PascalCaseとcamelCaseの違いは何ですか？</summary><p>PascalCase（パスカルケース）はすべての単語の先頭を大文字にする形式です（例：MyVariableName）。camelCaseは最初の単語だけ小文字で始めます（例：myVariableName）。PascalCaseはC#やTypeScriptのクラス名、Reactのコンポーネント名で使用されます。</p></details>
+      <details><summary>プログラミング言語ごとの推奨命名規則はありますか？</summary><p>はい、主要な言語には公式または慣習的な命名規則があります。JavaScriptはcamelCase（変数・関数）、PythonはsnakeCase（変数・関数）、CSS/HTMLはkebab-case（クラス名）、Java/C#はPascalCase（クラス名）、定数はCONSTANT_CASEが一般的です。チーム内でコーディング規約を統一することが重要です。</p></details>
+      <details><summary>日本語のテキストも変換できますか？</summary><p>このツールは英語（アルファベット）テキストのケース変換に最適化されています。日本語テキストを入力した場合、そのまま出力されます。英語と日本語が混在する文の場合、英語部分のみが変換されます。</p></details>
+      <details><summary>CONSTANT_CASE（定数ケース）を作るにはどうすればよいですか？</summary><p>CONSTANT_CASEはUPPERCASE（すべて大文字）にしたうえでスペースをアンダースコアに置き換えた形式です。このツールのUPPERCASE変換結果のスペースをアンダースコアに置換するか、snake_caseの結果をすべて大文字にすることで作成できます。</p></details>
+    </section>
 
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
