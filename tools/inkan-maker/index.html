@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>電子印鑑メーカー - 無料で印影画像を作成・ダウンロード | Web便利ツール集</title>
+  <meta name="description" content="電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。透過PNG・SVGでダウンロード可能。登録不要・ブラウザだけで完結。">
+  <meta property="og:title" content="電子印鑑メーカー - 無料で印影画像を作成・ダウンロード | Web便利ツール集">
+  <meta property="og:description" content="電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/inkan-maker/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "電子印鑑メーカー - 無料で印影画像を作成・ダウンロード",
+    "description": "電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。透過PNG・SVGでダウンロード可能。登録不要でブラウザだけで完結。",
+    "url": "https://simpletoolkit.net/tools/inkan-maker/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "電子印鑑は法的に有効ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "電子印鑑は社内文書や見積書・請求書など、法的に印鑑が必須でない書類で広く利用されています。ただし、不動産登記や公正証書など法的に実印が必要な場面では使用できません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "作成した印影はサーバーに保存されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、印影の生成はすべてブラウザ内で行われ、外部サーバーへの送信・保存は一切ありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのような形式でダウンロードできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "背景透過のPNG形式でダウンロードできます。Word・Excel・PDF等の書類に貼り付けて使用できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "印鑑の種類は何がありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "丸印（認印スタイル）、角印（会社印スタイル）、日付印（データ印スタイル）の3種類を作成できます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+  <style>
+    .stamp-types { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .stamp-type-btn {
+      padding: 10px 20px; border: 2px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); cursor: pointer; font-size: 0.95rem; transition: all 0.2s;
+    }
+    .stamp-type-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+    .stamp-type-btn:hover:not(.active) { border-color: var(--primary); }
+    .preview-area {
+      display: flex; justify-content: center; align-items: center;
+      min-height: 280px; background: #fff; border: 1px dashed var(--border);
+      border-radius: var(--radius); margin: 16px 0; padding: 20px;
+    }
+    .color-swatches { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .color-swatch {
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+      border: 3px solid transparent; transition: border-color 0.2s;
+    }
+    .color-swatch.active { border-color: var(--text); }
+    .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .slider-row label { min-width: 100px; font-weight: 500; }
+    .slider-row input[type="range"] { flex: 1; }
+    .slider-row .val { min-width: 40px; text-align: right; font-size: 0.9rem; color: var(--text-muted); }
+    canvas { image-rendering: auto; }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>電子印鑑メーカー</h1>
+    <h2>無料で印影画像を作成・ダウンロード</h2>
+    <p class="tool-description">名前を入力するだけで電子印鑑（認印・角印・日付印）を自動生成。透過PNGでダウンロードでき、Word・Excel・PDFの書類にそのまま貼り付けられます。すべてブラウザ内で処理、登録不要・完全無料。</p>
+
+    <div class="tool-area">
+      <!-- 印鑑タイプ選択 -->
+      <div style="margin-bottom:16px;">
+        <label style="font-weight:600;display:block;margin-bottom:8px;">印鑑の種類</label>
+        <div class="stamp-types">
+          <button class="stamp-type-btn active" data-type="round" onclick="setType('round')">丸印（認印）</button>
+          <button class="stamp-type-btn" data-type="square" onclick="setType('square')">角印（会社印）</button>
+          <button class="stamp-type-btn" data-type="date" onclick="setType('date')">日付印（データ印）</button>
+        </div>
+      </div>
+
+      <!-- 名前入力 -->
+      <div id="input-round">
+        <div class="option-row">
+          <label for="name-input" style="min-width:80px;font-weight:500;">名前:</label>
+          <input type="text" id="name-input" placeholder="例: 山田" maxlength="5" style="flex:1;max-width:200px;" value="山田">
+        </div>
+      </div>
+      <div id="input-square" style="display:none;">
+        <div class="option-row">
+          <label for="company-input" style="min-width:80px;font-weight:500;">会社名:</label>
+          <input type="text" id="company-input" placeholder="例: 山田商事" maxlength="8" style="flex:1;max-width:250px;" value="山田商事">
+        </div>
+      </div>
+      <div id="input-date" style="display:none;">
+        <div class="option-row" style="flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <label for="date-top" style="font-weight:500;">上段:</label>
+            <input type="text" id="date-top" placeholder="部署名" maxlength="6" style="width:100px;" value="営業">
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <label for="date-mid" style="font-weight:500;">日付:</label>
+            <input type="date" id="date-mid" style="width:160px;">
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <label for="date-bottom" style="font-weight:500;">下段:</label>
+            <input type="text" id="date-bottom" placeholder="名前" maxlength="6" style="width:100px;" value="山田">
+          </div>
+        </div>
+      </div>
+
+      <!-- 色選択 -->
+      <div style="margin:16px 0;">
+        <label style="font-weight:600;display:block;margin-bottom:8px;">印鑑の色</label>
+        <div class="color-swatches">
+          <div class="color-swatch active" data-color="#c83232" style="background:#c83232;" onclick="setColor('#c83232')" title="朱色"></div>
+          <div class="color-swatch" data-color="#e64545" style="background:#e64545;" onclick="setColor('#e64545')" title="赤"></div>
+          <div class="color-swatch" data-color="#8b2020" style="background:#8b2020;" onclick="setColor('#8b2020')" title="深朱色"></div>
+          <div class="color-swatch" data-color="#1a5276" style="background:#1a5276;" onclick="setColor('#1a5276')" title="紺"></div>
+          <div class="color-swatch" data-color="#333333" style="background:#333333;" onclick="setColor('#333333')" title="黒"></div>
+        </div>
+      </div>
+
+      <!-- 詳細設定 -->
+      <div style="margin:16px 0;">
+        <label style="font-weight:600;display:block;margin-bottom:8px;">詳細設定</label>
+        <div class="slider-row">
+          <label>サイズ:</label>
+          <input type="range" id="size-slider" min="80" max="300" value="160" oninput="updateSliderVal(this,'size-val','px');render()">
+          <span class="val" id="size-val">160px</span>
+        </div>
+        <div class="slider-row">
+          <label>線の太さ:</label>
+          <input type="range" id="stroke-slider" min="1" max="8" value="3" step="0.5" oninput="updateSliderVal(this,'stroke-val','');render()">
+          <span class="val" id="stroke-val">3</span>
+        </div>
+        <div class="slider-row">
+          <label>かすれ具合:</label>
+          <input type="range" id="wear-slider" min="0" max="50" value="15" oninput="updateSliderVal(this,'wear-val','%');render()">
+          <span class="val" id="wear-val">15%</span>
+        </div>
+      </div>
+
+      <!-- プレビュー -->
+      <div class="preview-area">
+        <canvas id="stamp-canvas" width="320" height="320"></canvas>
+      </div>
+
+      <!-- ダウンロード -->
+      <div class="btn-group">
+        <button class="btn" onclick="render()">プレビュー更新</button>
+        <button class="btn btn-secondary" onclick="downloadPNG()">PNG ダウンロード</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QRコード生成ツール</h3>
+          <p>URLやテキストからQRコードを生成</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なランダムパスワードを自動作成</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換・正規表現対応</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>電子印鑑とは？</h2>
+      <p>電子印鑑（デジタル印鑑）とは、紙の書類に押す印鑑の代わりに、電子文書上で使用する印影画像のことです。見積書・請求書・社内稟議書・報告書など、法的に実印が不要な書類で広く活用されています。テレワークの普及に伴い、ハンコを押すためだけに出社する「ハンコ出社」が問題視され、電子印鑑の需要は急速に高まっています。</p>
+      <p>本ツールでは、名前や会社名を入力するだけで、丸印（認印）・角印（会社印）・日付印（データ印）の3種類の電子印鑑を作成できます。すべての処理はブラウザ内で完結し、入力した情報がサーバーに送信されることはありません。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>電子印鑑の使い方</h2>
+      <ol>
+        <li><strong>印鑑の種類を選択</strong> — 丸印（個人の認印）、角印（会社の印鑑）、日付印（日付入りデータ印）から選びます。</li>
+        <li><strong>名前・会社名を入力</strong> — 印鑑に表示する文字を入力します。</li>
+        <li><strong>色やサイズを調整</strong> — 朱色・赤・紺など印鑑の色、サイズ、線の太さ、かすれ具合を自由にカスタマイズできます。</li>
+        <li><strong>プレビューを確認</strong> — リアルタイムで印影のプレビューが表示されます。</li>
+        <li><strong>PNGでダウンロード</strong> — 背景透過のPNG画像としてダウンロードし、Word・Excel・Google Docs・PDFなどの書類に貼り付けて使用します。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>活用シーン</h2>
+      <ul>
+        <li><strong>テレワーク・リモートワーク</strong> — 社内文書の承認や回覧に電子印鑑を使うことで、出社せずに押印業務が完了します。</li>
+        <li><strong>見積書・請求書の発行</strong> — フリーランスや中小企業が取引先に送る書類に電子印鑑を使用することで、効率的に書類作成ができます。</li>
+        <li><strong>社内稟議・報告書</strong> — ペーパーレス化された社内文書の承認プロセスで活用できます。</li>
+        <li><strong>契約書のドラフト確認</strong> — 正式な電子署名の前段階として、確認済みの意思表示に使用できます。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>電子印鑑の法的な位置づけ</h2>
+      <p>日本の法律上、契約書への押印は多くの場合「任意」であり、電子印鑑でも問題なく使用できます。2020年の政府見解でも「契約書に押印は必ずしも必要ない」と明示されました。ただし以下のケースでは実印や電子署名（電子署名法に基づくもの）が必要です：</p>
+      <ul>
+        <li>不動産登記や会社設立登記</li>
+        <li>公正証書の作成</li>
+        <li>一部の行政手続き</li>
+      </ul>
+      <p>社内文書・見積書・請求書・納品書・社内稟議など日常業務の大半では、電子印鑑で十分対応可能です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>電子印鑑は法的に有効ですか？</summary><p>社内文書や見積書・請求書など、法的に印鑑が必須でない書類で広く利用されています。不動産登記や公正証書など法的に実印が必要な場面では使用できません。日常業務の大半の書類では電子印鑑で十分です。</p></details>
+      <details><summary>作成した印影はサーバーに保存されますか？</summary><p>いいえ、印影の生成はすべてお使いのブラウザ内で行われます。名前やその他の情報が外部サーバーに送信されることは一切ありません。</p></details>
+      <details><summary>背景は透過されますか？</summary><p>はい、ダウンロードされるPNG画像は背景が透過されています。白い背景の書類だけでなく、色付きの背景にも自然に重ねることができます。</p></details>
+      <details><summary>作成した印鑑をExcelやWordで使えますか？</summary><p>はい、ダウンロードしたPNG画像を「画像の挿入」から貼り付けるだけで使えます。Google DocsやPDF編集ソフトでも同様に使用できます。</p></details>
+      <details><summary>スマートフォンでも使えますか？</summary><p>はい、レスポンシブデザインに対応しているため、スマートフォンやタブレットでも快適にご利用いただけます。</p></details>
+      <details><summary>印鑑のかすれ機能は何ですか？</summary><p>実際の印鑑のように、インクがかすれた風合いを再現する機能です。リアルな印影を求める場合にお使いください。かすれ具合はスライダーで自由に調整できます。</p></details>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    let stampType = 'round';
+    let stampColor = '#c83232';
+    const canvas = document.getElementById('stamp-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 今日の日付をセット
+    document.getElementById('date-mid').value = new Date().toISOString().slice(0, 10);
+
+    function setType(type) {
+      stampType = type;
+      document.querySelectorAll('.stamp-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+      document.getElementById('input-round').style.display = type === 'round' ? '' : 'none';
+      document.getElementById('input-square').style.display = type === 'square' ? '' : 'none';
+      document.getElementById('input-date').style.display = type === 'date' ? '' : 'none';
+      render();
+    }
+
+    function setColor(color) {
+      stampColor = color;
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.toggle('active', s.dataset.color === color));
+      render();
+    }
+
+    function updateSliderVal(el, valId, unit) {
+      document.getElementById(valId).textContent = el.value + unit;
+    }
+
+    function getSettings() {
+      return {
+        size: parseInt(document.getElementById('size-slider').value),
+        stroke: parseFloat(document.getElementById('stroke-slider').value),
+        wear: parseInt(document.getElementById('wear-slider').value) / 100,
+      };
+    }
+
+    function applyWear(ctx, size, wear) {
+      if (wear <= 0) return;
+      const imageData = ctx.getImageData(0, 0, size, size);
+      const data = imageData.data;
+      for (let i = 3; i < data.length; i += 4) {
+        if (data[i] > 0 && Math.random() < wear) {
+          // かすれ：ランダムにピクセルの透明度を下げる
+          const factor = Math.random() * 0.8;
+          data[i] = Math.floor(data[i] * factor);
+        }
+      }
+      // 小さなかたまりでかすれを追加（よりリアル）
+      const clumps = Math.floor(size * size * wear * 0.002);
+      for (let c = 0; c < clumps; c++) {
+        const cx = Math.floor(Math.random() * size);
+        const cy = Math.floor(Math.random() * size);
+        const r = Math.floor(Math.random() * 4) + 2;
+        for (let dy = -r; dy <= r; dy++) {
+          for (let dx = -r; dx <= r; dx++) {
+            if (dx * dx + dy * dy <= r * r) {
+              const px = cx + dx;
+              const py = cy + dy;
+              if (px >= 0 && px < size && py >= 0 && py < size) {
+                const idx = (py * size + px) * 4;
+                if (data[idx + 3] > 0) {
+                  data[idx + 3] = Math.floor(data[idx + 3] * Math.random() * 0.3);
+                }
+              }
+            }
+          }
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function renderRound() {
+      const { size, stroke, wear } = getSettings();
+      const name = document.getElementById('name-input').value || '山田';
+      canvas.width = size * 2;
+      canvas.height = size * 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const cx = size;
+      const cy = size;
+      const r = size * 0.42;
+
+      // 外枠の円
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = stampColor;
+      ctx.lineWidth = stroke * 2;
+      ctx.stroke();
+
+      // 名前を縦書き
+      ctx.fillStyle = stampColor;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const chars = name.split('');
+      const maxChars = Math.min(chars.length, 5);
+      const fontSize = r * 1.2 / Math.max(maxChars, 1.5);
+      ctx.font = `bold ${fontSize}px "游明朝", "YuMincho", "Hiragino Mincho Pro", serif`;
+
+      const totalHeight = maxChars * fontSize * 0.95;
+      const startY = cy - totalHeight / 2 + fontSize * 0.45;
+
+      for (let i = 0; i < maxChars; i++) {
+        ctx.fillText(chars[i], cx, startY + i * fontSize * 0.95);
+      }
+
+      applyWear(ctx, size * 2, wear);
+    }
+
+    function renderSquare() {
+      const { size, stroke, wear } = getSettings();
+      const name = document.getElementById('company-input').value || '山田商事';
+      canvas.width = size * 2;
+      canvas.height = size * 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const pad = size * 0.12;
+      const boxSize = size * 2 - pad * 2;
+
+      // 外枠の四角
+      ctx.strokeStyle = stampColor;
+      ctx.lineWidth = stroke * 2;
+      ctx.strokeRect(pad, pad, boxSize, boxSize);
+
+      // 文字を配置（2x2, 3x2, 4x2等のグリッド配置）
+      ctx.fillStyle = stampColor;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const chars = name.split('');
+      const len = chars.length;
+
+      if (len <= 4) {
+        // 2x2グリッド（右→左、上→下の順で縦書き風）
+        const cols = 2;
+        const rows = Math.ceil(len / cols);
+        const fontSize = boxSize / (Math.max(rows, cols) + 0.8);
+        ctx.font = `bold ${fontSize}px "游明朝", "YuMincho", "Hiragino Mincho Pro", serif`;
+        const cellW = boxSize / cols;
+        const cellH = boxSize / rows;
+        for (let i = 0; i < len; i++) {
+          // 縦書き: 右列→左列、上→下
+          const col = cols - 1 - Math.floor(i / rows);
+          const row = i % rows;
+          const x = pad + col * cellW + cellW / 2;
+          const y = pad + row * cellH + cellH / 2;
+          ctx.fillText(chars[i], x, y);
+        }
+      } else {
+        // 多い文字: 縦書きで右から左
+        const cols = Math.ceil(len / 3);
+        const rows = Math.ceil(len / cols);
+        const fontSize = boxSize / (Math.max(rows, cols) + 0.6);
+        ctx.font = `bold ${fontSize}px "游明朝", "YuMincho", "Hiragino Mincho Pro", serif`;
+        const cellW = boxSize / cols;
+        const cellH = boxSize / rows;
+        for (let i = 0; i < len; i++) {
+          const col = cols - 1 - Math.floor(i / rows);
+          const row = i % rows;
+          const x = pad + col * cellW + cellW / 2;
+          const y = pad + row * cellH + cellH / 2;
+          ctx.fillText(chars[i], x, y);
+        }
+      }
+
+      applyWear(ctx, size * 2, wear);
+    }
+
+    function renderDate() {
+      const { size, stroke, wear } = getSettings();
+      const top = document.getElementById('date-top').value || '営業';
+      const dateVal = document.getElementById('date-mid').value;
+      const bottom = document.getElementById('date-bottom').value || '山田';
+      canvas.width = size * 2;
+      canvas.height = size * 2;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const cx = size;
+      const cy = size;
+      const r = size * 0.42;
+
+      // 外枠の円
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = stampColor;
+      ctx.lineWidth = stroke * 2;
+      ctx.stroke();
+
+      // 横線2本（3分割）
+      const lineY1 = cy - r * 0.3;
+      const lineY2 = cy + r * 0.3;
+
+      for (const ly of [lineY1, lineY2]) {
+        const dx = Math.sqrt(r * r - (ly - cy) * (ly - cy));
+        ctx.beginPath();
+        ctx.moveTo(cx - dx, ly);
+        ctx.lineTo(cx + dx, ly);
+        ctx.lineWidth = stroke * 1.5;
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = stampColor;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // 上段（部署名）
+      const topFontSize = r * 0.32;
+      ctx.font = `bold ${topFontSize}px "游明朝", "YuMincho", "Hiragino Mincho Pro", serif`;
+      ctx.fillText(top, cx, (cy - r + lineY1) / 2 + 2);
+
+      // 中段（日付）
+      let dateStr = '';
+      if (dateVal) {
+        const d = new Date(dateVal);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        dateStr = `${y}.${m}.${day}`;
+      }
+      const midFontSize = r * 0.26;
+      ctx.font = `bold ${midFontSize}px "游明朝", "YuMincho", "Hiragino Mincho Pro", serif`;
+      ctx.fillText(dateStr, cx, (lineY1 + lineY2) / 2 + 1);
+
+      // 下段（名前）
+      const bottomFontSize = r * 0.32;
+      ctx.font = `bold ${bottomFontSize}px "游明朝", "YuMincho", "Hiragino Mincho Pro", serif`;
+      ctx.fillText(bottom, cx, (lineY2 + cy + r) / 2 - 1);
+
+      applyWear(ctx, size * 2, wear);
+    }
+
+    function render() {
+      if (stampType === 'round') renderRound();
+      else if (stampType === 'square') renderSquare();
+      else if (stampType === 'date') renderDate();
+    }
+
+    function downloadPNG() {
+      render();
+      const link = document.createElement('a');
+      link.download = 'inkan_' + stampType + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // 入力変更時に自動プレビュー
+    ['name-input', 'company-input', 'date-top', 'date-mid', 'date-bottom'].forEach(id => {
+      document.getElementById(id).addEventListener('input', render);
+    });
+
+    render();
+  </script>
+  <script src="../../common/affiliate.js"></script>
+  <script src="../../common/newsletter.js" defer></script>
+</body>
+</html>

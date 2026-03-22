@@ -26,6 +26,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://simpletoolkit.net/tools/inkan-maker/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://simpletoolkit.net/tools/color-converter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
