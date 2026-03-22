@@ -75,9 +75,9 @@
     :root {
       --giants: #FF6600;
       --tigers: #FFE100;
-      --dena: #0055A5;
+      --dena: #4A90D9;
       --carp: #ED1C24;
-      --dragons: #00468B;
+      --dragons: #0050B0;
       --swallows: #006D44;
       --buffaloes: #BA0C2F;
       --hawks: #FDD000;
@@ -211,6 +211,16 @@
       .week-game { border-color: #374151; background: #1e293b; }
       .week-date-header { border-color: #475569; color: #e5e7eb; }
       .match-count { color: #9ca3af; }
+      .league-label { color: #9ca3af; }
+      .team-filter h3 { color: #e2e8f0; }
+      .content-section h2 { color: #e2e8f0; }
+      .content-section h3 { color: #cbd5e1; }
+      .content-section p, .content-section li { color: #d1d5db; }
+      .content-section table th { background: #1e293b; color: #e2e8f0; border-color: #475569; }
+      .content-section table td { color: #d1d5db; border-color: #374151; }
+      .content-section table tr:hover { background: #1e293b; }
+      .content-section details summary { color: #e2e8f0; }
+      .content-section details p { color: #d1d5db; }
     }
   </style>
 </head>
@@ -330,9 +340,9 @@
         <tbody>
           <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#FF6600;font-weight:bold;">&#9632;</span> 巨人</td><td style="padding:8px;border-bottom:1px solid #eee;">東京ドーム</td><td style="padding:8px;border-bottom:1px solid #eee;">東京都文京区</td></tr>
           <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#FFE100;font-weight:bold;">&#9632;</span> 阪神</td><td style="padding:8px;border-bottom:1px solid #eee;">阪神甲子園球場</td><td style="padding:8px;border-bottom:1px solid #eee;">兵庫県西宮市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#0055A5;font-weight:bold;">&#9632;</span> DeNA</td><td style="padding:8px;border-bottom:1px solid #eee;">横浜スタジアム</td><td style="padding:8px;border-bottom:1px solid #eee;">神奈川県横浜市</td></tr>
+          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#4A90D9;font-weight:bold;">&#9632;</span> DeNA</td><td style="padding:8px;border-bottom:1px solid #eee;">横浜スタジアム</td><td style="padding:8px;border-bottom:1px solid #eee;">神奈川県横浜市</td></tr>
           <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#ED1C24;font-weight:bold;">&#9632;</span> 広島</td><td style="padding:8px;border-bottom:1px solid #eee;">MAZDA Zoom-Zoom スタジアム広島</td><td style="padding:8px;border-bottom:1px solid #eee;">広島県広島市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#00468B;font-weight:bold;">&#9632;</span> 中日</td><td style="padding:8px;border-bottom:1px solid #eee;">バンテリンドーム ナゴヤ</td><td style="padding:8px;border-bottom:1px solid #eee;">愛知県名古屋市</td></tr>
+          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#0050B0;font-weight:bold;">&#9632;</span> 中日</td><td style="padding:8px;border-bottom:1px solid #eee;">バンテリンドーム ナゴヤ</td><td style="padding:8px;border-bottom:1px solid #eee;">愛知県名古屋市</td></tr>
           <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#006D44;font-weight:bold;">&#9632;</span> ヤクルト</td><td style="padding:8px;border-bottom:1px solid #eee;">明治神宮野球場</td><td style="padding:8px;border-bottom:1px solid #eee;">東京都新宿区</td></tr>
         </tbody>
       </table>
@@ -367,9 +377,9 @@
       <div class="tool-grid" style="margin-bottom:16px;">
         <a href="giants/" class="tool-card" style="padding:10px 14px;"><span style="color:#FF6600;font-weight:bold;">&#9632;</span> 巨人 2026日程</a>
         <a href="tigers/" class="tool-card" style="padding:10px 14px;"><span style="color:#FFE100;font-weight:bold;">&#9632;</span> 阪神 2026日程</a>
-        <a href="dena/" class="tool-card" style="padding:10px 14px;"><span style="color:#0055A5;font-weight:bold;">&#9632;</span> DeNA 2026日程</a>
+        <a href="dena/" class="tool-card" style="padding:10px 14px;"><span style="color:#4A90D9;font-weight:bold;">&#9632;</span> DeNA 2026日程</a>
         <a href="carp/" class="tool-card" style="padding:10px 14px;"><span style="color:#ED1C24;font-weight:bold;">&#9632;</span> 広島 2026日程</a>
-        <a href="dragons/" class="tool-card" style="padding:10px 14px;"><span style="color:#00468B;font-weight:bold;">&#9632;</span> 中日 2026日程</a>
+        <a href="dragons/" class="tool-card" style="padding:10px 14px;"><span style="color:#0050B0;font-weight:bold;">&#9632;</span> 中日 2026日程</a>
         <a href="swallows/" class="tool-card" style="padding:10px 14px;"><span style="color:#006D44;font-weight:bold;">&#9632;</span> ヤクルト 2026日程</a>
       </div>
       <h3 style="font-size:1rem;color:#666;margin-bottom:8px;">パ・リーグ</h3>
@@ -415,9 +425,9 @@
     const TEAMS = {
       '巨人':       { color: '#FF6600', short: '巨人', league: 'ce' },
       '阪神':       { color: '#FFE100', short: '阪神', league: 'ce', textColor: '#333' },
-      'DeNA':       { color: '#0055A5', short: 'DeNA', league: 'ce' },
+      'DeNA':       { color: '#4A90D9', short: 'DeNA', league: 'ce' },
       '広島':       { color: '#ED1C24', short: '広島', league: 'ce' },
-      '中日':       { color: '#00468B', short: '中日', league: 'ce' },
+      '中日':       { color: '#0050B0', short: '中日', league: 'ce' },
       'ヤクルト':   { color: '#006D44', short: 'ヤクルト', league: 'ce' },
       'オリックス': { color: '#BA0C2F', short: 'オリックス', league: 'pa' },
       'ソフトバンク':{ color: '#FDD000', short: 'SB', league: 'pa', textColor: '#333' },
