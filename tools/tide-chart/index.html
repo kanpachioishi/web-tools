@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>潮見表・タイドグラフ - 無料オンライン潮位予測｜SimpleToolkit</title>
+  <meta name="description" content="全国主要25港の潮位予測をリアルタイムグラフ表示。満潮・干潮時刻、大潮・中潮・小潮の潮回り、月齢、週間グラフ対応。釣りや潮干狩りに便利。無料・登録不要。">
+  <meta property="og:title" content="潮見表・タイドグラフ - 無料オンライン潮位予測｜SimpleToolkit">
+  <meta property="og:description" content="全国主要港の潮位をグラフ表示。満潮・干潮時刻、潮回り、月齢表示。釣りに便利。無料・登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/tide-chart/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "潮見表・タイドグラフ - 全国主要港の潮位予測",
+    "description": "全国主要25港の潮位予測をリアルタイムグラフ表示。満潮・干潮時刻、大潮・中潮・小潮の潮回り、月齢、週間グラフ対応。釣りや潮干狩りに便利。無料・登録不要。",
+    "url": "https://simpletoolkit.net/tools/tide-chart/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "潮見表の潮位はどのように計算していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "各港の潮汐調和定数（M2, S2, K1, O1の主要4分潮）を用いた調和解析法で潮位を予測しています。簡易計算のため実際の潮位とは差が生じる場合があります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "大潮・中潮・小潮の違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "大潮は新月・満月の前後に潮の干満差が最大になる時期、小潮は半月（上弦・下弦）の前後に干満差が最小になる時期です。中潮はその間の時期、長潮・若潮は小潮から大潮への過渡期です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "釣りに最適な潮回りは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一般的に大潮や中潮の日が魚の活性が高く釣れやすいとされています。特に満潮前後の潮が動く時間帯（上げ潮・下げ潮の3〜7分目）が好機です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "データはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算はブラウザ内で完結します。データが外部に送信されることはありません。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .controls-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 140px;
+    }
+    .control-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .control-group input, .control-group select {
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .summary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-card .sc-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .summary-card .sc-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .summary-card .sc-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .tide-type-oshio { color: #ef4444; }
+    .tide-type-nakashio { color: #f59e0b; }
+    .tide-type-koshio { color: #3b82f6; }
+    .tide-type-nagashio { color: #8b5cf6; }
+    .tide-type-wakashio { color: #10b981; }
+    .moon-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .moon-icon {
+      font-size: 1.8rem;
+    }
+    .tide-events {
+      margin-bottom: 20px;
+    }
+    .tide-events table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .tide-events th, .tide-events td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .tide-events th {
+      text-align: left;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .tide-events .high { color: #ef4444; font-weight: 600; }
+    .tide-events .low { color: #3b82f6; font-weight: 600; }
+    #tideChart {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+    }
+    .tab-buttons {
+      display: flex;
+      gap: 0;
+      margin: 20px 0 16px;
+      border-bottom: 2px solid var(--border);
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    .week-day-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+    .week-day-card .wdc-date {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .week-day-card canvas {
+      width: 100%;
+      height: 60px;
+    }
+    .fishing-info {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .fishing-info h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+    .fishing-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 0.9rem;
+    }
+    .fishing-row .label { color: var(--text-muted); }
+    .fishing-row .value { font-weight: 600; }
+    @media (max-width: 600px) {
+      .week-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>潮見表・タイドグラフ</h1>
+    <h2>全国主要港の潮位予測</h2>
+    <p class="tool-description">全国主要25港の潮位をグラフで表示。満潮・干潮の時刻と潮位、大潮・中潮・小潮の潮回り、月齢を計算。潮汐調和定数（M2, S2, K1, O1）による簡易予測。釣り・潮干狩りの計画に便利。無料・登録不要。</p>
+
+    <div class="tool-area">
+      <div class="controls-row">
+        <div class="control-group">
+          <label for="sel-port">港</label>
+          <select id="sel-port" onchange="calculate()"></select>
+        </div>
+        <div class="control-group">
+          <label for="sel-date">日付</label>
+          <input type="date" id="sel-date" onchange="calculate()">
+        </div>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="summary-cards">
+        <div class="summary-card">
+          <div class="sc-label">潮回り</div>
+          <div class="sc-value" id="sc-tide-type">--</div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">月齢</div>
+          <div class="moon-display">
+            <span class="moon-icon" id="sc-moon-icon">🌕</span>
+            <span class="sc-value" id="sc-moon-age">--</span>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">満潮</div>
+          <div class="sc-value" id="sc-high">--:--</div>
+          <div class="sc-sub" id="sc-high-cm">-- cm</div>
+        </div>
+        <div class="summary-card">
+          <div class="sc-label">干潮</div>
+          <div class="sc-value" id="sc-low">--:--</div>
+          <div class="sc-sub" id="sc-low-cm">-- cm</div>
+        </div>
+      </div>
+
+      <!-- Tide events table -->
+      <div class="tide-events">
+        <table>
+          <thead><tr><th>種別</th><th>時刻</th><th>潮位 (cm)</th></tr></thead>
+          <tbody id="tide-events-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('day')">1日グラフ</button>
+        <button class="tab-btn" onclick="switchTab('week')">週間表示</button>
+      </div>
+      <div class="tab-content active" id="tab-day">
+        <canvas id="tideChart" width="800" height="350"></canvas>
+      </div>
+      <div class="tab-content" id="tab-week">
+        <div class="week-grid" id="week-grid"></div>
+      </div>
+
+      <!-- Fishing info -->
+      <div class="fishing-info">
+        <h3>釣り情報</h3>
+        <div class="fishing-row"><span class="label">潮回り</span><span class="value" id="fi-type">--</span></div>
+        <div class="fishing-row"><span class="label">月齢</span><span class="value" id="fi-moon">--</span></div>
+        <div class="fishing-row"><span class="label">釣り適性</span><span class="value" id="fi-rating">--</span></div>
+        <div class="fishing-row"><span class="label">おすすめ時間帯</span><span class="value" id="fi-recommend">--</span></div>
+      </div>
+    </div>
+
+    <section class="content-section" style="margin-top:40px;">
+      <h2>潮汐（ちょうせき）とは</h2>
+      <p>潮汐は主に月と太陽の引力によって海面が周期的に上下する現象です。月の引力が最も大きな影響を与え、約12時間25分の周期（半日周潮）で満潮と干潮を繰り返します。</p>
+      <p>このツールでは、各港の潮汐調和定数（M2: 主太陰半日周潮、S2: 主太陽半日周潮、K1: 日月合成日周潮、O1: 主太陰日周潮）を用いた調和解析法で潮位を予測しています。簡易計算のため、実際の潮位とは差が生じる場合があります。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>潮回りの種類</h2>
+      <p><strong>大潮</strong> - 新月・満月の前後約2日間。潮の干満差が最大になり、潮流も強くなります。釣りでは魚の活性が高くなる時期です。</p>
+      <p><strong>中潮</strong> - 大潮と小潮の間の時期。干満差は中程度です。安定した釣果が期待できます。</p>
+      <p><strong>小潮</strong> - 上弦・下弦の月（半月）の前後。干満差が最小になります。潮の動きが穏やかです。</p>
+      <p><strong>長潮</strong> - 小潮の最後の日。潮の変化が非常に緩やかです。</p>
+      <p><strong>若潮</strong> - 長潮の翌日。潮が若返り、再び大きくなり始める日です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>釣りと潮の関係</h2>
+      <p>潮の動きは魚の活性に大きく影響します。一般的に、潮が動いている時（上げ潮・下げ潮の3〜7分目）が最も魚が釣れやすいとされています。</p>
+      <p>大潮の日は潮流が強く、プランクトンや小魚が流されるため、大型魚のチャンスが増えます。一方、小潮の日は潮の動きが穏やかで、エサ釣りには向いていることもあります。</p>
+      <p>満潮時は岸近くまで魚が回遊してくるため、ショアからの釣りに有利です。干潮時は潮だまりの生き物観察や潮干狩りに適しています。</p>
+    </section>
+
+    <section style="margin-top:32px;">
+      <h2 style="font-size:1.1rem;margin-bottom:12px;">よくある質問</h2>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">潮見表の潮位はどのように計算していますか？</summary>
+        <p style="margin-top:8px;">各港の潮汐調和定数（M2, S2, K1, O1の主要4分潮）を用いた調和解析法で潮位を予測しています。簡易計算のため実際の潮位とは差が生じる場合があります。航行の安全には気象庁の公式データをご利用ください。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">大潮・中潮・小潮の違いは？</summary>
+        <p style="margin-top:8px;">大潮は新月・満月の前後で潮の干満差が最大、小潮は半月の前後で最小です。中潮はその間、長潮・若潮は小潮から大潮への過渡期です。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">釣りに最適な潮回りは？</summary>
+        <p style="margin-top:8px;">一般的に大潮や中潮の日が魚の活性が高く釣れやすいとされています。特に潮が動く時間帯（上げ潮・下げ潮の3〜7分目）が好機です。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">月齢と潮の関係は？</summary>
+        <p style="margin-top:8px;">月齢0（新月）と15（満月）付近が大潮、月齢7（上弦）と22（下弦）付近が小潮になります。月齢は約29.5日周期で変化します。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">データはサーバーに送信されますか？</summary>
+        <p style="margin-top:8px;">いいえ、すべての計算はブラウザ内で完結します。データが外部に送信されることはありません。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../star-chart/" class="tool-card">
+          <span class="tool-icon">&#127748;</span>
+          <h3 style="font-size:1rem;margin:0;">星座早見表</h3>
+          <p>日時と場所から見える星座をリアルタイム表示</p>
+        </a>
+        <a href="../sunrise-sunset/" class="tool-card">
+          <span class="tool-icon">&#127749;</span>
+          <h3 style="font-size:1rem;margin:0;">日の出・日の入り計算</h3>
+          <p>全国の日の出日の入り時刻を計算・年間グラフ</p>
+        </a>
+        <a href="../countdown/" class="tool-card">
+          <span class="tool-icon">&#9203;</span>
+          <h3 style="font-size:1rem;margin:0;">日数カウントダウン</h3>
+          <p>目標日までの残り時間をリアルタイム表示</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script src="../../common/affiliate.js"></script>
+  <script src="../../common/newsletter.js"></script>
+  <script>
+    // ===== 港データ（潮汐調和定数: 振幅cm, 遅角度） =====
+    // M2: 主太陰半日周潮, S2: 主太陽半日周潮, K1: 日月合成日周潮, O1: 主太陰日周潮
+    // meanLevel: 平均潮位(cm)
+    var ports = [
+      {name:'稚内', lat:45.41, lon:141.68, mean:30, M2:[18,190], S2:[8,220], K1:[20,260], O1:[16,240]},
+      {name:'釧路', lat:42.97, lon:144.38, mean:80, M2:[42,150], S2:[18,180], K1:[22,250], O1:[18,230]},
+      {name:'函館', lat:41.78, lon:140.73, mean:40, M2:[25,170], S2:[10,200], K1:[18,255], O1:[15,235]},
+      {name:'八戸', lat:40.53, lon:141.53, mean:50, M2:[30,160], S2:[12,190], K1:[19,250], O1:[16,230]},
+      {name:'宮古', lat:39.64, lon:141.97, mean:60, M2:[38,155], S2:[15,185], K1:[20,248], O1:[17,228]},
+      {name:'塩釜', lat:38.32, lon:141.02, mean:70, M2:[40,150], S2:[16,180], K1:[19,245], O1:[16,225]},
+      {name:'小名浜', lat:36.94, lon:140.90, mean:75, M2:[45,145], S2:[18,175], K1:[18,242], O1:[15,222]},
+      {name:'東京（晴海）', lat:35.66, lon:139.78, mean:100, M2:[55,140], S2:[22,170], K1:[22,240], O1:[18,220]},
+      {name:'横浜', lat:35.45, lon:139.65, mean:95, M2:[52,142], S2:[20,172], K1:[21,241], O1:[17,221]},
+      {name:'横須賀', lat:35.28, lon:139.66, mean:85, M2:[48,143], S2:[19,173], K1:[20,242], O1:[17,222]},
+      {name:'石廊崎', lat:34.61, lon:138.84, mean:80, M2:[42,148], S2:[17,178], K1:[19,243], O1:[16,223]},
+      {name:'名古屋', lat:35.08, lon:136.88, mean:110, M2:[60,135], S2:[25,165], K1:[24,238], O1:[20,218]},
+      {name:'舞鶴', lat:35.48, lon:135.38, mean:25, M2:[12,200], S2:[5,230], K1:[15,265], O1:[12,245]},
+      {name:'大阪', lat:34.65, lon:135.43, mean:95, M2:[50,130], S2:[20,160], K1:[23,236], O1:[19,216]},
+      {name:'神戸', lat:34.68, lon:135.20, mean:90, M2:[48,132], S2:[19,162], K1:[22,237], O1:[18,217]},
+      {name:'和歌山', lat:34.20, lon:135.16, mean:85, M2:[55,128], S2:[22,158], K1:[20,234], O1:[17,214]},
+      {name:'高松', lat:34.35, lon:134.05, mean:100, M2:[65,125], S2:[26,155], K1:[21,232], O1:[18,212]},
+      {name:'広島（宇品）', lat:34.35, lon:132.46, mean:130, M2:[80,120], S2:[32,150], K1:[25,230], O1:[21,210]},
+      {name:'下関', lat:33.96, lon:130.94, mean:120, M2:[75,118], S2:[30,148], K1:[24,228], O1:[20,208]},
+      {name:'博多', lat:33.60, lon:130.40, mean:120, M2:[70,115], S2:[28,145], K1:[23,226], O1:[19,206]},
+      {name:'長崎', lat:32.74, lon:129.87, mean:110, M2:[60,110], S2:[24,140], K1:[22,224], O1:[18,204]},
+      {name:'鹿児島', lat:31.59, lon:130.57, mean:90, M2:[50,105], S2:[20,135], K1:[20,220], O1:[17,200]},
+      {name:'那覇', lat:26.22, lon:127.67, mean:85, M2:[35,95], S2:[14,125], K1:[28,210], O1:[23,190]},
+      {name:'新潟', lat:37.92, lon:139.05, mean:20, M2:[10,195], S2:[4,225], K1:[14,260], O1:[11,240]},
+      {name:'高知', lat:33.50, lon:133.56, mean:80, M2:[40,125], S2:[16,155], K1:[19,234], O1:[16,214]}
+    ];
+
+    // ===== 天文計算 =====
+    function moonAge(year, month, day) {
+      // Simplified moon age calculation
+      var jd = julianDay(year, month, day);
+      var phase = ((jd - 2451550.1) / 29.530588853) % 1;
+      if (phase < 0) phase += 1;
+      return phase * 29.530588853;
+    }
+
+    function julianDay(year, month, day) {
+      if (month <= 2) { year--; month += 12; }
+      var A = Math.floor(year / 100);
+      var B = 2 - A + Math.floor(A / 4);
+      return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + B - 1524.5;
+    }
+
+    function getTideType(age) {
+      // Based on moon age
+      var d = age % 29.530588853;
+      if (d < 2 || d > 27.5 || (d > 13.5 && d < 16.5)) return '大潮';
+      if ((d >= 2 && d < 5) || (d > 16.5 && d < 19.5) || (d > 10.5 && d < 13.5) || (d > 24 && d <= 27.5)) return '中潮';
+      if ((d >= 5 && d < 8) || (d >= 19.5 && d < 22)) return '小潮';
+      if ((d >= 8 && d < 9.5) || (d >= 22 && d < 23)) return '長潮';
+      if ((d >= 9.5 && d < 10.5) || (d >= 23 && d < 24)) return '若潮';
+      return '中潮';
+    }
+
+    function getMoonIcon(age) {
+      var d = age % 29.530588853;
+      if (d < 1.85) return '🌑';
+      if (d < 5.5) return '🌒';
+      if (d < 9.2) return '🌓';
+      if (d < 12.9) return '🌔';
+      if (d < 16.6) return '🌕';
+      if (d < 20.3) return '🌖';
+      if (d < 24) return '🌗';
+      if (d < 27.7) return '🌘';
+      return '🌑';
+    }
+
+    function getTideTypeClass(type) {
+      var map = {'大潮':'tide-type-oshio','中潮':'tide-type-nakashio','小潮':'tide-type-koshio','長潮':'tide-type-nagashio','若潮':'tide-type-wakashio'};
+      return map[type] || '';
+    }
+
+    // ===== 潮位計算（調和解析法） =====
+    function calcTideLevel(port, year, month, day, hourDecimal) {
+      var jd = julianDay(year, month, day) + hourDecimal / 24.0;
+      var T = (jd - 2451545.0) / 36525.0; // Julian centuries from J2000
+
+      // Angular speeds (degrees per hour)
+      var speedM2 = 28.9841042;  // principal lunar semidiurnal
+      var speedS2 = 30.0;        // principal solar semidiurnal
+      var speedK1 = 15.0410686;  // luni-solar diurnal
+      var speedO1 = 13.9430356;  // principal lunar diurnal
+
+      // Hours since epoch (J2000 = 2000-01-01 12:00 UT)
+      var hours = (jd - 2451545.0) * 24.0;
+
+      // Astronomical arguments (simplified)
+      var V_M2 = (speedM2 * hours) % 360;
+      var V_S2 = (speedS2 * hours) % 360;
+      var V_K1 = (speedK1 * hours) % 360;
+      var V_O1 = (speedO1 * hours) % 360;
+
+      var level = port.mean;
+      level += port.M2[0] * Math.cos((V_M2 - port.M2[1]) * Math.PI / 180);
+      level += port.S2[0] * Math.cos((V_S2 - port.S2[1]) * Math.PI / 180);
+      level += port.K1[0] * Math.cos((V_K1 - port.K1[1]) * Math.PI / 180);
+      level += port.O1[0] * Math.cos((V_O1 - port.O1[1]) * Math.PI / 180);
+
+      return level;
+    }
+
+    function findExtremes(port, year, month, day) {
+      // Sample every 10 minutes, find peaks and valleys
+      var points = [];
+      for (var m = 0; m < 1440; m += 10) {
+        var h = m / 60;
+        var level = calcTideLevel(port, year, month, day, h + 9 / 24 * 0); // already in JST conceptually
+        // Actually, we need to convert JST to UT for the calculation
+        var utH = h - 9;
+        if (utH < 0) utH += 24;
+        level = calcTideLevel(port, year, month, day, utH);
+        points.push({ min: m, level: level });
+      }
+
+      var extremes = [];
+      for (var i = 1; i < points.length - 1; i++) {
+        var prev = points[i - 1].level;
+        var curr = points[i].level;
+        var next = points[i + 1].level;
+        if (curr > prev && curr > next) {
+          extremes.push({ type: 'high', min: points[i].min, level: Math.round(curr) });
+        } else if (curr < prev && curr < next) {
+          extremes.push({ type: 'low', min: points[i].min, level: Math.round(curr) });
+        }
+      }
+      return extremes;
+    }
+
+    function minToTime(min) {
+      var h = Math.floor(min / 60);
+      var m = min % 60;
+      return ('0' + h).slice(-2) + ':' + ('0' + m).slice(-2);
+    }
+
+    // ===== 描画 =====
+    function drawTideChart(port, year, month, day) {
+      var canvas = document.getElementById('tideChart');
+      var ctx = canvas.getContext('2d');
+      var w = canvas.width;
+      var h = canvas.height;
+      var padL = 50, padR = 20, padT = 20, padB = 40;
+      var plotW = w - padL - padR;
+      var plotH = h - padT - padB;
+
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg').trim() || '#fff';
+      ctx.fillRect(0, 0, w, h);
+
+      // Calculate tide levels for each 10 minutes
+      var levels = [];
+      var minLevel = Infinity, maxLevel = -Infinity;
+      for (var m = 0; m < 1440; m += 10) {
+        var utH = (m / 60) - 9;
+        if (utH < 0) utH += 24;
+        var level = calcTideLevel(port, year, month, day, utH);
+        levels.push({ min: m, level: level });
+        if (level < minLevel) minLevel = level;
+        if (level > maxLevel) maxLevel = level;
+      }
+
+      var yMin = Math.floor(minLevel / 20) * 20 - 20;
+      var yMax = Math.ceil(maxLevel / 20) * 20 + 20;
+
+      function xPos(min) { return padL + plotW * min / 1440; }
+      function yPos(level) { return padT + plotH * (1 - (level - yMin) / (yMax - yMin)); }
+
+      // Grid
+      ctx.strokeStyle = 'rgba(128,128,128,0.2)';
+      ctx.lineWidth = 1;
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = 'rgba(128,128,128,0.8)';
+
+      // Y axis
+      ctx.textAlign = 'right';
+      for (var lv = yMin; lv <= yMax; lv += 40) {
+        var y = yPos(lv);
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(w - padR, y);
+        ctx.stroke();
+        ctx.fillText(lv + 'cm', padL - 4, y + 4);
+      }
+
+      // X axis (hours)
+      ctx.textAlign = 'center';
+      for (var hr = 0; hr <= 24; hr += 3) {
+        var x = xPos(hr * 60);
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, h - padB);
+        ctx.stroke();
+        ctx.fillText(hr + ':00', x, h - padB + 16);
+      }
+
+      // Fill area under curve
+      ctx.beginPath();
+      ctx.moveTo(xPos(levels[0].min), yPos(yMin));
+      for (var i = 0; i < levels.length; i++) {
+        ctx.lineTo(xPos(levels[i].min), yPos(levels[i].level));
+      }
+      ctx.lineTo(xPos(levels[levels.length - 1].min), yPos(yMin));
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(59,130,246,0.15)';
+      ctx.fill();
+
+      // Draw line
+      ctx.beginPath();
+      ctx.moveTo(xPos(levels[0].min), yPos(levels[0].level));
+      for (var i = 1; i < levels.length; i++) {
+        ctx.lineTo(xPos(levels[i].min), yPos(levels[i].level));
+      }
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Mark extremes
+      var extremes = findExtremes(port, year, month, day);
+      for (var i = 0; i < extremes.length; i++) {
+        var e = extremes[i];
+        var ex = xPos(e.min);
+        var ey = yPos(e.level);
+        ctx.beginPath();
+        ctx.arc(ex, ey, 5, 0, Math.PI * 2);
+        ctx.fillStyle = e.type === 'high' ? '#ef4444' : '#3b82f6';
+        ctx.fill();
+        ctx.fillStyle = e.type === 'high' ? '#ef4444' : '#3b82f6';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(minToTime(e.min), ex, ey + (e.type === 'high' ? -14 : 20));
+        ctx.fillText(e.level + 'cm', ex, ey + (e.type === 'high' ? -4 : 30));
+      }
+
+      // Current time marker
+      var now = new Date();
+      var selDate = document.getElementById('sel-date').value;
+      var todayStr = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2);
+      if (selDate === todayStr) {
+        var nowMin = now.getHours() * 60 + now.getMinutes();
+        var nx = xPos(nowMin);
+        ctx.beginPath();
+        ctx.moveTo(nx, padT);
+        ctx.lineTo(nx, h - padB);
+        ctx.strokeStyle = 'rgba(255,0,0,0.5)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'red';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('現在', nx, padT - 4);
+      }
+    }
+
+    function drawMiniChart(canvasId, port, year, month, day) {
+      var canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var w = canvas.width;
+      var h = canvas.height;
+
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card-bg').trim() || '#fff';
+      ctx.fillRect(0, 0, w, h);
+
+      var levels = [];
+      var minL = Infinity, maxL = -Infinity;
+      for (var m = 0; m < 1440; m += 30) {
+        var utH = (m / 60) - 9;
+        if (utH < 0) utH += 24;
+        var level = calcTideLevel(port, year, month, day, utH);
+        levels.push(level);
+        if (level < minL) minL = level;
+        if (level > maxL) maxL = level;
+      }
+
+      var pad = 4;
+      ctx.beginPath();
+      for (var i = 0; i < levels.length; i++) {
+        var x = pad + (w - 2 * pad) * i / (levels.length - 1);
+        var y = pad + (h - 2 * pad) * (1 - (levels[i] - minL) / (maxL - minL || 1));
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // ===== UI =====
+    function populatePorts() {
+      var sel = document.getElementById('sel-port');
+      for (var i = 0; i < ports.length; i++) {
+        var opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = ports[i].name;
+        if (ports[i].name === '東京（晴海）') opt.selected = true;
+        sel.appendChild(opt);
+      }
+    }
+
+    function calculate() {
+      var portIdx = parseInt(document.getElementById('sel-port').value);
+      var port = ports[portIdx];
+      var dateStr = document.getElementById('sel-date').value;
+      var parts = dateStr.split('-');
+      var year = parseInt(parts[0]);
+      var month = parseInt(parts[1]);
+      var day = parseInt(parts[2]);
+
+      // Moon age
+      var age = moonAge(year, month, day);
+      var tideType = getTideType(age);
+      var moonIcon = getMoonIcon(age);
+
+      document.getElementById('sc-tide-type').textContent = tideType;
+      document.getElementById('sc-tide-type').className = 'sc-value ' + getTideTypeClass(tideType);
+      document.getElementById('sc-moon-age').textContent = age.toFixed(1);
+      document.getElementById('sc-moon-icon').textContent = moonIcon;
+
+      // Extremes
+      var extremes = findExtremes(port, year, month, day);
+      var highTides = extremes.filter(function(e) { return e.type === 'high'; });
+      var lowTides = extremes.filter(function(e) { return e.type === 'low'; });
+
+      if (highTides.length > 0) {
+        var maxHigh = highTides.reduce(function(a, b) { return a.level > b.level ? a : b; });
+        document.getElementById('sc-high').textContent = minToTime(maxHigh.min);
+        document.getElementById('sc-high-cm').textContent = maxHigh.level + ' cm';
+      } else {
+        document.getElementById('sc-high').textContent = '--:--';
+        document.getElementById('sc-high-cm').textContent = '-- cm';
+      }
+
+      if (lowTides.length > 0) {
+        var minLow = lowTides.reduce(function(a, b) { return a.level < b.level ? a : b; });
+        document.getElementById('sc-low').textContent = minToTime(minLow.min);
+        document.getElementById('sc-low-cm').textContent = minLow.level + ' cm';
+      } else {
+        document.getElementById('sc-low').textContent = '--:--';
+        document.getElementById('sc-low-cm').textContent = '-- cm';
+      }
+
+      // Events table
+      var tbody = document.getElementById('tide-events-body');
+      var html = '';
+      for (var i = 0; i < extremes.length; i++) {
+        var e = extremes[i];
+        var cls = e.type === 'high' ? 'high' : 'low';
+        var label = e.type === 'high' ? '満潮' : '干潮';
+        html += '<tr><td class="' + cls + '">' + label + '</td><td>' + minToTime(e.min) + '</td><td>' + e.level + ' cm</td></tr>';
+      }
+      tbody.innerHTML = html || '<tr><td colspan="3">データなし</td></tr>';
+
+      // Draw chart
+      drawTideChart(port, year, month, day);
+
+      // Week view
+      renderWeekView(port, year, month, day);
+
+      // Fishing info
+      document.getElementById('fi-type').textContent = tideType;
+      document.getElementById('fi-moon').textContent = '月齢 ' + age.toFixed(1) + ' ' + moonIcon;
+
+      var rating;
+      if (tideType === '大潮') rating = '★★★★★ 最高';
+      else if (tideType === '中潮') rating = '★★★★☆ 良好';
+      else if (tideType === '若潮') rating = '★★★☆☆ 普通';
+      else if (tideType === '小潮') rating = '★★☆☆☆ やや低い';
+      else rating = '★☆☆☆☆ 低い';
+      document.getElementById('fi-rating').textContent = rating;
+
+      // Recommended time
+      if (extremes.length >= 2) {
+        var recTimes = [];
+        for (var i = 0; i < extremes.length - 1; i++) {
+          var mid = Math.round((extremes[i].min + extremes[i + 1].min) / 2);
+          var start = Math.max(0, mid - 60);
+          var end = Math.min(1440, mid + 60);
+          recTimes.push(minToTime(start) + '〜' + minToTime(end));
+        }
+        document.getElementById('fi-recommend').textContent = recTimes.join(', ');
+      } else {
+        document.getElementById('fi-recommend').textContent = '--';
+      }
+    }
+
+    function renderWeekView(port, year, month, day) {
+      var container = document.getElementById('week-grid');
+      var html = '';
+      var baseDate = new Date(year, month - 1, day);
+      for (var d = 0; d < 7; d++) {
+        var dt = new Date(baseDate.getTime() + d * 86400000);
+        var y = dt.getFullYear();
+        var m = dt.getMonth() + 1;
+        var dd = dt.getDate();
+        var dayNames = ['日','月','火','水','木','金','土'];
+        var dayName = dayNames[dt.getDay()];
+        var age = moonAge(y, m, dd);
+        var type = getTideType(age);
+        var canvasId = 'mini-' + d;
+        html += '<div class="week-day-card">';
+        html += '<div class="wdc-date">' + m + '/' + dd + '(' + dayName + ')</div>';
+        html += '<div style="font-size:0.75rem;" class="' + getTideTypeClass(type) + '">' + type + '</div>';
+        html += '<canvas id="' + canvasId + '" width="120" height="60"></canvas>';
+        html += '</div>';
+      }
+      container.innerHTML = html;
+
+      // Draw mini charts after DOM update
+      setTimeout(function() {
+        for (var d = 0; d < 7; d++) {
+          var dt = new Date(baseDate.getTime() + d * 86400000);
+          drawMiniChart('mini-' + d, port, dt.getFullYear(), dt.getMonth() + 1, dt.getDate());
+        }
+      }, 50);
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+      if (tab === 'day') {
+        document.querySelector('.tab-btn:first-child').classList.add('active');
+        document.getElementById('tab-day').classList.add('active');
+      } else {
+        document.querySelector('.tab-btn:last-child').classList.add('active');
+        document.getElementById('tab-week').classList.add('active');
+      }
+    }
+
+    // Init
+    populatePorts();
+    (function() {
+      var now = new Date();
+      var y = now.getFullYear();
+      var m = ('0' + (now.getMonth() + 1)).slice(-2);
+      var d = ('0' + now.getDate()).slice(-2);
+      document.getElementById('sel-date').value = y + '-' + m + '-' + d;
+      calculate();
+    })();
+  </script>
+</body>
+</html>
