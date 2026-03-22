@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クライマックスシリーズ・日本シリーズ 2026 日程 | Web便利ツール集</title>
+  <meta name="description" content="2026年クライマックスシリーズ（CS）・日本シリーズの日程・仕組みを無料解説。CSファースト10月11日〜、ファイナル10月15日〜、日本シリーズ10月24日〜。アドバンテージ等ルール詳細も。">
+  <meta property="og:title" content="クライマックスシリーズ・日本シリーズ 2026 日程">
+  <meta property="og:description" content="2026年CS・日本シリーズの日程・仕組みを無料解説。CSファースト10月11日〜、ファイナル10月15日〜、日本シリーズ10月24日〜。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/npb-postseason/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "クライマックスシリーズ・日本シリーズ 2026 日程",
+    "description": "2026年クライマックスシリーズ（CS）・日本シリーズの日程・仕組みを解説。アドバンテージ等ルール詳細も掲載。",
+    "url": "https://simpletoolkit.net/tools/npb-postseason/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "2026年のクライマックスシリーズはいつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2026年のクライマックスシリーズは、ファーストステージが10月11日（土）から、ファイナルステージが10月15日（水）からセ・パ各リーグで開催されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "2026年の日本シリーズはいつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2026年の日本シリーズは10月24日（土）から開催されます。最大7試合（4勝したチームが優勝）で行われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "クライマックスシリーズのアドバンテージとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ファイナルステージでは、レギュラーシーズンの1位チームに1勝のアドバンテージが与えられます。つまりファイナルステージ開始時点ですでに1勝している状態でスタートします。最大6試合（先に4勝したチームが勝利）ですが、1位チームは3勝すれば突破できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "CSファーストステージのルールは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ファーストステージはレギュラーシーズン2位vs3位の対戦です。先に2勝したチームが勝ち上がります（最大3試合）。アドバンテージはなく、2位チームのホームで行われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "CS・日本シリーズの対戦チームはいつ決まりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "対戦チームはレギュラーシーズン終了後（9月末〜10月初旬）に確定します。セ・パ各リーグの上位3チームがCSに進出します。2026年のレギュラーシーズン最終戦は9月下旬の予定です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本シリーズの試合方式は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "日本シリーズは最大7試合で、先に4勝したチームが日本一になります。ホームゲームはCSファイナル進出チームの本拠地で開催されます。引き分けは勝利数にカウントされず、試合数が延長されます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+  <style>
+    /* ポストシーズンバナー */
+    .postseason-banner {
+      background: linear-gradient(135deg, #1a0a2e 0%, #2d1b69 50%, #1a0a2e 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      text-align: center;
+      border: 1px solid rgba(255,215,0,0.3);
+    }
+    .postseason-banner h2 { color: #ffd700; margin: 0 0 8px; font-size: 1.3rem; }
+    .postseason-banner .banner-sub { font-size: 0.9rem; color: #ccc; margin-bottom: 20px; }
+    .schedule-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .schedule-pill {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,215,0,0.4);
+      border-radius: 8px;
+      padding: 10px 20px;
+      text-align: center;
+      min-width: 180px;
+    }
+    .schedule-pill .pill-label { font-size: 0.8rem; color: #ffd700; font-weight: bold; display: block; margin-bottom: 4px; }
+    .schedule-pill .pill-date { font-size: 1rem; font-weight: bold; }
+    .schedule-pill .pill-sub { font-size: 0.78rem; color: #aaa; display: block; margin-top: 2px; }
+
+    /* トーナメント図 */
+    .tournament-container { padding: 20px 0; }
+    .tournament-title { text-align: center; font-weight: bold; color: #1e3a5f; margin-bottom: 20px; font-size: 1.05rem; }
+    .tournament-wrap {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0;
+      overflow-x: auto;
+      padding: 10px 0 20px;
+    }
+
+    /* リーグブロック */
+    .league-block { display: flex; flex-direction: column; align-items: center; min-width: 160px; }
+    .league-label-box {
+      background: #1e3a5f;
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    .league-label-box.pa { background: #8D0034; }
+
+    .round-box { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; width: 100%; }
+    .round-label { text-align: center; font-size: 0.75rem; color: #666; font-weight: bold; margin-bottom: 4px; }
+    .team-slot {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #475569;
+      min-width: 130px;
+      position: relative;
+    }
+    .team-slot.rank1 { border-color: #fbbf24; background: #fffbeb; color: #92400e; }
+    .team-slot.rank2 { border-color: #94a3b8; background: #f8fafc; }
+    .team-slot.rank3 { border-color: #cd7c45; background: #fef5ec; }
+    .team-slot .rank-badge {
+      position: absolute;
+      top: -8px;
+      left: 8px;
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-weight: bold;
+      background: #fbbf24;
+      color: #92400e;
+    }
+    .team-slot.rank2 .rank-badge { background: #94a3b8; color: #fff; }
+    .team-slot.rank3 .rank-badge { background: #cd7c45; color: #fff; }
+
+    .arrow-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 1.5rem;
+      color: #94a3b8;
+      min-width: 40px;
+    }
+
+    .cs-phase-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+    }
+    .cs-phase-label {
+      font-size: 0.78rem;
+      color: #666;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .cs-phase-bracket {
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      background: #f8fafc;
+      text-align: center;
+      min-width: 120px;
+    }
+    .cs-winner-box {
+      background: linear-gradient(135deg, #1e3a5f, #2563eb);
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      margin: 12px 0;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+
+    /* 日本シリーズブロック */
+    .japan-series-block {
+      background: linear-gradient(135deg, #1a0a2e, #2d1b69);
+      color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      min-width: 160px;
+      border: 2px solid rgba(255,215,0,0.5);
+    }
+    .japan-series-block .js-title { color: #ffd700; font-weight: bold; font-size: 1rem; margin-bottom: 6px; }
+    .japan-series-block .js-date { font-size: 0.85rem; color: #ccc; margin-bottom: 12px; }
+    .japan-series-block .js-trophy { font-size: 2.5rem; margin-bottom: 8px; display: block; }
+    .japan-series-block .js-sub { font-size: 0.78rem; color: #aaa; }
+
+    /* スケジュール詳細 */
+    .phase-section { border-left: 4px solid #2563eb; padding-left: 16px; margin-bottom: 24px; }
+    .phase-section.pa { border-color: #8D0034; }
+    .phase-section.final { border-color: #ffd700; }
+    .phase-section h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .phase-dates { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .phase-date-item {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 0.88rem;
+    }
+    .phase-date-item .date-label { color: #666; font-size: 0.78rem; display: block; }
+    .phase-date-item .date-val { font-weight: bold; color: #1e40af; }
+
+    /* ルール解説カード */
+    .rule-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 16px; }
+    .rule-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 16px;
+      background: #fafafa;
+    }
+    .rule-card h4 { margin: 0 0 8px; font-size: 0.95rem; color: #1e3a5f; }
+    .rule-card p { font-size: 0.88rem; color: #555; margin: 0; line-height: 1.6; }
+
+    /* 歴代日本一 */
+    .champions-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 12px; }
+    .champion-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+    .champion-item .champ-year { color: #666; min-width: 45px; }
+    .champion-item .champ-team { font-weight: bold; }
+
+    @media (max-width: 600px) {
+      .tournament-wrap { flex-direction: column; align-items: center; gap: 16px; }
+      .arrow-col { transform: rotate(90deg); }
+      .schedule-pills { flex-direction: column; align-items: center; }
+      .schedule-pill { min-width: 240px; }
+      .rule-cards { grid-template-columns: 1fr; }
+      .champions-list { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ダークモード */
+    @media (prefers-color-scheme: dark) {
+      .team-slot { background: #1e293b; border-color: #374151; color: #e2e8f0; }
+      .team-slot.rank1 { border-color: #fbbf24; background: #1c1700; color: #fcd34d; }
+      .cs-phase-bracket { background: #1e293b; border-color: #374151; color: #e2e8f0; }
+      .rule-card { background: #1e293b; border-color: #374151; }
+      .rule-card h4 { color: #60a5fa; }
+      .rule-card p { color: #9ca3af; }
+      .champion-item { background: #1e293b; border-color: #374151; }
+      .champion-item .champ-year { color: #9ca3af; }
+      .phase-date-item { background: #172554; border-color: #1e40af; }
+      .phase-date-item .date-val { color: #93c5fd; }
+      .tournament-title { color: #93c5fd; }
+      .cs-phase-box .cs-phase-label { color: #9ca3af; }
+      .league-label-box { background: #0f172a; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>クライマックスシリーズ・日本シリーズ 2026 日程</h1>
+    <p class="tool-description">2026年プロ野球（NPB）のクライマックスシリーズ（CS）・日本シリーズの日程・仕組みを解説。CSファーストステージ10月11日〜、ファイナルステージ10月15日〜、日本シリーズ10月24日〜。</p>
+
+    <!-- 概要バナー -->
+    <div class="postseason-banner">
+      <h2>&#127942; 2026年 ポストシーズン日程</h2>
+      <div class="banner-sub">対戦チームはレギュラーシーズン終了後に確定します</div>
+      <div class="schedule-pills">
+        <div class="schedule-pill">
+          <span class="pill-label">CSファーストステージ</span>
+          <div class="pill-date">10月11日（土）〜</div>
+          <span class="pill-sub">セ・パ各リーグ 最大3試合</span>
+        </div>
+        <div class="schedule-pill">
+          <span class="pill-label">CSファイナルステージ</span>
+          <div class="pill-date">10月15日（水）〜</div>
+          <span class="pill-sub">セ・パ各リーグ 最大6試合</span>
+        </div>
+        <div class="schedule-pill">
+          <span class="pill-label">日本シリーズ</span>
+          <div class="pill-date">10月24日（土）〜</div>
+          <span class="pill-sub">最大7試合 日本一決定戦</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.8rem;color:#888;margin-bottom:16px;text-align:right;">※日程データ出典: <a href="https://npb.jp/games/2026/cs/" target="_blank" rel="noopener" style="color:#2563eb;">NPB公式サイト</a>（日程は変更になる場合があります）</p>
+
+    <!-- トーナメント図 -->
+    <div class="tool-area">
+      <div class="tournament-container">
+        <div class="tournament-title">2026年 ポストシーズン トーナメント構造</div>
+
+        <div class="tournament-wrap">
+          <!-- セ・リーグ -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+            <div class="league-label-box">セ・リーグ</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+                <div class="round-label">レギュラーシーズン</div>
+                <div class="team-slot rank1">
+                  <span class="rank-badge">1位</span>
+                  セ1位チーム
+                </div>
+                <div class="team-slot rank2">
+                  <span class="rank-badge">2位</span>
+                  セ2位チーム
+                </div>
+                <div class="team-slot rank3">
+                  <span class="rank-badge">3位</span>
+                  セ3位チーム
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+                <div style="height:60px;"></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="font-size:0.75rem;color:#666;font-weight:bold;margin-bottom:4px;">CS<br>ファースト<br>10/11〜</div>
+                  <div style="font-size:1.2rem;color:#94a3b8;">→</div>
+                  <div style="background:#e2e8f0;border-radius:8px;padding:8px 10px;text-align:center;font-size:0.82rem;color:#475569;font-weight:bold;">2位<br>vs<br>3位</div>
+                </div>
+                <div style="height:60px;"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="font-size:0.75rem;color:#666;font-weight:bold;margin-bottom:4px;">CS<br>ファイナル<br>10/15〜</div>
+                  <div style="background:#1e3a5f;color:#fff;border-radius:8px;padding:10px 14px;text-align:center;font-size:0.82rem;font-weight:bold;min-width:90px;">
+                    1位<br><span style="font-size:0.7rem;color:#93c5fd;">+1 ADV</span><br>vs<br>FS勝者
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 真ん中：日本シリーズ -->
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;gap:8px;margin-top:40px;">
+            <div style="font-size:1.5rem;color:#94a3b8;">→</div>
+            <div class="japan-series-block">
+              <span class="js-trophy">&#127942;</span>
+              <div class="js-title">日本シリーズ</div>
+              <div class="js-date">10月24日（土）〜</div>
+              <div class="js-sub">セ代表 vs パ代表<br>先4勝で日本一</div>
+            </div>
+            <div style="font-size:1.5rem;color:#94a3b8;">←</div>
+          </div>
+
+          <!-- パ・リーグ -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+            <div class="league-label-box pa">パ・リーグ</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-direction:row-reverse;">
+              <div style="display:flex;flex-direction:column;gap:12px;align-items:center;">
+                <div class="round-label">レギュラーシーズン</div>
+                <div class="team-slot rank1">
+                  <span class="rank-badge">1位</span>
+                  パ1位チーム
+                </div>
+                <div class="team-slot rank2">
+                  <span class="rank-badge">2位</span>
+                  パ2位チーム
+                </div>
+                <div class="team-slot rank3">
+                  <span class="rank-badge">3位</span>
+                  パ3位チーム
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+                <div style="height:60px;"></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="font-size:0.75rem;color:#666;font-weight:bold;margin-bottom:4px;">CS<br>ファースト<br>10/11〜</div>
+                  <div style="font-size:1.2rem;color:#94a3b8;">←</div>
+                  <div style="background:#e2e8f0;border-radius:8px;padding:8px 10px;text-align:center;font-size:0.82rem;color:#475569;font-weight:bold;">2位<br>vs<br>3位</div>
+                </div>
+                <div style="height:60px;"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="font-size:0.75rem;color:#666;font-weight:bold;margin-bottom:4px;">CS<br>ファイナル<br>10/15〜</div>
+                  <div style="background:#8D0034;color:#fff;border-radius:8px;padding:10px 14px;text-align:center;font-size:0.82rem;font-weight:bold;min-width:90px;">
+                    1位<br><span style="font-size:0.7rem;color:#fca5a5;">+1 ADV</span><br>vs<br>FS勝者
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="text-align:center;font-size:0.8rem;color:#888;margin-top:8px;">ADV = アドバンテージ（1勝をもって開始）</p>
+      </div>
+    </div>
+
+    <!-- 各ステージ詳細 -->
+    <section class="content-section">
+      <h2>2026年 ポストシーズン 日程詳細</h2>
+
+      <div class="phase-section">
+        <h3>CSファーストステージ（セ・リーグ）</h3>
+        <div class="phase-dates">
+          <div class="phase-date-item">
+            <span class="date-label">開幕</span>
+            <span class="date-val">10月11日（土）</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">最大試合数</span>
+            <span class="date-val">3試合</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">開催地</span>
+            <span class="date-val">2位チーム本拠地</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">勝ち上がり条件</span>
+            <span class="date-val">先に2勝</span>
+          </div>
+        </div>
+        <p>セ・リーグ2位チームvs3位チームの対戦。先に2勝したチームがファイナルステージに進出します。アドバンテージはありません。</p>
+      </div>
+
+      <div class="phase-section pa">
+        <h3>CSファーストステージ（パ・リーグ）</h3>
+        <div class="phase-dates">
+          <div class="phase-date-item">
+            <span class="date-label">開幕</span>
+            <span class="date-val">10月11日（土）</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">最大試合数</span>
+            <span class="date-val">3試合</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">開催地</span>
+            <span class="date-val">2位チーム本拠地</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">勝ち上がり条件</span>
+            <span class="date-val">先に2勝</span>
+          </div>
+        </div>
+        <p>パ・リーグ2位チームvs3位チームの対戦。ルールはセ・リーグと同様です。</p>
+      </div>
+
+      <div class="phase-section">
+        <h3>CSファイナルステージ（セ・リーグ）</h3>
+        <div class="phase-dates">
+          <div class="phase-date-item">
+            <span class="date-label">開幕</span>
+            <span class="date-val">10月15日（水）</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">最大試合数</span>
+            <span class="date-val">6試合</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">開催地</span>
+            <span class="date-val">1位チーム本拠地</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">1位チーム条件</span>
+            <span class="date-val">3勝（ADV込み4勝）</span>
+          </div>
+        </div>
+        <p>セ・リーグ1位チームvsファーストステージ勝者の対戦。1位チームには<strong>1勝のアドバンテージ</strong>が与えられます。先に4勝（引き分けを含まない）したチームが日本シリーズへ進出します。</p>
+      </div>
+
+      <div class="phase-section pa">
+        <h3>CSファイナルステージ（パ・リーグ）</h3>
+        <div class="phase-dates">
+          <div class="phase-date-item">
+            <span class="date-label">開幕</span>
+            <span class="date-val">10月15日（水）</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">最大試合数</span>
+            <span class="date-val">6試合</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">開催地</span>
+            <span class="date-val">1位チーム本拠地</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">1位チーム条件</span>
+            <span class="date-val">3勝（ADV込み4勝）</span>
+          </div>
+        </div>
+        <p>ルールはセ・リーグと同様。パ・リーグ1位チームがアドバンテージ1勝を持ってスタートします。</p>
+      </div>
+
+      <div class="phase-section final">
+        <h3>日本シリーズ</h3>
+        <div class="phase-dates">
+          <div class="phase-date-item">
+            <span class="date-label">開幕</span>
+            <span class="date-val">10月24日（土）</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">最大試合数</span>
+            <span class="date-val">7試合</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">優勝条件</span>
+            <span class="date-val">先に4勝</span>
+          </div>
+          <div class="phase-date-item">
+            <span class="date-label">開催地</span>
+            <span class="date-val">両チーム本拠地</span>
+          </div>
+        </div>
+        <p>セ・リーグ代表vsパ・リーグ代表の頂上決戦。先に4勝したチームが日本一となります。ホーム・ビジターはセ・パ交互（3試合ずつ）で行われます。</p>
+      </div>
+    </section>
+
+    <!-- ルール解説 -->
+    <section class="content-section">
+      <h2>クライマックスシリーズのルール解説</h2>
+      <div class="rule-cards">
+        <div class="rule-card">
+          <h4>&#9733; アドバンテージとは</h4>
+          <p>ファイナルステージでは、レギュラーシーズン1位チームに「1勝のアドバンテージ」が与えられます。試合開始前からすでに1勝している状態でスタートするため、1位チームは3勝すれば突破できます（FS勝者は4勝必要）。</p>
+        </div>
+        <div class="rule-card">
+          <h4>&#128300; ファーストステージの仕組み</h4>
+          <p>2位vs3位の対戦で、先に2勝したチームが勝ち上がります（最大3試合）。アドバンテージはなく、2位チームのホームで行われます。3試合目の引き分けは試合数として消費されます。</p>
+        </div>
+        <div class="rule-card">
+          <h4>&#127919; DH制について</h4>
+          <p>CSはセ・リーグ球場でもDH（指名打者）制度が採用されます。これはレギュラーシーズンのセ・リーグでは通常DH制がない点と異なります。</p>
+        </div>
+        <div class="rule-card">
+          <h4>&#127941; 移動日</h4>
+          <p>ファーストステージとファイナルステージの間（10月13〜14日）、ファイナルステージと日本シリーズの間（10月21〜23日頃）に移動日・準備期間が設けられます。</p>
+        </div>
+        <div class="rule-card">
+          <h4>&#9881; 引き分けのルール</h4>
+          <p>引き分け（延長12回まで）は勝利数にカウントされません。引き分けが発生すると試合数が1試合延長されます（ファーストステージは最大4試合になる場合があります）。</p>
+        </div>
+        <div class="rule-card">
+          <h4>&#127960; 開催球場</h4>
+          <p>ファーストステージは2位チームの本拠地、ファイナルステージは1位チームの本拠地で全試合行われます。日本シリーズはホームとビジターに分けて行われ、第1〜3戦・第6〜7戦がパ代表のホームとなります（交互開催の場合）。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 歴代日本一 -->
+    <section class="content-section">
+      <h2>歴代日本シリーズ 優勝チーム（近年）</h2>
+      <div class="champions-list">
+        <div class="champion-item"><span class="champ-year">2025年</span><span class="champ-team">―（シーズン中）</span></div>
+        <div class="champion-item"><span class="champ-year">2024年</span><span class="champ-team">DeNA ベイスターズ</span></div>
+        <div class="champion-item"><span class="champ-year">2023年</span><span class="champ-team">阪神 タイガース</span></div>
+        <div class="champion-item"><span class="champ-year">2022年</span><span class="champ-team">オリックス バファローズ</span></div>
+        <div class="champion-item"><span class="champ-year">2021年</span><span class="champ-team">ヤクルト スワローズ</span></div>
+        <div class="champion-item"><span class="champ-year">2020年</span><span class="champ-team">ソフトバンク ホークス</span></div>
+        <div class="champion-item"><span class="champ-year">2019年</span><span class="champ-team">ソフトバンク ホークス</span></div>
+        <div class="champion-item"><span class="champ-year">2018年</span><span class="champ-team">ソフトバンク ホークス</span></div>
+      </div>
+    </section>
+
+    <!-- よくある質問 -->
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>2026年のクライマックスシリーズはいつですか？</summary><p>2026年のクライマックスシリーズは、ファーストステージが10月11日（土）から、ファイナルステージが10月15日（水）からセ・パ各リーグで開催されます。</p></details>
+      <details><summary>2026年の日本シリーズはいつですか？</summary><p>2026年の日本シリーズは10月24日（土）から開催されます。最大7試合（4勝したチームが優勝）で行われます。</p></details>
+      <details><summary>クライマックスシリーズのアドバンテージとは何ですか？</summary><p>ファイナルステージでは、レギュラーシーズンの1位チームに1勝のアドバンテージが与えられます。つまりファイナルステージ開始時点ですでに1勝している状態でスタートします。最大6試合（先に4勝したチームが勝利）ですが、1位チームは3勝すれば突破できます。</p></details>
+      <details><summary>CSファーストステージのルールは？</summary><p>ファーストステージはレギュラーシーズン2位vs3位の対戦です。先に2勝したチームが勝ち上がります（最大3試合）。アドバンテージはなく、2位チームのホームで行われます。</p></details>
+      <details><summary>CS・日本シリーズの対戦チームはいつ決まりますか？</summary><p>対戦チームはレギュラーシーズン終了後（9月末〜10月初旬）に確定します。セ・パ各リーグの上位3チームがCSに進出します。2026年のレギュラーシーズン最終戦は9月下旬の予定です。</p></details>
+      <details><summary>日本シリーズの試合方式は？</summary><p>日本シリーズは最大7試合で、先に4勝したチームが日本一になります。引き分けは勝利数にカウントされず、試合数が延長されます。</p></details>
+    </section>
+
+    <!-- 関連ツール -->
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../npb-schedule/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">プロ野球 全試合日程</h3>
+          <p>NPB全143試合スケジュール・チーム別カレンダー</p>
+        </a>
+        <a href="../npb-interleague/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">セ・パ交流戦 日程 2026</h3>
+          <p>5月26日〜6月14日の全108試合スケジュール</p>
+        </a>
+        <a href="../worldcup-2026/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">W杯2026 日本時間変換</h3>
+          <p>FIFA W杯全試合を日本時間で表示・時差変換</p>
+        </a>
+        <a href="../european-football/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">欧州サッカー日程</h3>
+          <p>プレミア・ラリーガ・CL等の試合を日本時間で表示</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+</body>
+</html>
