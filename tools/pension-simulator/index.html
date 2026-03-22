@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>年金受給額シミュレーター｜2026年4月改正対応｜無料オンライン計算</title>
+  <meta name="description" content="年金受給額を無料でシミュレーション。2026年4月の在職老齢年金改正（50万→62万円）に完全対応。繰り上げ・繰り下げ受給の比較表やグラフで最適な受給開始年齢がわかります。">
+  <meta property="og:title" content="年金受給額シミュレーター｜2026年4月改正対応｜無料">
+  <meta property="og:description" content="2026年4月改正対応。国民年金・厚生年金の受給額を瞬時に計算。繰り上げ・繰り下げ比較グラフ付き。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/pension-simulator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "年金受給額シミュレーター（2026年4月改正対応）",
+    "description": "国民年金・厚生年金の受給額をシミュレーション。2026年4月の在職老齢年金改正に完全対応。繰り上げ・繰り下げ受給の比較も可能。",
+    "url": "https://simpletoolkit.net/tools/pension-simulator/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "2026年4月の年金改正で何が変わりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "在職老齢年金の支給停止基準額が月額50万円から62万円に引き上げられます。これにより、働きながら年金を受給する65歳以上の方の年金カットが大幅に緩和されます。基本月額と総報酬月額相当額の合計が62万円を超えない限り、年金は全額支給されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "繰り下げ受給するとどれくらい増えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "繰り下げ受給は1ヶ月あたり0.7%増額されます。例えば70歳まで5年間繰り下げると42%増額、75歳まで10年間繰り下げると84%増額になります。ただし、受給開始が遅くなるため、累計受給額で得になる分岐点は約12年後です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "繰り上げ受給するとどれくらい減りますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "繰り上げ受給は1ヶ月あたり0.4%減額されます（2022年4月以降の改定後）。60歳で受給開始すると24%減額、63歳で受給開始すると9.6%減額になります。一度繰り上げると生涯その減額率が適用されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "国民年金の満額はいくらですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2026年度の国民年金（老齢基礎年金）の満額は年額816,000円（月額68,000円）です。20歳から60歳までの40年間（480ヶ月）すべて納付した場合に満額が支給されます。未納期間がある場合は月数に応じて減額されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "厚生年金の計算方法は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "厚生年金（報酬比例部分）は「平均標準報酬月額 × 5.481/1000 × 加入月数」で計算されます。平均標準報酬月額は加入期間中の平均的な月収（賞与含む）で、上限は65万円です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。年収や年金に関するデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .reform-banner {
+      background: linear-gradient(135deg, #dc2626, #ea580c);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .reform-banner small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.82rem;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-field {
+      flex: 1;
+      min-width: 160px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+    .input-field input,
+    .input-field select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1.05rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .input-field .help {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .pension-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .pension-result.show { display: block; }
+
+    .result-highlight {
+      text-align: center;
+      padding: 28px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    [data-theme="dark"] .result-highlight {
+      background: linear-gradient(135deg, #1e3a5f 0%, #1a3d2e 100%);
+    }
+    .result-highlight .label { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 4px; }
+    .result-highlight .amount { font-size: 2.6rem; font-weight: 800; color: var(--primary); line-height: 1.2; }
+    .result-highlight .sub-amount { font-size: 1.15rem; color: var(--text-muted); margin-top: 6px; }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .breakdown-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .breakdown-card .bd-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+    .breakdown-card .bd-value { font-size: 1.3rem; font-weight: 700; }
+    .breakdown-card .bd-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+    .reform-box {
+      background: #fffbeb;
+      border: 2px solid #f59e0b;
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 24px 0;
+    }
+    [data-theme="dark"] .reform-box {
+      background: #422006;
+      border-color: #b45309;
+    }
+    .reform-box h3 { color: #b45309; font-size: 1.05rem; margin-bottom: 10px; }
+    .reform-box p { font-size: 0.9rem; margin-bottom: 8px; line-height: 1.7; }
+    .reform-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .reform-compare > div {
+      padding: 12px;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .reform-old { background: #fee2e2; color: #991b1b; }
+    .reform-new { background: #dcfce7; color: #166534; }
+    [data-theme="dark"] .reform-old { background: #450a0a; color: #fca5a5; }
+    [data-theme="dark"] .reform-new { background: #052e16; color: #86efac; }
+    .reform-compare strong { display: block; font-size: 1.3rem; margin-top: 4px; }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 16px;
+    }
+    .comparison-table th, .comparison-table td {
+      border: 1px solid var(--border);
+      padding: 10px 8px;
+      text-align: right;
+    }
+    .comparison-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+    .comparison-table td:first-child { text-align: center; font-weight: 600; }
+    .comparison-table .highlight-row { background: #eff6ff; font-weight: 700; }
+    [data-theme="dark"] .comparison-table .highlight-row { background: #1e3a5f; }
+    .comparison-table .best-row { background: #f0fdf4; }
+    [data-theme="dark"] .comparison-table .best-row { background: #052e16; }
+
+    canvas { width: 100%; max-height: 350px; margin-top: 16px; }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+    [data-theme="dark"] .notice {
+      background: #422006;
+      border-color: #b45309;
+      color: #fcd34d;
+    }
+
+    @media (max-width: 600px) {
+      .result-highlight .amount { font-size: 1.9rem; }
+      .breakdown-grid { grid-template-columns: 1fr; }
+      .reform-compare { grid-template-columns: 1fr; }
+      .comparison-table { font-size: 0.75rem; }
+      .comparison-table th, .comparison-table td { padding: 6px 4px; }
+    }
+
+    /* スライドショー */
+    .slides-container { position: relative; overflow: hidden; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .slides-track { display: flex; transition: transform 0.3s ease; }
+    .slide { min-width: 100%; }
+    .slide svg { width: 100%; height: auto; display: block; }
+    .slide-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; z-index: 2; display: flex; align-items: center; justify-content: center; }
+    .slide-btn:hover { background: rgba(0,0,0,0.6); }
+    .slide-btn.prev { left: 8px; }
+    .slide-btn.next { right: 8px; }
+    .slide-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; margin-bottom: 8px; }
+    .slide-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
+    .slide-dot.active { background: var(--primary); }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>年金受給額シミュレーター</h1>
+
+    <!-- 解説スライドショー -->
+    <div class="slides-container" id="slideshow">
+      <div class="slides-track" id="slides-track">
+        <!-- スライド1: 2026年4月 年金制度改正とは？ -->
+        <div class="slide">
+          <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+            <rect width="800" height="450" rx="12" fill="#eff6ff"/>
+            <text x="400" y="52" text-anchor="middle" font-size="28" font-weight="bold" fill="#1e3a5f">2026年4月 年金制度改正とは？</text>
+            <text x="400" y="88" text-anchor="middle" font-size="15" fill="#4b7bb5">在職老齢年金の支給停止基準額が大幅引き上げ</text>
+            <!-- 左ボックス: 改正前 -->
+            <rect x="80" y="120" width="260" height="220" rx="16" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+            <text x="210" y="155" text-anchor="middle" font-size="16" font-weight="bold" fill="#991b1b">改正前（〜2026年3月）</text>
+            <rect x="130" y="175" width="160" height="70" rx="10" fill="#fff" stroke="#fca5a5" stroke-width="1.5"/>
+            <text x="210" y="200" text-anchor="middle" font-size="14" fill="#64748b">基準額</text>
+            <text x="210" y="232" text-anchor="middle" font-size="32" font-weight="bold" fill="#dc2626">50万円</text>
+            <text x="210" y="275" text-anchor="middle" font-size="13" fill="#991b1b">合計50万円超で</text>
+            <text x="210" y="296" text-anchor="middle" font-size="13" fill="#991b1b">年金カット発生</text>
+            <text x="210" y="328" text-anchor="middle" font-size="12" fill="#b91c1c">多くの人が影響を受けていた</text>
+            <!-- 矢印 -->
+            <polygon points="370,230 410,210 410,220 450,220 450,240 410,240 410,250" fill="#f59e0b"/>
+            <text x="410" y="268" text-anchor="middle" font-size="14" font-weight="bold" fill="#b45309">引き上げ</text>
+            <!-- 右ボックス: 改正後 -->
+            <rect x="460" y="120" width="260" height="220" rx="16" fill="#dcfce7" stroke="#86efac" stroke-width="2"/>
+            <text x="590" y="155" text-anchor="middle" font-size="16" font-weight="bold" fill="#166534">改正後（2026年4月〜）</text>
+            <rect x="510" y="175" width="160" height="70" rx="10" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+            <text x="590" y="200" text-anchor="middle" font-size="14" fill="#64748b">基準額</text>
+            <text x="590" y="232" text-anchor="middle" font-size="32" font-weight="bold" fill="#16a34a">62万円</text>
+            <text x="590" y="275" text-anchor="middle" font-size="13" fill="#166534">合計62万円超で</text>
+            <text x="590" y="296" text-anchor="middle" font-size="13" fill="#166534">年金カット発生</text>
+            <text x="590" y="328" text-anchor="middle" font-size="12" fill="#15803d">約48万人の年金カットが緩和</text>
+            <!-- 下部メッセージ -->
+            <rect x="150" y="365" width="500" height="55" rx="10" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+            <text x="400" y="390" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e40af">月収30〜40万円で働くシニアの方は</text>
+            <text x="400" y="410" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e40af">年金カットがなくなる・大幅に減少します</text>
+          </svg>
+        </div>
+
+        <!-- スライド2: 在職老齢年金の仕組み -->
+        <div class="slide">
+          <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+            <rect width="800" height="450" rx="12" fill="#f0fdf4"/>
+            <text x="400" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#14532d">在職老齢年金の仕組み</text>
+            <text x="400" y="78" text-anchor="middle" font-size="15" fill="#4ade80">年金と給与の合計で支給額が決まる</text>
+            <!-- 計算式 -->
+            <rect x="60" y="100" width="160" height="80" rx="12" fill="#bbf7d0" stroke="#4ade80" stroke-width="2"/>
+            <text x="140" y="132" text-anchor="middle" font-size="13" fill="#166534">年金月額</text>
+            <text x="140" y="158" text-anchor="middle" font-size="22" font-weight="bold" fill="#166534">基本月額</text>
+            <text x="245" y="148" text-anchor="middle" font-size="30" font-weight="bold" fill="#64748b">+</text>
+            <rect x="270" y="100" width="200" height="80" rx="12" fill="#bfdbfe" stroke="#60a5fa" stroke-width="2"/>
+            <text x="370" y="132" text-anchor="middle" font-size="13" fill="#1e40af">給与（総報酬月額相当額）</text>
+            <text x="370" y="158" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e40af">月給+賞与÷12</text>
+            <text x="500" y="148" text-anchor="middle" font-size="30" font-weight="bold" fill="#64748b">=</text>
+            <rect x="530" y="100" width="210" height="80" rx="12" fill="#fef9c3" stroke="#fbbf24" stroke-width="2"/>
+            <text x="635" y="132" text-anchor="middle" font-size="13" fill="#92400e">合計額</text>
+            <text x="635" y="158" text-anchor="middle" font-size="22" font-weight="bold" fill="#92400e">判定基準</text>
+            <!-- 分岐 -->
+            <line x1="635" y1="180" x2="635" y2="210" stroke="#92400e" stroke-width="2"/>
+            <line x1="300" y1="210" x2="635" y2="210" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6"/>
+            <!-- 62万以下 -->
+            <rect x="60" y="220" width="320" height="90" rx="12" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+            <text x="220" y="250" text-anchor="middle" font-size="16" font-weight="bold" fill="#166534">合計 ≦ 62万円</text>
+            <text x="220" y="280" text-anchor="middle" font-size="20" font-weight="bold" fill="#16a34a">→ 年金は全額支給</text>
+            <text x="220" y="300" text-anchor="middle" font-size="12" fill="#166534">カットなし</text>
+            <!-- 62万超 -->
+            <rect x="420" y="220" width="320" height="90" rx="12" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+            <text x="580" y="250" text-anchor="middle" font-size="16" font-weight="bold" fill="#991b1b">合計 ＞ 62万円</text>
+            <text x="580" y="280" text-anchor="middle" font-size="20" font-weight="bold" fill="#dc2626">→ 超過分の半額を停止</text>
+            <text x="580" y="300" text-anchor="middle" font-size="12" fill="#991b1b">(合計−62万)÷2 を年金から減額</text>
+            <!-- 具体例 -->
+            <rect x="100" y="335" width="600" height="90" rx="12" fill="#fff" stroke="#86efac" stroke-width="2"/>
+            <text x="400" y="360" text-anchor="middle" font-size="15" font-weight="bold" fill="#14532d">具体例</text>
+            <text x="400" y="385" text-anchor="middle" font-size="14" fill="#334155">年金15万円 + 給与40万円 = 合計55万円</text>
+            <text x="400" y="410" text-anchor="middle" font-size="16" font-weight="bold" fill="#16a34a">→ 62万円以下なので年金は全額支給！</text>
+          </svg>
+        </div>
+
+        <!-- スライド3: 繰り上げ受給のメリット・デメリット -->
+        <div class="slide">
+          <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+            <rect width="800" height="450" rx="12" fill="#fef3c7"/>
+            <text x="400" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#78350f">繰り上げ受給のメリット・デメリット</text>
+            <text x="400" y="78" text-anchor="middle" font-size="15" fill="#b45309">60〜64歳で受給開始（1ヶ月あたり0.4%減額）</text>
+            <!-- メリット（左） -->
+            <rect x="40" y="100" width="340" height="170" rx="14" fill="#fff" stroke="#86efac" stroke-width="2"/>
+            <rect x="40" y="100" width="340" height="36" rx="14" fill="#dcfce7"/>
+            <rect x="40" y="122" width="340" height="14" fill="#dcfce7"/>
+            <text x="210" y="125" text-anchor="middle" font-size="17" font-weight="bold" fill="#166534">メリット</text>
+            <circle cx="75" cy="163" r="10" fill="#4ade80"/>
+            <text x="72" y="168" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✓</text>
+            <text x="92" y="168" font-size="14" fill="#334155">65歳を待たずに年金を受け取れる</text>
+            <circle cx="75" cy="200" r="10" fill="#4ade80"/>
+            <text x="72" y="205" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✓</text>
+            <text x="92" y="205" font-size="14" fill="#334155">早期退職した場合の生活費に</text>
+            <circle cx="75" cy="237" r="10" fill="#4ade80"/>
+            <text x="72" y="242" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✓</text>
+            <text x="92" y="242" font-size="14" fill="#334155">短命リスクへの備え</text>
+            <!-- デメリット（右） -->
+            <rect x="420" y="100" width="340" height="170" rx="14" fill="#fff" stroke="#fca5a5" stroke-width="2"/>
+            <rect x="420" y="100" width="340" height="36" rx="14" fill="#fee2e2"/>
+            <rect x="420" y="122" width="340" height="14" fill="#fee2e2"/>
+            <text x="590" y="125" text-anchor="middle" font-size="17" font-weight="bold" fill="#991b1b">デメリット</text>
+            <circle cx="455" cy="163" r="10" fill="#f87171"/>
+            <text x="452" y="168" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✕</text>
+            <text x="472" y="168" font-size="14" fill="#334155">1ヶ月あたり0.4%の永久減額</text>
+            <circle cx="455" cy="200" r="10" fill="#f87171"/>
+            <text x="452" y="205" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✕</text>
+            <text x="472" y="205" font-size="14" fill="#334155">60歳開始なら24%も減額</text>
+            <circle cx="455" cy="237" r="10" fill="#f87171"/>
+            <text x="452" y="242" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✕</text>
+            <text x="472" y="242" font-size="14" fill="#334155">一度決めたら変更不可</text>
+            <!-- 棒グラフ -->
+            <text x="400" y="305" text-anchor="middle" font-size="16" font-weight="bold" fill="#78350f">受給率の比較</text>
+            <!-- 65歳バー -->
+            <rect x="150" y="320" width="300" height="40" rx="6" fill="#3b82f6"/>
+            <text x="160" y="345" font-size="14" font-weight="bold" fill="#fff">65歳（通常）</text>
+            <text x="440" y="345" font-size="15" font-weight="bold" fill="#1e40af">100%</text>
+            <!-- 60歳バー -->
+            <rect x="150" y="375" width="228" height="40" rx="6" fill="#f59e0b"/>
+            <text x="160" y="400" font-size="14" font-weight="bold" fill="#fff">60歳（繰上）</text>
+            <text x="368" y="400" font-size="15" font-weight="bold" fill="#b45309">76%</text>
+            <text x="500" y="400" font-size="13" fill="#92400e">▼24%減額</text>
+          </svg>
+        </div>
+
+        <!-- スライド4: 繰り下げ受給のメリット・デメリット -->
+        <div class="slide">
+          <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+            <rect width="800" height="450" rx="12" fill="#ede9fe"/>
+            <text x="400" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#3b0764">繰り下げ受給のメリット・デメリット</text>
+            <text x="400" y="78" text-anchor="middle" font-size="15" fill="#7c3aed">66〜75歳で受給開始（1ヶ月あたり0.7%増額）</text>
+            <!-- メリット（左） -->
+            <rect x="40" y="100" width="340" height="170" rx="14" fill="#fff" stroke="#86efac" stroke-width="2"/>
+            <rect x="40" y="100" width="340" height="36" rx="14" fill="#dcfce7"/>
+            <rect x="40" y="122" width="340" height="14" fill="#dcfce7"/>
+            <text x="210" y="125" text-anchor="middle" font-size="17" font-weight="bold" fill="#166534">メリット</text>
+            <circle cx="75" cy="163" r="10" fill="#4ade80"/>
+            <text x="72" y="168" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✓</text>
+            <text x="92" y="168" font-size="14" fill="#334155">1ヶ月あたり0.7%の永久増額</text>
+            <circle cx="75" cy="200" r="10" fill="#4ade80"/>
+            <text x="72" y="205" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✓</text>
+            <text x="92" y="205" font-size="14" fill="#334155">75歳開始なら84%も増額！</text>
+            <circle cx="75" cy="237" r="10" fill="#4ade80"/>
+            <text x="72" y="242" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✓</text>
+            <text x="92" y="242" font-size="14" fill="#334155">長生きするほど得になる</text>
+            <!-- デメリット（右） -->
+            <rect x="420" y="100" width="340" height="170" rx="14" fill="#fff" stroke="#fca5a5" stroke-width="2"/>
+            <rect x="420" y="100" width="340" height="36" rx="14" fill="#fee2e2"/>
+            <rect x="420" y="122" width="340" height="14" fill="#fee2e2"/>
+            <text x="590" y="125" text-anchor="middle" font-size="17" font-weight="bold" fill="#991b1b">デメリット</text>
+            <circle cx="455" cy="163" r="10" fill="#f87171"/>
+            <text x="452" y="168" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✕</text>
+            <text x="472" y="168" font-size="14" fill="#334155">受給開始が遅くなる</text>
+            <circle cx="455" cy="200" r="10" fill="#f87171"/>
+            <text x="452" y="205" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✕</text>
+            <text x="472" y="205" font-size="14" fill="#334155">損益分岐点は約12年後</text>
+            <circle cx="455" cy="237" r="10" fill="#f87171"/>
+            <text x="452" y="242" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">✕</text>
+            <text x="472" y="242" font-size="14" fill="#334155">繰り下げ中は年金が0円</text>
+            <!-- 棒グラフ -->
+            <text x="400" y="300" text-anchor="middle" font-size="16" font-weight="bold" fill="#3b0764">受給率の比較</text>
+            <!-- 65歳バー -->
+            <rect x="100" y="315" width="200" height="32" rx="6" fill="#3b82f6"/>
+            <text x="110" y="336" font-size="13" font-weight="bold" fill="#fff">65歳</text>
+            <text x="295" y="336" font-size="14" font-weight="bold" fill="#1e40af">100%</text>
+            <!-- 70歳バー -->
+            <rect x="100" y="355" width="284" height="32" rx="6" fill="#8b5cf6"/>
+            <text x="110" y="376" font-size="13" font-weight="bold" fill="#fff">70歳</text>
+            <text x="378" y="376" font-size="14" font-weight="bold" fill="#6d28d9">142%</text>
+            <text x="425" y="376" font-size="12" fill="#7c3aed">▲42%増</text>
+            <!-- 75歳バー -->
+            <rect x="100" y="395" width="368" height="32" rx="6" fill="#a855f7"/>
+            <text x="110" y="416" font-size="13" font-weight="bold" fill="#fff">75歳</text>
+            <text x="462" y="416" font-size="14" font-weight="bold" fill="#7e22ce">184%</text>
+            <text x="510" y="416" font-size="12" fill="#7c3aed">▲84%増</text>
+          </svg>
+        </div>
+
+        <!-- スライド5: 最適な受給開始年齢の選び方 -->
+        <div class="slide">
+          <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+            <rect width="800" height="450" rx="12" fill="#fdf2f8"/>
+            <text x="400" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#831843">最適な受給開始年齢の選び方</text>
+            <text x="400" y="78" text-anchor="middle" font-size="15" fill="#be185d">3つの質問で方向性がわかる</text>
+            <!-- 質問1 -->
+            <rect x="250" y="100" width="300" height="45" rx="22" fill="#ec4899" stroke="#f472b6" stroke-width="2"/>
+            <text x="400" y="128" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">健康状態は良好ですか？</text>
+            <!-- 分岐線 -->
+            <line x1="320" y1="145" x2="200" y2="180" stroke="#be185d" stroke-width="2"/>
+            <line x1="480" y1="145" x2="600" y2="180" stroke="#be185d" stroke-width="2"/>
+            <text x="240" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">いいえ</text>
+            <text x="560" y="168" text-anchor="middle" font-size="13" font-weight="bold" fill="#be185d">はい</text>
+            <!-- いいえ → 繰り上げ検討 -->
+            <rect x="80" y="180" width="240" height="40" rx="10" fill="#fecdd3" stroke="#fda4af" stroke-width="1.5"/>
+            <text x="200" y="205" text-anchor="middle" font-size="14" font-weight="bold" fill="#9f1239">繰り上げ受給を検討</text>
+            <!-- はい → 次の質問 -->
+            <rect x="480" y="180" width="240" height="40" rx="10" fill="#d8b4fe" stroke="#c084fc" stroke-width="1.5"/>
+            <text x="600" y="205" text-anchor="middle" font-size="14" font-weight="bold" fill="#6b21a8">次の質問へ ↓</text>
+            <!-- 質問2 -->
+            <rect x="430" y="240" width="340" height="45" rx="22" fill="#8b5cf6" stroke="#a78bfa" stroke-width="2"/>
+            <text x="600" y="268" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">65歳以降も働き続ける？</text>
+            <!-- 分岐線2 -->
+            <line x1="510" y1="285" x2="400" y2="315" stroke="#7c3aed" stroke-width="2"/>
+            <line x1="690" y1="285" x2="720" y2="315" stroke="#7c3aed" stroke-width="2"/>
+            <text x="440" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="#7c3aed">はい</text>
+            <text x="720" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="#7c3aed">いいえ</text>
+            <!-- はい → 在職老齢年金注意 -->
+            <rect x="260" y="315" width="280" height="50" rx="10" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="400" y="337" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">在職老齢年金に注意!</text>
+            <text x="400" y="356" text-anchor="middle" font-size="12" fill="#92400e">給与+年金の合計を確認しよう</text>
+            <!-- いいえ → 繰り下げ検討 -->
+            <rect x="600" y="315" width="160" height="50" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+            <text x="680" y="337" text-anchor="middle" font-size="13" font-weight="bold" fill="#166534">繰り下げで</text>
+            <text x="680" y="356" text-anchor="middle" font-size="13" font-weight="bold" fill="#166534">大幅増額！</text>
+            <!-- 質問3 -->
+            <rect x="50" y="240" width="300" height="45" rx="22" fill="#f97316" stroke="#fb923c" stroke-width="2"/>
+            <text x="200" y="268" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">すぐにお金が必要？</text>
+            <line x1="110" y1="285" x2="100" y2="315" stroke="#ea580c" stroke-width="2"/>
+            <line x1="290" y1="285" x2="300" y2="315" stroke="#ea580c" stroke-width="2"/>
+            <text x="90" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="#ea580c">はい</text>
+            <text x="310" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="#ea580c">いいえ</text>
+            <rect x="30" y="315" width="140" height="50" rx="10" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+            <text x="100" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="#dc2626">繰り上げ受給</text>
+            <rect x="230" y="315" width="140" height="50" rx="10" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+            <text x="300" y="345" text-anchor="middle" font-size="13" font-weight="bold" fill="#166534">65歳で通常受給</text>
+            <!-- 下部メッセージ -->
+            <rect x="100" y="390" width="600" height="45" rx="10" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1.5"/>
+            <text x="400" y="413" text-anchor="middle" font-size="14" fill="#9d174d">上のシミュレーターで、あなたの条件を入力して比較してみましょう！</text>
+            <text x="400" y="430" text-anchor="middle" font-size="12" fill="#be185d">↓ 繰り上げ・繰り下げの受給額を一覧で比較できます</text>
+          </svg>
+        </div>
+      </div>
+      <button class="slide-btn prev" id="slide-prev" aria-label="前のスライド">&#9664;</button>
+      <button class="slide-btn next" id="slide-next" aria-label="次のスライド">&#9654;</button>
+    </div>
+    <div class="slide-dots" id="slide-dots"></div>
+
+    <div class="reform-banner">
+      2026年4月 年金制度改正に完全対応
+      <small>在職老齢年金の支給停止基準額が50万円→62万円に引き上げ</small>
+    </div>
+    <p class="tool-description">国民年金（老齢基礎年金）・厚生年金（報酬比例部分）の受給見込み額を無料でシミュレーション。繰り上げ・繰り下げ受給の比較表やグラフで、最適な受給開始年齢がわかります。すべてブラウザ内で計算、データ送信なし。</p>
+
+    <div class="tool-area">
+      <h3 style="font-size:1rem;margin-bottom:16px;">基本情報を入力</h3>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="birth-year">生まれた年</label>
+          <select id="birth-year"></select>
+          <div class="help">現在の年齢から受給開始年齢を判定します</div>
+        </div>
+        <div class="input-field">
+          <label for="gender">性別</label>
+          <select id="gender">
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+          </select>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem;margin-bottom:16px;margin-top:24px;">加入期間</h3>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="kokumin-months">国民年金の加入月数</label>
+          <input type="number" id="kokumin-months" placeholder="480" min="0" max="480" value="480">
+          <div class="help">最大480ヶ月（40年）。未納がなければ480</div>
+        </div>
+        <div class="input-field">
+          <label for="kousei-months">厚生年金の加入月数</label>
+          <input type="number" id="kousei-months" placeholder="420" min="0" max="600" value="420">
+          <div class="help">会社員・公務員として勤務した月数</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="avg-salary">平均標準報酬月額</label>
+          <input type="number" id="avg-salary" placeholder="350000" min="0" max="650000" step="10000" value="350000">
+          <div class="unit">円</div>
+          <div class="help">加入期間中の平均的な月収（賞与含む月割り）。上限65万円</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem;margin-bottom:16px;margin-top:24px;">在職老齢年金（働きながら受給する場合）</h3>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="current-income">現在の月収（総報酬月額相当額）</label>
+          <input type="number" id="current-income" placeholder="0" min="0" max="2000000" step="10000" value="0">
+          <div class="unit">円（0なら在職老齢年金の計算をスキップ）</div>
+          <div class="help">月給＋直近1年の賞与÷12。働いていない場合は0</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="receive-age">受給開始年齢</label>
+          <select id="receive-age">
+            <option value="60">60歳（繰り上げ）</option>
+            <option value="61">61歳（繰り上げ）</option>
+            <option value="62">62歳（繰り上げ）</option>
+            <option value="63">63歳（繰り上げ）</option>
+            <option value="64">64歳（繰り上げ）</option>
+            <option value="65" selected>65歳（通常）</option>
+            <option value="66">66歳（繰り下げ）</option>
+            <option value="67">67歳（繰り下げ）</option>
+            <option value="68">68歳（繰り下げ）</option>
+            <option value="69">69歳（繰り下げ）</option>
+            <option value="70">70歳（繰り下げ）</option>
+            <option value="71">71歳（繰り下げ）</option>
+            <option value="72">72歳（繰り下げ）</option>
+            <option value="73">73歳（繰り下げ）</option>
+            <option value="74">74歳（繰り下げ）</option>
+            <option value="75">75歳（繰り下げ）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">年金を計算する</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="pension-result" id="pension-result">
+        <div class="result-highlight">
+          <div class="label">年金受給見込み額（年額）</div>
+          <div class="amount" id="res-yearly"></div>
+          <div class="sub-amount">月額 <strong id="res-monthly"></strong></div>
+        </div>
+
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <div class="bd-label">老齢基礎年金（国民年金）</div>
+            <div class="bd-value" style="color:#2563eb;" id="res-basic"></div>
+            <div class="bd-sub" id="res-basic-sub"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">老齢厚生年金（報酬比例）</div>
+            <div class="bd-value" style="color:#7c3aed;" id="res-kousei"></div>
+            <div class="bd-sub" id="res-kousei-sub"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">繰り上げ/繰り下げ調整</div>
+            <div class="bd-value" id="res-adjust"></div>
+            <div class="bd-sub" id="res-adjust-sub"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">在職老齢年金による停止額</div>
+            <div class="bd-value" style="color:#dc2626;" id="res-suspend"></div>
+            <div class="bd-sub" id="res-suspend-sub"></div>
+          </div>
+        </div>
+
+        <!-- 在職老齢年金 改正比較 -->
+        <div class="reform-box" id="reform-box" style="display:none;">
+          <h3>2026年4月改正の影響</h3>
+          <p>在職老齢年金の支給停止基準額が引き上げられ、年金カットが緩和されます。</p>
+          <div class="reform-compare">
+            <div class="reform-old">
+              <div>改正前（〜2026年3月）</div>
+              <div>基準額: <strong>月50万円</strong></div>
+              <div id="reform-old-suspend"></div>
+            </div>
+            <div class="reform-new">
+              <div>改正後（2026年4月〜）</div>
+              <div>基準額: <strong>月62万円</strong></div>
+              <div id="reform-new-suspend"></div>
+            </div>
+          </div>
+          <p id="reform-benefit" style="margin-top:12px;font-weight:600;text-align:center;"></p>
+        </div>
+
+        <!-- 繰り上げ・繰り下げ比較表 -->
+        <h3 style="font-size:1.05rem;margin-top:32px;margin-bottom:8px;">繰り上げ・繰り下げ受給 比較表</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:4px;">受給開始年齢ごとの年金額と累計受給額の比較</p>
+        <div style="overflow-x:auto;">
+          <table class="comparison-table" id="comparison-table">
+            <thead>
+              <tr>
+                <th>受給開始</th>
+                <th>増減率</th>
+                <th>年額</th>
+                <th>月額</th>
+                <th>75歳時累計</th>
+                <th>80歳時累計</th>
+                <th>85歳時累計</th>
+                <th>90歳時累計</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-body"></tbody>
+          </table>
+        </div>
+
+        <!-- 累計受給額グラフ -->
+        <h3 style="font-size:1.05rem;margin-top:32px;margin-bottom:8px;">累計受給額の推移グラフ</h3>
+        <canvas id="pension-chart" height="300"></canvas>
+
+        <div class="notice">
+          <strong>注意：</strong>この計算結果は概算値です。実際の年金額は、物価スライド率、マクロ経済スライド、加給年金、振替加算など、個人の状況により異なります。正確な金額は「ねんきん定期便」や最寄りの年金事務所でご確認ください。
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO コンテンツ -->
+    <section class="content-section">
+      <h2>2026年4月 年金制度改正のポイント</h2>
+      <p>2026年4月1日から年金制度が改正され、在職老齢年金の支給停止基準額が<strong>月額50万円から62万円</strong>に引き上げられます。これにより、65歳以上で働きながら年金を受給する方の年金カットが大幅に緩和されます。</p>
+      <h3>改正の具体的な内容</h3>
+      <ul>
+        <li><strong>対象者</strong>: 65歳以上の在職老齢年金受給者</li>
+        <li><strong>変更点</strong>: 基本月額と総報酬月額相当額の合計が62万円（改正前は50万円）を超えた場合に、超えた分の半額が支給停止</li>
+        <li><strong>メリット</strong>: 月収30-40万円程度で働くシニアの方は、年金カットがなくなるか大幅に減少</li>
+        <li><strong>その他</strong>: 在職老齢年金の基準額50万円→62万円の引き上げにより、約48万人が恩恵を受けると試算</li>
+      </ul>
+      <h3>繰り上げ受給と繰り下げ受給</h3>
+      <p>年金は65歳が基本の受給開始年齢ですが、60歳から75歳の間で自由に選択できます。</p>
+      <ul>
+        <li><strong>繰り上げ受給（60〜64歳）</strong>: 1ヶ月あたり0.4%減額。60歳開始なら24%減額</li>
+        <li><strong>繰り下げ受給（66〜75歳）</strong>: 1ヶ月あたり0.7%増額。70歳開始なら42%増額、75歳開始なら84%増額</li>
+      </ul>
+      <p>繰り下げ受給で増額しても、受給開始が遅れる分、損益分岐点は受給開始から約12年後です。平均寿命や健康状態を考慮して判断しましょう。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>国民年金の満額はいくらですか？</summary><p>2026年度の老齢基礎年金の満額は年額816,000円（月額68,000円）です。40年間（480ヶ月）すべて保険料を納付した場合に満額支給されます。</p></details>
+      <details><summary>厚生年金の計算方法を教えてください</summary><p>厚生年金（報酬比例部分）= 平均標準報酬月額 × 5.481/1000 × 加入月数 で計算します。平均標準報酬月額は在職中の平均的な月収（賞与込み月割り）で、上限は65万円です。</p></details>
+      <details><summary>在職老齢年金とは何ですか？</summary><p>65歳以上で厚生年金に加入しながら（会社員として働きながら）老齢厚生年金を受給する場合、年金の基本月額と給与の合計が一定額を超えると、超えた分の半額が支給停止される制度です。2026年4月から基準額が50万円→62万円に引き上げられます。</p></details>
+      <details><summary>繰り上げ受給と繰り下げ受給、どちらが得ですか？</summary><p>一概にはいえません。長生きするほど繰り下げが有利、早く亡くなると繰り上げが有利です。損益分岐点は受給開始から約12年後。75歳まで繰り下げた場合、87歳以上生きれば65歳受給開始より累計で得になります。</p></details>
+      <details><summary>このツールのデータは安全ですか？</summary><p>はい。すべての計算はブラウザ内で完結し、入力データがサーバーに送信されることは一切ありません。安心してご利用ください。</p></details>
+    </section>
+
+    <section class="content-section">
+      <h2>関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../salary-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">手取り計算シミュレーター</h3>
+          <p>年収から手取りを自動計算</p>
+        </a>
+        <a href="../furusato-tax/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ふるさと納税計算</h3>
+          <p>控除上限額をシミュレーション</p>
+        </a>
+        <a href="../loan-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ローン返済計算</h3>
+          <p>毎月の返済額を自動計算</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script src="../../common/affiliate.js"></script>
+  <script src="../../common/newsletter.js" defer></script>
+  <script>
+    // 生まれた年のselect生成
+    (function() {
+      var sel = document.getElementById('birth-year');
+      var currentYear = 2026;
+      for (var y = currentYear - 80; y <= currentYear - 30; y++) {
+        var opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y + '年（' + (currentYear - y) + '歳）';
+        if (y === currentYear - 65) opt.selected = true;
+        sel.appendChild(opt);
+      }
+    })();
+
+    // 年金計算ロジック
+    var BASIC_FULL = 816000; // 2026年度 老齢基礎年金満額
+
+    function calcBasicPension(months) {
+      return BASIC_FULL * Math.min(months, 480) / 480;
+    }
+
+    function calcKouseiPension(avgSalary, months) {
+      var salary = Math.min(avgSalary, 650000);
+      return salary * 5.481 / 1000 * months;
+    }
+
+    function calcAdjustRate(receiveAge) {
+      if (receiveAge < 65) {
+        return -0.004 * (65 - receiveAge) * 12;
+      } else if (receiveAge > 65) {
+        return 0.007 * (receiveAge - 65) * 12;
+      }
+      return 0;
+    }
+
+    function calcSuspend(basicMonthly, currentIncome, threshold) {
+      if (currentIncome <= 0) return 0;
+      var total = basicMonthly + currentIncome;
+      if (total <= threshold) return 0;
+      var suspend = (total - threshold) / 2;
+      return Math.min(suspend, basicMonthly); // 年金額以上にはならない
+    }
+
+    function formatYen(n) {
+      return Math.floor(n).toLocaleString('ja-JP') + '円';
+    }
+
+    function calculate() {
+      var birthYear = parseInt(document.getElementById('birth-year').value);
+      var kokuminMonths = parseInt(document.getElementById('kokumin-months').value) || 0;
+      var kouseiMonths = parseInt(document.getElementById('kousei-months').value) || 0;
+      var avgSalary = parseInt(document.getElementById('avg-salary').value) || 0;
+      var currentIncome = parseInt(document.getElementById('current-income').value) || 0;
+      var receiveAge = parseInt(document.getElementById('receive-age').value);
+
+      // 基本年金額
+      var basicYearly = calcBasicPension(kokuminMonths);
+      var kouseiYearly = calcKouseiPension(avgSalary, kouseiMonths);
+      var baseYearly = basicYearly + kouseiYearly;
+
+      // 繰り上げ/繰り下げ調整
+      var adjustRate = calcAdjustRate(receiveAge);
+      var adjustedYearly = baseYearly * (1 + adjustRate);
+
+      // 在職老齢年金（月額で計算）
+      var pensionMonthly = adjustedYearly / 12;
+      var suspendMonthly62 = calcSuspend(pensionMonthly, currentIncome, 620000); // 2026年4月〜
+      var suspendMonthly50 = calcSuspend(pensionMonthly, currentIncome, 500000); // 〜2026年3月
+      var suspendYearly = suspendMonthly62 * 12;
+
+      var finalYearly = adjustedYearly - suspendYearly;
+      if (finalYearly < 0) finalYearly = 0;
+
+      // 結果表示
+      document.getElementById('res-yearly').textContent = formatYen(finalYearly);
+      document.getElementById('res-monthly').textContent = formatYen(finalYearly / 12);
+
+      document.getElementById('res-basic').textContent = formatYen(basicYearly);
+      document.getElementById('res-basic-sub').textContent = '年額（月' + formatYen(basicYearly / 12) + '）';
+
+      document.getElementById('res-kousei').textContent = formatYen(kouseiYearly);
+      document.getElementById('res-kousei-sub').textContent = '年額（月' + formatYen(kouseiYearly / 12) + '）';
+
+      var adjustColor = adjustRate >= 0 ? '#16a34a' : '#dc2626';
+      var adjustSign = adjustRate >= 0 ? '+' : '';
+      document.getElementById('res-adjust').style.color = adjustColor;
+      document.getElementById('res-adjust').textContent = adjustSign + (adjustRate * 100).toFixed(1) + '%';
+      document.getElementById('res-adjust-sub').textContent = receiveAge === 65 ? '調整なし（65歳通常受給）' :
+        receiveAge < 65 ? (65 - receiveAge) + '年繰り上げ' : (receiveAge - 65) + '年繰り下げ';
+
+      document.getElementById('res-suspend').textContent = suspendYearly > 0 ? '-' + formatYen(suspendYearly) : '0円';
+      document.getElementById('res-suspend-sub').textContent = currentIncome > 0 ? '月' + formatYen(suspendMonthly62) + '停止' : '在職していない';
+
+      // 改正比較ボックス
+      var reformBox = document.getElementById('reform-box');
+      if (currentIncome > 0 && (suspendMonthly50 > 0 || suspendMonthly62 > 0)) {
+        reformBox.style.display = 'block';
+        document.getElementById('reform-old-suspend').innerHTML = '支給停止額: <strong>月' + formatYen(suspendMonthly50) + '</strong>';
+        document.getElementById('reform-new-suspend').innerHTML = '支給停止額: <strong>月' + formatYen(suspendMonthly62) + '</strong>';
+        var benefit = (suspendMonthly50 - suspendMonthly62) * 12;
+        if (benefit > 0) {
+          document.getElementById('reform-benefit').textContent = '改正により年間 ' + formatYen(benefit) + ' 多く受け取れます！';
+          document.getElementById('reform-benefit').style.color = '#16a34a';
+        } else {
+          document.getElementById('reform-benefit').textContent = 'この条件では改正前後で差はありません';
+          document.getElementById('reform-benefit').style.color = 'var(--text-muted)';
+        }
+      } else {
+        reformBox.style.display = 'none';
+      }
+
+      // 比較表
+      generateComparisonTable(basicYearly, kouseiYearly, receiveAge);
+
+      // グラフ
+      drawChart(basicYearly, kouseiYearly);
+
+      document.getElementById('pension-result').classList.add('show');
+    }
+
+    function generateComparisonTable(basicYearly, kouseiYearly, selectedAge) {
+      var tbody = document.getElementById('comparison-body');
+      tbody.innerHTML = '';
+      var baseYearly = basicYearly + kouseiYearly;
+      var bestAge = 65;
+      var bestAt85 = 0;
+
+      for (var age = 60; age <= 75; age++) {
+        var rate = calcAdjustRate(age);
+        var yearly = baseYearly * (1 + rate);
+        var tr = document.createElement('tr');
+
+        var cumul = [];
+        for (var t = 0; t < 4; t++) {
+          var targetAge = [75, 80, 85, 90][t];
+          var years = targetAge - age;
+          cumul.push(years > 0 ? yearly * years : 0);
+        }
+
+        if (cumul[2] > bestAt85) { bestAt85 = cumul[2]; bestAge = age; }
+
+        var isSelected = age === selectedAge;
+        if (isSelected) tr.className = 'highlight-row';
+
+        var rateStr = rate === 0 ? '±0%' : (rate > 0 ? '+' : '') + (rate * 100).toFixed(1) + '%';
+        var label = age === 65 ? age + '歳（通常）' : age < 65 ? age + '歳（繰上）' : age + '歳（繰下）';
+
+        tr.innerHTML =
+          '<td>' + label + '</td>' +
+          '<td>' + rateStr + '</td>' +
+          '<td>' + formatYen(yearly) + '</td>' +
+          '<td>' + formatYen(yearly / 12) + '</td>' +
+          '<td>' + formatYen(cumul[0]) + '</td>' +
+          '<td>' + formatYen(cumul[1]) + '</td>' +
+          '<td>' + formatYen(cumul[2]) + '</td>' +
+          '<td>' + formatYen(cumul[3]) + '</td>';
+        tbody.appendChild(tr);
+      }
+    }
+
+    function drawChart(basicYearly, kouseiYearly) {
+      var canvas = document.getElementById('pension-chart');
+      var ctx = canvas.getContext('2d');
+      var dpr = window.devicePixelRatio || 1;
+      var rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = 300 * dpr;
+      ctx.scale(dpr, dpr);
+
+      var w = rect.width;
+      var h = 300;
+      var pad = { top: 20, right: 20, bottom: 40, left: 70 };
+      var plotW = w - pad.left - pad.right;
+      var plotH = h - pad.top - pad.bottom;
+
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      ctx.fillStyle = isDark ? '#1e293b' : '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      var baseYearly = basicYearly + kouseiYearly;
+      var ages = [60, 65, 70, 75];
+      var colors = ['#ef4444', '#2563eb', '#16a34a', '#7c3aed'];
+      var maxAge = 95;
+      var maxVal = 0;
+
+      // 各開始年齢のデータ計算
+      var datasets = ages.map(function(startAge) {
+        var rate = calcAdjustRate(startAge);
+        var yearly = baseYearly * (1 + rate);
+        var data = [];
+        for (var a = 60; a <= maxAge; a++) {
+          var years = a - startAge;
+          data.push(years > 0 ? yearly * years : 0);
+          if (years > 0 && yearly * years > maxVal) maxVal = yearly * years;
+        }
+        return data;
+      });
+
+      maxVal = Math.ceil(maxVal / 5000000) * 5000000;
+      if (maxVal === 0) maxVal = 10000000;
+
+      // グリッド
+      ctx.strokeStyle = isDark ? '#334155' : '#e2e8f0';
+      ctx.lineWidth = 1;
+      var gridCount = 5;
+      for (var i = 0; i <= gridCount; i++) {
+        var y = pad.top + plotH - (plotH * i / gridCount);
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(w - pad.right, y);
+        ctx.stroke();
+
+        ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'right';
+        var val = maxVal * i / gridCount;
+        ctx.fillText((val / 10000).toLocaleString() + '万', pad.left - 8, y + 4);
+      }
+
+      // X軸ラベル
+      for (var a = 60; a <= maxAge; a += 5) {
+        var x = pad.left + plotW * (a - 60) / (maxAge - 60);
+        ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+        ctx.textAlign = 'center';
+        ctx.fillText(a + '歳', x, h - pad.bottom + 20);
+      }
+
+      // ライン描画
+      datasets.forEach(function(data, idx) {
+        ctx.strokeStyle = colors[idx];
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (var i = 0; i < data.length; i++) {
+          var x = pad.left + plotW * i / (maxAge - 60);
+          var y = pad.top + plotH - (plotH * data[i] / maxVal);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      });
+
+      // 凡例
+      var legendY = h - 10;
+      var legendX = pad.left;
+      ages.forEach(function(age, idx) {
+        ctx.fillStyle = colors[idx];
+        ctx.fillRect(legendX, legendY - 8, 12, 12);
+        ctx.fillStyle = isDark ? '#e2e8f0' : '#1e293b';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(age + '歳開始', legendX + 16, legendY + 2);
+        legendX += 80;
+      });
+    }
+
+    function clearForm() {
+      document.getElementById('kokumin-months').value = '480';
+      document.getElementById('kousei-months').value = '420';
+      document.getElementById('avg-salary').value = '350000';
+      document.getElementById('current-income').value = '0';
+      document.getElementById('receive-age').value = '65';
+      document.getElementById('pension-result').classList.remove('show');
+    }
+
+    // Enterキー対応
+    document.querySelectorAll('input[type="number"]').forEach(function(el) {
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') calculate();
+      });
+    });
+
+    // スライドショー
+    (function() {
+      var track = document.getElementById('slides-track');
+      var slides = track.querySelectorAll('.slide');
+      var dotsContainer = document.getElementById('slide-dots');
+      var prevBtn = document.getElementById('slide-prev');
+      var nextBtn = document.getElementById('slide-next');
+      var current = 0;
+      var total = slides.length;
+
+      // ドット生成
+      for (var i = 0; i < total; i++) {
+        var dot = document.createElement('button');
+        dot.className = 'slide-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'スライド' + (i + 1));
+        dot.dataset.index = i;
+        dot.addEventListener('click', function() {
+          goTo(parseInt(this.dataset.index));
+        });
+        dotsContainer.appendChild(dot);
+      }
+
+      function goTo(index) {
+        if (index < 0) index = total - 1;
+        if (index >= total) index = 0;
+        current = index;
+        track.style.transform = 'translateX(-' + (current * 100) + '%)';
+        var dots = dotsContainer.querySelectorAll('.slide-dot');
+        for (var i = 0; i < dots.length; i++) {
+          dots[i].classList.toggle('active', i === current);
+        }
+      }
+
+      prevBtn.addEventListener('click', function() { goTo(current - 1); });
+      nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+      // スワイプ対応
+      var startX = 0;
+      var startY = 0;
+      var isDragging = false;
+      var container = document.getElementById('slideshow');
+
+      container.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+      }, { passive: true });
+
+      container.addEventListener('touchend', function(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        var diffX = e.changedTouches[0].clientX - startX;
+        var diffY = e.changedTouches[0].clientY - startY;
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+          if (diffX < 0) goTo(current + 1);
+          else goTo(current - 1);
+        }
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>
