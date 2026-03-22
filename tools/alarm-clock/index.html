@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>無料オンライン目覚まし時計 - アラーム・スヌーズ付き｜SimpleToolkit</title>
+  <meta name="description" content="オンラインで使える目覚まし時計。複数アラーム設定・スヌーズ機能付き。大きなデジタル時計表示で見やすい。無料・登録不要で今すぐ使えます。">
+  <meta property="og:title" content="無料オンライン目覚まし時計 - アラーム・スヌーズ付き｜SimpleToolkit">
+  <meta property="og:description" content="オンラインで使える目覚まし時計。複数アラーム設定・スヌーズ機能付き。大きなデジタル時計表示。無料・登録不要。">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/alarm-clock/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "無料オンライン目覚まし時計 - アラーム・スヌーズ付き",
+    "description": "オンラインで使える目覚まし時計。複数アラーム設定・スヌーズ機能付き。大きなデジタル時計表示で見やすい。無料・登録不要で今すぐ使えます。",
+    "url": "https://simpletoolkit.net/tools/alarm-clock/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "オンライン目覚まし時計の使い方は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "アラーム時刻（時:分）を設定して追加ボタンを押します。設定時刻になるとメロディが鳴ります。複数のアラームを同時に設定でき、個別にON/OFFの切り替えが可能です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スヌーズ機能とは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "アラームが鳴った際にスヌーズボタンを押すと、5分後に再度アラームが鳴ります。二度寝防止に便利な機能です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "タブを閉じてもアラームは鳴りますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "タブを開いたままにしておく必要があります。タブを閉じるとアラームは動作しません。スリープモードにも注意してください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "データはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。データが外部に送信されることはありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "複数のアラームを設定できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、複数のアラームを同時に設定できます。各アラームは個別にON/OFF切り替えや削除が可能です。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .clock-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+    }
+    .clock-display {
+      font-size: 5rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 2px;
+      color: var(--text);
+      line-height: 1.1;
+      text-align: center;
+    }
+    .clock-date {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+    .clock-seconds {
+      font-size: 2.5rem;
+      color: var(--text-muted);
+    }
+
+    .alarm-add {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .alarm-add input[type="time"] {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1.2rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .alarm-add .btn {
+      min-width: 80px;
+    }
+
+    .alarm-list {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .alarm-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      background: var(--card-bg, var(--bg));
+    }
+    .alarm-item.disabled {
+      opacity: 0.5;
+    }
+    .alarm-time {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .alarm-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .alarm-toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background: var(--border);
+      border-radius: 13px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .alarm-toggle.on {
+      background: var(--accent, #3b82f6);
+    }
+    .alarm-toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s;
+    }
+    .alarm-toggle.on::after {
+      transform: translateX(22px);
+    }
+    .alarm-delete {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 6px 10px;
+      cursor: pointer;
+      color: #ef4444;
+      font-size: 0.85rem;
+    }
+    .alarm-delete:hover {
+      background: #fef2f2;
+    }
+
+    .alarm-ringing-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 10000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+    .alarm-ringing-overlay.active {
+      display: flex;
+    }
+    .alarm-ringing-time {
+      font-size: 6rem;
+      font-weight: 800;
+      color: #fff;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .alarm-ringing-label {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .alarm-ringing-btns {
+      display: flex;
+      gap: 16px;
+    }
+    .alarm-ringing-btns .btn {
+      min-width: 120px;
+      font-size: 1.1rem;
+      padding: 14px 24px;
+    }
+    .btn-stop-alarm {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+    }
+    .btn-stop-alarm:hover {
+      background: #dc2626;
+    }
+    .btn-snooze {
+      background: #f59e0b;
+      color: #fff;
+      border: none;
+    }
+    .btn-snooze:hover {
+      background: #d97706;
+    }
+
+    .no-alarms {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 20px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 600px) {
+      .clock-display { font-size: 3.2rem; }
+      .clock-seconds { font-size: 1.6rem; }
+      .alarm-ringing-time { font-size: 3.5rem; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>目覚まし時計</h1>
+    <h2>無料オンライン目覚まし時計</h2>
+    <p class="tool-description">オンラインで使える目覚まし時計。複数アラーム設定、スヌーズ機能付き。大きなデジタル時計表示で見やすい。無料・登録不要で今すぐ使えます。</p>
+
+    <div class="tool-area">
+      <div class="clock-container">
+        <div>
+          <span class="clock-display" id="clock-display">00:00</span><span class="clock-seconds" id="clock-seconds">:00</span>
+        </div>
+        <div class="clock-date" id="clock-date"></div>
+
+        <div class="alarm-add">
+          <input type="time" id="alarm-time-input" value="07:00">
+          <button class="btn" onclick="addAlarm()">アラーム追加</button>
+        </div>
+
+        <div class="alarm-list" id="alarm-list">
+          <div class="no-alarms" id="no-alarms">アラームが設定されていません</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alarm-ringing-overlay" id="ringing-overlay">
+      <div class="alarm-ringing-label">アラーム</div>
+      <div class="alarm-ringing-time" id="ringing-time">07:00</div>
+      <div class="alarm-ringing-btns">
+        <button class="btn btn-snooze" onclick="snoozeAlarm()">スヌーズ (5分)</button>
+        <button class="btn btn-stop-alarm" onclick="stopAlarm()">停止</button>
+      </div>
+    </div>
+
+    <section class="content-section" style="margin-top:40px;">
+      <h2>オンライン目覚まし時計とは</h2>
+      <p>ブラウザで動作するオンライン目覚まし時計です。パソコンやスマートフォンのブラウザを開くだけで、アプリのインストールなしに目覚まし時計として使えます。</p>
+      <p>大きなデジタル時計表示で現在時刻が一目で分かり、複数のアラームを同時に設定することもできます。スヌーズ機能も搭載しているので、二度寝防止にも役立ちます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>便利な機能</h2>
+      <p><strong>複数アラーム</strong> - 起床用、薬の時間、会議開始など、用途別に複数のアラームを設定できます。各アラームは個別にON/OFFを切り替えられます。</p>
+      <p><strong>スヌーズ機能</strong> - アラームが鳴った際にスヌーズボタンを押すと、5分後に再度アラームが鳴ります。朝の起床時に便利です。</p>
+      <p><strong>メロディ音</strong> - Web Audio APIで生成されたメロディがアラーム時に再生されます。外部ファイルを使用しないため、オフライン環境でも音が鳴ります。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使用上のご注意</h2>
+      <ul>
+        <li>ブラウザのタブを開いたままにしてください（閉じるとアラームが動作しません）</li>
+        <li>デバイスの音量が十分であることを確認してください</li>
+        <li>パソコンのスリープモードではアラームが鳴らない場合があります</li>
+        <li>重要な予定にはスマートフォンの目覚ましアプリとの併用をおすすめします</li>
+      </ul>
+    </section>
+
+    <section style="margin-top:32px;">
+      <h2 style="font-size:1.1rem;margin-bottom:12px;">よくある質問</h2>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">オンライン目覚まし時計の使い方は？</summary>
+        <p style="margin-top:8px;">アラーム時刻（時:分）を設定して追加ボタンを押します。設定時刻になるとメロディが鳴ります。複数のアラームを同時に設定でき、個別にON/OFFの切り替えが可能です。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">スヌーズ機能とは？</summary>
+        <p style="margin-top:8px;">アラームが鳴った際にスヌーズボタンを押すと、5分後に再度アラームが鳴ります。二度寝防止に便利な機能です。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">タブを閉じてもアラームは鳴りますか？</summary>
+        <p style="margin-top:8px;">タブを開いたままにしておく必要があります。タブを閉じるとアラームは動作しません。スリープモードにも注意してください。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">複数のアラームを設定できますか？</summary>
+        <p style="margin-top:8px;">はい、複数のアラームを同時に設定できます。各アラームは個別にON/OFF切り替えや削除が可能です。</p>
+      </details>
+      <details style="margin-bottom:8px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;">
+        <summary style="cursor:pointer;font-weight:600;">データはサーバーに送信されますか？</summary>
+        <p style="margin-top:8px;">いいえ、すべての処理はブラウザ内で完結します。データが外部に送信されることはありません。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連タイマーツール</h2>
+      <div class="tool-grid">
+        <a href="../timer/" class="tool-card">
+          <span class="tool-icon">&#9201;</span>
+          <h3 style="font-size:1rem;margin:0;">カウントダウンタイマー</h3>
+          <p>時間を設定してカウントダウン・アラーム通知</p>
+        </a>
+        <a href="../stopwatch/" class="tool-card">
+          <span class="tool-icon">&#9202;</span>
+          <h3 style="font-size:1rem;margin:0;">ストップウォッチ</h3>
+          <p>ラップタイム記録・ミリ秒精度の計測</p>
+        </a>
+        <a href="../pomodoro/" class="tool-card">
+          <span class="tool-icon">&#127813;</span>
+          <h3 style="font-size:1rem;margin:0;">ポモドーロタイマー</h3>
+          <p>25分集中+5分休憩で効率的な時間管理</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script src="../../common/affiliate.js"></script>
+  <script src="../../common/newsletter.js"></script>
+  <script>
+    var alarms = [];
+    var alarmIdCounter = 0;
+    var ringingAlarmId = null;
+    var alarmAudioCtx = null;
+    var alarmOscillators = [];
+    var alarmInterval = null;
+
+    // Clock
+    function updateClock() {
+      var now = new Date();
+      var h = now.getHours();
+      var m = now.getMinutes();
+      var s = now.getSeconds();
+      var hStr = (h < 10 ? '0' : '') + h;
+      var mStr = (m < 10 ? '0' : '') + m;
+      var sStr = (s < 10 ? '0' : '') + s;
+      document.getElementById('clock-display').textContent = hStr + ':' + mStr;
+      document.getElementById('clock-seconds').textContent = ':' + sStr;
+
+      var days = ['日', '月', '火', '水', '木', '金', '土'];
+      var dateStr = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日（' + days[now.getDay()] + '）';
+      document.getElementById('clock-date').textContent = dateStr;
+
+      checkAlarms(hStr + ':' + mStr, s);
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function addAlarm() {
+      var timeVal = document.getElementById('alarm-time-input').value;
+      if (!timeVal) return;
+      alarmIdCounter++;
+      alarms.push({ id: alarmIdCounter, time: timeVal, enabled: true, triggered: false });
+      renderAlarms();
+    }
+
+    function removeAlarm(id) {
+      alarms = alarms.filter(function(a) { return a.id !== id; });
+      renderAlarms();
+    }
+
+    function toggleAlarmEnabled(id) {
+      for (var i = 0; i < alarms.length; i++) {
+        if (alarms[i].id === id) {
+          alarms[i].enabled = !alarms[i].enabled;
+          alarms[i].triggered = false;
+          break;
+        }
+      }
+      renderAlarms();
+    }
+
+    function renderAlarms() {
+      var container = document.getElementById('alarm-list');
+      var noAlarms = document.getElementById('no-alarms');
+      if (alarms.length === 0) {
+        noAlarms.style.display = '';
+        // remove alarm items
+        var items = container.querySelectorAll('.alarm-item');
+        for (var i = 0; i < items.length; i++) items[i].remove();
+        return;
+      }
+      noAlarms.style.display = 'none';
+      // remove old
+      var oldItems = container.querySelectorAll('.alarm-item');
+      for (var i = 0; i < oldItems.length; i++) oldItems[i].remove();
+
+      for (var i = 0; i < alarms.length; i++) {
+        var a = alarms[i];
+        var div = document.createElement('div');
+        div.className = 'alarm-item' + (a.enabled ? '' : ' disabled');
+        div.innerHTML = '<span class="alarm-time">' + a.time + '</span>' +
+          '<div class="alarm-actions">' +
+          '<button class="alarm-toggle ' + (a.enabled ? 'on' : '') + '" data-id="' + a.id + '" onclick="toggleAlarmEnabled(' + a.id + ')"></button>' +
+          '<button class="alarm-delete" onclick="removeAlarm(' + a.id + ')">削除</button>' +
+          '</div>';
+        container.appendChild(div);
+      }
+    }
+
+    function checkAlarms(timeStr, seconds) {
+      if (seconds !== 0) return; // only check at :00
+      for (var i = 0; i < alarms.length; i++) {
+        if (alarms[i].enabled && !alarms[i].triggered && alarms[i].time === timeStr) {
+          alarms[i].triggered = true;
+          triggerAlarm(alarms[i]);
+        }
+      }
+    }
+
+    function triggerAlarm(alarm) {
+      ringingAlarmId = alarm.id;
+      document.getElementById('ringing-time').textContent = alarm.time;
+      document.getElementById('ringing-overlay').classList.add('active');
+      playMelody();
+    }
+
+    function stopAlarm() {
+      stopMelody();
+      document.getElementById('ringing-overlay').classList.remove('active');
+      // Reset triggered so it can ring again next day
+      for (var i = 0; i < alarms.length; i++) {
+        if (alarms[i].id === ringingAlarmId) {
+          // Keep triggered true for today to prevent re-ring within same minute
+          setTimeout(function() {
+            for (var j = 0; j < alarms.length; j++) {
+              if (alarms[j].id === ringingAlarmId) {
+                alarms[j].triggered = false;
+              }
+            }
+          }, 60000);
+          break;
+        }
+      }
+      ringingAlarmId = null;
+    }
+
+    function snoozeAlarm() {
+      stopMelody();
+      document.getElementById('ringing-overlay').classList.remove('active');
+      var snoozeId = ringingAlarmId;
+      ringingAlarmId = null;
+
+      // Reset triggered
+      for (var i = 0; i < alarms.length; i++) {
+        if (alarms[i].id === snoozeId) {
+          alarms[i].triggered = false;
+        }
+      }
+
+      // Set snooze: 5 minutes later
+      setTimeout(function() {
+        for (var i = 0; i < alarms.length; i++) {
+          if (alarms[i].id === snoozeId && alarms[i].enabled) {
+            triggerAlarm(alarms[i]);
+            break;
+          }
+        }
+      }, 5 * 60 * 1000);
+    }
+
+    function playMelody() {
+      try {
+        alarmAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Simple melody pattern that repeats
+        var melody = [
+          523, 659, 784, 659, 523, 659, 784, 1047,
+          784, 659, 523, 659, 784, 659, 523, 0
+        ];
+        var noteDuration = 0.2;
+        var repeatCount = 4;
+
+        function playOnce(offset) {
+          var startTime = alarmAudioCtx.currentTime + offset;
+          for (var i = 0; i < melody.length; i++) {
+            if (melody[i] > 0) {
+              var osc = alarmAudioCtx.createOscillator();
+              var gain = alarmAudioCtx.createGain();
+              osc.connect(gain);
+              gain.connect(alarmAudioCtx.destination);
+              osc.frequency.value = melody[i];
+              osc.type = 'sine';
+              gain.gain.setValueAtTime(0.25, startTime);
+              gain.gain.exponentialRampToValueAtTime(0.01, startTime + noteDuration * 0.9);
+              osc.start(startTime);
+              osc.stop(startTime + noteDuration);
+              alarmOscillators.push(osc);
+            }
+            startTime += noteDuration;
+          }
+        }
+
+        var totalDuration = melody.length * noteDuration;
+        for (var r = 0; r < repeatCount; r++) {
+          playOnce(r * totalDuration);
+        }
+
+        // Repeat after full cycle
+        alarmInterval = setInterval(function() {
+          if (!alarmAudioCtx) { clearInterval(alarmInterval); return; }
+          for (var r = 0; r < repeatCount; r++) {
+            playOnce(r * totalDuration);
+          }
+        }, totalDuration * repeatCount * 1000 + 500);
+
+      } catch (e) {}
+    }
+
+    function stopMelody() {
+      if (alarmInterval) {
+        clearInterval(alarmInterval);
+        alarmInterval = null;
+      }
+      for (var i = 0; i < alarmOscillators.length; i++) {
+        try { alarmOscillators[i].stop(); } catch (e) {}
+      }
+      alarmOscillators = [];
+      if (alarmAudioCtx) {
+        try { alarmAudioCtx.close(); } catch (e) {}
+        alarmAudioCtx = null;
+      }
+    }
+  </script>
+</body>
+</html>
