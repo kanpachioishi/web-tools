@@ -359,7 +359,7 @@ Steak</textarea>
     var spinBtn = document.getElementById('spin-btn');
     var currentAngle = 0;
     var isSpinning = false;
-    var history = [];
+    var spinHistory = [];
 
     // Beautiful color palette
     var COLORS = [
@@ -543,20 +543,20 @@ Steak</textarea>
     }
 
     function addHistory(item) {
-      history.unshift(item);
-      if (history.length > 10) history.pop();
+      spinHistory.unshift(item);
+      if (spinHistory.length > 10) spinHistory.pop();
       renderHistory();
     }
 
     function renderHistory() {
       var list = document.getElementById('history-list');
-      if (history.length === 0) {
+      if (spinHistory.length === 0) {
         list.innerHTML = '<li class="history-empty">No results yet</li>';
         return;
       }
       var html = '';
-      for (var i = 0; i < history.length; i++) {
-        html += '<li><span class="history-num">#' + (i + 1) + '</span><span class="history-value">' + escapeHtml(history[i]) + '</span></li>';
+      for (var i = 0; i < spinHistory.length; i++) {
+        html += '<li><span class="history-num">#' + (i + 1) + '</span><span class="history-value">' + escapeHtml(spinHistory[i]) + '</span></li>';
       }
       list.innerHTML = html;
     }
