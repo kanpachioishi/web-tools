@@ -119,7 +119,7 @@
       </div>
 
       <table class="result-table" id="result-table">
-        <thead><tr><th>単位</th><th>値</th></tr></thead>
+        <thead><tr><th>単位</th><th>値</th><th style="width:60px;"></th></tr></thead>
         <tbody id="result-body"></tbody>
       </table>
     </div>
@@ -262,9 +262,18 @@
           result = baseVal / u.factor;
         }
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${u.label}</td><td>${formatNum(result)}</td>`;
+        var formatted = formatNum(result);
+        tr.innerHTML = '<td>' + u.label + '</td><td>' + formatted + '</td><td><button class="btn btn-secondary" style="padding:4px 10px;font-size:0.75rem;" onclick="copyVal(event, this)">コピー</button></td>';
         tbody.appendChild(tr);
       }
+    }
+
+    function copyVal(e, btn) {
+      var td = btn.parentElement.previousElementSibling;
+      navigator.clipboard.writeText(td.textContent).then(function() {
+        btn.textContent = '済';
+        setTimeout(function() { btn.textContent = 'コピー'; }, 1000);
+      });
     }
 
     populateSelect();

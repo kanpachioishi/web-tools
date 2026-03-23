@@ -390,11 +390,11 @@
       for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         var val = obj[key];
-        var displayVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+        var displayVal = escapeHtml(typeof val === 'object' ? JSON.stringify(val) : String(val));
 
         // タイムスタンプフィールドは日時表示を追加
         if ((key === 'exp' || key === 'iat' || key === 'nbf') && typeof val === 'number') {
-          displayVal = val + '<br><small style="color:var(--text-muted);">' + formatTimestamp(val) + '</small>';
+          displayVal = escapeHtml(String(val)) + '<br><small style="color:var(--text-muted);">' + escapeHtml(formatTimestamp(val)) + '</small>';
         }
 
         var desc = fieldDefs[key] || '―';

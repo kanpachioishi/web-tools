@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IPアドレス確認 - 無料オンラインIPチェッカー | Web便利ツール集</title>
-  <meta name="description" content="現在のIPアドレスを無料で確認。あなたのグローバルIPアドレスと基本情報を即座に表示。VPN接続確認やネットワーク設定のチェックに最適。登録不要でブラウザだけで完結。">
+  <meta name="description" content="現在のIPアドレスを無料で確認。あなたのグローバルIPアドレスと基本情報を即座に表示。VPN接続確認やネットワーク設定のチェックに最適。登録不要。IPアドレスの取得のために外部サービス（ipify.org）と通信します。">
   <meta property="og:title" content="IPアドレス確認 - 無料オンラインIPチェッカー | Web便利ツール集">
   <meta property="og:description" content="現在のIPアドレスを無料で確認。グローバルIPと基本情報を即座に表示。登録不要。">
   <meta property="og:type" content="website">
@@ -15,7 +15,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "IPアドレス確認 - 無料オンラインIPチェッカー",
-    "description": "現在のIPアドレスを無料で確認。グローバルIPアドレスと基本情報を即座に表示。登録不要でブラウザだけで完結。",
+    "description": "現在のIPアドレスを無料で確認。グローバルIPアドレスと基本情報を即座に表示。登録不要。IPアドレスの取得のために外部サービス（ipify.org）と通信します。",
     "url": "https://simpletoolkit.net/tools/ip-checker/",
     "applicationCategory": "UtilityApplication",
     "operatingSystem": "All",
@@ -87,11 +87,11 @@
   <main>
     <h1>IPアドレス確認</h1>
     <h2>無料オンラインIPチェッカー</h2>
-    <p class="tool-description">あなたの現在のグローバルIPアドレスを確認できます。VPN接続の確認やネットワーク設定のチェックに最適です。無料・登録不要でブラウザだけで完結します。</p>
+    <p class="tool-description">あなたの現在のグローバルIPアドレスを確認できます。VPN接続の確認やネットワーク設定のチェックに最適です。無料・登録不要。IPアドレスの取得のために外部サービス（ipify.org）と通信しますが、それ以外のデータ送信はありません。</p>
 
     <div class="tool-area">
       <div style="text-align:center;padding:20px 0;">
-        <div style="font-size:0.9rem;color:#666;margin-bottom:8px;">あなたのIPアドレス</div>
+        <div style="font-size:0.9rem;color:var(--text-muted);margin-bottom:8px;">あなたのIPアドレス</div>
         <div id="ip-address" style="font-size:2.2rem;font-weight:bold;color:#2563eb;font-family:monospace;letter-spacing:2px;">取得中...</div>
         <button class="btn btn-secondary" style="margin-top:12px;font-size:0.85rem;padding:6px 16px;" onclick="copyIP()">IPをコピー</button>
       </div>
@@ -113,7 +113,7 @@
 
       <div style="margin-top:24px;">
         <h3 style="font-size:1.1rem;margin-bottom:12px;">IPアドレスの詳細分析</h3>
-        <div id="ip-details" style="background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid #e9ecef;">
+        <div id="ip-details" style="background:var(--surface);padding:16px;border-radius:8px;border:1px solid var(--border);">
           <table style="width:100%;border-collapse:collapse;">
             <tr><td style="padding:8px;font-weight:bold;width:40%;">2進数表記</td><td id="ip-binary" style="padding:8px;font-family:monospace;">-</td></tr>
             <tr><td style="padding:8px;font-weight:bold;border-top:1px solid #dee2e6;">16進数表記</td><td id="ip-hex" style="padding:8px;font-family:monospace;border-top:1px solid #dee2e6;">-</td></tr>
