@@ -103,17 +103,18 @@
   <script src="../../../common/footer.js"></script>
   <script>
     function parseInput() {
-      const input = document.getElementById('json-input').value.trim();
-      const errorEl = document.getElementById('error-msg');
+      var input = document.getElementById('json-input').value.trim();
+      var errorEl = document.getElementById('error-msg');
       errorEl.style.display = 'none';
-      if (!input) return null;
+      if (!input) return { ok: false };
       try {
-        return JSON.parse(input);
+        var parsed = JSON.parse(input);
+        return { ok: true, value: parsed };
       } catch (e) {
         errorEl.textContent = 'Invalid JSON format: ' + e.message;
         errorEl.style.display = 'block';
         document.getElementById('result').style.display = 'none';
-        return null;
+        return { ok: false };
       }
     }
 
@@ -123,13 +124,13 @@
     }
 
     function formatJSON() {
-      const obj = parseInput();
-      if (obj !== null) showResult(JSON.stringify(obj, null, 2));
+      var result = parseInput();
+      if (result.ok) showResult(JSON.stringify(result.value, null, 2));
     }
 
     function minifyJSON() {
-      const obj = parseInput();
-      if (obj !== null) showResult(JSON.stringify(obj));
+      var result = parseInput();
+      if (result.ok) showResult(JSON.stringify(result.value));
     }
 
     function copyResult() {

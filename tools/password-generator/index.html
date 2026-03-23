@@ -176,22 +176,42 @@
   <script src="../../common/footer.js"></script>
   <script>
     function generate() {
-      const length = Math.min(128, Math.max(4, parseInt(document.getElementById('pw-length').value) || 16));
-      let chars = '';
-      if (document.getElementById('pw-upper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      if (document.getElementById('pw-lower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
-      if (document.getElementById('pw-digits').checked) chars += '0123456789';
-      if (document.getElementById('pw-symbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+      var length = Math.min(128, Math.max(4, parseInt(document.getElementById('pw-length').value) || 16));
+      var pools = [];
+      if (document.getElementById('pw-upper').checked) pools.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+      if (document.getElementById('pw-lower').checked) pools.push('abcdefghijklmnopqrstuvwxyz');
+      if (document.getElementById('pw-digits').checked) pools.push('0123456789');
+      if (document.getElementById('pw-symbols').checked) pools.push('!@#$%^&*()_+-=[]{}|;:,.<>?');
 
-      if (!chars) { chars = 'abcdefghijklmnopqrstuvwxyz'; }
+      if (pools.length === 0) { pools.push('abcdefghijklmnopqrstuvwxyz'); }
 
-      const array = new Uint32Array(length);
-      crypto.getRandomValues(array);
-      let password = '';
-      for (let i = 0; i < length; i++) {
-        password += chars[array[i] % chars.length];
+      var chars = pools.join('');
+
+      // 各文字種から最低1文字を確保
+      var mandatory = [];
+      var rng = new Uint32Array(length + pools.length);
+      crypto.getRandomValues(rng);
+      var ri = 0;
+      for (var p = 0; p < pools.length; p++) {
+        mandatory.push(pools[p][rng[ri++] % pools[p].length]);
       }
 
+      // 残りをランダムに埋める
+      var rest = [];
+      for (var i = 0; i < length - mandatory.length; i++) {
+        rest.push(chars[rng[ri++] % chars.length]);
+      }
+
+      // 結合してシャッフル
+      var all = mandatory.concat(rest);
+      var shuffleRng = new Uint32Array(all.length);
+      crypto.getRandomValues(shuffleRng);
+      for (var j = all.length - 1; j > 0; j--) {
+        var k = shuffleRng[j] % (j + 1);
+        var tmp = all[j]; all[j] = all[k]; all[k] = tmp;
+      }
+
+      var password = all.join('');
       document.getElementById('pw-output').textContent = password;
 
       // 強度表示

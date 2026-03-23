@@ -93,24 +93,29 @@
 
       <div style="margin-bottom:16px;">
         <label for="hex-input">HEX</label>
-        <input type="text" id="hex-input" placeholder="#2563eb" value="#2563eb">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="text" id="hex-input" placeholder="#2563eb" value="#2563eb" style="flex:1;">
+          <button class="btn btn-secondary" onclick="copyColor('hex')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
+        </div>
       </div>
 
       <div style="margin-bottom:16px;">
         <label>RGB</label>
-        <div style="display:flex;gap:8px;">
-          <input type="number" id="rgb-r" placeholder="R" min="0" max="255" value="37" style="width:33%;">
-          <input type="number" id="rgb-g" placeholder="G" min="0" max="255" value="99" style="width:33%;">
-          <input type="number" id="rgb-b" placeholder="B" min="0" max="255" value="235" style="width:33%;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="rgb-r" placeholder="R" min="0" max="255" value="37" style="width:28%;">
+          <input type="number" id="rgb-g" placeholder="G" min="0" max="255" value="99" style="width:28%;">
+          <input type="number" id="rgb-b" placeholder="B" min="0" max="255" value="235" style="width:28%;">
+          <button class="btn btn-secondary" onclick="copyColor('rgb')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
         </div>
       </div>
 
       <div style="margin-bottom:16px;">
         <label>HSL</label>
-        <div style="display:flex;gap:8px;">
-          <input type="number" id="hsl-h" placeholder="H" min="0" max="360" value="221" style="width:33%;">
-          <input type="number" id="hsl-s" placeholder="S%" min="0" max="100" value="83" style="width:33%;">
-          <input type="number" id="hsl-l" placeholder="L%" min="0" max="100" value="53" style="width:33%;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="hsl-h" placeholder="H" min="0" max="360" value="221" style="width:28%;">
+          <input type="number" id="hsl-s" placeholder="S%" min="0" max="100" value="83" style="width:28%;">
+          <input type="number" id="hsl-l" placeholder="L%" min="0" max="100" value="53" style="width:28%;">
+          <button class="btn btn-secondary" onclick="copyColor('hsl')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
         </div>
       </div>
 
@@ -267,6 +272,22 @@
       const rgb = hexToRgb(picker.value);
       if (rgb) updateFromRgb(...rgb, 'picker');
     });
+
+    function copyColor(type) {
+      var text = '';
+      if (type === 'hex') {
+        text = hexInput.value;
+      } else if (type === 'rgb') {
+        text = 'rgb(' + (rgbR.value||0) + ', ' + (rgbG.value||0) + ', ' + (rgbB.value||0) + ')';
+      } else if (type === 'hsl') {
+        text = 'hsl(' + (hslH.value||0) + ', ' + (hslS.value||0) + '%, ' + (hslL.value||0) + '%)';
+      }
+      var btn = event.target;
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'コピー済';
+        setTimeout(function() { btn.textContent = 'コピー'; }, 1000);
+      });
+    }
   </script>
 </body>
 </html>
