@@ -65,7 +65,7 @@
       </div>
       <div class="btn-group">
         <button class="btn" onclick="generate()">Generate</button>
-        <button class="btn btn-secondary" onclick="copyText()">Copy</button>
+        <button class="btn btn-secondary" id="copy-btn" onclick="copyText()">Copy</button>
       </div>
       <div class="result-area" style="margin-top:16px;">
         <div id="output" style="white-space:pre-wrap;line-height:1.8;"></div>
@@ -97,8 +97,13 @@
       document.getElementById('output').textContent = result.join('\n\n');
     }
     function copyText() {
-      const text = document.getElementById('output').textContent;
-      if (text) navigator.clipboard.writeText(text);
+      var text = document.getElementById('output').textContent;
+      if (!text) return;
+      var btn = document.getElementById('copy-btn');
+      navigator.clipboard.writeText(text).then(function() {
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+      });
     }
     generate();
   </script>
