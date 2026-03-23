@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URLエンコード・デコード変換 | Web便利ツール集</title>
+  <title>URLエンコード・デコード - 無料オンライン変換ツール | Web便利ツール集</title>
   <meta name="description" content="URLエンコード（パーセントエンコーディング）とデコードを行う無料オンラインツール。日本語URLの変換に便利。">
-  <meta property="og:title" content="URLエンコード・デコード変換 | Web便利ツール集">
+  <meta property="og:title" content="URLエンコード・デコード - 無料オンライン変換ツール | Web便利ツール集">
   <meta property="og:description" content="URLエンコード・デコードを簡単に行える無料オンラインツール。">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/url-encode/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/url-encode/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "URLエンコード・デコード変換",
+    "description": "URLエンコード（パーセントエンコーディング）とデコードを行う無料オンラインツール。日本語URLの変換に便利。",
+    "url": "https://simpletoolkit.net/tools/url-encode/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,8 +105,8 @@
       </div>
 
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="copyResult('output-text')">エンコード結果をコピー</button>
-        <button class="btn btn-secondary" onclick="copyResult('input-text')">テキストをコピー</button>
+        <button class="btn btn-secondary" onclick="copyResult(event, 'output-text')">エンコード結果をコピー</button>
+        <button class="btn btn-secondary" onclick="copyResult(event, 'input-text')">テキストをコピー</button>
         <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
       </div>
 
@@ -112,6 +126,14 @@
         <a href="../qr-generator/" class="tool-card">
           <h3 style="font-size:1rem;margin:0;">QRコード生成ツール</h3>
           <p>URLやテキストからQRコードを生成</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ値生成ツール</h3>
+          <p>テキストからMD5・SHA-256等のハッシュ値を生成</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
         </a>
       </div>
     </section>
@@ -202,10 +224,10 @@
       el.style.display = 'block';
     }
 
-    function copyResult(id) {
+    function copyResult(e, id) {
       const text = document.getElementById(id).value;
       navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
+        var btn = e.target;
         const original = btn.textContent;
         btn.textContent = 'コピーしました!';
         setTimeout(() => btn.textContent = original, 1500);

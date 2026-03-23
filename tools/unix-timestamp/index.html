@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unixタイムスタンプ変換 | Web便利ツール集</title>
+  <title>Unixタイムスタンプ変換 - 無料オンライン日時変換 | Web便利ツール集</title>
   <meta name="description" content="Unixタイムスタンプと日時を相互変換する無料オンラインツール。現在時刻のタイムスタンプもリアルタイム表示。">
-  <meta property="og:title" content="Unixタイムスタンプ変換 | Web便利ツール集">
+  <meta property="og:title" content="Unixタイムスタンプ変換 - 無料オンライン日時変換 | Web便利ツール集">
   <meta property="og:description" content="Unixタイムスタンプと日時の相互変換ツール。現在時刻もリアルタイム表示。">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/unix-timestamp/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/unix-timestamp/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Unixタイムスタンプ変換",
+    "description": "Unixタイムスタンプと日時を相互変換する無料オンラインツール。現在時刻のタイムスタンプもリアルタイム表示。",
+    "url": "https://simpletoolkit.net/tools/unix-timestamp/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -80,7 +94,7 @@
           <div class="stat-label">現在のUnixタイムスタンプ</div>
           <div class="stat-value" id="current-ts" style="font-family: 'SF Mono', 'Fira Code', monospace;"></div>
           <div class="stat-label" id="current-dt"></div>
-          <button class="btn btn-secondary" style="margin-top: 8px; padding: 4px 12px; font-size: 0.85rem;" onclick="copyText(document.getElementById('current-ts').textContent)">コピー</button>
+          <button class="btn btn-secondary" style="margin-top: 8px; padding: 4px 12px; font-size: 0.85rem;" onclick="copyText(event, document.getElementById('current-ts').textContent)">コピー</button>
         </div>
       </div>
 
@@ -95,6 +109,7 @@
       <div class="result-area" id="ts-result" style="margin-top: 12px;">
         <pre>ここに変換結果が表示されます</pre>
       </div>
+      <button class="btn btn-secondary" onclick="copyResult(event, 'ts-result')" style="margin-top:8px;padding:6px 16px;font-size:0.85rem;">結果をコピー</button>
 
       <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--border);">
 
@@ -109,6 +124,7 @@
       <div class="result-area" id="dt-result" style="margin-top: 12px;">
         <pre>ここに変換結果が表示されます</pre>
       </div>
+      <button class="btn btn-secondary" onclick="copyResult(event, 'dt-result')" style="margin-top:8px;padding:6px 16px;font-size:0.85rem;">結果をコピー</button>
 
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="setNow()">現在時刻をセット</button>
@@ -129,6 +145,14 @@
         <a href="../json-formatter/" class="tool-card">
           <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
           <p>JSONを見やすく整形・圧縮</p>
+        </a>
+        <a href="../wareki-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">和暦西暦変換</h3>
+          <p>和暦⇔西暦を相互変換</p>
+        </a>
+        <a href="../countdown/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">カウントダウン</h3>
+          <p>指定日時までのカウントダウンタイマー</p>
         </a>
       </div>
     </section>
@@ -235,12 +259,23 @@
       document.getElementById('ts-input').value = Math.floor(Date.now() / 1000);
     }
 
-    function copyText(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const original = btn.textContent;
+    function copyText(e, text) {
+      var btn = e.target;
+      navigator.clipboard.writeText(text).then(function() {
+        var original = btn.textContent;
         btn.textContent = 'コピーしました!';
-        setTimeout(() => btn.textContent = original, 1500);
+        setTimeout(function() { btn.textContent = original; }, 1500);
+      });
+    }
+
+    function copyResult(e, id) {
+      var pre = document.getElementById(id).querySelector('pre');
+      if (!pre) return;
+      var btn = e.target;
+      navigator.clipboard.writeText(pre.textContent).then(function() {
+        var original = btn.textContent;
+        btn.textContent = 'コピー済';
+        setTimeout(function() { btn.textContent = original; }, 1500);
       });
     }
 

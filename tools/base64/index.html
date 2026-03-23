@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base64エンコード・デコード変換 | Web便利ツール集</title>
+  <title>Base64エンコード・デコード - 無料オンライン変換ツール | Web便利ツール集</title>
   <meta name="description" content="テキストをBase64にエンコード・デコードする無料オンラインツール。双方向変換対応、ワンクリックコピー機能付き。">
-  <meta property="og:title" content="Base64エンコード・デコード変換 | Web便利ツール集">
+  <meta property="og:title" content="Base64エンコード・デコード - 無料オンライン変換ツール | Web便利ツール集">
   <meta property="og:description" content="テキストとBase64の相互変換ができる無料オンラインツール。">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/base64/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/base64/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Base64エンコード・デコード変換",
+    "description": "テキストをBase64にエンコード・デコードする無料オンラインツール。双方向変換対応、ワンクリックコピー機能付き。",
+    "url": "https://simpletoolkit.net/tools/base64/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -95,8 +109,8 @@
       <textarea id="output-text" placeholder="Base64文字列がここに表示されます..." rows="5"></textarea>
 
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="copyResult('output-text')">Base64をコピー</button>
-        <button class="btn btn-secondary" onclick="copyResult('input-text')">テキストをコピー</button>
+        <button class="btn btn-secondary" onclick="copyResult(event, 'output-text')">Base64をコピー</button>
+        <button class="btn btn-secondary" onclick="copyResult(event, 'input-text')">テキストをコピー</button>
         <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
       </div>
 
@@ -116,6 +130,14 @@
         <a href="../json-formatter/" class="tool-card">
           <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
           <p>JSONを見やすく整形・圧縮</p>
+        </a>
+        <a href="../jwt-decoder/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JWTデコーダー</h3>
+          <p>JWTトークンをデコードして中身を確認</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
         </a>
       </div>
     </section>
@@ -201,10 +223,10 @@
       }
     }
 
-    function copyResult(id) {
+    function copyResult(e, id) {
       const text = document.getElementById(id).value;
       navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
+        var btn = e.target;
         const original = btn.textContent;
         btn.textContent = 'コピーしました!';
         setTimeout(() => btn.textContent = original, 1500);

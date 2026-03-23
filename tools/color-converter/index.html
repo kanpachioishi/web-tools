@@ -8,6 +8,7 @@
   <meta property="og:title" content="カラーコード変換 - HEX・RGB・HSL無料変換ツール | Web便利ツール集">
   <meta property="og:description" content="カラーコード変換無料ツール。HEX・RGB・HSLを相互変換しリアルタイムでプレビュー表示。登録不要。">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/color-converter/">
   <link rel="canonical" href="https://simpletoolkit.net/tools/color-converter/">
   <script type="application/ld+json">
   {
@@ -95,7 +96,7 @@
         <label for="hex-input">HEX</label>
         <div style="display:flex;gap:8px;align-items:center;">
           <input type="text" id="hex-input" placeholder="#2563eb" value="#2563eb" style="flex:1;">
-          <button class="btn btn-secondary" onclick="copyColor('hex')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
+          <button class="btn btn-secondary" onclick="copyColor(event, 'hex')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
         </div>
       </div>
 
@@ -105,7 +106,7 @@
           <input type="number" id="rgb-r" placeholder="R" min="0" max="255" value="37" style="width:28%;">
           <input type="number" id="rgb-g" placeholder="G" min="0" max="255" value="99" style="width:28%;">
           <input type="number" id="rgb-b" placeholder="B" min="0" max="255" value="235" style="width:28%;">
-          <button class="btn btn-secondary" onclick="copyColor('rgb')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
+          <button class="btn btn-secondary" onclick="copyColor(event, 'rgb')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
         </div>
       </div>
 
@@ -115,7 +116,7 @@
           <input type="number" id="hsl-h" placeholder="H" min="0" max="360" value="221" style="width:28%;">
           <input type="number" id="hsl-s" placeholder="S%" min="0" max="100" value="83" style="width:28%;">
           <input type="number" id="hsl-l" placeholder="L%" min="0" max="100" value="53" style="width:28%;">
-          <button class="btn btn-secondary" onclick="copyColor('hsl')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
+          <button class="btn btn-secondary" onclick="copyColor(event, 'hsl')" style="white-space:nowrap;padding:8px 12px;font-size:0.85rem;">コピー</button>
         </div>
       </div>
 
@@ -182,6 +183,14 @@
         <a href="../char-counter/" class="tool-card">
           <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
           <p>文字数・単語数・バイト数をリアルタイムカウント</p>
+        </a>
+        <a href="../css-gradient/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">CSSグラデーション</h3>
+          <p>美しいCSSグラデーションを簡単作成</p>
+        </a>
+        <a href="../glassmorphism/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Glassmorphism生成</h3>
+          <p>すりガラス風CSSデザインを生成</p>
         </a>
       </div>
     </section>
@@ -273,7 +282,7 @@
       if (rgb) updateFromRgb(...rgb, 'picker');
     });
 
-    function copyColor(type) {
+    function copyColor(e, type) {
       var text = '';
       if (type === 'hex') {
         text = hexInput.value;
@@ -282,7 +291,7 @@
       } else if (type === 'hsl') {
         text = 'hsl(' + (hslH.value||0) + ', ' + (hslS.value||0) + '%, ' + (hslL.value||0) + '%)';
       }
-      var btn = event.target;
+      var btn = e.target;
       navigator.clipboard.writeText(text).then(function() {
         btn.textContent = 'コピー済';
         setTimeout(function() { btn.textContent = 'コピー'; }, 1000);

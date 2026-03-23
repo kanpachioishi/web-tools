@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ハッシュ値生成ツール（MD5/SHA-1/SHA-256/SHA-512） | Web便利ツール集</title>
+  <title>ハッシュ値生成（MD5/SHA-256） - 無料オンラインツール | Web便利ツール集</title>
   <meta name="description" content="テキストからMD5、SHA-1、SHA-256、SHA-512のハッシュ値を一括生成する無料オンラインツール。コピーボタン付き。">
-  <meta property="og:title" content="ハッシュ値生成ツール | Web便利ツール集">
+  <meta property="og:title" content="ハッシュ値生成（MD5/SHA-256） - 無料オンラインツール | Web便利ツール集">
   <meta property="og:description" content="テキストからMD5・SHA-1・SHA-256・SHA-512ハッシュを一括生成。">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/hash-generator/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/hash-generator/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ハッシュ値生成ツール（MD5/SHA-1/SHA-256/SHA-512）",
+    "description": "テキストからMD5、SHA-1、SHA-256、SHA-512のハッシュ値を一括生成する無料オンラインツール。コピーボタン付き。",
+    "url": "https://simpletoolkit.net/tools/hash-generator/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,29 +101,29 @@
         <div class="hash-row" id="row-md5">
           <label>MD5</label>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <input type="text" id="hash-md5" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 0.85rem;">
-            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash('hash-md5')">コピー</button>
+            <input type="text" id="hash-md5" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 1rem;">
+            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash(event, 'hash-md5')">コピー</button>
           </div>
         </div>
         <div class="hash-row" style="margin-top: 12px;">
           <label>SHA-1</label>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <input type="text" id="hash-sha1" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 0.85rem;">
-            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash('hash-sha1')">コピー</button>
+            <input type="text" id="hash-sha1" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 1rem;">
+            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash(event, 'hash-sha1')">コピー</button>
           </div>
         </div>
         <div class="hash-row" style="margin-top: 12px;">
           <label>SHA-256</label>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <input type="text" id="hash-sha256" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 0.85rem;">
-            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash('hash-sha256')">コピー</button>
+            <input type="text" id="hash-sha256" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 1rem;">
+            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash(event, 'hash-sha256')">コピー</button>
           </div>
         </div>
         <div class="hash-row" style="margin-top: 12px;">
           <label>SHA-512</label>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <input type="text" id="hash-sha512" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 0.85rem;">
-            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash('hash-sha512')">コピー</button>
+            <input type="text" id="hash-sha512" readonly style="font-family: 'SF Mono','Fira Code',monospace; font-size: 1rem;">
+            <button class="btn btn-secondary" style="white-space: nowrap; padding: 10px 14px;" onclick="copyHash(event, 'hash-sha512')">コピー</button>
           </div>
         </div>
       </div>
@@ -172,6 +186,14 @@
         <a href="../regex-tester/" class="tool-card">
           <h3 style="font-size:1rem;margin:0;">正規表現テスター</h3>
           <p>正規表現をリアルタイムでテスト</p>
+        </a>
+        <a href="../uuid-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">UUID生成ツール</h3>
+          <p>UUID/ULIDをランダムに生成</p>
+        </a>
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONデータを見やすく整形・圧縮</p>
         </a>
       </div>
     </section>
@@ -271,10 +293,10 @@
       document.getElementById('hash-sha512').value = sha512;
     }
 
-    function copyHash(id) {
+    function copyHash(e, id) {
       const text = document.getElementById(id).value;
       navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
+        var btn = e.target;
         const original = btn.textContent;
         btn.textContent = 'OK!';
         setTimeout(() => btn.textContent = original, 1500);

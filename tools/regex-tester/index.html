@@ -3,20 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>正規表現テスター | Web便利ツール集</title>
+  <title>正規表現テスター - 無料オンラインRegexチェッカー | Web便利ツール集</title>
   <meta name="description" content="正規表現のパターンをリアルタイムでテストできる無料オンラインツール。マッチ結果のハイライト表示、フラグ選択対応。">
-  <meta property="og:title" content="正規表現テスター | Web便利ツール集">
+  <meta property="og:title" content="正規表現テスター - 無料オンラインRegexチェッカー | Web便利ツール集">
   <meta property="og:description" content="正規表現パターンをリアルタイムでテスト。マッチ結果をハイライト表示。">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/regex-tester/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/regex-tester/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "正規表現テスター",
+    "description": "正規表現のパターンをリアルタイムでテストできる無料オンラインツール。マッチ結果のハイライト表示、フラグ選択対応。",
+    "url": "https://simpletoolkit.net/tools/regex-tester/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
   <link rel="stylesheet" href="../../common/style.css">
   <style>
     .match-highlight {
       background: #fef08a;
+      color: #1e293b;
       border-radius: 2px;
       padding: 1px 0;
     }
     .match-highlight:nth-of-type(even) {
       background: #bbf7d0;
+      color: #1e293b;
+    }
+    [data-theme="dark"] .match-highlight {
+      background: #854d0e;
+      color: #fef9c3;
+    }
+    [data-theme="dark"] .match-highlight:nth-of-type(even) {
+      background: #166534;
+      color: #dcfce7;
     }
     #highlight-area {
       white-space: pre-wrap;
@@ -243,6 +267,14 @@
         <a href="../text-diff/" class="tool-card">
           <h3 style="font-size:1rem;margin:0;">テキスト差分比較ツール</h3>
           <p>2つのテキストの差分をハイライト表示</p>
+        </a>
+        <a href="../json-formatter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">JSON整形ツール</h3>
+          <p>JSONデータを見やすく整形・圧縮</p>
+        </a>
+        <a href="../hash-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ハッシュ値生成ツール</h3>
+          <p>テキストからMD5・SHA-256等のハッシュ値を生成</p>
         </a>
       </div>
     </section>
