@@ -58,12 +58,12 @@
   <style>
     .emoji-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 4px; margin-top: 12px; }
     .emoji-btn { font-size: 1.8rem; padding: 8px; border: 1px solid transparent; border-radius: 8px; background: none; cursor: pointer; transition: all 0.15s; text-align: center; line-height: 1; }
-    .emoji-btn:hover { background: #e8f0fe; border-color: #c4d7f2; transform: scale(1.2); }
+    .emoji-btn:hover { background: var(--bg); border-color: var(--border); transform: scale(1.2); }
     .category-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-    .category-tab { padding: 6px 14px; border: 1px solid #ddd; border-radius: 20px; background: #f8f9fa; cursor: pointer; font-size: 0.9rem; transition: all 0.15s; white-space: nowrap; }
-    .category-tab.active { background: #2563eb; color: #fff; border-color: #2563eb; }
-    .category-tab:hover:not(.active) { background: #e8f0fe; }
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 0.95rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1000; }
+    .category-tab { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); cursor: pointer; font-size: 0.9rem; transition: all 0.15s; white-space: nowrap; color: var(--text); }
+    .category-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .category-tab:hover:not(.active) { background: var(--bg); }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 24px; border-radius: 8px; font-size: 0.95rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1000; }
     .toast.show { opacity: 1; }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
@@ -78,11 +78,11 @@
 
     <div class="tool-area">
       <label for="emoji-search">キーワードで検索</label>
-      <input type="text" id="emoji-search" placeholder="例: 笑顔, ハート, cat, star" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+      <input type="text" id="emoji-search" placeholder="例: 笑顔, ハート, cat, star" style="width:100%;padding:10px;font-size:1rem;border:1px solid var(--border);border-radius:6px;box-sizing:border-box;background:var(--bg);color:var(--text);">
 
       <div class="category-tabs" id="category-tabs" style="margin-top:16px;"></div>
 
-      <div id="emoji-count" style="font-size:0.85rem;color:#888;margin-top:8px;"></div>
+      <div id="emoji-count" style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;"></div>
       <div class="emoji-grid" id="emoji-grid"></div>
     </div>
 
@@ -195,7 +195,7 @@
       }
 
       if (emojis.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#999;padding:40px;">該当する絵文字が見つかりません</div>';
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px;">該当する絵文字が見つかりません</div>';
       }
     }
 
