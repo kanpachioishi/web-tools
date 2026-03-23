@@ -227,9 +227,14 @@
           regex = new RegExp(escaped, flags);
         }
 
-        result = text.replace(regex, (match) => {
+        result = text.replace(regex, function() {
           count++;
-          return replace;
+          // arguments[0]=match, arguments[1..n]=capture groups, then offset, then string
+          // Manually expand $1, $2, etc. in replace string
+          var args = arguments;
+          return replace.replace(/\$(\d+)/g, function(m, n) {
+            return args[parseInt(n)] !== undefined ? args[parseInt(n)] : m;
+          });
         });
       } catch (e) {
         document.getElementById('result').textContent = '正規表現エラー: ' + e.message;
