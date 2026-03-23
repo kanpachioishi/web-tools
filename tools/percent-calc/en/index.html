@@ -56,6 +56,16 @@
   }
   </script>
   <link rel="stylesheet" href="../../../common/style.css">
+  <style>
+    .calc-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .calc-row input[type="number"] { width: 120px; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; background: var(--bg); color: var(--text); }
+    .calc-row input[type="number"]:focus { outline: none; border-color: var(--primary); }
+    .calc-result { font-weight: 700; color: var(--primary); min-width: 60px; }
+    .calc-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    @media (max-width: 600px) {
+      .calc-row input[type="number"] { width: 90px; }
+    }
+  </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -68,32 +78,36 @@
 
     <div class="tool-area">
       <h3 style="margin-top:0;">1. What % is A of B?</h3>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <input type="number" id="p1-a" placeholder="A" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern1()">
+      <div class="calc-row">
+        <input type="number" id="p1-a" placeholder="A" oninput="calcPattern1()">
         <span>is</span>
-        <strong id="p1-result">?</strong>
+        <strong class="calc-result" id="p1-result">?</strong>
         <span>% of</span>
-        <input type="number" id="p1-b" placeholder="B" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern1()">
+        <input type="number" id="p1-b" placeholder="B" oninput="calcPattern1()">
       </div>
 
       <h3>2. What is X% of A?</h3>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <input type="number" id="p2-percent" placeholder="%" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern2()">
+      <div class="calc-row">
+        <input type="number" id="p2-percent" placeholder="%" oninput="calcPattern2()">
         <span>% of</span>
-        <input type="number" id="p2-a" placeholder="A" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern2()">
+        <input type="number" id="p2-a" placeholder="A" oninput="calcPattern2()">
         <span>is</span>
-        <strong id="p2-result">?</strong>
+        <strong class="calc-result" id="p2-result">?</strong>
       </div>
 
       <h3>3. % Change</h3>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <div class="calc-row">
         <span>From</span>
-        <input type="number" id="p3-from" placeholder="Original" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern3()">
+        <input type="number" id="p3-from" placeholder="Original" oninput="calcPattern3()">
         <span>to</span>
-        <input type="number" id="p3-to" placeholder="New value" style="width:120px;padding:8px;border:1px solid #ccc;border-radius:4px;" oninput="calcPattern3()">
+        <input type="number" id="p3-to" placeholder="New value" oninput="calcPattern3()">
         <span>=</span>
-        <strong id="p3-result">?</strong>
+        <strong class="calc-result" id="p3-result">?</strong>
         <span>% change</span>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
       </div>
     </div>
 
@@ -136,14 +150,34 @@
       }
     }
     function calcPattern3() {
-      const from = parseFloat(document.getElementById('p3-from').value);
-      const to = parseFloat(document.getElementById('p3-to').value);
+      var from = parseFloat(document.getElementById('p3-from').value);
+      var to = parseFloat(document.getElementById('p3-to').value);
       if (!isNaN(from) && !isNaN(to) && from !== 0) {
         document.getElementById('p3-result').textContent = ((to - from) / from * 100).toFixed(2);
       } else {
         document.getElementById('p3-result').textContent = '?';
       }
     }
+
+    function clearAll() {
+      var inputs = document.querySelectorAll('.calc-row input');
+      for (var i = 0; i < inputs.length; i++) inputs[i].value = '';
+      document.getElementById('p1-result').textContent = '?';
+      document.getElementById('p2-result').textContent = '?';
+      document.getElementById('p3-result').textContent = '?';
+    }
+
+    document.querySelectorAll('.calc-row input').forEach(function(input) {
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          var row = input.closest('.calc-row');
+          var inputs = row.querySelectorAll('input');
+          var idx = Array.prototype.indexOf.call(inputs, input);
+          if (idx < inputs.length - 1) inputs[idx + 1].focus();
+        }
+      });
+    });
   </script>
 </body>
 </html>
