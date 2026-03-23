@@ -9,6 +9,8 @@
   <meta property="og:description" content="QRコード作成無料ツール。URLやテキストを入力するだけでQRコードを即座に生成・ダウンロード。登録不要。">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://simpletoolkit.net/tools/qr-generator/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/qr-generator/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/qr-generator/en/">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -178,23 +180,65 @@
     </section>
   </main>
   <script src="../../common/footer.js"></script>
+  <script src="qrcode.js"></script>
+  <script src="qrcode_UTF8.js"></script>
   <script>
-    // QRコード生成（Canvas直接描画、外部ライブラリ不要の簡易版）
-    // Google Charts APIを利用
+    // QRコード生成（クライアントサイドで完結、外部通信なし）
     function generateQR() {
-      const text = document.getElementById('qr-input').value.trim();
-      if (!text) return;
-      const container = document.getElementById('qr-result');
-      const size = 300;
-      const url = 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + 'x' + size + '&data=' + encodeURIComponent(text);
-      container.innerHTML = '<img id="qr-img" src="' + url + '" alt="QRコード" style="max-width:100%;border-radius:8px;">';
+      var text = document.getElementById('qr-input').value.trim();
+      var container = document.getElementById('qr-result');
+
+      if (!text) {
+        container.innerHTML = '<p style="color:#e11d48;">テキストまたはURLを入力してください。</p>';
+        return;
+      }
+
+      try {
+        // typeNumber 0 = 自動判定, errorCorrectionLevel M
+        var qr = qrcode(0, 'M');
+        qr.addData(text);
+        qr.make();
+
+        // Canvas に描画
+        var moduleCount = qr.getModuleCount();
+        var cellSize = Math.max(4, Math.floor(300 / moduleCount));
+        var size = moduleCount * cellSize;
+        var canvas = document.createElement('canvas');
+        canvas.id = 'qr-canvas';
+        canvas.width = size;
+        canvas.height = size;
+        var ctx = canvas.getContext('2d');
+
+        // 白背景
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, size, size);
+
+        // QRコード描画
+        ctx.fillStyle = '#000000';
+        for (var row = 0; row < moduleCount; row++) {
+          for (var col = 0; col < moduleCount; col++) {
+            if (qr.isDark(row, col)) {
+              ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+            }
+          }
+        }
+
+        container.innerHTML = '';
+        canvas.style.maxWidth = '100%';
+        canvas.style.borderRadius = '8px';
+        container.appendChild(canvas);
+      } catch (e) {
+        container.innerHTML = '<p style="color:#e11d48;">QRコードの生成に失敗しました。入力テキストが長すぎる可能性があります。</p>';
+      }
     }
 
     function downloadQR() {
-      const img = document.getElementById('qr-img');
-      if (!img) return;
-      const a = document.createElement('a');
-      a.href = img.src;
+      var canvas = document.getElementById('qr-canvas');
+      if (!canvas) {
+        return;
+      }
+      var a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
       a.download = 'qrcode.png';
       a.click();
     }
