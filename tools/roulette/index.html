@@ -9,6 +9,8 @@
   <meta property="og:description" content="項目を自由に設定してルーレットを回せる無料ツール。食事決め、抽選、ランダム選択に最適。登録不要・すぐに使える。">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://simpletoolkit.net/tools/roulette/">
+  <link rel="alternate" hreflang="ja" href="https://simpletoolkit.net/tools/roulette/">
+  <link rel="alternate" hreflang="en" href="https://simpletoolkit.net/tools/roulette/en/">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -182,7 +184,7 @@
       display: flex;
     }
     .result-popup {
-      background: #fff;
+      background: var(--surface);
       border-radius: 20px;
       padding: 40px 48px;
       text-align: center;
@@ -192,7 +194,7 @@
     }
     .result-label {
       font-size: 1rem;
-      color: #64748b;
+      color: var(--text-muted);
       margin-bottom: 8px;
     }
     .result-text {
@@ -296,7 +298,7 @@
       <div class="roulette-container">
         <div class="canvas-wrapper">
           <div class="roulette-pointer"></div>
-          <canvas id="roulette-canvas" width="400" height="400"></canvas>
+          <canvas id="roulette-canvas" width="400" height="400" role="img" aria-label="ルーレットホイール">ルーレットホイール - 入力された項目がセクションとして表示されます</canvas>
         </div>
 
         <button class="spin-btn" id="spin-btn" onclick="spin()">スピン！</button>
@@ -323,9 +325,9 @@
     </div>
 
     <!-- Result popup -->
-    <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
+    <div class="result-overlay" id="result-overlay" onclick="closeResult(event)" role="dialog" aria-modal="true" aria-labelledby="result-label-text">
       <div class="result-popup" onclick="event.stopPropagation()">
-        <div class="result-label">結果</div>
+        <div class="result-label" id="result-label-text">結果</div>
         <div class="result-text" id="result-text"></div>
         <button class="result-close-btn" onclick="closeResult()">OK</button>
       </div>
@@ -474,30 +476,29 @@
 
       isSpinning = true;
       spinBtn.disabled = true;
+      itemsInput.disabled = true;
 
       var n = items.length;
       var sliceAngle = (2 * Math.PI) / n;
 
-      // Random target: 5-8 full rotations + random position
-      var fullRotations = (5 + Math.random() * 3) * 2 * Math.PI;
+      // Random target slice
       var randomSlice = Math.floor(Math.random() * n);
-      // Target angle: pointer is at top (270deg = -PI/2)
-      // We need the middle of the target slice to end up at the top
+
+      // Calculate desired final currentAngle so that randomSlice center aligns with pointer (top = -PI/2)
+      // Slice i center is at: currentAngle + i * sliceAngle + sliceAngle / 2
+      // We need: desiredFinalAngle + randomSlice * sliceAngle + sliceAngle / 2 = -PI/2 (mod 2PI)
       var targetSliceCenter = randomSlice * sliceAngle + sliceAngle / 2;
-      // The pointer is at the top (-PI/2), but in canvas 0 is right,
-      // so "top" in our rotation corresponds to -PI/2
-      // We want: currentAngle + totalSpin + targetSliceCenter = -PI/2 + 2*PI*k
-      // Actually the wheel rotates, and the pointer reads from top.
-      // The winning slice is the one at -PI/2 (top).
-      // After rotation by totalAngle, slice i starts at totalAngle + i*sliceAngle
-      // For slice randomSlice to be at the pointer (-PI/2):
-      // totalAngle + randomSlice*sliceAngle + sliceAngle/2 ≡ -PI/2 (mod 2PI)
-      // totalAngle = -PI/2 - targetSliceCenter (mod 2PI)
-      var finalAngle = -Math.PI / 2 - targetSliceCenter;
-      // Normalize to positive range
-      finalAngle = ((finalAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-      var totalSpin = fullRotations + (finalAngle - ((currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI));
-      if (totalSpin < fullRotations) totalSpin += 2 * Math.PI;
+      var desiredFinalAngle = -Math.PI / 2 - targetSliceCenter;
+
+      // Calculate total spin from current position to desired final angle
+      // Ensure at least 5 full rotations for visual effect
+      var minRotations = 5 * 2 * Math.PI;
+      var totalSpin = desiredFinalAngle - currentAngle;
+      while (totalSpin < minRotations) {
+        totalSpin += 2 * Math.PI;
+      }
+      // Add 0-2 extra full rotations for randomness
+      totalSpin += Math.floor(Math.random() * 3) * 2 * Math.PI;
 
       var startAngle = currentAngle;
       var startTime = null;
@@ -522,6 +523,7 @@
           // Spin complete
           isSpinning = false;
           spinBtn.disabled = false;
+          itemsInput.disabled = false;
 
           // Show result
           var resultItem = items[randomSlice];

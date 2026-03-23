@@ -18,7 +18,7 @@
     "name": "Roulette Wheel - Free Online Random Picker Tool",
     "description": "Free online roulette wheel for random selection. Perfect for deciding meals, drawings, and random picks. No registration required, works entirely in your browser.",
     "url": "https://simpletoolkit.net/tools/roulette/en/",
-    "applicationCategory": "UtilityApplication",
+    "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "All",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
@@ -184,7 +184,7 @@
       display: flex;
     }
     .result-popup {
-      background: #fff;
+      background: var(--surface);
       border-radius: 20px;
       padding: 40px 48px;
       text-align: center;
@@ -194,7 +194,7 @@
     }
     .result-label {
       font-size: 1rem;
-      color: #64748b;
+      color: var(--text-muted);
       margin-bottom: 8px;
     }
     .result-text {
@@ -298,7 +298,7 @@
       <div class="roulette-container">
         <div class="canvas-wrapper">
           <div class="roulette-pointer"></div>
-          <canvas id="roulette-canvas" width="400" height="400"></canvas>
+          <canvas id="roulette-canvas" width="400" height="400" role="img" aria-label="Roulette wheel">Roulette wheel - entered items are displayed as sections</canvas>
         </div>
 
         <button class="spin-btn" id="spin-btn" onclick="spin()">Spin!</button>
@@ -325,9 +325,9 @@ Steak</textarea>
     </div>
 
     <!-- Result popup -->
-    <div class="result-overlay" id="result-overlay" onclick="closeResult(event)">
+    <div class="result-overlay" id="result-overlay" onclick="closeResult(event)" role="dialog" aria-modal="true" aria-labelledby="result-label-text">
       <div class="result-popup" onclick="event.stopPropagation()">
-        <div class="result-label">Result</div>
+        <div class="result-label" id="result-label-text">Result</div>
         <div class="result-text" id="result-text"></div>
         <button class="result-close-btn" onclick="closeResult()">OK</button>
       </div>
@@ -476,19 +476,26 @@ Steak</textarea>
 
       isSpinning = true;
       spinBtn.disabled = true;
+      itemsInput.disabled = true;
 
       var n = items.length;
       var sliceAngle = (2 * Math.PI) / n;
 
-      // Random target: 5-8 full rotations + random position
-      var fullRotations = (5 + Math.random() * 3) * 2 * Math.PI;
+      // Random target slice
       var randomSlice = Math.floor(Math.random() * n);
+
+      // Calculate desired final currentAngle so that randomSlice center aligns with pointer (top = -PI/2)
       var targetSliceCenter = randomSlice * sliceAngle + sliceAngle / 2;
-      var finalAngle = -Math.PI / 2 - targetSliceCenter;
-      // Normalize to positive range
-      finalAngle = ((finalAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
-      var totalSpin = fullRotations + (finalAngle - ((currentAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI));
-      if (totalSpin < fullRotations) totalSpin += 2 * Math.PI;
+      var desiredFinalAngle = -Math.PI / 2 - targetSliceCenter;
+
+      // Calculate total spin from current position to desired final angle
+      var minRotations = 5 * 2 * Math.PI;
+      var totalSpin = desiredFinalAngle - currentAngle;
+      while (totalSpin < minRotations) {
+        totalSpin += 2 * Math.PI;
+      }
+      // Add 0-2 extra full rotations for randomness
+      totalSpin += Math.floor(Math.random() * 3) * 2 * Math.PI;
 
       var startAngle = currentAngle;
       var startTime = null;
@@ -513,6 +520,7 @@ Steak</textarea>
           // Spin complete
           isSpinning = false;
           spinBtn.disabled = false;
+          itemsInput.disabled = false;
 
           // Show result
           var resultItem = items[randomSlice];
