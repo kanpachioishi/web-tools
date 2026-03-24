@@ -121,6 +121,10 @@
       border-color: #ef4444;
       background: #fef2f2;
     }
+    [data-theme="dark"] .converter-field input.error {
+      border-color: #f87171;
+      background: #450a0a;
+    }
     .error-msg {
       color: #ef4444;
       font-size: 0.8rem;
@@ -150,6 +154,11 @@
       background: #f0fdf4;
       color: #16a34a;
       border-color: #16a34a;
+    }
+    [data-theme="dark"] .copy-btn.copied {
+      background: #052e16;
+      color: #4ade80;
+      border-color: #4ade80;
     }
 
     /* Bit display */
@@ -266,6 +275,15 @@
     }
     .ref-table tbody tr:hover {
       background: #f1f5f9;
+    }
+    [data-theme="dark"] .ref-table tbody tr:hover {
+      background: #1e293b;
+    }
+    [data-theme="dark"] .error-msg {
+      color: #f87171;
+    }
+    [data-theme="dark"] .bit-overflow {
+      color: #f87171;
     }
     .tab-buttons {
       display: flex;

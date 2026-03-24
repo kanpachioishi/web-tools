@@ -79,6 +79,28 @@
   }
   </script>
   <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .tool-input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-sizing: border-box;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .tool-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    @media (max-width: 600px) {
+      .stats { flex-direction: column; }
+      .stat-item { min-width: unset !important; }
+      h1 { font-size: 1.4rem; }
+      h2 { font-size: 1rem; }
+    }
+  </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -92,7 +114,7 @@
     <div class="tool-area">
       <h3 style="font-size:1.1rem;margin-bottom:12px;">数字 → 漢数字</h3>
       <label for="number-input">数字を入力</label>
-      <input type="text" id="number-input" placeholder="例: 123456" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+      <input type="text" id="number-input" placeholder="例: 123456" class="tool-input">
 
       <div class="stats" id="result-number" style="margin-top:16px;">
         <div class="stat-item" style="flex:1;min-width:200px;">
@@ -107,7 +129,7 @@
 
       <h3 style="font-size:1.1rem;margin-top:32px;margin-bottom:12px;">漢数字 → 数字</h3>
       <label for="kanji-input">漢数字を入力</label>
-      <input type="text" id="kanji-input" placeholder="例: 十二万三千四百五十六" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+      <input type="text" id="kanji-input" placeholder="例: 十二万三千四百五十六" class="tool-input">
 
       <div class="stats" id="result-kanji" style="margin-top:16px;">
         <div class="stat-item" style="flex:1;min-width:200px;">
