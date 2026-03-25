@@ -203,11 +203,11 @@
       align-items: center;
       gap: 8px;
       padding: 10px 14px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
+      background: var(--privacy-bg, #f0fdf4);
+      border: 1px solid var(--privacy-border, #bbf7d0);
       border-radius: var(--radius);
       font-size: 0.85rem;
-      color: #166534;
+      color: var(--privacy-color, #166534);
       margin-bottom: 16px;
     }
 
@@ -318,6 +318,11 @@
         flex-direction: column;
         gap: 4px;
       }
+    }
+    [data-theme="dark"] {
+      --privacy-bg: #052e16;
+      --privacy-border: #166534;
+      --privacy-color: #86efac;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>

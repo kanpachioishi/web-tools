@@ -81,7 +81,7 @@
 
     .team-hero { background: linear-gradient(135deg, #0055A522 0%, #0055A511 100%); border-left: 4px solid #0055A5; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
     .team-hero h2 { margin: 0 0 6px; color: #0055A5; font-size: 1.1rem; }
-    .team-hero p { margin: 0; font-size: 0.9rem; color: #555; }
+    .team-hero p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
 
     /* 今日の試合 */
     .today-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
@@ -104,30 +104,30 @@
     .team-filter { margin-bottom: 20px; }
     .team-filter h3 { margin: 0 0 12px; font-size: 1rem; }
     .league-group { margin-bottom: 12px; }
-    .league-label { font-size: 0.85rem; color: #666; font-weight: bold; margin-bottom: 6px; display: block; }
+    .league-label { font-size: 0.85rem; color: var(--text-muted); font-weight: bold; margin-bottom: 6px; display: block; }
     .team-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
-    .team-btn { padding: 8px 14px; border: 2px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; min-width: 80px; text-align: center; }
+    .team-btn { padding: 8px 14px; border: 2px solid var(--border); border-radius: 8px; background: var(--surface); cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; min-width: 80px; text-align: center; }
     .team-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .team-btn.active { color: #fff; border-color: transparent; }
-    .team-btn-all { padding: 8px 14px; border: 2px solid #2563eb; border-radius: 8px; background: #fff; color: #2563eb; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; }
+    .team-btn-all { padding: 8px 14px; border: 2px solid var(--primary); border-radius: 8px; background: var(--surface); color: var(--primary); cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; }
     .team-btn-all.active { background: #2563eb; color: #fff; }
 
     /* ビュー切替タブ */
-    .view-tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; }
-    .view-tab { padding: 10px 20px; cursor: pointer; font-weight: bold; font-size: 0.9rem; color: #666; border-bottom: 3px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; }
-    .view-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
-    .view-tab:hover { color: #2563eb; }
+    .view-tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid var(--border); }
+    .view-tab { padding: 10px 20px; cursor: pointer; font-weight: bold; font-size: 0.9rem; color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none; }
+    .view-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .view-tab:hover { color: var(--primary); }
 
     /* カレンダー */
     .calendar-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .calendar-nav button { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.9rem; }
-    .calendar-nav button:hover { background: #f3f4f6; }
+    .calendar-nav button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); cursor: pointer; font-size: 0.9rem; }
+    .calendar-nav button:hover { background: var(--bg); }
     .calendar-nav .month-title { font-size: 1.2rem; font-weight: bold; }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-    .cal-header { text-align: center; font-weight: bold; font-size: 0.8rem; padding: 8px 4px; color: #666; }
+    .cal-header { text-align: center; font-weight: bold; font-size: 0.8rem; padding: 8px 4px; color: var(--text-muted); }
     .cal-header:first-child { color: #dc2626; }
     .cal-header:last-child { color: #2563eb; }
-    .cal-day { min-height: 70px; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px; font-size: 0.75rem; cursor: pointer; transition: background 0.2s; position: relative; }
+    .cal-day { min-height: 70px; border: 1px solid var(--border); border-radius: 4px; padding: 4px; font-size: 0.75rem; cursor: pointer; transition: background 0.2s; position: relative; }
     .cal-day:hover { background: #f0f7ff; }
     .cal-day.today { background: #fffbeb; border-color: #fbbf24; }
     .cal-day.selected { background: #eff6ff; border-color: #2563eb; border-width: 2px; }
@@ -135,36 +135,36 @@
     .cal-day.sunday .day-num { color: #dc2626; }
     .cal-day.saturday .day-num { color: #2563eb; }
     .cal-day .game-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 1px; }
-    .cal-day .game-count { font-size: 0.7rem; color: #666; }
+    .cal-day .game-count { font-size: 0.7rem; color: var(--text-muted); }
     .cal-day.empty { background: #f9fafb; border-color: transparent; cursor: default; }
     .cal-day.empty:hover { background: #f9fafb; }
 
     /* 試合一覧テーブル */
     .game-list { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    .game-list th { background: #1e3a5f; color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
-    .game-list td { padding: 8px; border-bottom: 1px solid #e5e7eb; }
+    .game-list th { background: var(--table-header-bg, #1e3a5f); color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
+    .game-list td { padding: 8px; border-bottom: 1px solid var(--border); }
     .game-list tr:hover { background: #f0f7ff; }
     .game-list tr.today-row { background: #fffbeb; }
     .game-list tr.today-row:hover { background: #fef3c7; }
     .game-list .team-color { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
-    .date-header { background: #f3f4f6; font-weight: bold; }
-    .date-header td { padding: 8px 12px; color: #333; font-size: 0.95rem; }
+    .date-header { background: var(--bg); font-weight: bold; }
+    .date-header td { padding: 8px 12px; color: var(--text); font-size: 0.95rem; }
 
     /* 週間ビュー */
     .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .week-nav button { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; }
-    .week-nav button:hover { background: #f3f4f6; }
+    .week-nav button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); cursor: pointer; }
+    .week-nav button:hover { background: var(--bg); }
     .week-card-group { margin-bottom: 20px; }
-    .week-date-header { font-weight: bold; font-size: 1rem; padding: 8px 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 8px; }
+    .week-date-header { font-weight: bold; font-size: 1rem; padding: 8px 0; border-bottom: 2px solid var(--border); margin-bottom: 8px; }
     .week-date-header.is-today { color: #d97706; border-bottom-color: #fbbf24; }
     .week-games { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
-    .week-game { display: flex; align-items: center; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; gap: 10px; font-size: 0.85rem; }
-    .week-game .wg-time { font-weight: bold; color: #2563eb; min-width: 45px; }
+    .week-game { display: flex; align-items: center; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; gap: 10px; font-size: 0.85rem; }
+    .week-game .wg-time { font-weight: bold; color: var(--primary); min-width: 45px; }
     .week-game .wg-teams { flex: 1; }
-    .week-game .wg-venue { color: #888; font-size: 0.8rem; }
+    .week-game .wg-venue { color: var(--text-muted); font-size: 0.8rem; }
 
-    .table-wrapper { overflow-x: auto; max-height: 600px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
-    .match-count { color: #666; font-size: 0.9rem; margin-bottom: 8px; }
+    .table-wrapper { overflow-x: auto; max-height: 600px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .match-count { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px; }
 
     @media (max-width: 600px) {
       .game-list { font-size: 0.8rem; }
@@ -176,35 +176,21 @@
       .view-tab { padding: 8px 12px; font-size: 0.8rem; }
     }
 
-    @media (prefers-color-scheme: dark) {
-      .team-btn { background: #1e293b; border-color: #475569; color: #e2e8f0; }
-      .team-btn-all { background: #1e293b; color: #60a5fa; border-color: #60a5fa; }
-      .team-btn-all.active { background: #2563eb; color: #fff; }
-      .view-tab { color: #9ca3af; }
-      .view-tab.active { color: #60a5fa; border-bottom-color: #60a5fa; }
-      .cal-day { border-color: #374151; background: #1e293b; }
-      .cal-day:hover { background: #1e3a5f; }
-      .cal-day.today { background: #422006; border-color: #f59e0b; }
-      .cal-day.selected { background: #172554; border-color: #60a5fa; }
-      .cal-day.empty { background: #111827; }
-      .cal-day.empty:hover { background: #111827; }
-      .cal-header { color: #9ca3af; }
-      .cal-day .day-num { color: #e5e7eb; }
-      .cal-day.sunday .day-num { color: #f87171; }
-      .cal-day.saturday .day-num { color: #60a5fa; }
-      .game-list th { background: #0f172a; }
-      .game-list td { border-color: #374151; }
-      .game-list tr:hover { background: #1e293b; }
-      .game-list tr.today-row { background: #422006; }
-      .date-header { background: #1e293b; }
-      .date-header td { color: #e5e7eb; }
-      .calendar-nav button { background: #1e293b; color: #e5e7eb; border-color: #475569; }
-      .week-nav button { background: #1e293b; color: #e5e7eb; border-color: #475569; }
-      .week-game { border-color: #374151; background: #1e293b; }
-      .week-date-header { border-color: #475569; color: #e5e7eb; }
-      .match-count { color: #9ca3af; }
-      .team-hero h2 { color: #0055A5; }
+    /* ダークモード対応 */
+    [data-theme="dark"] {
+      --table-header-bg: #0f172a;
     }
+    [data-theme="dark"] .team-btn.active { color: #fff; }
+    [data-theme="dark"] .cal-day { background: var(--surface); }
+    [data-theme="dark"] .cal-day:hover { background: #1e3a5f; }
+    [data-theme="dark"] .cal-day.today { background: #422006; border-color: #f59e0b; }
+    [data-theme="dark"] .cal-day.selected { background: #172554; border-color: #60a5fa; }
+    [data-theme="dark"] .cal-day.empty { background: #111827; }
+    [data-theme="dark"] .cal-day.empty:hover { background: #111827; }
+    [data-theme="dark"] .cal-day.sunday .day-num { color: #f87171; }
+    [data-theme="dark"] .cal-day.saturday .day-num { color: #60a5fa; }
+    [data-theme="dark"] .game-list tr.today-row { background: #422006; }
+    [data-theme="dark"] .week-game { background: var(--surface); }
   </style>
 </head>
 <body>

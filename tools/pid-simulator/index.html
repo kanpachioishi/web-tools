@@ -613,11 +613,17 @@
       function toX(t) { return padLeft + (t / tMax) * plotW; }
       function toY(v) { return padTop + plotH - ((v - yMin) / (yMax - yMin)) * plotH; }
 
+      // Theme-aware colors
+      var cs = getComputedStyle(document.documentElement);
+      var gridColor = cs.getPropertyValue('--border').trim() || '#e0e0e0';
+      var axisColor = cs.getPropertyValue('--text-muted').trim() || '#888';
+      var labelColor = cs.getPropertyValue('--text-muted').trim() || '#666';
+
       // Clear
       ctx.clearRect(0, 0, w, h);
 
       // Grid
-      ctx.strokeStyle = '#e0e0e0';
+      ctx.strokeStyle = gridColor;
       ctx.lineWidth = 0.5;
       // Vertical grid lines
       for (var t = 0; t <= tMax; t += 1) {
@@ -640,7 +646,7 @@
       }
 
       // Axes
-      ctx.strokeStyle = '#888';
+      ctx.strokeStyle = axisColor;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padLeft, padTop);
@@ -649,7 +655,7 @@
       ctx.stroke();
 
       // Axis labels
-      ctx.fillStyle = '#666';
+      ctx.fillStyle = labelColor;
       ctx.font = '11px sans-serif';
       ctx.textAlign = 'center';
       for (var t = 0; t <= tMax; t += 1) {
@@ -698,7 +704,7 @@
       ctx.fillText('出力 y(t)', padLeft + 8, padTop + 16);
 
       // Axis titles
-      ctx.fillStyle = '#666';
+      ctx.fillStyle = labelColor;
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('時間 [s]', padLeft + plotW / 2, h - 2);
