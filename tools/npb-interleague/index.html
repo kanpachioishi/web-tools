@@ -108,47 +108,47 @@
     .team-filter { margin-bottom: 20px; }
     .team-filter h3 { margin: 0 0 12px; font-size: 1rem; }
     .league-group { margin-bottom: 12px; }
-    .league-label { font-size: 0.85rem; color: #666; font-weight: bold; margin-bottom: 6px; display: block; }
+    .league-label { font-size: 0.85rem; color: var(--text-muted); font-weight: bold; margin-bottom: 6px; display: block; }
     .team-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
     .team-btn {
-      padding: 8px 14px; border: 2px solid #ddd; border-radius: 8px;
-      background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: bold;
+      padding: 8px 14px; border: 2px solid var(--border); border-radius: 8px;
+      background: var(--surface); cursor: pointer; font-size: 0.85rem; font-weight: bold;
       transition: all 0.2s; min-width: 80px; text-align: center;
     }
     .team-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
     .team-btn.active { color: #fff; border-color: transparent; }
     .team-btn-all {
-      padding: 8px 14px; border: 2px solid #2563eb; border-radius: 8px;
-      background: #fff; color: #2563eb; cursor: pointer; font-size: 0.85rem; font-weight: bold;
+      padding: 8px 14px; border: 2px solid var(--primary); border-radius: 8px;
+      background: var(--surface); color: var(--primary); cursor: pointer; font-size: 0.85rem; font-weight: bold;
       transition: all 0.2s;
     }
     .team-btn-all.active { background: #2563eb; color: #fff; }
 
     /* ビュー切替タブ */
-    .view-tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; }
+    .view-tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid var(--border); }
     .view-tab {
       padding: 10px 20px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
-      color: #666; border-bottom: 3px solid transparent; transition: all 0.2s;
+      color: var(--text-muted); border-bottom: 3px solid transparent; transition: all 0.2s;
       background: none; border-top: none; border-left: none; border-right: none;
     }
-    .view-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
-    .view-tab:hover { color: #2563eb; }
+    .view-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .view-tab:hover { color: var(--primary); }
 
     /* テーブル */
     .game-list { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    .game-list th { background: #1e3a5f; color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
-    .game-list td { padding: 8px; border-bottom: 1px solid #e5e7eb; }
-    .game-list tr:hover { background: #f0f7ff; }
-    .date-header { background: #f3f4f6; font-weight: bold; }
-    .date-header td { padding: 8px 12px; color: #333; font-size: 0.95rem; }
+    .game-list th { background: var(--table-header-bg, #1e3a5f); color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
+    .game-list td { padding: 8px; border-bottom: 1px solid var(--border); }
+    .game-list tr:hover { background: var(--row-hover, #f0f7ff); }
+    .date-header { background: var(--bg); font-weight: bold; }
+    .date-header td { padding: 8px 12px; color: var(--text); font-size: 0.95rem; }
     .team-color { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
-    .table-wrapper { overflow-x: auto; max-height: 600px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
-    .match-count { color: #666; font-size: 0.9rem; margin-bottom: 8px; }
+    .table-wrapper { overflow-x: auto; max-height: 600px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .match-count { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px; }
 
     /* カード別表示 */
     .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
     .card-block {
-      border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
     .card-block-header {
@@ -170,12 +170,12 @@
     }
     .card-game-row {
       display: flex; align-items: center; padding: 10px 16px;
-      border-bottom: 1px solid #f0f0f0; font-size: 0.88rem; gap: 12px;
+      border-bottom: 1px solid var(--border); font-size: 0.88rem; gap: 12px;
     }
     .card-game-row:last-child { border-bottom: none; }
-    .card-game-date { color: #666; min-width: 80px; font-size: 0.82rem; }
-    .card-game-time { color: #2563eb; font-weight: bold; min-width: 45px; }
-    .card-game-venue { color: #888; font-size: 0.82rem; }
+    .card-game-date { color: var(--text-muted); min-width: 80px; font-size: 0.82rem; }
+    .card-game-time { color: var(--primary); font-weight: bold; min-width: 45px; }
+    .card-game-venue { color: var(--text-muted); font-size: 0.82rem; }
 
     @media (max-width: 600px) {
       .game-list { font-size: 0.8rem; }
@@ -187,23 +187,12 @@
     }
 
     /* ダークモード */
-    @media (prefers-color-scheme: dark) {
-      .team-btn { background: #1e293b; border-color: #475569; color: #e2e8f0; }
-      .team-btn-all { background: #1e293b; color: #60a5fa; border-color: #60a5fa; }
-      .team-btn-all.active { background: #2563eb; color: #fff; }
-      .view-tab { color: #9ca3af; }
-      .view-tab.active { color: #60a5fa; border-bottom-color: #60a5fa; }
-      .game-list th { background: #0f172a; }
-      .game-list td { border-color: #374151; }
-      .game-list tr:hover { background: #1e293b; }
-      .date-header { background: #1e293b; }
-      .date-header td { color: #e5e7eb; }
-      .match-count { color: #9ca3af; }
-      .card-block { border-color: #374151; background: #1e293b; }
-      .card-game-row { border-color: #374151; }
-      .card-game-date { color: #9ca3af; }
-      .card-game-venue { color: #6b7280; }
+    [data-theme="dark"] {
+      --table-header-bg: #0f172a;
+      --row-hover: #1e293b;
     }
+    [data-theme="dark"] .team-btn.active { color: #fff; }
+    [data-theme="dark"] .card-block { background: var(--surface); }
   </style>
 </head>
 <body>
