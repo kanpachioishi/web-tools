@@ -75,13 +75,13 @@
     .wc-countdown .finished { color: #ff6b6b; font-size: 1.2rem; font-weight: bold; }
 
     .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; align-items: center; }
-    .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; }
-    .filter-bar label { font-weight: bold; font-size: 0.9rem; color: #555; white-space: nowrap; }
+    .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; background: var(--surface); color: var(--text); }
+    .filter-bar label { font-weight: bold; font-size: 0.9rem; color: var(--text-muted); white-space: nowrap; }
 
     .match-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    .match-table th { background: #2563eb; color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
-    .match-table td { padding: 8px; border-bottom: 1px solid #e5e7eb; }
-    .match-table tr:hover { background: #f0f7ff; }
+    .match-table th { background: var(--primary); color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
+    .match-table td { padding: 8px; border-bottom: 1px solid var(--border); }
+    .match-table tr:hover { background: var(--row-hover, #f0f7ff); }
     .match-table tr.japan-match { background: #fff7ed; font-weight: bold; }
     .match-table tr.japan-match:hover { background: #ffedd5; }
     .match-table .time-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
@@ -97,17 +97,17 @@
     .stage-final { color: #b91c1c; font-weight: bold; }
     .japan-flag { font-size: 1.1em; }
 
-    .timezone-tool { background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 24px; }
-    .timezone-tool h3 { margin: 0 0 16px; color: #333; }
+    .timezone-tool { background: var(--bg); border-radius: 10px; padding: 20px; margin-bottom: 24px; }
+    .timezone-tool h3 { margin: 0 0 16px; color: var(--text); }
     .tz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-    .tz-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; }
-    .tz-card .city { font-weight: bold; color: #2563eb; font-size: 1rem; }
-    .tz-card .tz-name { font-size: 0.85rem; color: #888; }
-    .tz-card .diff { font-size: 1.3rem; font-weight: bold; color: #333; margin: 4px 0; }
-    .tz-card .local-now { font-size: 0.85rem; color: #666; }
+    .tz-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .tz-card .city { font-weight: bold; color: var(--primary); font-size: 1rem; }
+    .tz-card .tz-name { font-size: 0.85rem; color: var(--text-muted); }
+    .tz-card .diff { font-size: 1.3rem; font-weight: bold; color: var(--text); margin: 4px 0; }
+    .tz-card .local-now { font-size: 0.85rem; color: var(--text-muted); }
 
-    .table-wrapper { overflow-x: auto; max-height: 600px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
-    .match-count { color: #666; font-size: 0.9rem; margin-bottom: 8px; }
+    .table-wrapper { overflow-x: auto; max-height: 600px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .match-count { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px; }
 
     @media (max-width: 600px) {
       .match-table { font-size: 0.8rem; }
@@ -115,6 +115,11 @@
       .wc-countdown .cd-num { font-size: 2rem; }
       .filter-bar { flex-direction: column; }
     }
+    [data-theme="dark"] {
+      --row-hover: #1e293b;
+    }
+    [data-theme="dark"] .match-table tr.japan-match { background: #2a1a00; }
+    [data-theme="dark"] .match-table tr.japan-match:hover { background: #3a2500; }
   </style>
 </head>
 <body>

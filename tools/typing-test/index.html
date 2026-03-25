@@ -160,8 +160,8 @@
     .result-card .rc-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
     .result-card .rc-value { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
     .best-record {
-      margin-top: 16px; padding: 12px 16px; background: #fefce8;
-      border: 1px solid #fde047; border-radius: var(--radius); font-size: 0.9rem; text-align: center;
+      margin-top: 16px; padding: 12px 16px; background: var(--best-bg, #fefce8);
+      border: 1px solid var(--best-border, #fde047); border-radius: var(--radius); font-size: 0.9rem; text-align: center;
     }
     .share-buttons {
       display: flex; gap: 12px; margin-top: 16px; justify-content: center; flex-wrap: wrap;
@@ -187,6 +187,10 @@
       .result-details { grid-template-columns: 1fr; }
       .stat-item { min-width: 60px; padding: 8px 10px; }
       .stat-value { font-size: 1.1rem; }
+    }
+    [data-theme="dark"] {
+      --best-bg: #2a2000;
+      --best-border: #854d0e;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
@@ -309,23 +313,23 @@
     // Sentences: each has hiragana display and romaji to type
     // romaji uses the most common input method
     var sentences = [
-      { hira: "きょうはとてもいいてんきです", roma: "kyouhatomoiitenkidesu" },
+      { hira: "きょうはとてもいいてんきです", roma: "kyouhatotemoiitenkidesu" },
       { hira: "ぷろぐらみんぐはたのしい", roma: "puroguraminnguhatanosii" },
       { hira: "おはようございます", roma: "ohayougozaimasu" },
       { hira: "ありがとうございました", roma: "arigatougozaimasita" },
       { hira: "はじめましてよろしくおねがいします", roma: "hajimemasiteyorosikuonegaisimasu" },
       { hira: "きれいなはながさいている", roma: "kireinahanagasaiteiru" },
-      { hira: "あしたはあめがふるでしょう", roma: "asitahaamegarurudesyou" },
+      { hira: "あしたはあめがふるでしょう", roma: "asitahaamegahurudesyou" },
       { hira: "でんしゃにのっておでかけする", roma: "densyaninotteodekakesuru" },
       { hira: "おいしいりょうりをたべたい", roma: "oisiiryouriowotabetai" },
       { hira: "としょかんでほんをよむ", roma: "tosyokandehonwoyomu" },
       { hira: "がっこうでべんきょうする", roma: "gakkoudebenkyousuru" },
       { hira: "やまにのぼってけしきをみる", roma: "yamaninobottekesikiomiru" },
       { hira: "うみでおよぐのがすきです", roma: "umideoyogunogasukidesu" },
-      { hira: "えいがをみにいきましょう", roma: "eigawominiiikimasiyou" },
+      { hira: "えいがをみにいきましょう", roma: "eigawominiikimasiyou" },
       { hira: "しゅくだいをおわらせる", roma: "syukudaiwoowaraseru" },
       { hira: "かぜにきをつけてください", roma: "kazenikiwotsuketekudasai" },
-      { hira: "しんかんせんはとてもはやい", roma: "sinkansenhatotemoahayai" },
+      { hira: "しんかんせんはとてもはやい", roma: "sinkansenhatotemohayai" },
       { hira: "こうえんでさんぽをする", roma: "kouendesanpowosuru" },
       { hira: "おかあさんにでんわする", roma: "okaasannidenwasuru" },
       { hira: "にちようびはやすみです", roma: "nitiyoubihayasumidesu" },
