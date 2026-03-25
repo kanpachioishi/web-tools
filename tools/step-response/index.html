@@ -206,7 +206,7 @@
     .canvas-container {
       position: relative;
       width: 100%;
-      background: #fff;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
@@ -378,17 +378,17 @@
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
       <div class="tool-grid">
-        <a href="../unit-converter/" class="tool-card">
-          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
-          <p>長さ・重さ・温度などの単位を変換</p>
+        <a href="../bode-plot/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ボード線図</h3>
+          <p>伝達関数からゲイン・位相線図を自動描画</p>
         </a>
-        <a href="../char-counter/" class="tool-card">
-          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
-          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        <a href="../pid-simulator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">PIDシミュレーター</h3>
+          <p>PID制御のパラメータ調整をリアルタイムシミュレーション</p>
         </a>
-        <a href="../csv-to-table/" class="tool-card">
-          <h3 style="font-size:1rem;margin:0;">CSVテーブル変換</h3>
-          <p>CSVデータをHTMLテーブルに変換</p>
+        <a href="../ohms-law/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">オームの法則計算</h3>
+          <p>電圧・電流・抵抗・電力を相互計算</p>
         </a>
       </div>
     </section>
@@ -716,8 +716,15 @@
       var plotW = w - pad.left - pad.right;
       var plotH = h - pad.top - pad.bottom;
 
+      // Theme-aware colors
+      var cs = getComputedStyle(document.documentElement);
+      var surfaceColor = cs.getPropertyValue('--surface').trim() || '#ffffff';
+      var gridColor = cs.getPropertyValue('--border').trim() || '#e5e7eb';
+      var labelColor = cs.getPropertyValue('--text-muted').trim() || '#6b7280';
+      var axisColor = cs.getPropertyValue('--text').trim() || '#374151';
+
       // Clear
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = surfaceColor;
       ctx.fillRect(0, 0, w, h);
 
       // Determine time and y range
@@ -749,14 +756,14 @@
       function yToCanvas(y) { return pad.top + plotH - ((y - yMin) / (yMax - yMin)) * plotH; }
 
       // Grid lines
-      ctx.strokeStyle = '#e5e7eb';
+      ctx.strokeStyle = gridColor;
       ctx.lineWidth = 1;
 
       // Horizontal grid
       var yTicks = niceScale(yMin, yMax, 6);
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = labelColor;
       ctx.font = '12px sans-serif';
       for (var i = 0; i < yTicks.length; i++) {
         var yy = yToCanvas(yTicks[i]);
@@ -781,7 +788,7 @@
       }
 
       // Axes
-      ctx.strokeStyle = '#374151';
+      ctx.strokeStyle = axisColor;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(pad.left, pad.top);
@@ -790,7 +797,7 @@
       ctx.stroke();
 
       // Axis labels
-      ctx.fillStyle = '#374151';
+      ctx.fillStyle = axisColor;
       ctx.font = '13px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('時間 t [s]', pad.left + plotW / 2, h - 8);
