@@ -284,7 +284,7 @@
       font-weight: 600;
     }
     .rating-table .highlight-row {
-      background: #eff6ff;
+      background: var(--highlight-bg, #eff6ff);
       font-weight: 600;
     }
 
@@ -298,6 +298,9 @@
       .test-area-rating { font-size: 1.2rem; }
       .final-avg { font-size: 2.5rem; }
       .progress-dot { width: 32px; height: 32px; font-size: 0.7rem; }
+    }
+    [data-theme="dark"] {
+      --highlight-bg: #1e3a5f;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>

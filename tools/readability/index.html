@@ -147,10 +147,10 @@
       border-radius: 20px;
       display: inline-block;
     }
-    .grade-excellent { color: #16a34a; background: #f0fdf4; }
-    .grade-good { color: #2563eb; background: #eff6ff; }
-    .grade-fair { color: #ca8a04; background: #fefce8; }
-    .grade-poor { color: #dc2626; background: #fef2f2; }
+    .grade-excellent { color: #16a34a; background: var(--green-bg, #f0fdf4); }
+    .grade-good { color: var(--primary); background: var(--highlight-bg, #eff6ff); }
+    .grade-fair { color: #ca8a04; background: var(--yellow-bg, #fefce8); }
+    .grade-poor { color: #dc2626; background: var(--red-bg, #fef2f2); }
 
     /* Stats Grid */
     .stats-grid {
@@ -316,18 +316,18 @@
     }
     .advice-good {
       border-color: #16a34a;
-      background: #f0fdf4;
-      color: #15803d;
+      background: var(--green-bg, #f0fdf4);
+      color: var(--green-color, #15803d);
     }
     .advice-warn {
       border-color: #ca8a04;
-      background: #fefce8;
-      color: #a16207;
+      background: var(--yellow-bg, #fefce8);
+      color: var(--yellow-color, #a16207);
     }
     .advice-bad {
       border-color: #dc2626;
-      background: #fef2f2;
-      color: #b91c1c;
+      background: var(--red-bg, #fef2f2);
+      color: var(--red-color, #b91c1c);
     }
 
     /* Reading Level */
@@ -371,6 +371,15 @@
         font-size: 0.7rem;
         padding: 8px 2px;
       }
+    }
+    [data-theme="dark"] {
+      --green-bg: #052e16;
+      --green-color: #86efac;
+      --yellow-bg: #2a2000;
+      --yellow-color: #fde047;
+      --red-bg: #3b1c1c;
+      --red-color: #fca5a5;
+      --highlight-bg: #1e3a5f;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>

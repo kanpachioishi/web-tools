@@ -84,7 +84,7 @@
     }
     .mode-btn:hover {
       border-color: var(--primary);
-      background: #eff6ff;
+      background: var(--highlight-bg, #eff6ff);
     }
     .mode-btn .mode-icon {
       font-size: 2rem;
@@ -119,12 +119,12 @@
       font-size: 1.1rem;
       padding: 4px 14px;
       border-radius: 20px;
-      background: #f1f5f9;
+      background: var(--bg);
       color: var(--text);
       min-width: 50px;
       text-align: center;
     }
-    .quiz-timer.warning { background: #fef2f2; color: #dc2626; }
+    .quiz-timer.warning { background: var(--red-bg, #fef2f2); color: #dc2626; }
     .quiz-score {
       font-weight: 600;
       color: var(--primary);
@@ -172,13 +172,13 @@
     }
     .choice-btn.correct {
       border-color: #16a34a;
-      background: #f0fdf4;
+      background: var(--green-bg, #f0fdf4);
       color: #16a34a;
       animation: flashCorrect 0.5s;
     }
     .choice-btn.incorrect {
       border-color: #dc2626;
-      background: #fef2f2;
+      background: var(--red-bg, #fef2f2);
       color: #dc2626;
       animation: flashIncorrect 0.5s;
     }
@@ -188,7 +188,7 @@
     }
     .choice-btn.show-correct {
       border-color: #16a34a;
-      background: #f0fdf4;
+      background: var(--green-bg, #f0fdf4);
       color: #16a34a;
     }
 
@@ -224,10 +224,10 @@
       border-radius: var(--radius);
       display: inline-block;
     }
-    .result-excellent { background: #f0fdf4; color: #16a34a; }
-    .result-good { background: #eff6ff; color: #2563eb; }
-    .result-ok { background: #fefce8; color: #ca8a04; }
-    .result-poor { background: #fef2f2; color: #dc2626; }
+    .result-excellent { background: var(--green-bg, #f0fdf4); color: #16a34a; }
+    .result-good { background: var(--highlight-bg, #eff6ff); color: var(--primary); }
+    .result-ok { background: var(--yellow-bg, #fefce8); color: #ca8a04; }
+    .result-poor { background: var(--red-bg, #fef2f2); color: #dc2626; }
 
     .share-buttons {
       display: flex;
@@ -279,6 +279,12 @@
       .choices { grid-template-columns: 1fr; }
       .question-text { font-size: 1.1rem; }
       .result-score { font-size: 3rem; }
+    }
+    [data-theme="dark"] {
+      --green-bg: #052e16;
+      --yellow-bg: #2a2000;
+      --red-bg: #3b1c1c;
+      --highlight-bg: #1e3a5f;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
