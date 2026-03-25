@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>電子印鑑メーカー - 無料で印影画像を作成・ダウンロード | Web便利ツール集</title>
-  <meta name="description" content="電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。透過PNG・SVGでダウンロード可能。登録不要・ブラウザだけで完結。">
-  <meta property="og:title" content="電子印鑑メーカー - 無料で印影画像を作成・ダウンロード | Web便利ツール集">
+  <title>電子印鑑メーカー - 無料で印影画像を作成・ダウンロード | SimpleToolkit</title>
+  <meta name="description" content="電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。透過PNGでダウンロード可能。登録不要・ブラウザだけで完結。">
+  <meta property="og:title" content="電子印鑑メーカー - 無料で印影画像を作成・ダウンロード | SimpleToolkit">
   <meta property="og:description" content="電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。登録不要。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://simpletoolkit.net/tools/inkan-maker/">
@@ -15,7 +15,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "電子印鑑メーカー - 無料で印影画像を作成・ダウンロード",
-    "description": "電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。透過PNG・SVGでダウンロード可能。登録不要でブラウザだけで完結。",
+    "description": "電子印鑑を無料で作成。名前を入力するだけで丸印・角印・日付印の印影画像を自動生成。透過PNGでダウンロード可能。登録不要でブラウザだけで完結。",
     "url": "https://simpletoolkit.net/tools/inkan-maker/",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "All",
@@ -88,6 +88,10 @@
     .slider-row input[type="range"] { flex: 1; }
     .slider-row .val { min-width: 40px; text-align: right; font-size: 0.9rem; color: var(--text-muted); }
     canvas { image-rendering: auto; }
+    [data-theme="dark"] .preview-area {
+      border: 2px solid var(--border);
+      box-shadow: 0 0 8px rgba(255,255,255,0.05);
+    }
   </style>
 </head>
 <body>
