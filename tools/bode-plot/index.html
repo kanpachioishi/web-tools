@@ -233,7 +233,7 @@
       width: 100%;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: #fff;
+      background: var(--surface);
     }
 
     .margins-display {
@@ -741,6 +741,15 @@
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, cw, ch);
 
+      // Theme-aware colors
+      var cs = getComputedStyle(document.documentElement);
+      var gridColor = cs.getPropertyValue('--border').trim() || '#e5e7eb';
+      var gridMajor = cs.getPropertyValue('--border').trim() || '#d1d5db';
+      var gridMinor = cs.getPropertyValue('--bg').trim() || '#f3f4f6';
+      var textMuted = cs.getPropertyValue('--text-muted').trim() || '#6b7280';
+      var textColor = cs.getPropertyValue('--text').trim() || '#374151';
+      var refLine = cs.getPropertyValue('--text-muted').trim() || '#9ca3af';
+
       var margin = { top: 30, right: 30, bottom: 40, left: 65 };
       var plotW = cw - margin.left - margin.right;
       var gap = 30;
@@ -790,7 +799,7 @@
       }
 
       // Draw grid and axes for gain plot
-      ctx.strokeStyle = '#e5e7eb';
+      ctx.strokeStyle = gridColor;
       ctx.lineWidth = 1;
 
       // Gain horizontal grid lines
@@ -798,7 +807,7 @@
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       ctx.font = '11px sans-serif';
-      ctx.fillStyle = '#6b7280';
+      ctx.fillStyle = textMuted;
       for (var g = gainMin; g <= gainMax; g += gainStep) {
         var y = gToY(g);
         ctx.beginPath();
@@ -828,7 +837,7 @@
       for (var e = logStart; e <= logEnd; e++) {
         var x = fToX(Math.pow(10, e));
         // Major grid
-        ctx.strokeStyle = '#d1d5db';
+        ctx.strokeStyle = gridMajor;
         ctx.beginPath();
         ctx.moveTo(x, margin.top);
         ctx.lineTo(x, margin.top + plotH);
@@ -838,14 +847,14 @@
         ctx.lineTo(x, phaseTop + plotH);
         ctx.stroke();
         // Label
-        ctx.fillStyle = '#6b7280';
+        ctx.fillStyle = textMuted;
         var label = Math.pow(10, e);
         if (label >= 1) label = label.toFixed(0);
         else label = label.toString();
         ctx.fillText(label, x, phaseTop + plotH + 6);
 
         // Minor grid lines (2-9)
-        ctx.strokeStyle = '#f3f4f6';
+        ctx.strokeStyle = gridMinor;
         for (var m = 2; m <= 9; m++) {
           var mf = Math.pow(10, e) * m;
           if (mf > freqMax || mf < freqMin) continue;
@@ -863,7 +872,7 @@
 
       // Also draw one decade below logStart for minor lines
       if (logStart - 1 >= logMin) {
-        ctx.strokeStyle = '#f3f4f6';
+        ctx.strokeStyle = gridMinor;
         for (var m = 2; m <= 9; m++) {
           var mf = Math.pow(10, logStart - 1) * m;
           if (mf > freqMax || mf < freqMin) continue;
@@ -874,14 +883,14 @@
       }
 
       // X-axis label
-      ctx.fillStyle = '#374151';
+      ctx.fillStyle = textColor;
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('\u5468\u6CE2\u6570 (rad/s)', margin.left + plotW / 2, ch - 4);
 
       // 0dB reference line
       if (gainMin <= 0 && gainMax >= 0) {
-        ctx.strokeStyle = '#9ca3af';
+        ctx.strokeStyle = refLine;
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -893,7 +902,7 @@
 
       // -180 deg reference line
       if (phaseMin <= -180 && phaseMax >= -180) {
-        ctx.strokeStyle = '#9ca3af';
+        ctx.strokeStyle = refLine;
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -904,7 +913,7 @@
       }
 
       // Plot borders
-      ctx.strokeStyle = '#9ca3af';
+      ctx.strokeStyle = refLine;
       ctx.lineWidth = 1;
       ctx.strokeRect(margin.left, margin.top, plotW, plotH);
       ctx.strokeRect(margin.left, phaseTop, plotW, plotH);

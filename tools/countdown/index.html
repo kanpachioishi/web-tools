@@ -79,6 +79,26 @@
   }
   </script>
   <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .cd-input-row { display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; }
+    .cd-input-col { flex:1; min-width:200px; }
+    .cd-input-col-sm { flex:1; min-width:150px; }
+    .cd-input-col-xs { min-width:100px; }
+    .cd-input {
+      width:100%; padding:10px; font-size:1rem;
+      border:1px solid var(--border); border-radius:6px;
+      box-sizing:border-box; background:var(--surface); color:var(--text);
+    }
+    .cd-display { text-align:center; padding:30px 0; display:none; }
+    .cd-event-label { font-size:1.1rem; color:var(--text-muted); margin-bottom:16px; }
+    .cd-direction-label { font-size:0.95rem; color:var(--text-muted); margin-bottom:8px; }
+    .cd-units { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+    .cd-unit { text-align:center; }
+    .cd-number { font-size:3rem; font-weight:bold; color:var(--primary); font-family:monospace; }
+    .cd-label { font-size:0.85rem; color:var(--text-muted); }
+    .cd-total { margin-top:20px; background:var(--bg); padding:12px; border-radius:8px; font-size:0.9rem; color:var(--text-muted); }
+    .cd-placeholder { text-align:center; padding:40px 0; color:var(--text-muted); }
+  </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -90,46 +110,46 @@
     <p class="tool-description">目標日を設定すると、残り日数・時間・分・秒をリアルタイムで表示。イベントや締め切りまでの残り時間を正確に把握できます。過去の日付を設定すれば経過日数も計算可能。無料・登録不要・ブラウザだけで完結します。</p>
 
     <div class="tool-area">
-      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;">
-        <div style="flex:1;min-width:200px;">
+      <div class="cd-input-row">
+        <div class="cd-input-col">
           <label for="target-date">目標日</label>
-          <input type="date" id="target-date" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+          <input type="date" id="target-date" class="cd-input">
         </div>
-        <div style="flex:1;min-width:150px;">
+        <div class="cd-input-col-sm">
           <label for="target-time">時刻（任意）</label>
-          <input type="time" id="target-time" value="00:00" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+          <input type="time" id="target-time" value="00:00" class="cd-input">
         </div>
-        <div style="min-width:100px;">
+        <div class="cd-input-col-xs">
           <label for="event-name">イベント名（任意）</label>
-          <input type="text" id="event-name" placeholder="例: 誕生日" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;">
+          <input type="text" id="event-name" placeholder="例: 誕生日" class="cd-input">
         </div>
       </div>
 
-      <div id="countdown-display" style="text-align:center;padding:30px 0;display:none;">
-        <div id="event-label" style="font-size:1.1rem;color:#666;margin-bottom:16px;"></div>
-        <div id="direction-label" style="font-size:0.95rem;color:#888;margin-bottom:8px;"></div>
-        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
-          <div style="text-align:center;">
-            <div id="cd-days" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">0</div>
-            <div style="font-size:0.85rem;color:#666;">日</div>
+      <div id="countdown-display" class="cd-display">
+        <div id="event-label" class="cd-event-label"></div>
+        <div id="direction-label" class="cd-direction-label"></div>
+        <div class="cd-units">
+          <div class="cd-unit">
+            <div id="cd-days" class="cd-number">0</div>
+            <div class="cd-label">日</div>
           </div>
-          <div style="text-align:center;">
-            <div id="cd-hours" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
-            <div style="font-size:0.85rem;color:#666;">時間</div>
+          <div class="cd-unit">
+            <div id="cd-hours" class="cd-number">00</div>
+            <div class="cd-label">時間</div>
           </div>
-          <div style="text-align:center;">
-            <div id="cd-minutes" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
-            <div style="font-size:0.85rem;color:#666;">分</div>
+          <div class="cd-unit">
+            <div id="cd-minutes" class="cd-number">00</div>
+            <div class="cd-label">分</div>
           </div>
-          <div style="text-align:center;">
-            <div id="cd-seconds" style="font-size:3rem;font-weight:bold;color:#2563eb;font-family:monospace;">00</div>
-            <div style="font-size:0.85rem;color:#666;">秒</div>
+          <div class="cd-unit">
+            <div id="cd-seconds" class="cd-number">00</div>
+            <div class="cd-label">秒</div>
           </div>
         </div>
-        <div id="total-info" style="margin-top:20px;background:#f8f9fa;padding:12px;border-radius:8px;font-size:0.9rem;color:#555;"></div>
+        <div id="total-info" class="cd-total"></div>
       </div>
 
-      <div id="no-date-msg" style="text-align:center;padding:40px 0;color:#999;">
+      <div id="no-date-msg" class="cd-placeholder">
         上の入力欄で目標日を設定してください
       </div>
 
@@ -263,7 +283,7 @@
         totalSeconds.toLocaleString() + ' 秒';
 
       // Color change for past
-      const color = isPast ? '#dc2626' : '#2563eb';
+      const color = isPast ? '#dc2626' : '';
       ['cd-days','cd-hours','cd-minutes','cd-seconds'].forEach(id => {
         document.getElementById(id).style.color = color;
       });

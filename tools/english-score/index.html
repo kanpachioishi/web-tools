@@ -158,7 +158,7 @@
     }
     .score-card.active {
       border-color: var(--primary);
-      background: #eff6ff;
+      background: var(--highlight-bg, #eff6ff);
     }
     .score-card .sc-label {
       font-size: 0.8rem;
@@ -195,7 +195,7 @@
       white-space: nowrap;
     }
     .full-table .highlight-row {
-      background: #eff6ff;
+      background: var(--highlight-bg, #eff6ff);
       font-weight: 600;
     }
 
@@ -222,6 +222,9 @@
       .full-table, .req-table { font-size: 0.75rem; }
       .full-table th, .full-table td,
       .req-table th, .req-table td { padding: 6px; }
+    }
+    [data-theme="dark"] {
+      --highlight-bg: #1e3a5f;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
