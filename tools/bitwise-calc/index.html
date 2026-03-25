@@ -262,8 +262,8 @@
       color: #fff;
     }
     .bit-cell.bit-0 {
-      background: #e2e8f0;
-      color: #94a3b8;
+      background: var(--bit0-bg, #e2e8f0);
+      color: var(--bit0-color, #94a3b8);
     }
     .bit-cell.clickable {
       cursor: pointer;
@@ -334,6 +334,10 @@
       .bit-index {
         width: 18px;
       }
+    }
+    [data-theme="dark"] {
+      --bit0-bg: #334155;
+      --bit0-color: #64748b;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>

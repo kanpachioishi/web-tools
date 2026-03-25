@@ -367,7 +367,7 @@
       position: relative;
     }
     .card-cell:hover {
-      background: #f1f5f9;
+      background: var(--cell-hover-bg, #f1f5f9);
     }
     .card-cell.marked {
       color: #fff;
@@ -448,6 +448,9 @@
       .card-cell { font-size: 1rem; }
       .card-header { font-size: 1.1rem; }
       .draw-info { gap: 12px; font-size: 0.9rem; }
+    }
+    [data-theme="dark"] {
+      --cell-hover-bg: #334155;
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>

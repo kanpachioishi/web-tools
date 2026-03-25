@@ -183,7 +183,7 @@
       font-size: 0.85rem;
     }
     .alarm-delete:hover {
-      background: #fef2f2;
+      background: var(--alarm-delete-hover-bg, #fef2f2);
     }
 
     .alarm-ringing-overlay {
@@ -252,6 +252,20 @@
       .clock-seconds { font-size: 1.6rem; }
       .alarm-ringing-time { font-size: 3.5rem; }
     }
+    [data-theme="dark"] {
+      --alarm-delete-hover-bg: #3b1c1c;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
 </head>
@@ -271,6 +285,7 @@
         <div class="clock-date" id="clock-date"></div>
 
         <div class="alarm-add">
+          <label for="alarm-time-input" class="sr-only">アラーム時刻</label>
           <input type="time" id="alarm-time-input" value="07:00">
           <button class="btn" onclick="addAlarm()">アラーム追加</button>
         </div>
@@ -434,7 +449,7 @@
         div.className = 'alarm-item' + (a.enabled ? '' : ' disabled');
         div.innerHTML = '<span class="alarm-time">' + a.time + '</span>' +
           '<div class="alarm-actions">' +
-          '<button class="alarm-toggle ' + (a.enabled ? 'on' : '') + '" data-id="' + a.id + '" onclick="toggleAlarmEnabled(' + a.id + ')"></button>' +
+          '<button class="alarm-toggle ' + (a.enabled ? 'on' : '') + '" data-id="' + a.id + '" onclick="toggleAlarmEnabled(' + a.id + ')" aria-label="アラームON/OFF"></button>' +
           '<button class="alarm-delete" onclick="removeAlarm(' + a.id + ')">削除</button>' +
           '</div>';
         container.appendChild(div);

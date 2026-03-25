@@ -111,7 +111,7 @@
     #amida-canvas {
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: #fff;
+      background: var(--surface);
       max-width: 100%;
       cursor: pointer;
     }
@@ -131,7 +131,7 @@
       font-weight: 600;
     }
     .result-table .highlight {
-      background: #eff6ff;
+      background: var(--highlight-bg, #eff6ff);
       font-weight: 600;
     }
     .share-btn {
@@ -201,6 +201,9 @@
         font-size: 0.8rem;
       }
     }
+    [data-theme="dark"] {
+      --highlight-bg: #1e3a5f;
+    }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
 </head>
@@ -255,7 +258,7 @@ Dさん</textarea>
           </thead>
           <tbody id="result-body"></tbody>
         </table>
-        <a class="share-btn" id="share-btn" target="_blank" rel="noopener">
+        <a class="share-btn" id="share-btn" target="_blank" rel="noopener" aria-label="結果をXでシェア">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           Xでシェア
         </a>
@@ -430,6 +433,9 @@ Dさん</textarea>
       var layout = getLayout();
       var canvas = document.getElementById('amida-canvas');
       var ctx = canvas.getContext('2d');
+      var styles = getComputedStyle(document.documentElement);
+      var textColor = styles.getPropertyValue('--text').trim() || '#333';
+      var surfaceColor = styles.getPropertyValue('--surface').trim() || '#fff';
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       var n = layout.n;
@@ -460,7 +466,7 @@ Dさん</textarea>
       }
 
       // Draw names (top)
-      ctx.fillStyle = '#333';
+      ctx.fillStyle = textColor;
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
@@ -477,7 +483,7 @@ Dさん</textarea>
         for (var i = 0; i < n; i++) {
           var res = amidaData.results[i];
           if (res.length > 6) res = res.substring(0, 5) + '...';
-          ctx.fillStyle = '#333';
+          ctx.fillStyle = textColor;
           ctx.fillText(res, colX(layout, i), layout.padTop + layout.height + 12);
         }
       } else {
@@ -584,6 +590,8 @@ Dさん</textarea>
         var layout = getLayout();
         var canvas = document.getElementById('amida-canvas');
         var ctx = canvas.getContext('2d');
+        var styles = getComputedStyle(document.documentElement);
+        var textColor = styles.getPropertyValue('--text').trim() || '#333';
         if (progress >= 1) {
           ctx.font = 'bold 13px sans-serif';
           ctx.textAlign = 'center';
@@ -591,7 +599,7 @@ Dさん</textarea>
           for (var i = 0; i < amidaData.names.length; i++) {
             var res = amidaData.results[i];
             if (res.length > 6) res = res.substring(0, 5) + '...';
-            ctx.fillStyle = '#333';
+            ctx.fillStyle = textColor;
             ctx.fillText(res, colX(layout, i), layout.padTop + layout.height + 12);
           }
         }
