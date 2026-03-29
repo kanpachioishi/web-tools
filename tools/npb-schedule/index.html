@@ -1393,7 +1393,7 @@
         selectedTeams.add(name);
         btn.classList.add('active');
         btn.style.backgroundColor = TEAMS[name].color;
-        btn.style.color = '#fff';
+        btn.style.color = TEAMS[name].textColor || '#fff';
       }
       document.getElementById('btn-all').classList.toggle('active', selectedTeams.size === 0);
       renderCurrentView();
