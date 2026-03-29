@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>今日の月齢・月の満ち欠けカレンダー【無料】オンライン月齢表</title>
+  <meta name="description" content="今日の月齢と月の満ち欠けを確認。月相のビジュアル表示、1ヶ月分の月齢カレンダー、任意の日付の月齢計算に対応。無料・登録不要のオンライン月齢表。">
+  <meta property="og:title" content="今日の月齢・月の満ち欠けカレンダー【無料】オンライン月齢表">
+  <meta property="og:description" content="今日の月齢と月の満ち欠けをビジュアル表示。1ヶ月分の月齢カレンダー付き。任意の日付にも対応。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/moon-phase/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/moon-phase/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "月齢表・月の満ち欠けカレンダー",
+    "description": "今日の月齢と月の満ち欠けを確認できるオンラインツール。月相のビジュアル表示、1ヶ月分の月齢カレンダー、任意の日付の月齢計算に対応。無料・登録不要。",
+    "url": "https://simpletoolkit.net/tools/moon-phase/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "月齢とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "月齢とは、直前の新月からの経過日数を表す数値です。新月が0、満月が約14.8、次の新月が約29.5となります。朔望月（新月から次の新月まで）は平均約29.53日です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "今日の月齢はいくつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "このツールを開くと、今日の月齢が自動的に表示されます。月齢の数値、月相名（新月・三日月・上弦・満月など）、輝面比（明るい部分の割合）を確認できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "満月はいつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "月齢カレンダーで1ヶ月分の月の満ち欠けを一覧できます。月齢が約14.8のとき満月となります。カレンダーの月相絵文字（🌕）で簡単に確認できます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "月齢の計算方法は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "既知の新月日時を基準に、朔望月（約29.53059日）で割った余りから算出しています。天文学的に十分な精度で、日常の月齢確認に適しています。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .moon-display {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 24px;
+      background: linear-gradient(135deg, #0a0a2e 0%, #1a1a4e 50%, #0d0d35 100%);
+      border-radius: 16px;
+      margin-bottom: 24px;
+    }
+    .moon-visual {
+      flex-shrink: 0;
+    }
+    .moon-visual svg {
+      filter: drop-shadow(0 0 20px rgba(255, 253, 200, 0.3));
+    }
+    .moon-info {
+      color: #e8e8f0;
+      text-align: left;
+    }
+    .moon-info .date-label {
+      font-size: 0.95rem;
+      color: #a0a0c0;
+      margin-bottom: 8px;
+    }
+    .moon-info .phase-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #f5e6a3;
+      margin-bottom: 4px;
+    }
+    .moon-info .age-value {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .moon-info .illumination {
+      font-size: 0.95rem;
+      color: #a0a0c0;
+    }
+    .controls-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      align-items: flex-end;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .control-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .control-group input[type="date"] {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .nav-buttons button {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .nav-buttons button:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .calendar-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .calendar-header-row h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .moon-calendar {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .moon-calendar th {
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border);
+    }
+    .moon-calendar td {
+      padding: 6px 2px;
+      text-align: center;
+      vertical-align: top;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+      min-height: 60px;
+    }
+    .moon-calendar td:hover:not(.empty) {
+      background: var(--bg-hover, rgba(99,102,241,0.08));
+    }
+    .moon-calendar td.today {
+      background: rgba(99, 102, 241, 0.12);
+      border-color: var(--accent);
+    }
+    .moon-calendar td.empty {
+      cursor: default;
+      background: transparent;
+    }
+    .moon-calendar .day-num {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .moon-calendar .day-emoji {
+      font-size: 1.4rem;
+      line-height: 1.3;
+    }
+    .moon-calendar .day-age {
+      font-size: 0.7rem;
+      color: var(--text-tertiary, #888);
+    }
+    .info-section {
+      margin-top: 32px;
+    }
+    .info-section h2 {
+      font-size: 1.3rem;
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+    .info-section p {
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .phase-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .phase-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .phase-item .emoji {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .phase-item .label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .phase-item .desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    details {
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    details summary {
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      background: var(--bg-card);
+    }
+    details[open] summary {
+      border-bottom: 1px solid var(--border);
+    }
+    details div {
+      padding: 12px 16px;
+    }
+    @media (max-width: 600px) {
+      .moon-display {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+        padding: 16px;
+      }
+      .moon-info {
+        text-align: center;
+      }
+      .moon-calendar .day-emoji {
+        font-size: 1.1rem;
+      }
+      .moon-calendar td {
+        padding: 4px 1px;
+      }
+      .phase-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2006273974498364" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>月齢表・月の満ち欠けカレンダー</h1>
+    <h2>今日の月齢をすぐ確認</h2>
+    <p class="tool-description">今日の月齢と月の満ち欠けをリアルタイム表示。カレンダーで1ヶ月分の月齢を一覧でき、任意の日付の月齢も確認できます。釣り・天体観測・写真撮影の計画にどうぞ。</p>
+
+    <div class="tool-area">
+      <div class="controls-row">
+        <div class="control-group">
+          <label for="date-input">日付を選択</label>
+          <input type="date" id="date-input">
+        </div>
+        <div class="nav-buttons">
+          <button id="prev-month" title="前月">◀ 前月</button>
+          <button id="today-btn">今日</button>
+          <button id="next-month" title="次月">次月 ▶</button>
+        </div>
+      </div>
+
+      <div class="moon-display">
+        <div class="moon-visual">
+          <svg id="moon-svg" width="200" height="200" viewBox="0 0 200 200"></svg>
+        </div>
+        <div class="moon-info">
+          <div class="date-label" id="date-label"></div>
+          <div class="phase-name"><span id="moon-emoji"></span> <span id="moon-name"></span></div>
+          <div class="age-value">月齢: <strong id="moon-age"></strong></div>
+          <div class="illumination">輝面比: <span id="moon-illumination"></span></div>
+        </div>
+      </div>
+
+      <div class="calendar-header-row">
+        <h3 id="calendar-header"></h3>
+      </div>
+      <div id="calendar-container"></div>
+    </div>
+
+    <section class="info-section content-section">
+      <h2>月の満ち欠けの種類</h2>
+      <p>月は約29.5日の周期（朔望月）で満ち欠けを繰り返します。主な月相は以下の通りです。</p>
+
+      <div class="phase-list">
+        <div class="phase-item">
+          <div class="emoji">🌑</div>
+          <div><div class="label">新月（月齢0）</div><div class="desc">月が見えない状態</div></div>
+        </div>
+        <div class="phase-item">
+          <div class="emoji">🌒</div>
+          <div><div class="label">三日月（月齢3頃）</div><div class="desc">右側が細く光る</div></div>
+        </div>
+        <div class="phase-item">
+          <div class="emoji">🌓</div>
+          <div><div class="label">上弦の月（月齢7頃）</div><div class="desc">右半分が光る</div></div>
+        </div>
+        <div class="phase-item">
+          <div class="emoji">🌔</div>
+          <div><div class="label">十日夜の月（月齢11頃）</div><div class="desc">ほぼ満月に近い</div></div>
+        </div>
+        <div class="phase-item">
+          <div class="emoji">🌕</div>
+          <div><div class="label">満月（月齢15頃）</div><div class="desc">月全体が光る</div></div>
+        </div>
+        <div class="phase-item">
+          <div class="emoji">🌖</div>
+          <div><div class="label">十八夜の月（月齢18頃）</div><div class="desc">左側が多く光る</div></div>
+        </div>
+        <div class="phase-item">
+          <div class="emoji">🌗</div>
+          <div><div class="label">下弦の月（月齢22頃）</div><div class="desc">左半分が光る</div></div>
+        </div>
+        <div class="phase-item">
+          <div class="emoji">🌘</div>
+          <div><div class="label">二十六夜の月（月齢26頃）</div><div class="desc">左側が細く光る</div></div>
+        </div>
+      </div>
+
+      <h2>月齢の活用シーン</h2>
+      <p>月齢は日常のさまざまな場面で役立ちます。</p>
+      <ul>
+        <li><strong>天体観測</strong> — 新月前後は星がよく見え、満月時は月そのものを楽しめます</li>
+        <li><strong>釣り</strong> — 大潮（新月・満月）は潮の干満差が大きく、魚の活性が上がりやすいとされます</li>
+        <li><strong>写真撮影</strong> — 月明かりの強さを事前に把握してロケーション撮影の計画に</li>
+        <li><strong>農業・園芸</strong> — 伝統的な農暦では月齢に基づいた種まき・収穫の時期判断があります</li>
+        <li><strong>旧暦の確認</strong> — 旧暦の日付はおよそ月齢に対応します（旧暦1日≒新月）</li>
+      </ul>
+
+      <h2>よくある質問</h2>
+      <details>
+        <summary>月齢の計算はどのくらい正確ですか？</summary>
+        <div>朔望月の平均値（29.53059日）に基づく計算で、実際の月齢との誤差は通常1日以内です。天文台の暦とは若干の差が出ることがありますが、日常の月齢確認には十分な精度です。</div>
+      </details>
+      <details>
+        <summary>輝面比とは何ですか？</summary>
+        <div>輝面比は、月の表面のうち太陽光が当たって光っている部分の割合です。新月で0%、満月で100%、上弦・下弦で約50%となります。</div>
+      </details>
+      <details>
+        <summary>過去や未来の月齢も調べられますか？</summary>
+        <div>はい、日付入力欄で任意の日付を指定すると、その日の月齢を確認できます。前月・次月ボタンでカレンダーを移動することもできます。</div>
+      </details>
+      <details>
+        <summary>大潮・小潮と月齢の関係は？</summary>
+        <div>大潮は新月（月齢0頃）と満月（月齢15頃）の前後に起こり、潮の干満差が最大になります。小潮は上弦（月齢7頃）と下弦（月齢22頃）の前後で、干満差が小さくなります。</div>
+      </details>
+    </section>
+
+    <section>
+      <h2 style="margin-top:32px;margin-bottom:12px;">関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../star-chart/" class="tool-card"><span class="tool-icon">🌌</span><h2>星座早見表</h2><p>日時と場所から見える星座をリアルタイム表示</p></a>
+        <a href="../sunrise-sunset/" class="tool-card"><span class="tool-icon">🌅</span><h2>日の出・日の入り</h2><p>全国の日の出日の入り時刻を計算・年間グラフ</p></a>
+        <a href="../tide-chart/" class="tool-card"><span class="tool-icon">🌊</span><h2>潮見表・タイドグラフ</h2><p>全国主要港の潮位予測・潮回り・月齢表示</p></a>
+        <a href="../countdown/" class="tool-card"><span class="tool-icon">📅</span><h2>カウントダウン</h2><p>目標日までの残り日数をリアルタイム表示</p></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script src="moon.js"></script>
+</body>
+</html>
