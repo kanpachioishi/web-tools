@@ -182,6 +182,7 @@
     dayNames.forEach(function(name, i) {
       var el = document.createElement('div');
       el.className = 'day-header';
+      el.setAttribute('role', 'columnheader');
       if (i === 5) el.className += ' sat';
       if (i === 6) el.className += ' sun';
       el.textContent = name;
@@ -202,6 +203,9 @@
     for (var day = 1; day <= 31; day++) {
       var cell = document.createElement('div');
       cell.className = 'day-cell';
+      cell.setAttribute('role', 'gridcell');
+      cell.setAttribute('tabindex', '0');
+      cell.setAttribute('aria-label', '1月' + day + '日');
 
       var key = '1-' + day;
       var dayOfWeek = (firstDayOffset + day - 1) % 7;
@@ -212,6 +216,7 @@
 
       if (isJanuary2026 && today.getDate() === day) {
         cell.className += ' today';
+        cell.setAttribute('aria-current', 'date');
       }
 
       var numEl = document.createElement('span');
@@ -230,6 +235,13 @@
         var d = parseInt(this.getAttribute('data-day'));
         selectDay(d);
       });
+      cell.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          var d = parseInt(this.getAttribute('data-day'));
+          selectDay(d);
+        }
+      });
 
       grid.appendChild(cell);
     }
@@ -243,11 +255,17 @@
   }
 
   function selectDay(day) {
-    var cells = document.querySelectorAll('.day-cell');
-    cells.forEach(function(c) { c.classList.remove('selected'); });
+    var cells = document.querySelectorAll('.day-cell[data-day]');
+    cells.forEach(function(c) {
+      c.classList.remove('selected');
+      c.setAttribute('aria-selected', 'false');
+    });
 
     var target = document.querySelector('.day-cell[data-day="' + day + '"]');
-    if (target) target.classList.add('selected');
+    if (target) {
+      target.classList.add('selected');
+      target.setAttribute('aria-selected', 'true');
+    }
 
     showAnniversaries(day);
   }
