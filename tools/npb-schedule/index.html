@@ -104,6 +104,9 @@
     .today-game-card .game-teams { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; }
     .today-game-card .vs-text { color: #bbb; font-size: 0.9rem; }
     .today-game-card .game-info { text-align: center; font-size: 0.85rem; color: #ccc; }
+    .today-team-name { color: #fff; font-weight: bold; }
+    .today-game-card .team-badge { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.3); flex-shrink: 0; }
+    .week-game .team-badge { width: 10px; height: 10px; }
     .today-game-card .game-status { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-top: 6px; }
     .status-before { background: #2563eb; color: #fff; }
     .status-live { background: #dc2626; color: #fff; animation: pulse 1.5s infinite; }
@@ -1422,9 +1425,11 @@
 
         return `<div class="today-game-card">
           <div class="game-teams">
-            <span style="color:${getTeamColor(away)}">${away}</span>
+            <span class="team-badge" style="background:${getTeamColor(away)};"></span>
+            <span class="today-team-name">${away}</span>
             <span class="vs-text">vs</span>
-            <span style="color:${getTeamColor(home)}">${home}</span>
+            <span class="team-badge" style="background:${getTeamColor(home)};"></span>
+            <span class="today-team-name">${home}</span>
           </div>
           <div class="game-info">${time} / ${venue}</div>
           <div style="text-align:center;"><span class="game-status ${statusClass}">${statusText}</span></div>
@@ -1591,7 +1596,7 @@
           dayGames.forEach(g => {
             html += `<div class="week-game">
               <div class="wg-time">${g[4]}</div>
-              <div class="wg-teams"><span style="color:${getTeamColor(g[2])};font-weight:bold;">${g[2]}</span> <span style="color:var(--muted-text);">vs</span> <span style="color:${getTeamColor(g[1])};font-weight:bold;">${g[1]}</span></div>
+              <div class="wg-teams"><span class="team-badge" style="background:${getTeamColor(g[2])};"></span><span style="font-weight:bold;">${g[2]}</span> <span style="color:var(--muted-text);">vs</span> <span class="team-badge" style="background:${getTeamColor(g[1])};"></span><span style="font-weight:bold;">${g[1]}</span></div>
               <div class="wg-venue">${g[3]}</div>
             </div>`;
           });
