@@ -77,6 +77,13 @@
       --eagles: #8D0034;
       --marines: #000000;
       --fighters: #003E7E;
+      --hover-bg: #f0f7ff;
+      --hover-bg-alt: #f3f4f6;
+      --table-alt-bg: #f3f4f6;
+      --table-border-light: #eee;
+      --table-border: #ddd;
+      --muted-text: #888;
+      --sub-heading: #666;
     }
 
     .team-hero { background: linear-gradient(135deg, #FDD00022 0%, #FDD00011 100%); border-left: 4px solid #FDD000; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
@@ -86,16 +93,16 @@
     /* 今日の試合 */
     .today-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
     .today-section h2 { color: #ffd700; margin: 0 0 16px; font-size: 1.2rem; }
-    .today-date { font-size: 0.9rem; color: #aaa; margin-bottom: 16px; }
+    .today-date { font-size: 0.9rem; color: #ccc; margin-bottom: 16px; }
     .today-games { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
     .today-game-card { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.1); }
     .today-game-card .game-teams { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; }
-    .today-game-card .vs-text { color: #888; font-size: 0.9rem; }
-    .today-game-card .game-info { text-align: center; font-size: 0.85rem; color: #aaa; }
+    .today-game-card .vs-text { color: #bbb; font-size: 0.9rem; }
+    .today-game-card .game-info { text-align: center; font-size: 0.85rem; color: #ccc; }
     .today-game-card .game-status { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-top: 6px; }
     .status-before { background: #2563eb; color: #fff; }
     .status-live { background: #dc2626; color: #fff; animation: pulse 1.5s infinite; }
-    .status-finished { background: #555; color: #ccc; }
+    .status-finished { background: #666; color: #eee; }
     .no-games { text-align: center; color: #aaa; padding: 20px; font-size: 0.95rem; }
 
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
@@ -128,13 +135,13 @@
     .cal-header:first-child { color: #dc2626; }
     .cal-header:last-child { color: #2563eb; }
     .cal-day { min-height: 70px; border: 1px solid var(--border); border-radius: 4px; padding: 4px; font-size: 0.75rem; cursor: pointer; transition: background 0.2s; position: relative; }
-    .cal-day:hover { background: #f0f7ff; }
+    .cal-day:hover { background: var(--hover-bg); }
     .cal-day.today { background: #fffbeb; border-color: #fbbf24; }
     .cal-day.selected { background: #eff6ff; border-color: #2563eb; border-width: 2px; }
     .cal-day .day-num { font-weight: bold; font-size: 0.85rem; margin-bottom: 2px; }
     .cal-day.sunday .day-num { color: #dc2626; }
     .cal-day.saturday .day-num { color: #2563eb; }
-    .cal-day .game-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 1px; }
+    .cal-day .game-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin: 1px; border: 1px solid rgba(0,0,0,0.15); }
     .cal-day .game-count { font-size: 0.7rem; color: var(--text-muted); }
     .cal-day.empty { background: #f9fafb; border-color: transparent; cursor: default; }
     .cal-day.empty:hover { background: #f9fafb; }
@@ -143,7 +150,7 @@
     .game-list { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     .game-list th { background: var(--table-header-bg, #1e3a5f); color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
     .game-list td { padding: 8px; border-bottom: 1px solid var(--border); }
-    .game-list tr:hover { background: #f0f7ff; }
+    .game-list tr:hover { background: var(--hover-bg); }
     .game-list tr.today-row { background: #fffbeb; }
     .game-list tr.today-row:hover { background: #fef3c7; }
     .game-list .team-color { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
@@ -176,9 +183,19 @@
       .view-tab { padding: 8px 12px; font-size: 0.8rem; }
     }
 
+    /* 球団バッジ */
+    .team-badge { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 4px; border: 1px solid rgba(0,0,0,0.15); }
+
     /* ダークモード対応 */
     [data-theme="dark"] {
       --table-header-bg: #0f172a;
+      --hover-bg: #1e3a5f;
+      --hover-bg-alt: #1e293b;
+      --table-alt-bg: #1e293b;
+      --table-border-light: #334155;
+      --table-border: #475569;
+      --muted-text: #9ca3af;
+      --sub-heading: #9ca3af;
     }
     [data-theme="dark"] .team-btn.active { color: #fff; }
     [data-theme="dark"] .cal-day { background: var(--surface); }
@@ -191,6 +208,8 @@
     [data-theme="dark"] .cal-day.saturday .day-num { color: #60a5fa; }
     [data-theme="dark"] .game-list tr.today-row { background: #422006; }
     [data-theme="dark"] .week-game { background: var(--surface); }
+    [data-theme="dark"] .team-badge { border-color: rgba(255,255,255,0.2); }
+    [data-theme="dark"] .cal-day .game-dot { border-color: rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
@@ -348,16 +367,16 @@
     // ===== チームデータ =====
     const TEAMS = {
       '巨人':       { color: '#FF6600', short: '巨人', league: 'ce' },
-      '阪神':       { color: '#FFE100', short: '阪神', league: 'ce', textColor: '#333' },
+      '阪神':       { color: '#FFE100', darkColor: '#9E8D00', short: '阪神', league: 'ce', textColor: '#333' },
       'DeNA':       { color: '#0055A5', short: 'DeNA', league: 'ce' },
       '広島':       { color: '#ED1C24', short: '広島', league: 'ce' },
       '中日':       { color: '#00468B', short: '中日', league: 'ce' },
       'ヤクルト':   { color: '#006D44', short: 'ヤクルト', league: 'ce' },
       'オリックス': { color: '#BA0C2F', short: 'オリックス', league: 'pa' },
-      'ソフトバンク':{ color: '#FDD000', short: 'SB', league: 'pa', textColor: '#333' },
+      'ソフトバンク':{ color: '#FDD000', darkColor: '#9E8400', short: 'SB', league: 'pa', textColor: '#333' },
       '西武':       { color: '#002D73', short: '西武', league: 'pa' },
       '楽天':       { color: '#8D0034', short: '楽天', league: 'pa' },
-      'ロッテ':     { color: '#221815', short: 'ロッテ', league: 'pa' },
+      'ロッテ':     { color: '#221815', darkModeColor: '#AAAAAA', short: 'ロッテ', league: 'pa' },
       '日本ハム':   { color: '#003E7E', short: '日ハム', league: 'pa' }
     };
 
@@ -1261,7 +1280,11 @@
       const t = new Date();
       return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
     }
-    function getTeamColor(name) { return TEAMS[name] ? TEAMS[name].color : '#888'; }
+    function getTeamColor(name) {
+      if (!TEAMS[name]) return '#888';
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      return (isDark && TEAMS[name].darkModeColor) ? TEAMS[name].darkModeColor : TEAMS[name].color;
+    }
 
     function matchesFilter(g) {
       if (selectedTeams.size === 0) return true;
@@ -1277,7 +1300,7 @@
         btn.textContent = info.short;
         btn.dataset.team = name;
         btn.style.borderColor = info.color;
-        btn.style.color = info.color;
+        btn.style.color = info.darkColor || info.color;
         if (selectedTeams.has(name)) {
           btn.classList.add('active');
           btn.style.backgroundColor = info.color;
@@ -1294,7 +1317,7 @@
         selectedTeams.delete(name);
         btn.classList.remove('active');
         btn.style.backgroundColor = '';
-        btn.style.color = TEAMS[name].color;
+        btn.style.color = TEAMS[name].darkColor || TEAMS[name].color;
       } else {
         selectedTeams.add(name);
         btn.classList.add('active');
@@ -1311,7 +1334,7 @@
         b.classList.remove('active');
         b.style.backgroundColor = '';
         const t = TEAMS[b.dataset.team];
-        if (t) b.style.color = t.color;
+        if (t) b.style.color = t.darkColor || t.color;
       });
       document.getElementById('btn-all').classList.add('active');
       renderCurrentView();
@@ -1379,7 +1402,7 @@
           <td>${formatDate(date)}</td>
           <td>${time}</td>
           <td><span class="team-color" style="background:${getTeamColor(away)}"></span>${away}</td>
-          <td style="text-align:center;color:#888;">vs</td>
+          <td style="text-align:center;color:var(--muted-text);">vs</td>
           <td><span class="team-color" style="background:${getTeamColor(home)}"></span>${home}</td>
           <td>${venue}</td>
         </tr>`;
@@ -1450,7 +1473,7 @@
         <tbody>${games.map(g => `<tr>
           <td>${g[4]}</td>
           <td><span class="team-color" style="background:${getTeamColor(g[2])}"></span>${g[2]}</td>
-          <td style="color:#888;text-align:center;">vs</td>
+          <td style="color:var(--muted-text);text-align:center;">vs</td>
           <td><span class="team-color" style="background:${getTeamColor(g[1])}"></span>${g[1]}</td>
           <td>${g[3]}</td>
         </tr>`).join('')}</tbody></table>`;
@@ -1480,13 +1503,13 @@
         html += `<div class="week-card-group">
           <div class="week-date-header ${today2 ? 'is-today' : ''}">${formatDate(dateStr)}${today2 ? ' <span style="color:#d97706;">(今日)</span>' : ''}</div>`;
         if (dayGames.length === 0) {
-          html += '<div style="color:#888;font-size:0.85rem;padding:8px 0;">試合なし</div>';
+          html += '<div style="color:var(--muted-text);font-size:0.85rem;padding:8px 0;">試合なし</div>';
         } else {
           html += '<div class="week-games">';
           dayGames.forEach(g => {
             html += `<div class="week-game">
               <div class="wg-time">${g[4]}</div>
-              <div class="wg-teams"><span style="color:${getTeamColor(g[2])};font-weight:bold;">${g[2]}</span> <span style="color:#888;">vs</span> <span style="color:${getTeamColor(g[1])};font-weight:bold;">${g[1]}</span></div>
+              <div class="wg-teams"><span style="color:${getTeamColor(g[2])};font-weight:bold;">${g[2]}</span> <span style="color:var(--muted-text);">vs</span> <span style="color:${getTeamColor(g[1])};font-weight:bold;">${g[1]}</span></div>
               <div class="wg-venue">${g[3]}</div>
             </div>`;
           });
@@ -1501,6 +1524,11 @@
     renderToday();
     renderList();
     setInterval(renderToday, 60000);
+
+    // テーマ切替時に再描画（ダークモード色対応）
+    new MutationObserver(() => { renderToday(); renderCurrentView(); }).observe(
+      document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }
+    );
   </script>
 </body>
 </html>

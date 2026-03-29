@@ -76,9 +76,9 @@
     :root {
       --giants: #FF6600;
       --tigers: #FFE100;
-      --dena: #4A90D9;
+      --dena: #0055A5;
       --carp: #ED1C24;
-      --dragons: #0050B0;
+      --dragons: #00468B;
       --swallows: #006D44;
       --buffaloes: #BA0C2F;
       --hawks: #FDD000;
@@ -86,21 +86,28 @@
       --eagles: #8D0034;
       --marines: #000000;
       --fighters: #003E7E;
+      --hover-bg: #f0f7ff;
+      --hover-bg-alt: #f3f4f6;
+      --table-alt-bg: #f3f4f6;
+      --table-border-light: #eee;
+      --table-border: #ddd;
+      --muted-text: #888;
+      --sub-heading: #666;
     }
 
     /* 今日の試合 */
     .today-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
     .today-section h2 { color: #ffd700; margin: 0 0 16px; font-size: 1.2rem; }
-    .today-date { font-size: 0.9rem; color: #aaa; margin-bottom: 16px; }
+    .today-date { font-size: 0.9rem; color: #ccc; margin-bottom: 16px; }
     .today-games { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
     .today-game-card { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.1); }
     .today-game-card .game-teams { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; }
-    .today-game-card .vs-text { color: #888; font-size: 0.9rem; }
-    .today-game-card .game-info { text-align: center; font-size: 0.85rem; color: #aaa; }
+    .today-game-card .vs-text { color: #bbb; font-size: 0.9rem; }
+    .today-game-card .game-info { text-align: center; font-size: 0.85rem; color: #ccc; }
     .today-game-card .game-status { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-top: 6px; }
     .status-before { background: #2563eb; color: #fff; }
     .status-live { background: #dc2626; color: #fff; animation: pulse 1.5s infinite; }
-    .status-finished { background: #555; color: #ccc; }
+    .status-finished { background: #666; color: #eee; }
     .no-games { text-align: center; color: #aaa; padding: 20px; font-size: 0.95rem; }
 
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
@@ -126,20 +133,20 @@
     /* カレンダー */
     .calendar-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
     .calendar-nav button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); cursor: pointer; font-size: 0.9rem; color: var(--text); }
-    .calendar-nav button:hover { background: #f3f4f6; }
+    .calendar-nav button:hover { background: var(--hover-bg-alt); }
     .calendar-nav .month-title { font-size: 1.2rem; font-weight: bold; }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
     .cal-header { text-align: center; font-weight: bold; font-size: 0.8rem; padding: 8px 4px; color: var(--text-muted); }
     .cal-header:first-child { color: #dc2626; }
     .cal-header:last-child { color: #2563eb; }
     .cal-day { min-height: 70px; border: 1px solid var(--border); border-radius: 4px; padding: 4px; font-size: 0.75rem; cursor: pointer; transition: background 0.2s; position: relative; }
-    .cal-day:hover { background: #f0f7ff; }
+    .cal-day:hover { background: var(--hover-bg); }
     .cal-day.today { background: #fffbeb; border-color: #fbbf24; }
     .cal-day.selected { background: #eff6ff; border-color: #2563eb; border-width: 2px; }
     .cal-day .day-num { font-weight: bold; font-size: 0.85rem; margin-bottom: 2px; }
     .cal-day.sunday .day-num { color: #dc2626; }
     .cal-day.saturday .day-num { color: #2563eb; }
-    .cal-day .game-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 1px; }
+    .cal-day .game-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin: 1px; border: 1px solid rgba(0,0,0,0.15); }
     .cal-day .game-count { font-size: 0.7rem; color: var(--text-muted); }
     .cal-day.empty { background: #f9fafb; border-color: transparent; cursor: default; }
     .cal-day.empty:hover { background: #f9fafb; }
@@ -148,7 +155,7 @@
     .game-list { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     .game-list th { background: var(--table-header-bg, #1e3a5f); color: #fff; padding: 10px 8px; text-align: left; position: sticky; top: 0; z-index: 1; }
     .game-list td { padding: 8px; border-bottom: 1px solid var(--border); }
-    .game-list tr:hover { background: #f0f7ff; }
+    .game-list tr:hover { background: var(--hover-bg); }
     .game-list tr.today-row { background: #fffbeb; }
     .game-list tr.today-row:hover { background: #fef3c7; }
     .game-list .team-color { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
@@ -158,7 +165,7 @@
     /* 週間ビュー */
     .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     .week-nav button { padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); cursor: pointer; }
-    .week-nav button:hover { background: #f3f4f6; }
+    .week-nav button:hover { background: var(--hover-bg-alt); }
     .week-card-group { margin-bottom: 20px; }
     .week-date-header { font-weight: bold; font-size: 1rem; padding: 8px 0; border-bottom: 2px solid var(--border); margin-bottom: 8px; }
     .week-date-header.is-today { color: #d97706; border-bottom-color: #fbbf24; }
@@ -184,13 +191,31 @@
       .view-tab { padding: 8px 12px; font-size: 0.8rem; }
     }
 
+    /* 球団本拠地テーブル */
+    .info-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .info-table thead tr { background: var(--table-alt-bg); }
+    .info-table th { padding: 8px; text-align: left; border-bottom: 2px solid var(--table-border); }
+    .info-table td { padding: 8px; border-bottom: 1px solid var(--table-border-light); }
+
+    /* 球団バッジ */
+    .team-badge { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 4px; border: 1px solid rgba(0,0,0,0.15); }
+
     /* ダークモード対応 */
     [data-theme="dark"] {
       --table-header-bg: #0f172a;
+      --hover-bg: #1e3a5f;
+      --hover-bg-alt: #1e293b;
+      --table-alt-bg: #1e293b;
+      --table-border-light: #334155;
+      --table-border: #475569;
+      --muted-text: #9ca3af;
+      --sub-heading: #9ca3af;
     }
     [data-theme="dark"] .team-btn.active { color: #fff; }
+    [data-theme="dark"] .team-badge { border-color: rgba(255,255,255,0.2); }
+    [data-theme="dark"] .cal-day .game-dot { border-color: rgba(255,255,255,0.2); }
     [data-theme="dark"] .cal-day { background: var(--surface); }
-    [data-theme="dark"] .cal-day:hover { background: #1e3a5f; }
+    [data-theme="dark"] .cal-day:hover { background: var(--hover-bg); }
     [data-theme="dark"] .cal-day.today { background: #422006; border-color: #f59e0b; }
     [data-theme="dark"] .cal-day.selected { background: #172554; border-color: #60a5fa; }
     [data-theme="dark"] .cal-day.empty { background: #111827; }
@@ -226,7 +251,7 @@
       <div class="today-games" id="today-games"></div>
     </div>
 
-    <p style="font-size:0.8rem;color:#888;margin-bottom:16px;text-align:right;">※日程データ出典: <a href="https://npb.jp/games/2026/" target="_blank" rel="noopener" style="color:#2563eb;">NPB公式サイト</a>（日程は変更になる場合があります）</p>
+    <p style="font-size:0.8rem;color:var(--muted-text);margin-bottom:16px;text-align:right;">※日程データ出典: <a href="https://npb.jp/games/2026/" target="_blank" rel="noopener" style="color:#2563eb;">NPB公式サイト</a>（日程は変更になる場合があります）</p>
 
     <div class="tool-area">
       <!-- チーム選択 -->
@@ -312,27 +337,27 @@
     <section class="content-section">
       <h2>球団別の本拠地・球場情報</h2>
       <h3>セントラル・リーグ</h3>
-      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin:12px 0;">
-        <thead><tr style="background:#f3f4f6;"><th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">球団</th><th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">本拠地球場</th><th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">所在地</th></tr></thead>
+      <table class="info-table">
+        <thead><tr><th>球団</th><th>本拠地球場</th><th>所在地</th></tr></thead>
         <tbody>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#FF6600;font-weight:bold;">&#9632;</span> 巨人</td><td style="padding:8px;border-bottom:1px solid #eee;">東京ドーム</td><td style="padding:8px;border-bottom:1px solid #eee;">東京都文京区</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#FFE100;font-weight:bold;">&#9632;</span> 阪神</td><td style="padding:8px;border-bottom:1px solid #eee;">阪神甲子園球場</td><td style="padding:8px;border-bottom:1px solid #eee;">兵庫県西宮市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#4A90D9;font-weight:bold;">&#9632;</span> DeNA</td><td style="padding:8px;border-bottom:1px solid #eee;">横浜スタジアム</td><td style="padding:8px;border-bottom:1px solid #eee;">神奈川県横浜市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#ED1C24;font-weight:bold;">&#9632;</span> 広島</td><td style="padding:8px;border-bottom:1px solid #eee;">MAZDA Zoom-Zoom スタジアム広島</td><td style="padding:8px;border-bottom:1px solid #eee;">広島県広島市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#0050B0;font-weight:bold;">&#9632;</span> 中日</td><td style="padding:8px;border-bottom:1px solid #eee;">バンテリンドーム ナゴヤ</td><td style="padding:8px;border-bottom:1px solid #eee;">愛知県名古屋市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#006D44;font-weight:bold;">&#9632;</span> ヤクルト</td><td style="padding:8px;border-bottom:1px solid #eee;">明治神宮野球場</td><td style="padding:8px;border-bottom:1px solid #eee;">東京都新宿区</td></tr>
+          <tr><td><span class="team-badge" style="background:#FF6600;"></span> 巨人</td><td>東京ドーム</td><td>東京都文京区</td></tr>
+          <tr><td><span class="team-badge" style="background:#FFE100;"></span> 阪神</td><td>阪神甲子園球場</td><td>兵庫県西宮市</td></tr>
+          <tr><td><span class="team-badge" style="background:#0055A5;"></span> DeNA</td><td>横浜スタジアム</td><td>神奈川県横浜市</td></tr>
+          <tr><td><span class="team-badge" style="background:#ED1C24;"></span> 広島</td><td>MAZDA Zoom-Zoom スタジアム広島</td><td>広島県広島市</td></tr>
+          <tr><td><span class="team-badge" style="background:#00468B;"></span> 中日</td><td>バンテリンドーム ナゴヤ</td><td>愛知県名古屋市</td></tr>
+          <tr><td><span class="team-badge" style="background:#006D44;"></span> ヤクルト</td><td>明治神宮野球場</td><td>東京都新宿区</td></tr>
         </tbody>
       </table>
       <h3>パシフィック・リーグ</h3>
-      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin:12px 0;">
-        <thead><tr style="background:#f3f4f6;"><th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">球団</th><th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">本拠地球場</th><th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">所在地</th></tr></thead>
+      <table class="info-table">
+        <thead><tr><th>球団</th><th>本拠地球場</th><th>所在地</th></tr></thead>
         <tbody>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#BA0C2F;font-weight:bold;">&#9632;</span> オリックス</td><td style="padding:8px;border-bottom:1px solid #eee;">京セラドーム大阪</td><td style="padding:8px;border-bottom:1px solid #eee;">大阪府大阪市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#FDD000;font-weight:bold;">&#9632;</span> ソフトバンク</td><td style="padding:8px;border-bottom:1px solid #eee;">みずほPayPayドーム福岡</td><td style="padding:8px;border-bottom:1px solid #eee;">福岡県福岡市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#002D73;font-weight:bold;">&#9632;</span> 西武</td><td style="padding:8px;border-bottom:1px solid #eee;">ベルーナドーム</td><td style="padding:8px;border-bottom:1px solid #eee;">埼玉県所沢市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#8D0034;font-weight:bold;">&#9632;</span> 楽天</td><td style="padding:8px;border-bottom:1px solid #eee;">楽天モバイルパーク宮城</td><td style="padding:8px;border-bottom:1px solid #eee;">宮城県仙台市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#000000;font-weight:bold;">&#9632;</span> ロッテ</td><td style="padding:8px;border-bottom:1px solid #eee;">ZOZOマリンスタジアム</td><td style="padding:8px;border-bottom:1px solid #eee;">千葉県千葉市</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;"><span style="color:#003E7E;font-weight:bold;">&#9632;</span> 日本ハム</td><td style="padding:8px;border-bottom:1px solid #eee;">エスコンフィールドHOKKAIDO</td><td style="padding:8px;border-bottom:1px solid #eee;">北海道北広島市</td></tr>
+          <tr><td><span class="team-badge" style="background:#BA0C2F;"></span> オリックス</td><td>京セラドーム大阪</td><td>大阪府大阪市</td></tr>
+          <tr><td><span class="team-badge" style="background:#FDD000;"></span> ソフトバンク</td><td>みずほPayPayドーム福岡</td><td>福岡県福岡市</td></tr>
+          <tr><td><span class="team-badge" style="background:#002D73;"></span> 西武</td><td>ベルーナドーム</td><td>埼玉県所沢市</td></tr>
+          <tr><td><span class="team-badge" style="background:#8D0034;"></span> 楽天</td><td>楽天モバイルパーク宮城</td><td>宮城県仙台市</td></tr>
+          <tr><td><span class="team-badge" style="background:#221815;"></span> ロッテ</td><td>ZOZOマリンスタジアム</td><td>千葉県千葉市</td></tr>
+          <tr><td><span class="team-badge" style="background:#003E7E;"></span> 日本ハム</td><td>エスコンフィールドHOKKAIDO</td><td>北海道北広島市</td></tr>
         </tbody>
       </table>
     </section>
@@ -350,23 +375,23 @@
     <!-- 球団別ページリンク -->
     <section style="margin-top:24px;">
       <h2 style="font-size:1.2rem;margin-bottom:12px;">球団別 試合日程</h2>
-      <h3 style="font-size:1rem;color:#666;margin-bottom:8px;">セ・リーグ</h3>
+      <h3 style="font-size:1rem;color:var(--sub-heading);margin-bottom:8px;">セ・リーグ</h3>
       <div class="tool-grid" style="margin-bottom:16px;">
-        <a href="giants/" class="tool-card" style="padding:10px 14px;"><span style="color:#FF6600;font-weight:bold;">&#9632;</span> 巨人 2026日程</a>
-        <a href="tigers/" class="tool-card" style="padding:10px 14px;"><span style="color:#FFE100;font-weight:bold;">&#9632;</span> 阪神 2026日程</a>
-        <a href="dena/" class="tool-card" style="padding:10px 14px;"><span style="color:#4A90D9;font-weight:bold;">&#9632;</span> DeNA 2026日程</a>
-        <a href="carp/" class="tool-card" style="padding:10px 14px;"><span style="color:#ED1C24;font-weight:bold;">&#9632;</span> 広島 2026日程</a>
-        <a href="dragons/" class="tool-card" style="padding:10px 14px;"><span style="color:#0050B0;font-weight:bold;">&#9632;</span> 中日 2026日程</a>
-        <a href="swallows/" class="tool-card" style="padding:10px 14px;"><span style="color:#006D44;font-weight:bold;">&#9632;</span> ヤクルト 2026日程</a>
+        <a href="giants/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#FF6600;"></span> 巨人 2026日程</a>
+        <a href="tigers/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#FFE100;"></span> 阪神 2026日程</a>
+        <a href="dena/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#0055A5;"></span> DeNA 2026日程</a>
+        <a href="carp/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#ED1C24;"></span> 広島 2026日程</a>
+        <a href="dragons/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#00468B;"></span> 中日 2026日程</a>
+        <a href="swallows/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#006D44;"></span> ヤクルト 2026日程</a>
       </div>
-      <h3 style="font-size:1rem;color:#666;margin-bottom:8px;">パ・リーグ</h3>
+      <h3 style="font-size:1rem;color:var(--sub-heading);margin-bottom:8px;">パ・リーグ</h3>
       <div class="tool-grid">
-        <a href="buffaloes/" class="tool-card" style="padding:10px 14px;"><span style="color:#BA0C2F;font-weight:bold;">&#9632;</span> オリックス 2026日程</a>
-        <a href="hawks/" class="tool-card" style="padding:10px 14px;"><span style="color:#FDD000;font-weight:bold;">&#9632;</span> ソフトバンク 2026日程</a>
-        <a href="lions/" class="tool-card" style="padding:10px 14px;"><span style="color:#002D73;font-weight:bold;">&#9632;</span> 西武 2026日程</a>
-        <a href="eagles/" class="tool-card" style="padding:10px 14px;"><span style="color:#8D0034;font-weight:bold;">&#9632;</span> 楽天 2026日程</a>
-        <a href="marines/" class="tool-card" style="padding:10px 14px;"><span style="color:#221815;font-weight:bold;">&#9632;</span> ロッテ 2026日程</a>
-        <a href="fighters/" class="tool-card" style="padding:10px 14px;"><span style="color:#003E7E;font-weight:bold;">&#9632;</span> 日本ハム 2026日程</a>
+        <a href="buffaloes/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#BA0C2F;"></span> オリックス 2026日程</a>
+        <a href="hawks/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#FDD000;"></span> ソフトバンク 2026日程</a>
+        <a href="lions/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#002D73;"></span> 西武 2026日程</a>
+        <a href="eagles/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#8D0034;"></span> 楽天 2026日程</a>
+        <a href="marines/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#221815;"></span> ロッテ 2026日程</a>
+        <a href="fighters/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#003E7E;"></span> 日本ハム 2026日程</a>
       </div>
     </section>
 
@@ -401,16 +426,16 @@
     // ===== チームデータ =====
     const TEAMS = {
       '巨人':       { color: '#FF6600', short: '巨人', league: 'ce' },
-      '阪神':       { color: '#FFE100', short: '阪神', league: 'ce', textColor: '#333' },
-      'DeNA':       { color: '#4A90D9', short: 'DeNA', league: 'ce' },
+      '阪神':       { color: '#FFE100', darkColor: '#9E8D00', short: '阪神', league: 'ce', textColor: '#333' },
+      'DeNA':       { color: '#0055A5', short: 'DeNA', league: 'ce' },
       '広島':       { color: '#ED1C24', short: '広島', league: 'ce' },
-      '中日':       { color: '#0050B0', short: '中日', league: 'ce' },
+      '中日':       { color: '#00468B', short: '中日', league: 'ce' },
       'ヤクルト':   { color: '#006D44', short: 'ヤクルト', league: 'ce' },
       'オリックス': { color: '#BA0C2F', short: 'オリックス', league: 'pa' },
-      'ソフトバンク':{ color: '#FDD000', short: 'SB', league: 'pa', textColor: '#333' },
+      'ソフトバンク':{ color: '#FDD000', darkColor: '#9E8400', short: 'SB', league: 'pa', textColor: '#333' },
       '西武':       { color: '#002D73', short: '西武', league: 'pa' },
       '楽天':       { color: '#8D0034', short: '楽天', league: 'pa' },
-      'ロッテ':     { color: '#221815', short: 'ロッテ', league: 'pa' },
+      'ロッテ':     { color: '#221815', darkModeColor: '#AAAAAA', short: 'ロッテ', league: 'pa' },
       '日本ハム':   { color: '#003E7E', short: '日ハム', league: 'pa' }
     };
 
@@ -1317,7 +1342,11 @@
       const t = new Date();
       return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
     }
-    function getTeamColor(name) { return TEAMS[name] ? TEAMS[name].color : '#888'; }
+    function getTeamColor(name) {
+      if (!TEAMS[name]) return '#888';
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      return (isDark && TEAMS[name].darkModeColor) ? TEAMS[name].darkModeColor : TEAMS[name].color;
+    }
 
     function matchesFilter(g) {
       if (selectedTeams.size === 0) return true;
@@ -1334,7 +1363,7 @@
         btn.textContent = info.short;
         btn.dataset.team = name;
         btn.style.borderColor = info.color;
-        btn.style.color = info.color;
+        btn.style.color = info.darkColor || info.color;
         btn.onclick = () => toggleTeam(name, btn);
         (info.league === 'ce' ? ceEl : paEl).appendChild(btn);
       });
@@ -1345,7 +1374,7 @@
         selectedTeams.delete(name);
         btn.classList.remove('active');
         btn.style.backgroundColor = '';
-        btn.style.color = TEAMS[name].color;
+        btn.style.color = TEAMS[name].darkColor || TEAMS[name].color;
       } else {
         selectedTeams.add(name);
         btn.classList.add('active');
@@ -1362,7 +1391,7 @@
         b.classList.remove('active');
         b.style.backgroundColor = '';
         const t = TEAMS[b.dataset.team];
-        if (t) b.style.color = t.color;
+        if (t) b.style.color = t.darkColor || t.color;
       });
       document.getElementById('btn-all').classList.add('active');
       renderCurrentView();
@@ -1437,7 +1466,7 @@
           <td>${formatDate(date)}</td>
           <td>${time}</td>
           <td><span class="team-color" style="background:${getTeamColor(away)}"></span>${away}</td>
-          <td style="text-align:center;color:#888;">vs</td>
+          <td style="text-align:center;color:var(--muted-text);">vs</td>
           <td><span class="team-color" style="background:${getTeamColor(home)}"></span>${home}</td>
           <td>${venue}</td>
         </tr>`;
@@ -1556,13 +1585,13 @@
           <div class="week-date-header ${today2 ? 'is-today' : ''}">${formatDate(dateStr)}${today2 ? ' <span style="color:#d97706;">(今日)</span>' : ''}</div>`;
 
         if (dayGames.length === 0) {
-          html += '<div style="color:#888;font-size:0.85rem;padding:8px 0;">試合なし</div>';
+          html += '<div style="color:var(--muted-text);font-size:0.85rem;padding:8px 0;">試合なし</div>';
         } else {
           html += '<div class="week-games">';
           dayGames.forEach(g => {
             html += `<div class="week-game">
               <div class="wg-time">${g[4]}</div>
-              <div class="wg-teams"><span style="color:${getTeamColor(g[2])};font-weight:bold;">${g[2]}</span> <span style="color:#888;">vs</span> <span style="color:${getTeamColor(g[1])};font-weight:bold;">${g[1]}</span></div>
+              <div class="wg-teams"><span style="color:${getTeamColor(g[2])};font-weight:bold;">${g[2]}</span> <span style="color:var(--muted-text);">vs</span> <span style="color:${getTeamColor(g[1])};font-weight:bold;">${g[1]}</span></div>
               <div class="wg-venue">${g[3]}</div>
             </div>`;
           });
@@ -1601,6 +1630,11 @@
 
     // 1分ごとに今日の試合ステータス更新
     setInterval(renderToday, 60000);
+
+    // テーマ切替時に再描画（ダークモード色対応）
+    new MutationObserver(() => { renderToday(); renderCurrentView(); }).observe(
+      document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }
+    );
   </script>
 </body>
 </html>
