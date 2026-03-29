@@ -1359,7 +1359,7 @@
 
     function getTeamBtnColor(info) {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) return info.darkModeColor || info.color;
+      if (isDark) return '#fff';
       return info.darkColor || info.color;
     }
 
