@@ -31,6 +31,9 @@
     } else if (section === 'blog') {
       items.push({ name: '技術解説', url: BASE_URL + '/blog/' });
       items.push({ name: pageTitle, url: null });
+    } else if (section === 'exam') {
+      items.push({ name: '解説一覧', url: BASE_URL + '/exam/' });
+      items.push({ name: pageTitle, url: null });
     } else if (section === 'exercises') {
       items.push({ name: '練習問題', url: null });
       items.push({ name: pageTitle, url: null });

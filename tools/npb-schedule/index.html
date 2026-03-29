@@ -99,7 +99,10 @@
     .today-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
     .today-section h2 { color: #ffd700; margin: 0 0 16px; font-size: 1.2rem; }
     .today-date { font-size: 0.9rem; color: #ccc; margin-bottom: 16px; }
-    .today-games { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+    .today-games { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .today-league { }
+    .today-league-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.2); }
+    .today-league-games { display: flex; flex-direction: column; gap: 10px; }
     .today-game-card { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; border: 1px solid rgba(255,255,255,0.1); }
     .today-game-card .game-teams { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; }
     .today-game-card .vs-text { color: #bbb; font-size: 0.9rem; }
@@ -189,6 +192,7 @@
       .game-list th, .game-list td { padding: 6px 4px; }
       .team-btn { padding: 6px 10px; font-size: 0.75rem; min-width: 60px; }
       .today-games { grid-template-columns: 1fr; }
+      .today-league-title { font-size: 0.85rem; }
       .cal-day { min-height: 50px; }
       .cal-day .day-num { font-size: 0.75rem; }
       .view-tab { padding: 8px 12px; font-size: 0.8rem; }
@@ -1384,7 +1388,7 @@
         selectedTeams.add(name);
         btn.classList.add('active');
         btn.style.backgroundColor = TEAMS[name].color;
-        btn.style.color = TEAMS[name].textColor || '#fff';
+        btn.style.color = '#fff';
       }
       document.getElementById('btn-all').classList.toggle('active', selectedTeams.size === 0);
       renderCurrentView();
@@ -1416,7 +1420,7 @@
         return;
       }
 
-      container.innerHTML = todayGames.map(g => {
+      function renderGameCard(g) {
         const [date, home, away, venue, time] = g;
         const now = new Date();
         const gameTime = new Date(date + 'T' + time + ':00');
@@ -1434,7 +1438,28 @@
           <div class="game-info">${time} / ${venue}</div>
           <div style="text-align:center;"><span class="game-status ${statusClass}">${statusText}</span></div>
         </div>`;
-      }).join('');
+      }
+
+      const ceGames = todayGames.filter(g => TEAMS[g[1]] && TEAMS[g[1]].league === 'ce');
+      const paGames = todayGames.filter(g => TEAMS[g[1]] && TEAMS[g[1]].league === 'pa');
+      const otherGames = todayGames.filter(g => !TEAMS[g[1]] || (TEAMS[g[1]].league !== 'ce' && TEAMS[g[1]].league !== 'pa'));
+
+      let html = '';
+      html += `<div class="today-league">
+        <div class="today-league-title">セ・リーグ</div>
+        <div class="today-league-games">${ceGames.length > 0 ? ceGames.map(renderGameCard).join('') : '<div style="color:#999;font-size:0.85rem;">試合なし</div>'}</div>
+      </div>`;
+      html += `<div class="today-league">
+        <div class="today-league-title">パ・リーグ</div>
+        <div class="today-league-games">${paGames.length > 0 ? paGames.map(renderGameCard).join('') : '<div style="color:#999;font-size:0.85rem;">試合なし</div>'}</div>
+      </div>`;
+      if (otherGames.length > 0) {
+        html += `<div class="today-league" style="grid-column:1/-1;">
+          <div class="today-league-title">交流戦・その他</div>
+          <div class="today-league-games">${otherGames.map(renderGameCard).join('')}</div>
+        </div>`;
+      }
+      container.innerHTML = html;
     }
 
     // ===== ビュー切替 =====
@@ -1470,9 +1495,9 @@
         html += `<tr class="${today ? 'today-row' : ''}">
           <td>${formatDate(date)}</td>
           <td>${time}</td>
-          <td><span class="team-color" style="background:${getTeamColor(away)}"></span>${getTeamEmoji(away)} ${away}</td>
+          <td>${getTeamEmoji(away)} ${away}</td>
           <td style="text-align:center;color:var(--muted-text);">vs</td>
-          <td><span class="team-color" style="background:${getTeamColor(home)}"></span>${getTeamEmoji(home)} ${home}</td>
+          <td>${getTeamEmoji(home)} ${home}</td>
           <td>${venue}</td>
         </tr>`;
       });
@@ -1553,9 +1578,9 @@
         <table class="game-list" style="font-size:0.85rem;"><thead><tr><th>時刻</th><th>ビジター</th><th></th><th>ホーム</th><th>球場</th></tr></thead>
         <tbody>${games.map(g => `<tr>
           <td>${g[4]}</td>
-          <td><span class="team-color" style="background:${getTeamColor(g[2])}"></span>${getTeamEmoji(g[2])} ${g[2]}</td>
+          <td>${getTeamEmoji(g[2])} ${g[2]}</td>
           <td style="color:var(--muted-text);text-align:center;">vs</td>
-          <td><span class="team-color" style="background:${getTeamColor(g[1])}"></span>${getTeamEmoji(g[1])} ${g[1]}</td>
+          <td>${getTeamEmoji(g[1])} ${g[1]}</td>
           <td>${g[3]}</td>
         </tr>`).join('')}</tbody></table>`;
     }
