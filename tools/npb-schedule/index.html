@@ -291,7 +291,6 @@
           <table class="game-list" id="game-table">
             <thead>
               <tr>
-                <th>日付</th>
                 <th>時刻</th>
                 <th>ビジター</th>
                 <th></th>
@@ -1495,11 +1494,10 @@
         const [date, home, away, venue, time] = g;
         const today = isToday(date);
         if (date !== lastDate) {
-          html += `<tr class="date-header"><td colspan="6">${formatDate(date)}</td></tr>`;
+          html += `<tr class="date-header"><td colspan="5">${formatDate(date)}</td></tr>`;
           lastDate = date;
         }
         html += `<tr class="${today ? 'today-row' : ''}">
-          <td>${formatDate(date)}</td>
           <td>${time}</td>
           <td>${getTeamEmoji(away)} ${away}</td>
           <td style="text-align:center;color:var(--muted-text);">vs</td>
