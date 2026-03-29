@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>潮見表・タイドグラフ - 無料オンライン潮位予測｜SimpleToolkit</title>
-  <meta name="description" content="全国主要25港の潮位予測をリアルタイムグラフ表示。満潮・干潮時刻、大潮・中潮・小潮の潮回り、月齢、週間グラフ対応。釣りや潮干狩りに便利。無料・登録不要。">
-  <meta property="og:title" content="潮見表・タイドグラフ - 無料オンライン潮位予測｜SimpleToolkit">
-  <meta property="og:description" content="全国主要港の潮位をグラフ表示。満潮・干潮時刻、潮回り、月齢表示。釣りに便利。無料・登録不要。">
+  <title>潮見表 2026年 - 満潮・干潮時刻【全国25港対応】無料</title>
+  <meta name="description" content="今日の潮見表を全国25港で無料表示。満潮・干潮時刻、大潮・小潮の潮回り、月齢、週間グラフ対応。釣り・潮干狩りの計画に。">
+  <meta property="og:title" content="潮見表 2026年 - 満潮・干潮時刻【全国25港対応】無料">
+  <meta property="og:description" content="今日の潮見表を全国25港で無料表示。満潮・干潮時刻、潮回り、月齢、週間グラフ対応。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://simpletoolkit.net/tools/tide-chart/">
   <link rel="canonical" href="https://simpletoolkit.net/tools/tide-chart/">
@@ -29,10 +29,26 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "潮見表の潮位はどのように計算していますか？",
+        "name": "今日は大潮ですか？",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "各港の潮汐調和定数（M2, S2, K1, O1の主要4分潮）を用いた調和解析法で潮位を予測しています。簡易計算のため実際の潮位とは差が生じる場合があります。"
+          "text": "潮回りは月齢によって決まります。このツールで港を選択すると、今日の潮回り（大潮・中潮・小潮・長潮・若潮）が表示されます。新月・満月の前後約3日間が大潮です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "釣りに最適な潮回りと時間帯は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "一般的に大潮や中潮の日が魚の活性が高く釣れやすいとされています。特に満潮前後の潮が動く時間帯（上げ潮・下げ潮の3〜7分目）が好機です。朝マヅメ・夕マヅメと重なるとさらに期待大です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "潮干狩りに行くベストな日はいつ？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "大潮の干潮時が最も潮が引くため、潮干狩りに最適です。特に春（3〜5月）の大潮は昼間に大きく潮が引くのでベストシーズンです。干潮の2時間前から始めるのがおすすめです。"
         }
       },
       {
@@ -41,22 +57,6 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "大潮は新月・満月の前後に潮の干満差が最大になる時期、小潮は半月（上弦・下弦）の前後に干満差が最小になる時期です。中潮はその間の時期、長潮・若潮は小潮から大潮への過渡期です。"
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "釣りに最適な潮回りは？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "一般的に大潮や中潮の日が魚の活性が高く釣れやすいとされています。特に満潮前後の潮が動く時間帯（上げ潮・下げ潮の3〜7分目）が好機です。"
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "データはサーバーに送信されますか？",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "いいえ、すべての計算はブラウザ内で完結します。データが外部に送信されることはありません。"
         }
       }
     ]
