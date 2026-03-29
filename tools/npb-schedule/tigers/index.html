@@ -369,19 +369,21 @@
   <script>
     // ===== チームデータ =====
     const TEAMS = {
-      '巨人':       { color: '#FF6600', short: '巨人', league: 'ce' },
-      '阪神':       { color: '#FFE100', darkColor: '#9E8D00', short: '阪神', league: 'ce', textColor: '#333' },
-      'DeNA':       { color: '#0055A5', short: 'DeNA', league: 'ce' },
-      '広島':       { color: '#ED1C24', short: '広島', league: 'ce' },
-      '中日':       { color: '#00468B', short: '中日', league: 'ce' },
-      'ヤクルト':   { color: '#006D44', short: 'ヤクルト', league: 'ce' },
-      'オリックス': { color: '#BA0C2F', short: 'オリックス', league: 'pa' },
-      'ソフトバンク':{ color: '#FDD000', darkColor: '#9E8400', short: 'SB', league: 'pa', textColor: '#333' },
-      '西武':       { color: '#002D73', short: '西武', league: 'pa' },
-      '楽天':       { color: '#8D0034', short: '楽天', league: 'pa' },
-      'ロッテ':     { color: '#221815', darkModeColor: '#AAAAAA', short: 'ロッテ', league: 'pa' },
-      '日本ハム':   { color: '#003E7E', short: '日ハム', league: 'pa' }
+      '巨人':       { color: '#FF6600', emoji: '🐰', short: '巨人', league: 'ce' },
+      '阪神':       { color: '#FFE100', darkColor: '#9E8D00', emoji: '🐯', short: '阪神', league: 'ce', textColor: '#333' },
+      'DeNA':       { color: '#0055A5', emoji: '⭐', short: 'DeNA', league: 'ce' },
+      '広島':       { color: '#ED1C24', emoji: '🎏', short: '広島', league: 'ce' },
+      '中日':       { color: '#00468B', emoji: '🐉', short: '中日', league: 'ce' },
+      'ヤクルト':   { color: '#006D44', emoji: '🐦', short: 'ヤクルト', league: 'ce' },
+      'オリックス': { color: '#BA0C2F', emoji: '🦬', short: 'オリックス', league: 'pa' },
+      'ソフトバンク':{ color: '#FDD000', darkColor: '#9E8400', emoji: '🦅', short: 'SB', league: 'pa', textColor: '#333' },
+      '西武':       { color: '#002D73', emoji: '🦁', short: '西武', league: 'pa' },
+      '楽天':       { color: '#8D0034', emoji: '🐼', short: '楽天', league: 'pa' },
+      'ロッテ':     { color: '#221815', darkModeColor: '#AAAAAA', emoji: '⚓', short: 'ロッテ', league: 'pa' },
+      '日本ハム':   { color: '#003E7E', emoji: '🦊', short: '日ハム', league: 'pa' }
     };
+
+    function getTeamEmoji(name) { return TEAMS[name] ? TEAMS[name].emoji : ''; }
 
     // ===== 全試合データ (NPB公式 2026シーズン) =====
     const GAMES = [
@@ -1300,7 +1302,7 @@
       Object.entries(TEAMS).forEach(([name, info]) => {
         const btn = document.createElement('button');
         btn.className = 'team-btn';
-        btn.textContent = info.short;
+        btn.textContent = info.emoji + ' ' + info.short;
         btn.dataset.team = name;
         btn.style.borderColor = info.color;
         btn.style.color = info.darkColor || info.color;
@@ -1363,11 +1365,9 @@
         else if (now >= endTime) { statusClass = 'status-finished'; statusText = '試合終了'; }
         return `<div class="today-game-card">
           <div class="game-teams">
-            <span class="team-badge" style="background:${getTeamColor(away)};"></span>
-            <span class="today-team-name">${away}</span>
+            <span class="today-team-name">${getTeamEmoji(away)} ${away}</span>
             <span class="vs-text">vs</span>
-            <span class="team-badge" style="background:${getTeamColor(home)};"></span>
-            <span class="today-team-name">${home}</span>
+            <span class="today-team-name">${getTeamEmoji(home)} ${home}</span>
           </div>
           <div class="game-info">${time} / ${venue}</div>
           <div style="text-align:center;"><span class="game-status ${statusClass}">${statusText}</span></div>
@@ -1406,9 +1406,9 @@
         html += `<tr class="${today ? 'today-row' : ''}">
           <td>${formatDate(date)}</td>
           <td>${time}</td>
-          <td><span class="team-color" style="background:${getTeamColor(away)}"></span>${away}</td>
+          <td><span class="team-color" style="background:${getTeamColor(away)}"></span>${getTeamEmoji(away)} ${away}</td>
           <td style="text-align:center;color:var(--muted-text);">vs</td>
-          <td><span class="team-color" style="background:${getTeamColor(home)}"></span>${home}</td>
+          <td><span class="team-color" style="background:${getTeamColor(home)}"></span>${getTeamEmoji(home)} ${home}</td>
           <td>${venue}</td>
         </tr>`;
       });
@@ -1477,9 +1477,9 @@
         <table class="game-list" style="font-size:0.85rem;"><thead><tr><th>時刻</th><th>ビジター</th><th></th><th>ホーム</th><th>球場</th></tr></thead>
         <tbody>${games.map(g => `<tr>
           <td>${g[4]}</td>
-          <td><span class="team-color" style="background:${getTeamColor(g[2])}"></span>${g[2]}</td>
+          <td><span class="team-color" style="background:${getTeamColor(g[2])}"></span>${getTeamEmoji(g[2])} ${g[2]}</td>
           <td style="color:var(--muted-text);text-align:center;">vs</td>
-          <td><span class="team-color" style="background:${getTeamColor(g[1])}"></span>${g[1]}</td>
+          <td><span class="team-color" style="background:${getTeamColor(g[1])}"></span>${getTeamEmoji(g[1])} ${g[1]}</td>
           <td>${g[3]}</td>
         </tr>`).join('')}</tbody></table>`;
     }
@@ -1514,7 +1514,7 @@
           dayGames.forEach(g => {
             html += `<div class="week-game">
               <div class="wg-time">${g[4]}</div>
-              <div class="wg-teams"><span class="team-badge" style="background:${getTeamColor(g[2])};"></span><span style="font-weight:bold;">${g[2]}</span> <span style="color:var(--muted-text);">vs</span> <span class="team-badge" style="background:${getTeamColor(g[1])};"></span><span style="font-weight:bold;">${g[1]}</span></div>
+              <div class="wg-teams"><span style="font-weight:bold;">${getTeamEmoji(g[2])} ${g[2]}</span> <span style="color:var(--muted-text);">vs</span> <span style="font-weight:bold;">${getTeamEmoji(g[1])} ${g[1]}</span></div>
               <div class="wg-venue">${g[3]}</div>
             </div>`;
           });
