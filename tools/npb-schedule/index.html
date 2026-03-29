@@ -1357,6 +1357,12 @@
       return (isDark && TEAMS[name].darkModeColor) ? TEAMS[name].darkModeColor : TEAMS[name].color;
     }
 
+    function getTeamBtnColor(info) {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) return info.darkModeColor || info.color;
+      return info.darkColor || info.color;
+    }
+
     function matchesFilter(g) {
       if (selectedTeams.size === 0) return true;
       return selectedTeams.has(g[1]) || selectedTeams.has(g[2]);
@@ -1372,7 +1378,7 @@
         btn.textContent = info.emoji + ' ' + info.short;
         btn.dataset.team = name;
         btn.style.borderColor = info.color;
-        btn.style.color = info.darkColor || info.color;
+        btn.style.color = getTeamBtnColor(info);
         btn.onclick = () => toggleTeam(name, btn);
         (info.league === 'ce' ? ceEl : paEl).appendChild(btn);
       });
@@ -1383,7 +1389,7 @@
         selectedTeams.delete(name);
         btn.classList.remove('active');
         btn.style.backgroundColor = '';
-        btn.style.color = TEAMS[name].darkColor || TEAMS[name].color;
+        btn.style.color = getTeamBtnColor(TEAMS[name]);
       } else {
         selectedTeams.add(name);
         btn.classList.add('active');
@@ -1400,7 +1406,7 @@
         b.classList.remove('active');
         b.style.backgroundColor = '';
         const t = TEAMS[b.dataset.team];
-        if (t) b.style.color = t.darkColor || t.color;
+        if (t) b.style.color = getTeamBtnColor(t);
       });
       document.getElementById('btn-all').classList.add('active');
       renderCurrentView();
