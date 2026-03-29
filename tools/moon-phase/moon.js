@@ -1,4 +1,3 @@
-"use strict";
 // 月齢計算モジュール
 // 朔望月（synodic month）= 29.53059日
 const SYNODIC_MONTH = 29.53059;
@@ -95,7 +94,7 @@ function drawMoon(svg, info) {
         svg.appendChild(path);
     }
 }
-function renderCalendar(year, month, container) {
+function renderCalendar(year, month, container, selectedDate) {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const startDow = firstDay.getDay(); // 0=日
@@ -118,8 +117,14 @@ function renderCalendar(year, month, container) {
         const isToday = date.getFullYear() === today.getFullYear() &&
             date.getMonth() === today.getMonth() &&
             date.getDate() === today.getDate();
-        const todayClass = isToday ? ' today' : '';
-        html += `<td class="moon-day${todayClass}" data-date="${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}">
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const isSelected = dateStr === selectedDate;
+        let classes = 'moon-day';
+        if (isToday)
+            classes += ' today';
+        if (isSelected)
+            classes += ' selected';
+        html += `<td class="${classes}" data-date="${dateStr}" role="button" tabindex="0" aria-label="${month + 1}月${day}日 ${info.phaseName} 月齢${formatAge(info.age)}">
       <div class="day-num">${day}</div>
       <div class="day-emoji">${info.phaseEmoji}</div>
       <div class="day-age">${formatAge(info.age)}</div>
@@ -137,13 +142,21 @@ function renderCalendar(year, month, container) {
     }
     html += '</tr></tbody></table>';
     container.innerHTML = html;
-    // カレンダーのセルをクリックで日付選択
+    // カレンダーのセルをクリック/キーボードで日付選択
     container.querySelectorAll('.moon-day').forEach(td => {
-        td.addEventListener('click', () => {
+        const selectDate = () => {
             const dateStr = td.dataset.date;
             const input = document.getElementById('date-input');
             input.value = dateStr;
             input.dispatchEvent(new Event('change'));
+        };
+        td.addEventListener('click', selectDate);
+        td.addEventListener('keydown', (e) => {
+            const ke = e;
+            if (ke.key === 'Enter' || ke.key === ' ') {
+                ke.preventDefault();
+                selectDate();
+            }
         });
     });
 }
@@ -166,9 +179,11 @@ function updateDisplay() {
     illumEl.textContent = (info.illumination * 100).toFixed(1) + '%';
     dateLabel.textContent = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
     drawMoon(svgEl, info);
+    // SVGのaria-labelを動的に更新
+    svgEl.setAttribute('aria-label', `現在の月相: ${info.phaseName}（月齢${formatAge(info.age)}）`);
     // カレンダー更新
     const calContainer = document.getElementById('calendar-container');
-    renderCalendar(date.getFullYear(), date.getMonth(), calContainer);
+    renderCalendar(date.getFullYear(), date.getMonth(), calContainer, input.value);
     // カレンダーヘッダー更新
     const calHeader = document.getElementById('calendar-header');
     calHeader.textContent = `${date.getFullYear()}年${date.getMonth() + 1}月`;
@@ -181,16 +196,22 @@ function init() {
     const dd = String(today.getDate()).padStart(2, '0');
     input.value = `${yyyy}-${mm}-${dd}`;
     input.addEventListener('change', updateDisplay);
-    // 前月・次月ボタン
+    // 前月・次月ボタン（月末日オーバーフロー補正付き）
     document.getElementById('prev-month').addEventListener('click', () => {
         const d = new Date(input.value + 'T12:00:00');
+        const targetMonth = (d.getMonth() - 1 + 12) % 12;
         d.setMonth(d.getMonth() - 1);
+        if (d.getMonth() !== targetMonth)
+            d.setDate(0);
         input.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         updateDisplay();
     });
     document.getElementById('next-month').addEventListener('click', () => {
         const d = new Date(input.value + 'T12:00:00');
+        const targetMonth = (d.getMonth() + 1) % 12;
         d.setMonth(d.getMonth() + 1);
+        if (d.getMonth() !== targetMonth)
+            d.setDate(0);
         input.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         updateDisplay();
     });

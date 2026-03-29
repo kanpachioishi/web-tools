@@ -188,6 +188,12 @@
       background: rgba(99, 102, 241, 0.12);
       border-color: var(--accent);
     }
+    .moon-calendar td.selected {
+      background: rgba(99, 102, 241, 0.22);
+      border-color: var(--accent);
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
     .moon-calendar td.empty {
       cursor: default;
       background: transparent;
@@ -308,7 +314,7 @@
 
       <div class="moon-display">
         <div class="moon-visual">
-          <svg id="moon-svg" width="200" height="200" viewBox="0 0 200 200"></svg>
+          <svg id="moon-svg" width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="月相表示"></svg>
         </div>
         <div class="moon-info">
           <div class="date-label" id="date-label"></div>
