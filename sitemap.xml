@@ -787,169 +787,169 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/</loc>
+    <loc>https://simpletoolkit.net/beam/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-distributed-half-left/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-distributed-half-left/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-distributed-half-right/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-distributed-half-right/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-distributed-load/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-distributed-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-eccentric-load/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-eccentric-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-moment-center/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-moment-center/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-moment-load/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-moment-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-point-load/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-point-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-point-load-center/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-point-load-center/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-spring-distributed/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-spring-distributed/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-spring-point-load/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-spring-point-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-triangular-load/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-triangular-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/cantilever-triangular-load-reverse/</loc>
+    <loc>https://simpletoolkit.net/beam/cantilever-triangular-load-reverse/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/fixed-beam-distributed/</loc>
+    <loc>https://simpletoolkit.net/beam/fixed-beam-distributed/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/fixed-beam-distributed-half/</loc>
+    <loc>https://simpletoolkit.net/beam/fixed-beam-distributed-half/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/fixed-beam-eccentric-load/</loc>
+    <loc>https://simpletoolkit.net/beam/fixed-beam-eccentric-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/fixed-beam-point-load/</loc>
+    <loc>https://simpletoolkit.net/beam/fixed-beam-point-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/fixed-beam-triangular-load/</loc>
+    <loc>https://simpletoolkit.net/beam/fixed-beam-triangular-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/propped-cantilever-distributed/</loc>
+    <loc>https://simpletoolkit.net/beam/propped-cantilever-distributed/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/propped-cantilever-moment/</loc>
+    <loc>https://simpletoolkit.net/beam/propped-cantilever-moment/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/propped-cantilever-moment-center/</loc>
+    <loc>https://simpletoolkit.net/beam/propped-cantilever-moment-center/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/propped-cantilever-point-load/</loc>
+    <loc>https://simpletoolkit.net/beam/propped-cantilever-point-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/propped-cantilever-triangular-load/</loc>
+    <loc>https://simpletoolkit.net/beam/propped-cantilever-triangular-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/propped-cantilever-triangular-load-reverse/</loc>
+    <loc>https://simpletoolkit.net/beam/propped-cantilever-triangular-load-reverse/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/simply-supported-distributed/</loc>
+    <loc>https://simpletoolkit.net/beam/simply-supported-distributed/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/simply-supported-eccentric-load/</loc>
+    <loc>https://simpletoolkit.net/beam/simply-supported-eccentric-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/simply-supported-moment-center/</loc>
+    <loc>https://simpletoolkit.net/beam/simply-supported-moment-center/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/exam/simply-supported-point-load/</loc>
+    <loc>https://simpletoolkit.net/beam/simply-supported-point-load/</loc>
     <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

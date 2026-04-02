@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>片持ち梁の等分布荷重（右半分・自由端側） - たわみ・曲げモーメント・せん断力の求め方 | SimpleToolKit</title>
+  <meta name="description" content="片持ち梁の右半分（自由端側）に等分布荷重が作用する場合の反力・SFD・BMD・たわみを詳しく解説。区間ごとの式の切り替えと、たわみ41ql⁴/384EIの導出をステップで説明。">
+  <meta property="og:title" content="片持ち梁の等分布荷重（右半分・自由端側） - 解法と公式まとめ">
+  <meta property="og:description" content="片持ち梁の右半分に等分布荷重qが作用する場合の反力・SFD・BMD・たわみをステップごとに解説。最大たわみ41ql⁴/384EIの導出付き。">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://simpletoolkit.net/beam/cantilever-distributed-half-right/">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <link rel="stylesheet" href="../../common/style.css">
+
+  <style>
+    .beam-figure {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .beam-figure svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .beam-figure figcaption {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .formula-box {
+      background: var(--surface);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .formula-box h4 {
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .formula-box .katex-display {
+      margin: 8px 0;
+    }
+    .step-list {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+    }
+    .step-list li {
+      counter-increment: step;
+      padding: 12px 0 12px 48px;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-list li:last-child {
+      border-bottom: none;
+    }
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .related-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .related-links a {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .related-links a:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .related-links a span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+  </style>
+
+  <!-- JSON-LD 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "片持ち梁の等分布荷重（右半分・自由端側） - たわみ・曲げモーメント・せん断力の求め方",
+    "description": "片持ち梁の右半分（自由端側）に等分布荷重が作用する場合の反力・せん断力図・曲げモーメント図・たわみの求め方をステップごとに詳しく解説。",
+    "author": { "@type": "Organization", "name": "SimpleToolKit" },
+    "publisher": { "@type": "Organization", "name": "SimpleToolKit" },
+    "mainEntityOfPage": "https://simpletoolkit.net/beam/cantilever-distributed-half-right/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+
+  <main>
+    <script src="../../common/breadcrumb.js"></script>
+
+    <p style="margin-bottom: 8px;"><a href="../index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;" class="back-to-list">&larr; 梁の公式集に戻る</a></p>
+
+    <h1>片持ち梁の等分布荷重（右半分・自由端側）</h1>
+    <p class="tool-description">固定端Aと自由端Bを持つ片持ち梁の右半分（自由端側、$l/2 \le x \le l$）にのみ等分布荷重 $q$ が作用する場合の反力・せん断力・曲げモーメント・たわみを求めます。</p>
+
+    <!-- 目次 -->
+    <div class="article-toc">
+      <p>目次</p>
+      <ol>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
+        <li><a href="#points">ポイント</a></li>
+      </ol>
+    </div>
+
+    <div class="article-body">
+
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の片持ち梁において、左端Aを固定端、右端Bを自由端とします。右半分（$l/2 \le x \le l$、自由端側）に下向きの等分布荷重 $q$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240" width="600" height="240" font-family="'Times New Roman', serif">
+          <defs>
+            <pattern id="beam-hatch" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
+              <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="600" height="240" fill="#1a1a2e" rx="8"/>
+          <!-- 壁 -->
+          <rect x="40" y="30" width="30" height="160" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+          <line x1="40" y1="45"  x2="55" y2="30"  stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="65"  x2="70" y2="35"  stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="85"  x2="70" y2="55"  stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="105" x2="70" y2="75"  stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="125" x2="70" y2="95"  stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="145" x2="70" y2="115" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="165" x2="70" y2="135" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="185" x2="70" y2="155" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="50" y1="190" x2="70" y2="175" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="60" y1="190" x2="70" y2="183" stroke="#7777aa" stroke-width="1.2"/>
+          <!-- 梁 -->
+          <rect x="70" y="100" width="460" height="16" fill="url(#beam-hatch)" stroke="#999" stroke-width="1.5"/>
+          <!-- 等分布荷重（右半分: x=290〜530） -->
+          <!-- 上辺の水平線 -->
+          <line x1="290" y1="52" x2="530" y2="52" stroke="#b0b0b0" stroke-width="1.5"/>
+          <!-- 下向き矢印（縦線＋三角形）を等間隔に配置 -->
+          <!-- x = 290 -->
+          <line x1="290" y1="52" x2="290" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="290,100 283,84 297,84" fill="#b0b0b0"/>
+          <!-- x = 314 -->
+          <line x1="314" y1="52" x2="314" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="314,100 307,84 321,84" fill="#b0b0b0"/>
+          <!-- x = 338 -->
+          <line x1="338" y1="52" x2="338" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="338,100 331,84 345,84" fill="#b0b0b0"/>
+          <!-- x = 362 -->
+          <line x1="362" y1="52" x2="362" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="362,100 355,84 369,84" fill="#b0b0b0"/>
+          <!-- x = 386 -->
+          <line x1="386" y1="52" x2="386" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="386,100 379,84 393,84" fill="#b0b0b0"/>
+          <!-- x = 410 -->
+          <line x1="410" y1="52" x2="410" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="410,100 403,84 417,84" fill="#b0b0b0"/>
+          <!-- x = 434 -->
+          <line x1="434" y1="52" x2="434" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="434,100 427,84 441,84" fill="#b0b0b0"/>
+          <!-- x = 458 -->
+          <line x1="458" y1="52" x2="458" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="458,100 451,84 465,84" fill="#b0b0b0"/>
+          <!-- x = 482 -->
+          <line x1="482" y1="52" x2="482" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="482,100 475,84 489,84" fill="#b0b0b0"/>
+          <!-- x = 506 -->
+          <line x1="506" y1="52" x2="506" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="506,100 499,84 513,84" fill="#b0b0b0"/>
+          <!-- x = 530 -->
+          <line x1="530" y1="52" x2="530" y2="90" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="530,100 523,84 537,84" fill="#b0b0b0"/>
+          <!-- 荷重ラベル q -->
+          <text x="390" y="42" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">q</text>
+          <!-- A/Bラベル -->
+          <text x="80"  y="135" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
+          <text x="530" y="135" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">B</text>
+          <!-- 寸法線: 全長 l -->
+          <line x1="70"  y1="172" x2="70"  y2="192" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="530" y1="172" x2="530" y2="192" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="70"  y1="182" x2="530" y2="182" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="70,182 83,177 83,187" fill="#b0b0b0"/>
+          <polygon points="530,182 517,177 517,187" fill="#b0b0b0"/>
+          <text x="300" y="210" font-size="24" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l</text>
+          <!-- 寸法線: 荷重区間 l/2 -->
+          <line x1="290" y1="155" x2="290" y2="168" stroke="#b0b0b0" stroke-width="1.2"/>
+          <line x1="530" y1="155" x2="530" y2="168" stroke="#b0b0b0" stroke-width="1.2"/>
+          <line x1="290" y1="162" x2="530" y2="162" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="290,162 300,158 300,166" fill="#b0b0b0"/>
+          <polygon points="530,162 520,158 520,166" fill="#b0b0b0"/>
+          <text x="410" y="152" font-size="18" text-anchor="middle" font-style="italic" fill="#b0b0b0">l/2</text>
+        </svg>
+        <figcaption>図1: 片持ち梁・右半分等分布荷重（自由端側）</figcaption>
+      </figure>
+
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}}$ と固定端モーメント（反偶力）$J_{\mathrm{A}}$</li>
+        <li>自由端のたわみ $\delta_{\max}$</li>
+      </ol>
+
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <p>等分布荷重 $q$ が右半分に作用するので、合力は $ql/2$ となり、その作用点は $x = 3l/4$（右半分区間の中央）です。</p>
+
+      <h3>反力の算出</h3>
+      <p>固定端Aには鉛直反力 $R_{\mathrm{A}}$ と反偶力 $J_{\mathrm{A}}$ が発生します。</p>
+
+      <ul class="step-list">
+        <li>
+          <strong>鉛直方向の力の釣り合い</strong>
+          $$R_{\mathrm{A}} - \frac{ql}{2} = 0 \quad \Rightarrow \quad \boxed{R_{\mathrm{A}} = \frac{ql}{2}}$$
+        </li>
+        <li>
+          <strong>A点まわりのモーメントの釣り合い</strong>
+          <p>反時計回りを正とします。合力 $ql/2$ は $x = 3l/4$ に作用します。</p>
+          $$J_{\mathrm{A}} - \frac{ql}{2} \cdot \frac{3l}{4} = 0 \quad \Rightarrow \quad \boxed{J_{\mathrm{A}} = \frac{3ql^2}{8}}$$
+        </li>
+      </ul>
+
+      <h3>たわみとたわみ角</h3>
+      <p>たわみの微分方程式 $EI\,y'' = M(x)$ を各区間で解きます。境界条件は固定端（$x = 0$）でたわみ $y = 0$、たわみ角 $y' = 0$ です。また、$x = l/2$ での連続条件（たわみと傾きが一致）を用います。</p>
+
+      <h4>区間1（$0 \le x \le l/2$）の解</h4>
+
+      $$EI\,y'' = \frac{3ql^2}{8} - \frac{ql}{2}\,x$$
+
+      <p>1回積分（境界条件 $y'(0)=0$ より積分定数 $=0$）:</p>
+      $$EI\,y' = \frac{3ql^2}{8}\,x - \frac{ql}{4}\,x^2$$
+
+      <p>もう1回積分（境界条件 $y(0)=0$ より積分定数 $=0$）:</p>
+      $$EI\,y = \frac{3ql^2}{16}\,x^2 - \frac{ql}{12}\,x^3$$
+
+      <p>$x = l/2$ での値（区間2の境界条件として使用）:</p>
+      $$EI\,y\!\left(\frac{l}{2}\right) = \frac{3ql^2}{16}\cdot\frac{l^2}{4} - \frac{ql}{12}\cdot\frac{l^3}{8} = \frac{3ql^4}{64} - \frac{ql^4}{96} = \frac{7ql^4}{192}$$
+      $$EI\,y'\!\left(\frac{l}{2}\right) = \frac{3ql^2}{8}\cdot\frac{l}{2} - \frac{ql}{4}\cdot\frac{l^2}{4} = \frac{3ql^3}{16} - \frac{ql^3}{16} = \frac{ql^3}{8}$$
+
+      <h4>区間2（$l/2 \le x \le l$）の解</h4>
+
+      $$EI\,y'' = \frac{q(l-x)^2}{2}$$
+
+      <p>1回積分（積分定数を $D_1$）:</p>
+      $$EI\,y' = -\frac{q(l-x)^3}{6} + D_1$$
+
+      <p>連続条件 $y'(l/2) = ql^3/(8EI)$ を適用:</p>
+      $$\frac{ql^3}{8} = -\frac{q(l/2)^3}{6} + D_1 = -\frac{ql^3}{48} + D_1 \quad \Rightarrow \quad D_1 = \frac{ql^3}{8} + \frac{ql^3}{48} = \frac{7ql^3}{48}$$
+
+      $$EI\,y' = -\frac{q(l-x)^3}{6} + \frac{7ql^3}{48}$$
+
+      <p>もう1回積分（積分定数を $D_2$）:</p>
+      $$EI\,y = \frac{q(l-x)^4}{24} + \frac{7ql^3}{48}\,x + D_2$$
+
+      <p>連続条件 $y(l/2) = 7ql^4/(192EI)$ を適用:</p>
+      $$\frac{7ql^4}{192} = \frac{q(l/2)^4}{24} + \frac{7ql^3}{48}\cdot\frac{l}{2} + D_2 = \frac{ql^4}{384} + \frac{7ql^4}{96} + D_2$$
+      $$D_2 = \frac{7ql^4}{192} - \frac{ql^4}{384} - \frac{7ql^4}{96} = \frac{14ql^4}{384} - \frac{ql^4}{384} - \frac{28ql^4}{384} = -\frac{15ql^4}{384} = -\frac{5ql^4}{128}$$
+
+      $$EI\,y = \frac{q(l-x)^4}{24} + \frac{7ql^3 x}{48} - \frac{5ql^4}{128}$$
+
+      <h4>最大たわみ・最大たわみ角（自由端 $x = l$）</h4>
+
+      <p><strong>最大たわみ:</strong></p>
+      $$\delta_{\max} = y(l) = \frac{1}{EI}\!\left(0 + \frac{7ql^4}{48} - \frac{5ql^4}{128}\right) = \frac{1}{EI}\!\left(\frac{7 \times 128 - 5 \times 48}{48 \times 128}\,ql^4\right) = \frac{1}{EI}\cdot\frac{896 - 240}{6144}\,ql^4$$
+      $$\boxed{\delta_{\max} = \frac{41ql^4}{384EI}}$$
+
+      <p><strong>最大たわみ角:</strong></p>
+      $$\theta_{\max} = y'(l) = \frac{1}{EI}\!\left(0 + \frac{7ql^3}{48}\right) = \boxed{\frac{7ql^3}{48EI}}$$
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>片持ち梁・右半分等分布荷重（自由端側）の解答</h4>
+        $$R_{\mathrm{A}} = \frac{ql}{2}, \qquad J_{\mathrm{A}} = \frac{3ql^2}{8}$$
+        $$\delta_{\max} = \frac{41ql^4}{384EI}, \qquad \theta_{\max} = \frac{7ql^3}{48EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
+      <p>任意の位置 $x$ で梁を切断し、左側の釣り合いを考えます。区間によって式が変わります。</p>
+
+      <p><strong>区間1（$0 \le x < l/2$）:</strong> 荷重なし</p>
+      $$V(x) = R_{\mathrm{A}} = \frac{ql}{2} \quad \text{（一定）}$$
+
+      <p><strong>区間2（$l/2 \le x \le l$）:</strong> 分布荷重が $x = l/2$ から $x$ まで作用</p>
+      $$V(x) = R_{\mathrm{A}} - q\!\left(x - \frac{l}{2}\right) = \frac{ql}{2} - q\!\left(x - \frac{l}{2}\right) = q(l - x)$$
+
+      <p>自由端Bでは $V(l) = 0$（自由端条件を満たす）。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="180" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="130" x2="540" y2="130" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="30"  x2="70"  y2="148" stroke="#666" stroke-width="1.5"/>
+          <!-- 中間垂直補助線 -->
+          <line x1="300" y1="128" x2="300" y2="142" stroke="#666" stroke-width="1" stroke-dasharray="4,3"/>
+          <!-- SFD: 区間1 一定値 ql/2（y=60 → 高さ70px） -->
+          <line x1="70"  y1="60" x2="300" y2="60" stroke="#5cb8ff" stroke-width="2.5"/>
+          <!-- 区間2 線形減少 ql/2→0 -->
+          <line x1="300" y1="60" x2="530" y2="130" stroke="#5cb8ff" stroke-width="2.5"/>
+          <!-- 塗りつぶし -->
+          <polygon points="70,60 300,60 530,130 70,130" fill="#5cb8ff" fill-opacity="0.1"/>
+          <!-- 閉じ線（A側） -->
+          <line x1="70" y1="60" x2="70" y2="130" stroke="#5cb8ff" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <!-- ラベル -->
+          <text x="36" y="65" font-size="17" text-anchor="middle" font-weight="bold" fill="#5cb8ff">ql/2</text>
+          <text x="290" y="20" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">せん断力図（SFD）</text>
+          <text x="40" y="134" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80"  y="160" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="300" y="160" font-size="16" text-anchor="middle" fill="#b0b0b0">l/2</text>
+          <text x="530" y="160" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図2: せん断力図（SFD）</figcaption>
+      </figure>
+
+      <h3>曲げモーメント図（BMD）</h3>
+      <p>任意の位置 $x$ での曲げモーメントも区間ごとに異なります。</p>
+
+      <p><strong>区間1（$0 \le x \le l/2$）:</strong></p>
+      $$M(x) = J_{\mathrm{A}} - R_{\mathrm{A}}\,x = \frac{3ql^2}{8} - \frac{ql}{2}\,x \quad \text{（線形）}$$
+
+      <p><strong>区間2（$l/2 \le x \le l$）:</strong> 左側の分布荷重部分も含めて考えます。</p>
+      $$M(x) = J_{\mathrm{A}} - R_{\mathrm{A}}\,x + q\!\left(x - \frac{l}{2}\right)\!\cdot\!\frac{x - l/2}{2} = \frac{q(l-x)^2}{2} \quad \text{（2次曲線）}$$
+
+      <p>主要点の確認:</p>
+      <ul>
+        <li>$x = 0$（固定端A）: $M = 3ql^2/8$（最大）</li>
+        <li>$x = l/2$（中央）: 区間1より $M = 3ql^2/8 - ql^2/4 = ql^2/8$、区間2より $M = q(l/2)^2/2 = ql^2/8$（一致）</li>
+        <li>$x = l$（自由端B）: $M = 0$</li>
+      </ul>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="180" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="130" x2="540" y2="130" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="30"  x2="70"  y2="148" stroke="#666" stroke-width="1.5"/>
+          <!-- 中間垂直補助線 -->
+          <line x1="300" y1="128" x2="300" y2="142" stroke="#666" stroke-width="1" stroke-dasharray="4,3"/>
+          <!-- BMD: 区間1 線形 -->
+          <line x1="70" y1="30" x2="300" y2="97" stroke="#ff7eb3" stroke-width="2.5"/>
+          <!-- 区間2 放物線 -->
+          <path d="M300,97 Q415,131 530,130" stroke="#ff7eb3" stroke-width="2.5" fill="none"/>
+          <!-- 塗りつぶし -->
+          <polygon points="70,130 70,30 300,97" fill="#ff7eb3" fill-opacity="0.12"/>
+          <path d="M300,97 Q415,131 530,130 L530,130 L300,130 Z" fill="#ff7eb3" fill-opacity="0.12"/>
+          <!-- 閉じ線（A側） -->
+          <line x1="70" y1="30" x2="70" y2="130" stroke="#ff7eb3" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <!-- ラベル -->
+          <text x="32" y="34" font-size="15" text-anchor="middle" font-weight="bold" fill="#ff7eb3">3ql²/8</text>
+          <text x="310" y="90" font-size="14" text-anchor="start" fill="#ff7eb3">ql²/8</text>
+          <text x="290" y="20" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">曲げモーメント図（BMD）</text>
+          <text x="40" y="134" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80"  y="160" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="300" y="160" font-size="16" text-anchor="middle" fill="#b0b0b0">l/2</text>
+          <text x="530" y="160" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図3: 曲げモーメント図（BMD）</figcaption>
+      </figure>
+
+      <!-- 4. ポイント -->
+      <h2 id="points">ポイント</h2>
+      <ul>
+        <li><strong>荷重位置が自由端側ほどたわみが大きい。</strong> 右半分（自由端側）に荷重が作用する本問では $\delta_{\max} = 41ql^4/384EI$ となる。一方、左半分（固定端側）に同じ強度の荷重を与えた場合は $7ql^4/384EI$ であり、自由端側への荷重は約6倍近くも大きなたわみを生む。</li>
+        <li>また全長等分布荷重 $q$ のたわみ $ql^4/(8EI) = 48ql^4/384EI$ と比較すると、右半分だけで $41/48 \approx 85\%$ のたわみが発生することになり、自由端側の荷重がたわみに与える寄与の大きさが分かる。</li>
+        <li>区間が分かれる問題では、<strong>$x = l/2$ での連続条件</strong>（たわみの値・傾きが一致）を使って積分定数を決定するのがポイント。</li>
+        <li>区間2のBMD $M = q(l-x)^2/2$ は自由端から測った距離 $(l-x)$ で整理すると非常にシンプルな形になる。自由端側から解析するアプローチも有効。</li>
+        <li>せん断力が区間1で一定（$ql/2$）、区間2で線形減少（$q(l-x)$）になるのは、荷重が存在しない区間では $V$ が一定、分布荷重がある区間では $dV/dx = -q$ の関係による。</li>
+      </ul>
+
+      <!-- 関連コンテンツ -->
+      <div class="content-section">
+        <h2>関連する問題パターン</h2>
+        <div class="related-links">
+          <a href="../cantilever-distributed-half-left/">
+            <strong>片持ち梁・等分布荷重（左半分・固定端側）</strong>
+            <span>固定端側の半分に等分布荷重が作用する場合</span>
+          </a>
+          <a href="../cantilever-distributed-load/">
+            <strong>片持ち梁・等分布荷重（全長）</strong>
+            <span>全長にわたって等分布荷重が作用する場合</span>
+          </a>
+          <a href="../cantilever-point-load/">
+            <strong>片持ち梁・集中荷重（自由端）</strong>
+            <span>自由端に集中荷重が作用する場合</span>
+          </a>
+          <a href="../cantilever-triangular-load-reverse/">
+            <strong>片持ち梁・三角形分布荷重（逆三角形）</strong>
+            <span>固定端ゼロ・自由端最大の三角形荷重が作用する場合</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

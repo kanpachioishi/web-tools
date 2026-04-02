@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>両端固定梁の山形分布荷重 - たわみ・曲げモーメント・せん断力の求め方 | SimpleToolKit</title>
+  <meta name="description" content="両端固定梁に山形（三角形）分布荷重が作用する場合の反力・固定端モーメント・せん断力図・曲げモーメント図・たわみを対称性を利用してステップごとに解説。公式一覧と図解付き。">
+  <meta property="og:title" content="両端固定梁の山形分布荷重 - 解法と公式まとめ">
+  <meta property="og:description" content="両端固定梁に中央q・両端0の山形分布荷重が作用する場合の反力・SFD・BMD・たわみを解説。">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://simpletoolkit.net/beam/fixed-beam-triangular-load/">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <link rel="stylesheet" href="../../common/style.css">
+
+  <style>
+    .beam-figure { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 20px 0; text-align: center; }
+    .beam-figure svg { max-width: 100%; height: auto; }
+    .beam-figure figcaption { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
+    .formula-box { background: var(--surface); border: 1px solid var(--primary); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; }
+    .formula-box h4 { font-size: 0.95rem; color: var(--primary); margin-bottom: 12px; }
+    .formula-box .katex-display { margin: 8px 0; }
+    .step-list { counter-reset: step; list-style: none; padding-left: 0; }
+    .step-list li { counter-increment: step; padding: 12px 0 12px 48px; position: relative; border-bottom: 1px solid var(--border); }
+    .step-list li:last-child { border-bottom: none; }
+    .step-list li::before { content: counter(step); position: absolute; left: 0; top: 12px; width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+    .related-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 16px; }
+    .related-links a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; text-decoration: none; color: var(--text); transition: box-shadow 0.2s, transform 0.2s; }
+    .related-links a:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .related-links a span { font-size: 0.82rem; color: var(--text-muted); }
+    .article-body a { color: #6cb4ff; }
+    .article-body a:hover { color: #9dd0ff; }
+  </style>
+
+  <!-- JSON-LD 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "両端固定梁の山形分布荷重 - たわみ・曲げモーメント・せん断力の求め方",
+    "description": "両端固定梁に山形（三角形）分布荷重が作用する場合の反力・せん断力図・曲げモーメント図・たわみの求め方をステップごとに詳しく解説。",
+    "author": { "@type": "Organization", "name": "SimpleToolKit" },
+    "publisher": { "@type": "Organization", "name": "SimpleToolKit" },
+    "mainEntityOfPage": "https://simpletoolkit.net/beam/fixed-beam-triangular-load/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+
+  <main>
+    <script src="../../common/breadcrumb.js"></script>
+
+    <p style="margin-bottom: 8px;"><a href="../index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;" class="back-to-list">&larr; 梁の公式集に戻る</a></p>
+
+    <h1>両端固定梁の山形分布荷重</h1>
+    <p class="tool-description">両端固定梁に中央で最大 $q$、両端で $0$ となる山形（三角形）分布荷重が作用する場合の反力・反偶力・たわみを求めます。</p>
+
+    <!-- 目次 -->
+    <div class="article-toc">
+      <p>目次</p>
+      <ol>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
+        <li><a href="#points">ポイント</a></li>
+      </ol>
+    </div>
+
+    <div class="article-body">
+
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の両端固定梁において、左端Aと右端Bがともに固定端です。荷重強度が中央で最大 $q$、両端で $0$ となる山形（三角形）分布荷重が作用しています。荷重分布は以下の通りです。</p>
+
+      $$w(x) = \begin{cases} \dfrac{2qx}{l} & (0 \le x \le l/2) \\[6pt] \dfrac{2q(l - x)}{l} & (l/2 \le x \le l) \end{cases}$$
+
+      <p>梁の曲げ剛性は $EI$（一様）とします。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" width="600" height="280" font-family="'Times New Roman', serif">
+          <defs>
+            <pattern id="hatch-left" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="8" x2="8" y2="0" stroke="#7777aa" stroke-width="1"/>
+            </pattern>
+            <pattern id="hatch-right" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#7777aa" stroke-width="1"/>
+            </pattern>
+            <pattern id="beam-hatch" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
+              <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="600" height="280" fill="#1a1a2e" rx="8"/>
+          <!-- 左壁 -->
+          <rect x="40" y="40" width="30" height="200" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+          <rect x="40" y="40" width="30" height="200" fill="url(#hatch-left)"/>
+          <!-- 右壁 -->
+          <rect x="530" y="40" width="30" height="200" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+          <rect x="530" y="40" width="30" height="200" fill="url(#hatch-right)"/>
+          <!-- 梁 -->
+          <rect x="70" y="130" width="460" height="16" fill="url(#beam-hatch)" stroke="#999" stroke-width="1.5"/>
+          <!-- 山形分布荷重の輪郭線 -->
+          <line x1="70" y1="125" x2="300" y2="65" stroke="#b0b0b0" stroke-width="2"/>
+          <line x1="300" y1="65" x2="530" y2="125" stroke="#b0b0b0" stroke-width="2"/>
+          <!-- 矢印群（左半分: 高さが増加） -->
+          <line x1="90" y1="121" x2="90" y2="126" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="90,130 84,124 96,124" fill="#b0b0b0"/>
+
+          <line x1="130" y1="111" x2="130" y2="123" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="130,130 124,120 136,120" fill="#b0b0b0"/>
+
+          <line x1="170" y1="101" x2="170" y2="121" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="170,130 164,118 176,118" fill="#b0b0b0"/>
+
+          <line x1="210" y1="91" x2="210" y2="121" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="210,130 204,118 216,118" fill="#b0b0b0"/>
+
+          <line x1="250" y1="78" x2="250" y2="121" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="250,130 244,118 256,118" fill="#b0b0b0"/>
+
+          <line x1="300" y1="65" x2="300" y2="121" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="300,130 294,118 306,118" fill="#b0b0b0"/>
+
+          <!-- 矢印群（右半分: 高さが減少） -->
+          <line x1="350" y1="78" x2="350" y2="121" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="350,130 344,118 356,118" fill="#b0b0b0"/>
+
+          <line x1="390" y1="91" x2="390" y2="121" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="390,130 384,118 396,118" fill="#b0b0b0"/>
+
+          <line x1="430" y1="101" x2="430" y2="121" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="430,130 424,118 436,118" fill="#b0b0b0"/>
+
+          <line x1="470" y1="111" x2="470" y2="123" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="470,130 464,120 476,120" fill="#b0b0b0"/>
+
+          <line x1="510" y1="121" x2="510" y2="126" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="510,130 504,124 516,124" fill="#b0b0b0"/>
+
+          <!-- qラベル -->
+          <text x="300" y="55" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">q</text>
+          <!-- ラベル -->
+          <text x="80" y="170" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
+          <text x="520" y="170" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">B</text>
+          <!-- 寸法線 -->
+          <line x1="70" y1="200" x2="70" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="530" y1="200" x2="530" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="70" y1="210" x2="530" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="70,210 83,205 83,215" fill="#b0b0b0"/>
+          <polygon points="530,210 517,205 517,215" fill="#b0b0b0"/>
+          <text x="300" y="237" font-size="24" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l</text>
+        </svg>
+        <figcaption>図1: 両端固定梁・山形分布荷重</figcaption>
+      </figure>
+
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント（反偶力）$J_{\mathrm{A}},\, J_{\mathrm{B}}$</li>
+        <li>中央（$x = l/2$）のたわみ $\delta_{\max}$</li>
+      </ol>
+
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <p>荷重の合力は:</p>
+      $$W = \frac{1}{2} \times l \times q = \frac{ql}{2}$$
+
+      <h3>解法の方針</h3>
+      <p>両端固定梁は2次不静定構造ですが、<strong>対称性を使って片持ち梁の問題に帰着</strong>させると簡潔に解けます。</p>
+      <ul class="step-list">
+        <li>
+          <strong>対称性による中央切断</strong>
+          <p>荷重も構造も左右対称なので、中央断面では<strong>せん断力 $V = 0$</strong>、<strong>たわみ角 $\theta = 0$</strong> です。</p>
+        </li>
+        <li>
+          <strong>片持ち梁への帰着</strong>
+          <p>中央で切断すると、左半分は<strong>長さ $l/2$ の片持ち梁</strong>（A端固定、切断面が自由端）になります。この自由端には:</p>
+          <ul style="margin-top: 6px;">
+            <li>三角形分布荷重 $w(x) = 2qx/l$（固定端で $0$、自由端で $q$）</li>
+            <li>未知の外力モーメント $M_0$（切断面の内力）</li>
+          </ul>
+          <p style="margin-top: 6px;">が作用しています。せん断力は対称性からゼロです。</p>
+
+          <figure class="beam-figure">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" width="600" height="250" font-family="'Times New Roman', serif">
+              <defs>
+                <pattern id="hatch-eq" patternUnits="userSpaceOnUse" width="8" height="8">
+                  <line x1="0" y1="8" x2="8" y2="0" stroke="#7777aa" stroke-width="1"/>
+                </pattern>
+                <pattern id="beam-hatch-eq" patternUnits="userSpaceOnUse" width="8" height="8">
+                  <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
+                  <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+                </pattern>
+              </defs>
+              <rect x="0" y="0" width="600" height="250" fill="#1a1a2e" rx="8"/>
+              <!-- 壁（固定端A） -->
+              <rect x="40" y="30" width="30" height="170" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+              <rect x="40" y="30" width="30" height="170" fill="url(#hatch-eq)"/>
+              <!-- 梁（長さ l/2） -->
+              <rect x="70" y="120" width="400" height="16" fill="url(#beam-hatch-eq)" stroke="#999" stroke-width="1.5"/>
+              <!-- 三角形分布荷重（0→q）: 左端y=116, 右端y=60 -->
+              <line x1="70" y1="116" x2="470" y2="60" stroke="#b0b0b0" stroke-width="2"/>
+              <!-- 矢印群（根元=斜線上, 先端=梁上面y=120） -->
+              <!-- x=110: 斜線y=110 →ほぼ梁に接するので矢頭のみ -->
+              <polygon points="110,120 105,114 115,114" fill="#b0b0b0"/>
+
+              <!-- x=170: 斜線y=102 -->
+              <line x1="170" y1="102" x2="170" y2="112" stroke="#b0b0b0" stroke-width="1.2"/>
+              <polygon points="170,120 165,112 175,112" fill="#b0b0b0"/>
+
+              <!-- x=230: 斜線y=94 -->
+              <line x1="230" y1="94" x2="230" y2="112" stroke="#b0b0b0" stroke-width="1.2"/>
+              <polygon points="230,120 225,112 235,112" fill="#b0b0b0"/>
+
+              <!-- x=290: 斜線y=85 -->
+              <line x1="290" y1="85" x2="290" y2="112" stroke="#b0b0b0" stroke-width="1.2"/>
+              <polygon points="290,120 285,112 295,112" fill="#b0b0b0"/>
+
+              <!-- x=350: 斜線y=77 -->
+              <line x1="350" y1="77" x2="350" y2="112" stroke="#b0b0b0" stroke-width="1.2"/>
+              <polygon points="350,120 345,112 355,112" fill="#b0b0b0"/>
+
+              <!-- x=410: 斜線y=68 -->
+              <line x1="410" y1="68" x2="410" y2="112" stroke="#b0b0b0" stroke-width="1.2"/>
+              <polygon points="410,120 405,112 415,112" fill="#b0b0b0"/>
+
+              <!-- x=470: 斜線y=60 -->
+              <line x1="470" y1="60" x2="470" y2="112" stroke="#b0b0b0" stroke-width="1.2"/>
+              <polygon points="470,120 465,112 475,112" fill="#b0b0b0"/>
+
+              <!-- qラベル -->
+              <text x="470" y="50" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">q</text>
+              <!-- 外力モーメント M₀（反時計回り、中心=梁右端x=470,y=128） -->
+              <path d="M 470,150 A 22,22 0 1,0 459,109" fill="none" stroke="#ff9944" stroke-width="2.5"/>
+              <polygon points="449,111 458,101 463,115" fill="#ff9944"/>
+              <text x="508" y="133" font-size="20" text-anchor="middle" font-style="italic" font-weight="bold" fill="#ff9944">M₀</text>
+              <!-- ラベル A -->
+              <text x="80" y="158" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
+              <!-- 寸法線 -->
+              <line x1="70" y1="190" x2="70" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+              <line x1="470" y1="190" x2="470" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+              <line x1="70" y1="200" x2="470" y2="200" stroke="#b0b0b0" stroke-width="1.5"/>
+              <polygon points="70,200 83,195 83,205" fill="#b0b0b0"/>
+              <polygon points="470,200 457,195 457,205" fill="#b0b0b0"/>
+              <text x="270" y="227" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l/2</text>
+            </svg>
+            <figcaption>図2: 等価片持ち梁（中央で切断した左半分）</figcaption>
+          </figure>
+        </li>
+        <li>
+          <strong>片持ち梁の既知公式を適用</strong>
+          <p>自由端のたわみ角 $= 0$ という条件から $M_0$ を決定します。片持ち梁の結果（<a href="../cantilever-triangular-load-reverse/index.html">三角形分布荷重</a>・<a href="../cantilever-moment-load/index.html">モーメント荷重</a>）をそのまま使えます。</p>
+        </li>
+      </ul>
+
+      <h3>反力の算出</h3>
+
+      <h4>中央モーメント $M_0$ の決定</h4>
+      <p>左半分を長さ $L = l/2$、荷重の最大値 $q_0 = q$ の片持ち梁とみなします。自由端のたわみ角を、三角形分布荷重によるものとモーメント $M_0$ によるもので重ね合わせます。</p>
+
+      <p><strong>三角形分布荷重によるたわみ角</strong>（<a href="../cantilever-triangular-load-reverse/index.html">片持ち梁・三角形分布荷重（0→q）</a>の公式 $\theta = q_0 L^3 / (8EI)$ より）:</p>
+      $$\theta_{\text{荷重}} = \frac{q \left(\frac{l}{2}\right)^3}{8EI} = \frac{ql^3}{64EI}$$
+
+      <p><strong>外力モーメント $M_0$ によるたわみ角</strong>（<a href="../cantilever-moment-load/index.html">片持ち梁・モーメント荷重（自由端）</a>の公式 $\theta = M_0 L / (EI)$ より）:</p>
+      $$\theta_{M_0} = \frac{M_0 \cdot \frac{l}{2}}{EI} = \frac{M_0 l}{2EI}$$
+
+      <p>自由端のたわみ角 $= 0$ の条件 $\theta_{\text{荷重}} = \theta_{M_0}$ から:</p>
+      $$\frac{ql^3}{64EI} = \frac{M_0 l}{2EI}$$
+
+      $$\boxed{M_0 = \frac{ql^2}{32}} \quad \text{（中央のサギングモーメント）}$$
+
+      <h4>鉛直反力</h4>
+      <p>対称性と鉛直方向の釣り合いから:</p>
+      $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{ql}{4}$$
+
+      <h4>固定端モーメント</h4>
+      <p>左半分の片持ち梁について、A点まわりのモーメントの釣り合いを取ります。三角形分布荷重（合力 $ql/4$、作用点 $x = l/3$）のモーメントは:</p>
+      $$\frac{ql}{4} \times \frac{l}{3} = \frac{ql^2}{12}$$
+
+      <p>これと $M_0$ の釣り合いから:</p>
+      $$J_{\mathrm{A}} = \frac{ql^2}{12} - M_0 = \frac{ql^2}{12} - \frac{ql^2}{32} = \frac{8ql^2 - 3ql^2}{96}$$
+
+      $$\boxed{J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{5ql^2}{96}}$$
+
+      <h3>たわみ</h3>
+      <p>最大たわみ（中央 $x = l/2$）も片持ち梁の結果の重ね合わせで求まります。</p>
+
+      <p><strong>三角形分布荷重による自由端たわみ</strong>（<a href="../cantilever-triangular-load-reverse/index.html">公式</a> $\frac{EI\delta}{q_0 L^4} = \frac{11}{120}$ より）:</p>
+      $$\frac{EI}{ql^4}\,\delta_{\text{荷重}} = \frac{11}{120} \cdot \frac{1}{2^4} = \frac{11}{1920}$$
+
+      <p><strong>外力モーメント $M_0 = ql^2/32$ による自由端たわみ</strong>（<a href="../cantilever-moment-load/index.html">公式</a> $\frac{EI\delta}{M_0 L^2} = \frac{1}{2}$ より）:</p>
+      $$\frac{EI}{ql^4}\,\delta_{M_0} = \frac{1}{2} \cdot \frac{M_0}{ql^2} \cdot \frac{1}{2^2} = \frac{1}{2} \cdot \frac{1}{32} \cdot \frac{1}{4} = \frac{1}{256}$$
+
+      <p>荷重は梁を下に押し、$M_0$ は上に押し戻すので:</p>
+      $$\frac{EI}{ql^4}\,\delta_{\max} = \frac{11}{1920} - \frac{1}{256} = \frac{22 - 15}{3840}$$
+
+      $$\boxed{\delta_{\max} = \frac{7ql^4}{3840EI}}$$
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>両端固定梁・山形分布荷重の解答</h4>
+        $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{ql}{4}$$
+        $$J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{5ql^2}{96}$$
+        $$\delta_{\max} = \frac{7ql^4}{3840EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
+
+      <p>左半分（$0 \le x \le l/2$）について、反力から荷重の累積を引きます:</p>
+      $$V(x) = R_{\mathrm{A}} - \int_0^x \frac{2qt}{l}\,dt = \frac{ql}{4} - \frac{qx^2}{l}$$
+
+      <ul>
+        <li>$x = 0$: $V(0) = ql/4$</li>
+        <li>$x = l/2$: $V(l/2) = 0$（対称性と一致）</li>
+      </ul>
+
+      <p>反対称性 $V(x) = -V(l - x)$ より、SFDは中央でゼロ、放物線状です。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="180" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="90" x2="530" y2="90" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="20" x2="70" y2="160" stroke="#666" stroke-width="1.5"/>
+          <!-- SFD: 放物線（左半分: 正、右半分: 負） -->
+          <path d="M 70,40 Q 220,40 300,90" fill="none" stroke="#5cb8ff" stroke-width="2.5"/>
+          <path d="M 300,90 Q 380,140 530,140" fill="none" stroke="#5cb8ff" stroke-width="2.5"/>
+          <!-- 塗りつぶし -->
+          <path d="M 70,40 Q 220,40 300,90 L 70,90 Z" fill="#5cb8ff" fill-opacity="0.1"/>
+          <path d="M 300,90 Q 380,140 530,140 L 530,90 Z" fill="#5cb8ff" fill-opacity="0.1"/>
+          <!-- ラベル -->
+          <text x="30" y="45" font-size="15" text-anchor="middle" font-weight="bold" fill="#5cb8ff">ql/4</text>
+          <text x="570" y="145" font-size="15" text-anchor="middle" font-weight="bold" fill="#5cb8ff">−ql/4</text>
+          <text x="300" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">せん断力図（SFD）</text>
+          <text x="55" y="95" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80" y="170" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="530" y="170" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図3: せん断力図（放物線状）</figcaption>
+      </figure>
+
+      <h3>曲げモーメント図（BMD）</h3>
+
+      <p>左半分（$0 \le x \le l/2$）:</p>
+      $$M(x) = -\frac{5ql^2}{96} + \frac{qlx}{4} - \frac{qx^3}{3l}$$
+
+      <ul>
+        <li>$x = 0$: $M(0) = -\dfrac{5ql^2}{96}$（ホギング）</li>
+        <li>$x = l/2$: $M(l/2) = -\dfrac{5ql^2}{96} + \dfrac{ql^2}{8} - \dfrac{ql^2}{24} = \dfrac{ql^2}{32}$（サギング最大）</li>
+      </ul>
+
+      <p>対称性より $M(l) = M(0) = -\dfrac{5ql^2}{96}$ です。変曲点（$M = 0$）は $x \approx 0.22l$ および $x \approx 0.78l$ の位置にあります。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="200" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="100" x2="530" y2="100" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="20" x2="70" y2="180" stroke="#666" stroke-width="1.5"/>
+          <!-- BMD: 3次曲線（固定端で負、中央で正） -->
+          <polyline points="70,55 100,68 130,82 150,93 170,100 210,115 250,130 300,140 350,130 390,115 430,100 450,93 470,82 500,68 530,55" fill="none" stroke="#ff7eb3" stroke-width="2.5"/>
+          <!-- 塗り分け: 左端ホギング -->
+          <polygon points="70,55 100,68 130,82 150,93 170,100 70,100" fill="#ff7eb3" fill-opacity="0.1"/>
+          <!-- 中央サギング -->
+          <polygon points="170,100 210,115 250,130 300,140 350,130 390,115 430,100" fill="#ff7eb3" fill-opacity="0.1"/>
+          <!-- 右端ホギング -->
+          <polygon points="430,100 450,93 470,82 500,68 530,55 530,100" fill="#ff7eb3" fill-opacity="0.1"/>
+          <!-- ラベル -->
+          <text x="8" y="50" font-size="11" text-anchor="middle" font-weight="bold" fill="#ff7eb3">−5ql²/96</text>
+          <text x="300" y="172" font-size="13" text-anchor="middle" font-weight="bold" fill="#ff7eb3">+ql²/32</text>
+          <text x="300" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">曲げモーメント図（BMD）</text>
+          <text x="55" y="105" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="530" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図4: 曲げモーメント図</figcaption>
+      </figure>
+
+      <!-- 4. ポイント -->
+      <h2 id="points">ポイント</h2>
+      <ul>
+        <li><strong>対称切断 → 片持ち梁</strong>が最大のポイント。2次不静定を解いている感覚なしに答えが出ます。</li>
+        <li>使った片持ち梁の公式はたった2つ: <strong>三角形分布荷重の $\theta, \delta$</strong> と <strong>自由端モーメントの $\theta, \delta$</strong> です。</li>
+        <li>中央モーメント $M_0 = ql^2/32$ が先に求まり、固定端モーメント $J_{\mathrm{A}} = 5ql^2/96$ はA点のモーメント釣り合いから出るだけです。</li>
+        <li>等分布荷重の場合との比較: 固定端モーメントは約6割（$5/96 \approx 0.052$ vs $1/12 \approx 0.083$）、最大たわみは約7割（$7/3840 \approx 0.00182$ vs $1/384 \approx 0.00260$）。</li>
+      </ul>
+
+      <!-- 関連コンテンツ -->
+      <div class="content-section">
+        <h2>関連する問題パターン</h2>
+        <div class="related-links">
+          <a href="../fixed-beam-distributed/index.html">
+            <strong>両端固定梁・等分布荷重</strong>
+            <span>全長に等分布荷重が作用する場合</span>
+          </a>
+          <a href="../fixed-beam-point-load/index.html">
+            <strong>両端固定梁・集中荷重（中央）</strong>
+            <span>中央に集中荷重が作用する場合</span>
+          </a>
+          <a href="../fixed-beam-distributed-half/index.html">
+            <strong>両端固定梁・等分布荷重（左半分）</strong>
+            <span>左半分のみに等分布荷重が作用する場合</span>
+          </a>
+          <a href="../cantilever-triangular-load-reverse/index.html">
+            <strong>片持ち梁・三角形分布荷重（0→q）</strong>
+            <span>本ページの解法で使用した片持ち梁の公式</span>
+          </a>
+          <a href="../cantilever-moment-load/index.html">
+            <strong>片持ち梁・モーメント荷重（自由端）</strong>
+            <span>本ページの解法で使用した片持ち梁の公式</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

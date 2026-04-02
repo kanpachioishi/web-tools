@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>両端固定梁の偏心集中荷重 - たわみ・曲げモーメント・せん断力の求め方 | SimpleToolKit</title>
+  <meta name="description" content="両端固定梁の任意の位置に集中荷重が作用する場合の反力・固定端モーメント・せん断力図・曲げモーメント図・たわみを重ね合わせ法でステップごとに解説。公式一覧と図解付き。">
+  <meta property="og:title" content="両端固定梁の偏心集中荷重 - 解法と公式まとめ">
+  <meta property="og:description" content="両端固定梁の偏心位置に集中荷重Pが作用する場合の反力・SFD・BMD・たわみを重ね合わせ法で解説。">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://simpletoolkit.net/beam/fixed-beam-eccentric-load/">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <link rel="stylesheet" href="../../common/style.css">
+
+  <style>
+    .beam-figure { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 20px 0; text-align: center; }
+    .beam-figure svg { max-width: 100%; height: auto; }
+    .beam-figure figcaption { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
+    .formula-box { background: var(--surface); border: 1px solid var(--primary); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; }
+    .formula-box h4 { font-size: 0.95rem; color: var(--primary); margin-bottom: 12px; }
+    .formula-box .katex-display { margin: 8px 0; }
+    .step-list { counter-reset: step; list-style: none; padding-left: 0; }
+    .step-list li { counter-increment: step; padding: 12px 0 12px 48px; position: relative; border-bottom: 1px solid var(--border); }
+    .step-list li:last-child { border-bottom: none; }
+    .step-list li::before { content: counter(step); position: absolute; left: 0; top: 12px; width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+    .related-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 16px; }
+    .related-links a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; text-decoration: none; color: var(--text); transition: box-shadow 0.2s, transform 0.2s; }
+    .related-links a:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .related-links a span { font-size: 0.82rem; color: var(--text-muted); }
+  </style>
+
+  <!-- JSON-LD 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "両端固定梁の偏心集中荷重 - たわみ・曲げモーメント・せん断力の求め方",
+    "description": "両端固定梁の任意の位置に集中荷重が作用する場合の反力・せん断力図・曲げモーメント図・たわみの求め方をステップごとに詳しく解説。",
+    "author": { "@type": "Organization", "name": "SimpleToolKit" },
+    "publisher": { "@type": "Organization", "name": "SimpleToolKit" },
+    "mainEntityOfPage": "https://simpletoolkit.net/beam/fixed-beam-eccentric-load/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+
+  <main>
+    <script src="../../common/breadcrumb.js"></script>
+
+    <p style="margin-bottom: 8px;"><a href="../index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;" class="back-to-list">&larr; 梁の公式集に戻る</a></p>
+
+    <h1>両端固定梁の偏心集中荷重</h1>
+    <p class="tool-description">両端固定梁のA端から距離 $al$ の点Cに集中荷重 $P$ が作用する場合の反力・固定端モーメント・せん断力・曲げモーメント・たわみを求めます。$a + b = 1$ とします。</p>
+
+    <!-- 目次 -->
+    <div class="article-toc">
+      <p>目次</p>
+      <ol>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
+        <li><a href="#points">ポイント</a></li>
+      </ol>
+    </div>
+
+    <div class="article-body">
+
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の両端固定梁において、左端Aと右端Bがともに固定端です。A端から距離 $al$ の点Cに下向きの集中荷重 $P$ が作用しています。$a$, $b$ は無次元の比率で $a + b = 1$ とし、梁の曲げ剛性は $EI$（一様）とします。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300" font-family="'Times New Roman', serif">
+          <defs>
+            <pattern id="hatch-left" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="8" x2="8" y2="0" stroke="#7777aa" stroke-width="1"/>
+            </pattern>
+            <pattern id="hatch-right" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#7777aa" stroke-width="1"/>
+            </pattern>
+            <pattern id="beam-hatch" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
+              <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="600" height="300" fill="#1a1a2e" rx="8"/>
+          <!-- 左壁 -->
+          <rect x="40" y="40" width="30" height="200" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+          <rect x="40" y="40" width="30" height="200" fill="url(#hatch-left)"/>
+          <!-- 右壁 -->
+          <rect x="530" y="40" width="30" height="200" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+          <rect x="530" y="40" width="30" height="200" fill="url(#hatch-right)"/>
+          <!-- 梁 -->
+          <rect x="70" y="130" width="460" height="16" fill="url(#beam-hatch)" stroke="#999" stroke-width="1.5"/>
+          <!-- 荷重P（偏心位置 a=0.35l あたり） -->
+          <rect x="228" y="58" width="6" height="58" fill="#b0b0b0"/>
+          <polygon points="231,130 215,108 247,108" fill="#b0b0b0"/>
+          <text x="231" y="48" font-size="26" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">P</text>
+          <text x="231" y="170" font-size="20" text-anchor="middle" font-weight="bold" fill="#b0b0b0">C</text>
+          <!-- ラベル -->
+          <text x="80" y="170" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
+          <text x="520" y="170" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">B</text>
+          <!-- 寸法線: a -->
+          <line x1="70" y1="200" x2="70" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="231" y1="200" x2="231" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="70" y1="210" x2="231" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="70,210 83,205 83,215" fill="#b0b0b0"/>
+          <polygon points="231,210 218,205 218,215" fill="#b0b0b0"/>
+          <text x="150" y="237" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">al</text>
+          <!-- 寸法線: b -->
+          <line x1="530" y1="200" x2="530" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="231" y1="210" x2="530" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="530,210 517,205 517,215" fill="#b0b0b0"/>
+          <text x="380" y="237" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">bl</text>
+          <!-- 全長 l -->
+          <line x1="70" y1="250" x2="70" y2="270" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="530" y1="250" x2="530" y2="270" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="70" y1="260" x2="530" y2="260" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="70,260 83,255 83,265" fill="#b0b0b0"/>
+          <polygon points="530,260 517,255 517,265" fill="#b0b0b0"/>
+          <text x="300" y="287" font-size="24" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l</text>
+        </svg>
+        <figcaption>図1: 両端固定梁・偏心集中荷重</figcaption>
+      </figure>
+
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント（反偶力）$J_{\mathrm{A}},\, J_{\mathrm{B}}$</li>
+        <li>荷重点C（$x = al$）のたわみ $\delta_{\mathrm{C}}$</li>
+      </ol>
+
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>解法の方針</h3>
+      <p>両端固定梁は<strong>2次不静定構造</strong>です。右端Bの固定を外して片持ち梁（左端A固定）とし、自由端Bに上向き反力 $R_{\mathrm{B}}$ と時計回りの反偶力 $J_{\mathrm{B}}$ を冗長力として作用させます。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" width="600" height="250" font-family="'Times New Roman', serif">
+          <defs>
+            <pattern id="hatch-left-eq" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="8" x2="8" y2="0" stroke="#7777aa" stroke-width="1"/>
+            </pattern>
+            <pattern id="beam-hatch-eq" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
+              <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="600" height="250" fill="#1a1a2e" rx="8"/>
+          <!-- 左壁（固定端A） -->
+          <rect x="40" y="30" width="30" height="200" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+          <rect x="40" y="30" width="30" height="200" fill="url(#hatch-left-eq)"/>
+          <!-- 梁（右端は自由端） -->
+          <rect x="70" y="120" width="460" height="16" fill="url(#beam-hatch-eq)" stroke="#999" stroke-width="1.5"/>
+          <!-- 荷重P（偏心位置） -->
+          <rect x="228" y="48" width="6" height="58" fill="#b0b0b0"/>
+          <polygon points="231,120 215,98 247,98" fill="#b0b0b0"/>
+          <text x="231" y="38" font-size="26" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">P</text>
+          <text x="231" y="160" font-size="20" text-anchor="middle" font-weight="bold" fill="#b0b0b0">C</text>
+          <!-- ラベル -->
+          <text x="80" y="160" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
+          <text x="530" y="160" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">B</text>
+          <!-- R_B: 上向き反力（根元=梁右下端、Pと同じ長さ） -->
+          <rect x="527" y="78" width="6" height="58" fill="#66bb88"/>
+          <polygon points="530,64 516,86 544,86" fill="#66bb88"/>
+          <text x="530" y="54" font-size="20" text-anchor="middle" font-style="italic" font-weight="bold" fill="#66bb88">R<tspan font-size="14" dy="4">B</tspan></text>
+          <!-- J_B: 時計回りモーメント荷重（梁に作用） -->
+          <path d="M 515,154 A 30,30 0 1,1 555,111" fill="none" stroke="#66bb88" stroke-width="2.5"/>
+          <polygon points="561,119 559,108 551,114" fill="#66bb88"/>
+          <text x="568" y="108" font-size="20" text-anchor="start" font-style="italic" font-weight="bold" fill="#66bb88">J<tspan font-size="14" dy="4">B</tspan></text>
+        </svg>
+        <figcaption>図2: 等価片持ち梁モデル — B端の固定を外し、反力 R<sub>B</sub> と反偶力 J<sub>B</sub> を作用させる</figcaption>
+      </figure>
+
+      <ul class="step-list">
+        <li><strong>基本系の設定</strong>: 右端Bの固定を外し、片持ち梁とします。自由端Bに上向き反力 $R_{\mathrm{B}}$ と時計回りの反偶力 $J_{\mathrm{B}}$ を作用させます。</li>
+        <li><strong>適合条件</strong>: B端でのたわみとたわみ角がゼロ（元の固定端条件）：$\delta_{\mathrm{B}} = 0$, $\theta_{\mathrm{B}} = 0$。</li>
+        <li><strong>重ね合わせ</strong>: 荷重 $P$、反力 $R_{\mathrm{B}}$、反偶力 $J_{\mathrm{B}}$ それぞれによるB端でのたわみ・たわみ角を重ね合わせ、連立方程式を解きます。</li>
+      </ul>
+      <p>偏心荷重では $a \neq b$ のため、対称性は使えません。連立方程式を解いて $R_{\mathrm{B}}$, $J_{\mathrm{B}}$ を求めます。</p>
+
+      <h3>反力の算出</h3>
+
+      <h4>片持ち梁の公式（B端でのたわみ・たわみ角）</h4>
+      <p>片持ち梁（A端固定）に対して、各荷重がB端に与えるたわみ $\delta_{\mathrm{B}}$（下向き正）とたわみ角 $\theta_{\mathrm{B}}$（時計回り正）は:</p>
+
+      <p><strong>① 荷重 $P$（$x = al$ に下向き）:</strong></p>
+      $$\delta_{\mathrm{B}1} = \frac{a^2(3-a)}{6} \cdot \frac{Pl^3}{EI}, \qquad \theta_{\mathrm{B}1} = \frac{a^2}{2} \cdot \frac{Pl^2}{EI}$$
+
+      <p><strong>② 反力 $R_{\mathrm{B}}$（$x = l$ に上向き）:</strong></p>
+      $$\delta_{\mathrm{B}2} = -\frac{1}{3} \cdot \frac{R_{\mathrm{B}} l^3}{EI}, \qquad \theta_{\mathrm{B}2} = -\frac{1}{2} \cdot \frac{R_{\mathrm{B}} l^2}{EI}$$
+
+      <p><strong>③ 反偶力 $J_{\mathrm{B}}$（$x = l$ に時計回り）:</strong></p>
+      $$\delta_{\mathrm{B}3} = \frac{1}{2} \cdot \frac{J_{\mathrm{B}} l^2}{EI}, \qquad \theta_{\mathrm{B}3} = \frac{J_{\mathrm{B}} l}{EI}$$
+
+      <h4>適合条件（連立方程式）</h4>
+      <p>B端は元の両端固定梁では固定端なので、たわみ・たわみ角ともにゼロ:</p>
+
+      $$\delta_{\mathrm{B}} = \delta_{\mathrm{B}1} + \delta_{\mathrm{B}2} + \delta_{\mathrm{B}3} = 0$$
+      $$\theta_{\mathrm{B}} = \theta_{\mathrm{B}1} + \theta_{\mathrm{B}2} + \theta_{\mathrm{B}3} = 0$$
+
+      <p>代入して整理すると:</p>
+
+      $$\frac{a^2(3-a)}{6} \cdot Pl^3 - \frac{1}{3} R_{\mathrm{B}} l^3 + \frac{1}{2} J_{\mathrm{B}} l^2 = 0 \quad \cdots (i)$$
+      $$\frac{a^2}{2} \cdot Pl^2 - \frac{1}{2} R_{\mathrm{B}} l^2 + J_{\mathrm{B}} l = 0 \quad \cdots (ii)$$
+
+      <h4>連立方程式の求解</h4>
+      <p>式(ii)より:</p>
+      $$R_{\mathrm{B}} = a^2 P + \frac{2J_{\mathrm{B}}}{l} \quad \cdots (ii')$$
+
+      <p>式(ii')を式(i)に代入:</p>
+      $$\frac{a^2(3-a)}{6} \cdot Pl^3 - \frac{1}{3}\left(a^2 P + \frac{2J_{\mathrm{B}}}{l}\right)l^3 + \frac{1}{2} J_{\mathrm{B}} l^2 = 0$$
+
+      <p>整理すると:</p>
+      $$a^2(3-a)Pl^3 - 2a^2 Pl^3 - \frac{4J_{\mathrm{B}} l^2}{3} \cdot \frac{3}{1} + 3J_{\mathrm{B}} l^2 = 0$$
+
+      <p>$J_{\mathrm{B}}$ について解くと:</p>
+      $$\frac{J_{\mathrm{B}}}{l} = a^2(1-a) P$$
+
+      $$\boxed{J_{\mathrm{B}} = a^2(1-a) \cdot Pl}$$
+
+      <p>式(ii')に戻して $R_{\mathrm{B}}$ を求めると:</p>
+      $$R_{\mathrm{B}} = a^2 P + 2a^2(1-a) P = a^2\bigl(1 + 2 - 2a\bigr) P$$
+
+      $$\boxed{R_{\mathrm{B}} = a^2(3-2a) \cdot P}$$
+
+      <h4>$R_{\mathrm{A}}$, $J_{\mathrm{A}}$ の算出</h4>
+      <p>対称性から、B端を固定端とする片持ち梁モデルで考えると、$a$ を $b$ に置き換えた同じ形の式が成り立ちます:</p>
+      $$\boxed{R_{\mathrm{A}} = b^2(3-2b) \cdot P}$$
+      $$\boxed{J_{\mathrm{A}} = b^2(1-b) \cdot Pl}$$
+
+      <p>検算（力の釣り合い）: $R_{\mathrm{A}} + R_{\mathrm{B}} = b^2(3-2b) \cdot P + a^2(3-2a) \cdot P = (a+b)^3 \cdot P = P$ ✓</p>
+
+      <p>検算: $R_{\mathrm{A}} + R_{\mathrm{B}} = (1 - 3a^2 + 2a^3) \cdot P + a^2(3-2a) \cdot P = (1 - 3a^2 + 2a^3 + 3a^2 - 2a^3) \cdot P = P$ ✓</p>
+
+      <h3>たわみ</h3>
+      <p>荷重点C（$x = al$）でのたわみは:</p>
+
+      $$\delta_{\mathrm{C}} = \frac{a^3 b^3}{3} \cdot \frac{Pl^3}{EI}$$
+
+      <p>$a = b = 1/2$（中央荷重）の場合: $\delta_{\mathrm{C}} = \frac{(1/2)^3(1/2)^3}{3} \cdot \frac{Pl^3}{EI} = \frac{1}{192} \cdot \frac{Pl^3}{EI}$ となり、中央集中荷重の公式と一致します。</p>
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>両端固定梁・偏心集中荷重の解答（$a + b = 1$）</h4>
+        $$R_{\mathrm{A}} = b^2(3-2b) \cdot P, \qquad R_{\mathrm{B}} = a^2(3-2a) \cdot P$$
+        $$J_{\mathrm{A}} = b^2(1-b) \cdot Pl, \qquad J_{\mathrm{B}} = a^2(1-a) \cdot Pl$$
+        $$\delta_{\mathrm{C}} = \frac{a^3 b^3}{3} \cdot \frac{Pl^3}{EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
+
+      $$V(x) = R_{\mathrm{A}} = b^2(3-2b) \cdot P \quad (0 \le x < al)$$
+      $$V(x) = R_{\mathrm{A}} - P = -a^2(3-2a) \cdot P = -R_{\mathrm{B}} \quad (al < x \le l)$$
+
+      <p>荷重点Cでせん断力が $P$ だけ不連続に変化します。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="180" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="90" x2="530" y2="90" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="20" x2="70" y2="160" stroke="#666" stroke-width="1.5"/>
+          <!-- SFD -->
+          <line x1="70" y1="45" x2="231" y2="45" stroke="#5cb8ff" stroke-width="2.5"/>
+          <line x1="231" y1="45" x2="231" y2="130" stroke="#5cb8ff" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <line x1="231" y1="130" x2="530" y2="130" stroke="#5cb8ff" stroke-width="2.5"/>
+          <rect x="70" y="45" width="161" height="45" fill="#5cb8ff" fill-opacity="0.1"/>
+          <rect x="231" y="90" width="299" height="40" fill="#5cb8ff" fill-opacity="0.1"/>
+          <!-- ラベル -->
+          <text x="30" y="50" font-size="15" text-anchor="middle" font-weight="bold" fill="#5cb8ff">R_A</text>
+          <text x="28" y="137" font-size="15" text-anchor="middle" font-weight="bold" fill="#5cb8ff">-R_B</text>
+          <text x="300" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">せん断力図（SFD）</text>
+          <text x="55" y="95" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80" y="170" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="231" y="170" font-size="16" text-anchor="middle" fill="#b0b0b0">C</text>
+          <text x="530" y="170" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図3: せん断力図</figcaption>
+      </figure>
+
+      <h3>曲げモーメント図（BMD）</h3>
+
+      <p>$0 \le x \le al$ の区間:</p>
+      $$M(x) = R_{\mathrm{A}} x - J_{\mathrm{A}} = b^2(3-2b) \cdot Px - b^2(1-b) \cdot Pl$$
+
+      <p>$al \le x \le l$ の区間:</p>
+      $$M(x) = R_{\mathrm{A}} x - J_{\mathrm{A}} - P(x - al)$$
+
+      <p>各点での値:</p>
+      <ul>
+        <li>$x = 0$: $M(0) = -J_{\mathrm{A}} = -b^2(1-b) \cdot Pl$（ホギング）</li>
+        <li>$x = al$（荷重点C）: $M(al) = 2a^2 b^2 \cdot Pl$（正の最大モーメント）</li>
+        <li>$x = l$: $M(l) = -J_{\mathrm{B}} = -a^2(1-a) \cdot Pl$（ホギング）</li>
+      </ul>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="200" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="100" x2="530" y2="100" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="20" x2="70" y2="180" stroke="#666" stroke-width="1.5"/>
+          <!-- BMD概形 -->
+          <polyline points="70,55 140,100 231,150 400,100 530,60" fill="none" stroke="#ff7eb3" stroke-width="2.5"/>
+          <polygon points="70,55 140,100 70,100" fill="#ff7eb3" fill-opacity="0.1"/>
+          <polygon points="140,100 231,150 400,100" fill="#ff7eb3" fill-opacity="0.1"/>
+          <polygon points="400,100 530,60 530,100" fill="#ff7eb3" fill-opacity="0.1"/>
+          <!-- ラベル -->
+          <text x="15" y="52" font-size="13" text-anchor="middle" font-weight="bold" fill="#ff7eb3">-J_A</text>
+          <text x="231" y="175" font-size="13" text-anchor="middle" font-weight="bold" fill="#ff7eb3">+M(a)</text>
+          <text x="570" y="57" font-size="13" text-anchor="middle" font-weight="bold" fill="#ff7eb3">-J_B</text>
+          <text x="300" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">曲げモーメント図（BMD）</text>
+          <text x="55" y="105" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="231" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">C</text>
+          <text x="530" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図4: 曲げモーメント図</figcaption>
+      </figure>
+
+      <!-- 4. ポイント -->
+      <h2 id="points">ポイント</h2>
+      <ul>
+        <li>偏心荷重では $J_{\mathrm{A}} \neq J_{\mathrm{B}}$、$R_{\mathrm{A}} \neq R_{\mathrm{B}}$ となり、対称性が使えません。</li>
+        <li>$J_{\mathrm{A}} = b^2(1-b) \cdot Pl$ と $J_{\mathrm{B}} = a^2(1-a) \cdot Pl$ は $a \leftrightarrow b$ の対称形。荷重に<strong>近い側が大きく</strong>なります（$a < b$ なら $J_{\mathrm{A}} > J_{\mathrm{B}}$）。</li>
+        <li>荷重点でのモーメント $M(al) = 2a^2 b^2 \cdot Pl$ は正（サギング）で、荷重が中央のとき最大値 $\frac{Pl}{8}$ を取ります。</li>
+        <li>荷重点のたわみ $\delta_{\mathrm{C}} = \frac{a^3 b^3}{3} \cdot \frac{Pl^3}{EI}$ は $a = b = 1/2$ のとき最大になります。</li>
+        <li>中央荷重の公式（ページ1）は、本ページの一般式で $a = b = 1/2$ とした特殊ケースです。</li>
+      </ul>
+
+      <!-- 関連コンテンツ -->
+      <div class="content-section">
+        <h2>関連する問題パターン</h2>
+        <div class="related-links">
+          <a href="../fixed-beam-point-load/">
+            <strong>両端固定梁・集中荷重（中央）</strong>
+            <span>中央に荷重が作用する対称ケース</span>
+          </a>
+          <a href="../fixed-beam-distributed/">
+            <strong>両端固定梁・等分布荷重</strong>
+            <span>全長にわたって等分布荷重が作用する場合</span>
+          </a>
+          <a href="../fixed-beam-distributed-half/">
+            <strong>両端固定梁・等分布荷重（左半分）</strong>
+            <span>左半分のみに等分布荷重が作用する場合</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+</body>
+</html>
