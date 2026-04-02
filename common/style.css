@@ -16,6 +16,19 @@
   --radius: 8px;
   --shadow: 0 1px 3px rgba(0,0,0,0.08);
   --max-width: 800px;
+  /* SVG diagram colors (light mode) */
+  --svg-fg: #444;
+  --svg-wall: #d0d4e0;
+  --svg-wall-stroke: #a0a4b8;
+  --svg-wall-hatch: #a0a4b8;
+  --svg-beam-hatch: #999;
+  --svg-beam-stroke: #888;
+  --svg-sfd: #2196F3;
+  --svg-bmd: #e05090;
+  --svg-axis: #bbb;
+  --svg-title: #6666aa;
+  --svg-reaction: #2e8b57;
+  --svg-highlight: #e67e22;
 }
 
 [data-theme="dark"] {
@@ -27,6 +40,19 @@
   --text-muted: #94a3b8;
   --border: #334155;
   --shadow: 0 1px 3px rgba(0,0,0,0.3);
+  /* SVG diagram colors (dark mode) */
+  --svg-fg: #b0b0b0;
+  --svg-wall: #3d3d5c;
+  --svg-wall-stroke: #9999bb;
+  --svg-wall-hatch: #7777aa;
+  --svg-beam-hatch: #999;
+  --svg-beam-stroke: #999;
+  --svg-sfd: #5cb8ff;
+  --svg-bmd: #ff7eb3;
+  --svg-axis: #666;
+  --svg-title: #8888bb;
+  --svg-reaction: #66bb88;
+  --svg-highlight: #ff9944;
 }
 
 body {
@@ -116,7 +142,7 @@ h1 {
 }
 
 .tool-description {
-  color: var(--text-muted);
+  color: var(--text);
   margin-bottom: 24px;
 }
 

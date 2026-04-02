@@ -152,61 +152,60 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" width="600" height="220" font-family="'Times New Roman', serif">
           <defs>
             <pattern id="beam-hatch" patternUnits="userSpaceOnUse" width="8" height="8">
-              <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
-              <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+              <line style="stroke: var(--svg-beam-hatch)" x1="0" y1="0" x2="8" y2="8" stroke-width="0.8"/>
+              <line style="stroke: var(--svg-beam-hatch)" x1="8" y1="0" x2="0" y2="8" stroke-width="0.8"/>
             </pattern>
           </defs>
-          <rect x="0" y="0" width="600" height="220" fill="#1a1a2e" rx="8"/>
           <!-- 壁 -->
-          <rect x="40" y="20" width="30" height="160" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
-          <line x1="40" y1="35" x2="55" y2="20" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="40" y1="55" x2="70" y2="25" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="40" y1="75" x2="70" y2="45" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="40" y1="95" x2="70" y2="65" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="40" y1="115" x2="70" y2="85" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="40" y1="135" x2="70" y2="105" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="40" y1="155" x2="70" y2="125" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="40" y1="175" x2="70" y2="145" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="50" y1="180" x2="70" y2="165" stroke="#7777aa" stroke-width="1.2"/>
-          <line x1="60" y1="180" x2="70" y2="177" stroke="#7777aa" stroke-width="1.2"/>
+          <rect style="fill: var(--svg-wall); stroke: var(--svg-wall-stroke)" x="40" y="20" width="30" height="160" stroke-width="2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="35" x2="55" y2="20" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="55" x2="70" y2="25" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="75" x2="70" y2="45" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="95" x2="70" y2="65" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="115" x2="70" y2="85" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="135" x2="70" y2="105" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="155" x2="70" y2="125" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="40" y1="175" x2="70" y2="145" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="50" y1="180" x2="70" y2="165" stroke-width="1.2"/>
+          <line style="stroke: var(--svg-wall-hatch)" x1="60" y1="180" x2="70" y2="177" stroke-width="1.2"/>
           <!-- 梁 -->
-          <rect x="70" y="90" width="440" height="16" fill="url(#beam-hatch)" stroke="#999" stroke-width="1.5"/>
+          <rect style="stroke: var(--svg-beam-stroke)" x="70" y="90" width="440" height="16" fill="url(#beam-hatch)" stroke-width="1.5"/>
           <!-- 等分布荷重（下向き矢印を複数並べる） -->
-          <line x1="70" y1="40" x2="530" y2="40" stroke="#b0b0b0" stroke-width="1.5"/>
-          <line x1="70" y1="40" x2="70" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="70,90 64,78 76,78" fill="#b0b0b0"/>
-          <line x1="116" y1="40" x2="116" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="116,90 110,78 122,78" fill="#b0b0b0"/>
-          <line x1="162" y1="40" x2="162" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="162,90 156,78 168,78" fill="#b0b0b0"/>
-          <line x1="208" y1="40" x2="208" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="208,90 202,78 214,78" fill="#b0b0b0"/>
-          <line x1="254" y1="40" x2="254" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="254,90 248,78 260,78" fill="#b0b0b0"/>
-          <line x1="300" y1="40" x2="300" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="300,90 294,78 306,78" fill="#b0b0b0"/>
-          <line x1="346" y1="40" x2="346" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="346,90 340,78 352,78" fill="#b0b0b0"/>
-          <line x1="392" y1="40" x2="392" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="392,90 386,78 398,78" fill="#b0b0b0"/>
-          <line x1="438" y1="40" x2="438" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="438,90 432,78 444,78" fill="#b0b0b0"/>
-          <line x1="484" y1="40" x2="484" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="484,90 478,78 490,78" fill="#b0b0b0"/>
-          <line x1="530" y1="40" x2="530" y2="82" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="530,90 524,78 536,78" fill="#b0b0b0"/>
+          <line style="stroke: var(--svg-fg)" x1="70" y1="40" x2="530" y2="40" stroke-width="1.5"/>
+          <line style="stroke: var(--svg-fg)" x1="70" y1="40" x2="70" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="70,90 64,78 76,78"/>
+          <line style="stroke: var(--svg-fg)" x1="116" y1="40" x2="116" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="116,90 110,78 122,78"/>
+          <line style="stroke: var(--svg-fg)" x1="162" y1="40" x2="162" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="162,90 156,78 168,78"/>
+          <line style="stroke: var(--svg-fg)" x1="208" y1="40" x2="208" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="208,90 202,78 214,78"/>
+          <line style="stroke: var(--svg-fg)" x1="254" y1="40" x2="254" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="254,90 248,78 260,78"/>
+          <line style="stroke: var(--svg-fg)" x1="300" y1="40" x2="300" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="300,90 294,78 306,78"/>
+          <line style="stroke: var(--svg-fg)" x1="346" y1="40" x2="346" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="346,90 340,78 352,78"/>
+          <line style="stroke: var(--svg-fg)" x1="392" y1="40" x2="392" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="392,90 386,78 398,78"/>
+          <line style="stroke: var(--svg-fg)" x1="438" y1="40" x2="438" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="438,90 432,78 444,78"/>
+          <line style="stroke: var(--svg-fg)" x1="484" y1="40" x2="484" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="484,90 478,78 490,78"/>
+          <line style="stroke: var(--svg-fg)" x1="530" y1="40" x2="530" y2="82" stroke-width="1.2"/>
+          <polygon style="fill: var(--svg-fg)" points="530,90 524,78 536,78"/>
           <!-- 荷重ラベル -->
-          <text x="290" y="30" font-size="24" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">q</text>
+          <text x="290" y="30" font-size="24" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">q</text>
           <!-- ラベル -->
-          <text x="80" y="125" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
-          <text x="510" y="128" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">B</text>
+          <text style="fill: var(--svg-fg)" x="80" y="125" font-size="22" text-anchor="middle" font-weight="bold">A</text>
+          <text style="fill: var(--svg-fg)" x="510" y="128" font-size="22" text-anchor="middle" font-weight="bold">B</text>
           <!-- 寸法線 -->
-          <line x1="70" y1="158" x2="70" y2="178" stroke="#b0b0b0" stroke-width="1.5"/>
-          <line x1="510" y1="158" x2="510" y2="178" stroke="#b0b0b0" stroke-width="1.5"/>
-          <line x1="70" y1="168" x2="510" y2="168" stroke="#b0b0b0" stroke-width="1.5"/>
-          <polygon points="70,168 83,163 83,173" fill="#b0b0b0"/>
-          <polygon points="510,168 497,163 497,173" fill="#b0b0b0"/>
-          <text x="290" y="195" font-size="24" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l</text>
+          <line style="stroke: var(--svg-fg)" x1="70" y1="158" x2="70" y2="178" stroke-width="1.5"/>
+          <line style="stroke: var(--svg-fg)" x1="510" y1="158" x2="510" y2="178" stroke-width="1.5"/>
+          <line style="stroke: var(--svg-fg)" x1="70" y1="168" x2="510" y2="168" stroke-width="1.5"/>
+          <polygon style="fill: var(--svg-fg)" points="70,168 83,163 83,173"/>
+          <polygon style="fill: var(--svg-fg)" points="510,168 497,163 497,173"/>
+          <text x="290" y="195" font-size="24" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">l</text>
         </svg>
         <figcaption>図1: 片持ち梁・等分布荷重</figcaption>
       </figure>
@@ -295,18 +294,17 @@
 
       <figure class="beam-figure">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
-          <rect x="0" y="0" width="600" height="160" fill="#1a1a2e" rx="8"/>
           <!-- 軸 -->
-          <line x1="70" y1="120" x2="530" y2="120" stroke="#666" stroke-width="1.5"/>
-          <line x1="70" y1="30" x2="70" y2="140" stroke="#666" stroke-width="1.5"/>
+          <line style="stroke: var(--svg-axis)" x1="70" y1="120" x2="530" y2="120" stroke-width="1.5"/>
+          <line style="stroke: var(--svg-axis)" x1="70" y1="30" x2="70" y2="140" stroke-width="1.5"/>
           <!-- SFD（線形減少） -->
-          <polygon points="70,50 510,120 70,120" fill="#5cb8ff" fill-opacity="0.1" stroke="#5cb8ff" stroke-width="2.5"/>
+          <polygon style="fill: var(--svg-sfd); stroke: var(--svg-sfd)" points="70,50 510,120 70,120" fill-opacity="0.1" stroke-width="2.5"/>
           <!-- ラベル -->
-          <text x="35" y="55" font-size="18" text-anchor="middle" font-weight="bold" fill="#5cb8ff">ql</text>
-          <text x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">せん断力図（SFD）</text>
-          <text x="40" y="124" font-size="16" text-anchor="middle" fill="#666">0</text>
-          <text x="80" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
-          <text x="510" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+          <text style="fill: var(--svg-sfd)" x="35" y="55" font-size="18" text-anchor="middle" font-weight="bold">ql</text>
+          <text style="fill: var(--svg-title)" x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold">せん断力図（SFD）</text>
+          <text style="fill: var(--svg-axis)" x="40" y="124" font-size="16" text-anchor="middle">0</text>
+          <text style="fill: var(--svg-fg)" x="80" y="145" font-size="16" text-anchor="middle">A</text>
+          <text style="fill: var(--svg-fg)" x="510" y="145" font-size="16" text-anchor="middle">B</text>
         </svg>
         <figcaption>図2: せん断力図</figcaption>
       </figure>
@@ -325,19 +323,18 @@
 
       <figure class="beam-figure">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
-          <rect x="0" y="0" width="600" height="160" fill="#1a1a2e" rx="8"/>
           <!-- 軸 -->
-          <line x1="70" y1="120" x2="530" y2="120" stroke="#666" stroke-width="1.5"/>
-          <line x1="70" y1="30" x2="70" y2="140" stroke="#666" stroke-width="1.5"/>
+          <line style="stroke: var(--svg-axis)" x1="70" y1="120" x2="530" y2="120" stroke-width="1.5"/>
+          <line style="stroke: var(--svg-axis)" x1="70" y1="30" x2="70" y2="140" stroke-width="1.5"/>
           <!-- BMD（放物線） -->
-          <path d="M70,50 Q290,55 510,120" fill="none" stroke="#ff7eb3" stroke-width="2.5"/>
-          <path d="M70,50 Q290,55 510,120 L70,120 Z" fill="#ff7eb3" fill-opacity="0.15"/>
+          <path style="stroke: var(--svg-bmd)" d="M70,50 Q290,55 510,120" fill="none" stroke-width="2.5"/>
+          <path style="fill: var(--svg-bmd)" d="M70,50 Q290,55 510,120 L70,120 Z" fill-opacity="0.15"/>
           <!-- ラベル -->
-          <text x="22" y="50" font-size="15" text-anchor="middle" font-weight="bold" fill="#ff7eb3">ql²/2</text>
-          <text x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">曲げモーメント図（BMD）</text>
-          <text x="40" y="124" font-size="16" text-anchor="middle" fill="#666">0</text>
-          <text x="80" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
-          <text x="510" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+          <text style="fill: var(--svg-bmd)" x="22" y="50" font-size="15" text-anchor="middle" font-weight="bold">ql²/2</text>
+          <text style="fill: var(--svg-title)" x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold">曲げモーメント図（BMD）</text>
+          <text style="fill: var(--svg-axis)" x="40" y="124" font-size="16" text-anchor="middle">0</text>
+          <text style="fill: var(--svg-fg)" x="80" y="145" font-size="16" text-anchor="middle">A</text>
+          <text style="fill: var(--svg-fg)" x="510" y="145" font-size="16" text-anchor="middle">B</text>
         </svg>
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
