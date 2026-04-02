@@ -87,17 +87,17 @@
           <!-- 梁 -->
           <rect style="stroke: var(--svg-beam-stroke)" x="70" y="130" width="440" height="16" fill="url(#beam-hatch)" stroke-width="1.5"/>
           <!-- ピン支持A -->
-          <polygon style="stroke: var(--svg-fg)" points="70,146 56,175 84,175" fill="none" stroke-width="2" stroke-linejoin="round"/>
+          <polygon style="stroke: var(--svg-fg)" points="70,146 56,175 84,175" fill="none" style="stroke: var(--svg-fg)" stroke-width="2" stroke-linejoin="round"/>
           <line style="stroke: var(--svg-fg)" x1="48" y1="175" x2="92" y2="175" stroke-width="2"/>
           <!-- ローラー支持B -->
-          <polygon style="stroke: var(--svg-fg)" points="510,146 500,166 520,166" fill="none" stroke-width="2" stroke-linejoin="round"/>
+          <polygon style="stroke: var(--svg-fg)" points="510,146 500,166 520,166" fill="none" style="stroke: var(--svg-fg)" stroke-width="2" stroke-linejoin="round"/>
           <circle style="stroke: var(--svg-fg)" cx="502" cy="170.5" r="4.5" fill="none" stroke-width="1.5"/>
           <circle style="stroke: var(--svg-fg)" cx="518" cy="170.5" r="4.5" fill="none" stroke-width="1.5"/>
           <line style="stroke: var(--svg-fg)" x1="492" y1="175" x2="528" y2="175" stroke-width="2"/>
           <!-- モーメント荷重（時計回り）at center x=290, r=30 -->
           <path style="stroke: var(--svg-fg)" d="M 275,164 A 30,30 0 1 1 315,121" fill="none" stroke-width="2.5"/>
           <polygon style="fill: var(--svg-fg)" points="321,129 319,118 311,124"/>
-          <text x="330" y="116" font-size="26" text-anchor="start" font-weight="bold"><tspan font-style="italic; fill: var(--svg-fg)">M</tspan><tspan font-size="18" dy="4" font-style="normal; fill: var(--svg-fg)">0</tspan></text>
+          <text x="330" y="116" font-size="26" text-anchor="start" font-weight="bold"><tspan font-style="italic" style="fill: var(--svg-fg)">M</tspan><tspan font-size="18" dy="4" font-style="normal; fill: var(--svg-fg)">0</tspan></text>
           <!-- ラベル -->
           <text style="fill: var(--svg-fg)" x="70" y="198" font-size="22" text-anchor="middle" font-weight="bold">A</text>
           <text style="fill: var(--svg-fg)" x="510" y="198" font-size="22" text-anchor="middle" font-weight="bold">B</text>
@@ -109,11 +109,11 @@
           <line style="stroke: var(--svg-fg)" x1="70" y1="210" x2="290" y2="210" stroke-width="1.5"/>
           <polygon style="fill: var(--svg-fg)" points="70,210 83,205 83,215"/>
           <polygon style="fill: var(--svg-fg)" points="290,210 277,205 277,215"/>
-          <text x="180" y="237" font-size="20" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">l/2</text>
+          <text x="180" y="237" font-size="20" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)" font-weight="bold">l/2</text>
           <!-- 右半分 -->
           <line style="stroke: var(--svg-fg)" x1="290" y1="210" x2="510" y2="210" stroke-width="1.5"/>
           <polygon style="fill: var(--svg-fg)" points="510,210 497,205 497,215"/>
-          <text x="400" y="237" font-size="20" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">l/2</text>
+          <text x="400" y="237" font-size="20" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)" font-weight="bold">l/2</text>
         </svg>
         <figcaption>図1: 単純支持梁・中心モーメント荷重</figcaption>
       </figure>

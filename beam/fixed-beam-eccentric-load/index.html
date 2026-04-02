@@ -101,7 +101,7 @@
           <!-- 荷重P（偏心位置 a=0.35l あたり） -->
           <line style="stroke: var(--svg-fg)" x1="231" y1="78" x2="231" y2="114" stroke-width="7"/>
           <polygon style="fill: var(--svg-fg)" points="231,130 221,114 241,114"/>
-          <text x="231" y="48" font-size="26" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">P</text>
+          <text x="231" y="48" font-size="26" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)" font-weight="bold">P</text>
           <text style="fill: var(--svg-fg)" x="231" y="170" font-size="20" text-anchor="middle" font-weight="bold">C</text>
           <!-- ラベル -->
           <text style="fill: var(--svg-fg)" x="80" y="170" font-size="22" text-anchor="middle" font-weight="bold">A</text>
@@ -112,19 +112,19 @@
           <line style="stroke: var(--svg-fg)" x1="70" y1="210" x2="231" y2="210" stroke-width="1.5"/>
           <polygon style="fill: var(--svg-fg)" points="70,210 83,205 83,215"/>
           <polygon style="fill: var(--svg-fg)" points="231,210 218,205 218,215"/>
-          <text x="150" y="237" font-size="22" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">al</text>
+          <text x="150" y="237" font-size="22" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)" font-weight="bold">al</text>
           <!-- 寸法線: b -->
           <line style="stroke: var(--svg-fg)" x1="530" y1="200" x2="530" y2="220" stroke-width="1.5"/>
           <line style="stroke: var(--svg-fg)" x1="231" y1="210" x2="530" y2="210" stroke-width="1.5"/>
           <polygon style="fill: var(--svg-fg)" points="530,210 517,205 517,215"/>
-          <text x="380" y="237" font-size="22" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">bl</text>
+          <text x="380" y="237" font-size="22" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)" font-weight="bold">bl</text>
           <!-- 全長 l -->
           <line style="stroke: var(--svg-fg)" x1="70" y1="250" x2="70" y2="270" stroke-width="1.5"/>
           <line style="stroke: var(--svg-fg)" x1="530" y1="250" x2="530" y2="270" stroke-width="1.5"/>
           <line style="stroke: var(--svg-fg)" x1="70" y1="260" x2="530" y2="260" stroke-width="1.5"/>
           <polygon style="fill: var(--svg-fg)" points="70,260 83,255 83,265"/>
           <polygon style="fill: var(--svg-fg)" points="530,260 517,255 517,265"/>
-          <text x="300" y="287" font-size="24" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">l</text>
+          <text x="300" y="287" font-size="24" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)" font-weight="bold">l</text>
         </svg>
         <figcaption>図1: 両端固定梁・偏心集中荷重</figcaption>
       </figure>
@@ -161,7 +161,7 @@
           <!-- 荷重P（偏心位置） -->
           <line style="stroke: var(--svg-fg)" x1="231" y1="48" x2="231" y2="104" stroke-width="7"/>
           <polygon style="fill: var(--svg-fg)" points="231,120 221,104 241,104"/>
-          <text x="231" y="38" font-size="26" text-anchor="middle" font-style="italic; fill: var(--svg-fg)" font-weight="bold">P</text>
+          <text x="231" y="38" font-size="26" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)" font-weight="bold">P</text>
           <text style="fill: var(--svg-fg)" x="231" y="160" font-size="20" text-anchor="middle" font-weight="bold">C</text>
           <!-- ラベル -->
           <text style="fill: var(--svg-fg)" x="80" y="160" font-size="22" text-anchor="middle" font-weight="bold">A</text>
@@ -169,11 +169,11 @@
           <!-- R_B: 上向き反力（根元=梁右下端、Pと同じ長さ） -->
           <rect style="fill: var(--svg-reaction)" x="527" y="78" width="6" height="58"/>
           <polygon style="fill: var(--svg-reaction)" points="530,64 516,86 544,86"/>
-          <text x="530" y="54" font-size="20" text-anchor="middle" font-style="italic; fill: var(--svg-reaction)" font-weight="bold">R<tspan font-size="14" dy="4">B</tspan></text>
+          <text x="530" y="54" font-size="20" text-anchor="middle" font-style="italic" style="fill: var(--svg-reaction)" font-weight="bold">R<tspan font-size="14" dy="4">B</tspan></text>
           <!-- J_B: 時計回りモーメント荷重（梁に作用） -->
           <path style="stroke: var(--svg-reaction)" d="M 515,154 A 30,30 0 1,1 555,111" fill="none" stroke-width="2.5"/>
           <polygon style="fill: var(--svg-reaction)" points="561,119 559,108 551,114"/>
-          <text x="568" y="108" font-size="20" text-anchor="start" font-style="italic; fill: var(--svg-reaction)" font-weight="bold">J<tspan font-size="14" dy="4">B</tspan></text>
+          <text x="568" y="108" font-size="20" text-anchor="start" font-style="italic" style="fill: var(--svg-reaction)" font-weight="bold">J<tspan font-size="14" dy="4">B</tspan></text>
         </svg>
         <figcaption>図2: 等価片持ち梁モデル — B端の固定を外し、反力 R<sub>B</sub> と反偶力 J<sub>B</sub> を作用させる</figcaption>
       </figure>
