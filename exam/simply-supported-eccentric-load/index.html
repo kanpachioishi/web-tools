@@ -65,21 +65,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#singularity">特異関数法</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみとたわみ角</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の単純支持梁において、左端Aをピン支持、右端Bをローラー支持とします。A端から距離 $al$ の点Cに下向きの集中荷重 $P$ が作用しています。$a$, $b$ は無次元の比率で $a + b = 1$ とし、梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
@@ -125,10 +121,16 @@
         <figcaption>図1: 単純支持梁・偏心集中荷重</figcaption>
       </figure>
 
-      <p>左端Aから右方向に $x$ 軸を取ります。</p>
+      <p>左端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>最大たわみ $\delta_{\max}$</li>
+      </ol>
 
-      <!-- 2. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>反力の算出</h3>
       <p>ピン支持Aとローラー支持Bにはそれぞれ鉛直反力 $R_{\mathrm{A}}$、$R_{\mathrm{B}}$ が発生します。</p>
 
       <ul class="step-list">
@@ -145,8 +147,7 @@
 
       <p>検算: $R_{\mathrm{A}} + R_{\mathrm{B}} = (a + b) \cdot P = P$ ✓。荷重に近い支点ほど大きな反力を受けます。</p>
 
-      <!-- 3. 特異関数法 -->
-      <h2 id="singularity">特異関数法</h2>
+      <h3>特異関数法</h3>
 
       <div class="note-box">
         <h4>Macaulayの括弧（特異関数）</h4>
@@ -158,8 +159,77 @@
 
       <p>特異関数を使うと、荷重作用点の前後で区間分けせずに、せん断力・曲げモーメント・たわみを1本の式で統一的に扱えます。</p>
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>たわみとたわみ角</h3>
+      <p>たわみ $y$ は<strong>下向きを正</strong>とします。特異関数を使うと、区間分けせずに微分方程式を1本の式で積分できます。</p>
+
+      <h4>微分方程式と積分</h4>
+
+      $$-EI\,y'' = M(x) = bPx - P\langle x - al \rangle$$
+
+      <p>1回積分:</p>
+      $$-EI\,y' = \frac{bPx^2}{2} - \frac{P\langle x - al \rangle^2}{2} + C_1$$
+
+      <p>もう1回積分:</p>
+      $$-EI\,y = \frac{bPx^3}{6} - \frac{P\langle x - al \rangle^3}{6} + C_1 x + C_2$$
+
+      <h4>境界条件の適用</h4>
+
+      <p>$y(0) = 0$ より: $\langle 0 - al \rangle = 0$ なので $C_2 = 0$。</p>
+
+      <p>$y(l) = 0$ より:</p>
+      $$\frac{bPl^3}{6} - \frac{P(bl)^3}{6} + C_1 l = 0$$
+      $$\frac{bPl^3}{6}(1 - b^2) + C_1 l = 0$$
+
+      $$C_1 = -\frac{b(1-b^2)}{6} \cdot Pl^2$$
+
+      <h4>結果</h4>
+
+      <p><strong>$-EI\,y$ の式:</strong></p>
+      $$-EI\,y = \frac{P}{6}\left[bx^3 - \langle x - al \rangle^3 - b(1-b^2)\,l^2 x\right]$$
+
+      <p><strong>たわみ</strong>（下向き正）<strong>:</strong></p>
+      $$\boxed{y(x) = -\frac{P}{6EI}\left[bx^3 - \langle x - al \rangle^3 - b(1-b^2)\,l^2 x\right]}$$
+
+      <p><strong>たわみ角:</strong></p>
+      $$-EI\,\theta = \frac{P}{6}\left[3bx^2 - 3\langle x - al \rangle^2 - b(1-b^2)\,l^2\right]$$
+
+      <p>この1本の式が、区間分けなしに梁全体のたわみを表しています。</p>
+
+      <h4>各端のたわみ角</h4>
+      <p><strong>A端</strong>（$x = 0$）:</p>
+      $$-EI\,\theta_{\mathrm{A}} = -\frac{b(1-b^2)}{6} \cdot Pl^2 \quad \Rightarrow \quad \theta_{\mathrm{A}} = \frac{b(1-b^2)}{6} \cdot \frac{Pl^2}{EI}$$
+
+      <p><strong>B端</strong>（$x = l$）:</p>
+      $$-EI\,\theta_{\mathrm{B}} = \frac{a(1-a^2)}{6} \cdot Pl^2 \quad \Rightarrow \quad \theta_{\mathrm{B}} = -\frac{a(1-a^2)}{6} \cdot \frac{Pl^2}{EI}$$
+
+      <h4>荷重作用点のたわみ</h4>
+      <p>$x = al$ での値（$\langle al - al \rangle = 0$）:</p>
+      $$-EI\,y(al) = \frac{Pa^2 bl^3}{6}\bigl[a - (1+b)\bigr] = \frac{Pa^2 bl^3}{6}(-2b) = -\frac{a^2 b^2}{3} \cdot Pl^3$$
+      $$y(al) = \frac{a^2 b^2}{3} \cdot \frac{Pl^3}{EI}$$
+
+      <h4>最大たわみ</h4>
+      <p>最大たわみは、荷重作用点より<strong>長い方の区間</strong>に生じます。</p>
+
+      <p><strong>$a \ge 1/2$ のとき</strong>（AC区間が長い）: AC区間で $\theta = 0$ を解くと:</p>
+      $$3bx^2 = b(1-b^2)\,l^2 \quad \Rightarrow \quad x_{\max} = l\sqrt{\frac{1-b^2}{3}}$$
+      $$\delta_{\max} = \frac{b(1-b^2)^{3/2}}{9\sqrt{3}} \cdot \frac{Pl^3}{EI}$$
+
+      <p><strong>$a < 1/2$ のとき</strong>（CB区間が長い）: CB区間で $\theta = 0$ を解くと:</p>
+      $$x_{\max} = l\left(1 - \sqrt{\frac{1-a^2}{3}}\right)$$
+      $$\delta_{\max} = \frac{a(1-a^2)^{3/2}}{9\sqrt{3}} \cdot \frac{Pl^3}{EI}$$
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>単純支持梁・偏心集中荷重の解答（$a + b = 1$）</h4>
+        $$R_{\mathrm{A}} = b \cdot P, \qquad R_{\mathrm{B}} = a \cdot P$$
+        $$\delta_{\max} = \begin{cases} \dfrac{b(1-b^2)^{3/2}}{9\sqrt{3}} \cdot \dfrac{Pl^3}{EI} & (a \ge 1/2) \\[10pt] \dfrac{a(1-a^2)^{3/2}}{9\sqrt{3}} \cdot \dfrac{Pl^3}{EI} & (a < 1/2) \end{cases}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>特異関数を使うと、せん断力は梁全体で:</p>
 
       $$V(x) = R_{\mathrm{A}} - P\langle x - al \rangle^0 = b \cdot P - P\langle x - al \rangle^0$$
@@ -193,8 +263,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>曲げモーメントは:</p>
 
       $$M(x) = R_{\mathrm{A}} x - P\langle x - al \rangle = bPx - P\langle x - al \rangle$$
@@ -225,81 +294,7 @@
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
 
-      <!-- 6. たわみ -->
-      <h2 id="deflection">たわみとたわみ角</h2>
-      <p>たわみ $y$ は<strong>下向きを正</strong>とします。特異関数を使うと、区間分けせずに微分方程式を1本の式で積分できます。</p>
-
-      <h3>微分方程式と積分</h3>
-
-      $$-EI\,y'' = M(x) = bPx - P\langle x - al \rangle$$
-
-      <p>1回積分:</p>
-      $$-EI\,y' = \frac{bPx^2}{2} - \frac{P\langle x - al \rangle^2}{2} + C_1$$
-
-      <p>もう1回積分:</p>
-      $$-EI\,y = \frac{bPx^3}{6} - \frac{P\langle x - al \rangle^3}{6} + C_1 x + C_2$$
-
-      <h3>境界条件の適用</h3>
-
-      <p>$y(0) = 0$ より: $\langle 0 - al \rangle = 0$ なので $C_2 = 0$。</p>
-
-      <p>$y(l) = 0$ より:</p>
-      $$\frac{bPl^3}{6} - \frac{P(bl)^3}{6} + C_1 l = 0$$
-      $$\frac{bPl^3}{6}(1 - b^2) + C_1 l = 0$$
-
-      $$C_1 = -\frac{b(1-b^2)}{6} \cdot Pl^2$$
-
-      <h3>結果</h3>
-
-      <p><strong>$-EI\,y$ の式:</strong></p>
-      $$-EI\,y = \frac{P}{6}\left[bx^3 - \langle x - al \rangle^3 - b(1-b^2)\,l^2 x\right]$$
-
-      <p><strong>たわみ</strong>（下向き正）<strong>:</strong></p>
-      $$\boxed{y(x) = -\frac{P}{6EI}\left[bx^3 - \langle x - al \rangle^3 - b(1-b^2)\,l^2 x\right]}$$
-
-      <p><strong>たわみ角:</strong></p>
-      $$-EI\,\theta = \frac{P}{6}\left[3bx^2 - 3\langle x - al \rangle^2 - b(1-b^2)\,l^2\right]$$
-
-      <p>この1本の式が、区間分けなしに梁全体のたわみを表しています。</p>
-
-      <h3>各端のたわみ角</h3>
-      <p><strong>A端</strong>（$x = 0$）:</p>
-      $$-EI\,\theta_{\mathrm{A}} = -\frac{b(1-b^2)}{6} \cdot Pl^2 \quad \Rightarrow \quad \theta_{\mathrm{A}} = \frac{b(1-b^2)}{6} \cdot \frac{Pl^2}{EI}$$
-
-      <p><strong>B端</strong>（$x = l$）:</p>
-      $$-EI\,\theta_{\mathrm{B}} = \frac{a(1-a^2)}{6} \cdot Pl^2 \quad \Rightarrow \quad \theta_{\mathrm{B}} = -\frac{a(1-a^2)}{6} \cdot \frac{Pl^2}{EI}$$
-
-      <h3>荷重作用点のたわみ</h3>
-      <p>$x = al$ での値（$\langle al - al \rangle = 0$）:</p>
-      $$-EI\,y(al) = \frac{Pa^2 bl^3}{6}\bigl[a - (1+b)\bigr] = \frac{Pa^2 bl^3}{6}(-2b) = -\frac{a^2 b^2}{3} \cdot Pl^3$$
-      $$y(al) = \frac{a^2 b^2}{3} \cdot \frac{Pl^3}{EI}$$
-
-      <h3>最大たわみ</h3>
-      <p>最大たわみは、荷重作用点より<strong>長い方の区間</strong>に生じます。</p>
-
-      <p><strong>$a \ge 1/2$ のとき</strong>（AC区間が長い）: AC区間で $\theta = 0$ を解くと:</p>
-      $$3bx^2 = b(1-b^2)\,l^2 \quad \Rightarrow \quad x_{\max} = l\sqrt{\frac{1-b^2}{3}}$$
-      $$\delta_{\max} = \frac{b(1-b^2)^{3/2}}{9\sqrt{3}} \cdot \frac{Pl^3}{EI}$$
-
-      <p><strong>$a < 1/2$ のとき</strong>（CB区間が長い）: CB区間で $\theta = 0$ を解くと:</p>
-      $$x_{\max} = l\left(1 - \sqrt{\frac{1-a^2}{3}}\right)$$
-      $$\delta_{\max} = \frac{a(1-a^2)^{3/2}}{9\sqrt{3}} \cdot \frac{Pl^3}{EI}$$
-
-      <!-- 7. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>単純支持梁・偏心集中荷重の公式（$a + b = 1$）</h4>
-        $$R_{\mathrm{A}} = b \cdot P, \qquad R_{\mathrm{B}} = a \cdot P$$
-        $$V(x) = bP - P\langle x - al \rangle^0$$
-        $$M(x) = bPx - P\langle x - al \rangle$$
-        $$M_{\max} = ab \cdot Pl \quad (x = al)$$
-        $$-EI\,y = \frac{P}{6}\left[bx^3 - \langle x - al \rangle^3 - b(1-b^2)\,l^2 x\right] \quad (\text{下向き正})$$
-        $$\theta_{\mathrm{A}} = \frac{b(1-b^2)}{6} \cdot \frac{Pl^2}{EI}, \qquad \theta_{\mathrm{B}} = -\frac{a(1-a^2)}{6} \cdot \frac{Pl^2}{EI}$$
-        $$\delta_{\max} = \begin{cases} \dfrac{b(1-b^2)^{3/2}}{9\sqrt{3}} \cdot \dfrac{Pl^3}{EI} & (a \ge 1/2) \\[10pt] \dfrac{a(1-a^2)^{3/2}}{9\sqrt{3}} \cdot \dfrac{Pl^3}{EI} & (a < 1/2) \end{cases}$$
-      </div>
-
-      <!-- 8. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li><strong>特異関数（Macaulayの括弧）</strong>を使うことで、荷重作用点での場合分けが不要になり、1本の式で梁全体を表せます。積分定数も境界条件だけで決まるため、接続条件を考える必要がありません。</li>

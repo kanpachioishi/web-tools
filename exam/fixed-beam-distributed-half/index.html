@@ -63,21 +63,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#method">解法の方針</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみ</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の両端固定梁において、左端Aと右端Bがともに固定端です。左半分（$0 \le x \le l/2$）のみに下向きの等分布荷重 $q$（単位長さあたり）が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
@@ -106,20 +102,19 @@
           <!-- 等分布荷重の矢印群（左半分のみ） -->
           <line x1="70" y1="65" x2="300" y2="65" stroke="#b0b0b0" stroke-width="2"/>
           <line x1="300" y1="65" x2="300" y2="75" stroke="#b0b0b0" stroke-width="2"/>
-          <line x1="70" y1="65" x2="70" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
+          <!-- 46px等間隔: 70, 116, 162, 208, 254, 300 -->
+          <line x1="70" y1="65" x2="70" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
           <polygon points="70,130 64,118 76,118" fill="#b0b0b0"/>
-          <line x1="90" y1="65" x2="90" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="90,130 84,118 96,118" fill="#b0b0b0"/>
-          <line x1="130" y1="65" x2="130" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="130,130 124,118 136,118" fill="#b0b0b0"/>
-          <line x1="170" y1="65" x2="170" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="170,130 164,118 176,118" fill="#b0b0b0"/>
-          <line x1="210" y1="65" x2="210" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="210,130 204,118 216,118" fill="#b0b0b0"/>
-          <line x1="250" y1="65" x2="250" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="250,130 244,118 256,118" fill="#b0b0b0"/>
-          <line x1="290" y1="65" x2="290" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="290,130 284,118 296,118" fill="#b0b0b0"/>
+          <line x1="116" y1="65" x2="116" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="116,130 110,118 122,118" fill="#b0b0b0"/>
+          <line x1="162" y1="65" x2="162" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="162,130 156,118 168,118" fill="#b0b0b0"/>
+          <line x1="208" y1="65" x2="208" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="208,130 202,118 214,118" fill="#b0b0b0"/>
+          <line x1="254" y1="65" x2="254" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="254,130 248,118 260,118" fill="#b0b0b0"/>
+          <line x1="300" y1="65" x2="300" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="300,130 294,118 306,118" fill="#b0b0b0"/>
           <text x="185" y="55" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">q</text>
           <!-- ラベル -->
           <text x="80" y="170" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
@@ -142,10 +137,19 @@
         <figcaption>図1: 両端固定梁・等分布荷重（左半分）</figcaption>
       </figure>
 
-      <p>固定端Aから右方向に $x$ 軸を取ります。合計荷重は $W = ql/2$ です。</p>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント（反偶力）$J_{\mathrm{A}},\, J_{\mathrm{B}}$</li>
+      </ol>
 
-      <!-- 2. 解法の方針 -->
-      <h2 id="method">解法の方針</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <p>荷重の合力は:</p>
+      $$W = q \times \frac{l}{2} = \frac{ql}{2}$$
+
+      <h3>解法の方針</h3>
       <p>等分布荷重は微小な集中荷重の重ね合わせです。<a href="../fixed-beam-eccentric-load/">両端固定梁の偏心集中荷重</a>の結果を積分することで、連立方程式を解くことなく反力・固定端モーメントが求まります。</p>
 
       <p>偏心集中荷重 $P$ の結果（$a$, $b$ は無次元比率、$a + b = 1$）:</p>
@@ -154,29 +158,38 @@
 
       <p>等分布荷重 $q$ の微小区間に作用する荷重は $P = ql\,da = ql\,db$ です。A端から見た $a$ で積分すればB端の反力、B端から見た $b$ で積分すればA端の反力が得られます。荷重範囲 $0 \le x \le l/2$ は $a \in [0, 1/2]$、$b \in [1/2, 1]$ に対応します。</p>
 
-      <!-- 3. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <h3>反力の算出</h3>
 
-      <h3>B端の反偶力 $J_{\mathrm{B}}$</h3>
+      <h4>B端の反偶力 $J_{\mathrm{B}}$</h4>
       $$\frac{J_{\mathrm{B}}}{ql^2} = \int_0^{1/2} a^2(1-a)\,da = \left[\frac{a^3}{3} - \frac{a^4}{4}\right]_0^{1/2} = \frac{1}{24} - \frac{1}{64} = \frac{5}{192}$$
 
-      <h3>B端の鉛直反力 $R_{\mathrm{B}}$</h3>
+      <h4>B端の鉛直反力 $R_{\mathrm{B}}$</h4>
       $$\frac{R_{\mathrm{B}}}{ql} = \int_0^{1/2} a^2(3-2a)\,da = \left[a^3 - \frac{a^4}{2}\right]_0^{1/2} = \frac{1}{8} - \frac{1}{32} = \frac{3}{32}$$
 
-      <h3>A端の鉛直反力 $R_{\mathrm{A}}$</h3>
+      <h4>A端の鉛直反力 $R_{\mathrm{A}}$</h4>
       $$\frac{R_{\mathrm{A}}}{ql} = \int_{1/2}^{1} b^2(3-2b)\,db = \left[b^3 - \frac{b^4}{2}\right]_{1/2}^{1} = \frac{1}{2} - \frac{3}{32} = \frac{13}{32}$$
 
-      <h3>A端の反偶力 $J_{\mathrm{A}}$</h3>
+      <h4>A端の反偶力 $J_{\mathrm{A}}$</h4>
       $$\frac{J_{\mathrm{A}}}{ql^2} = \int_{1/2}^{1} b^2(1-b)\,db = \left[\frac{b^3}{3} - \frac{b^4}{4}\right]_{1/2}^{1} = \frac{1}{12} - \frac{5}{192} = \frac{11}{192}$$
 
-      <h3>まとめと検算</h3>
+      <h4>まとめと検算</h4>
       $$R_{\mathrm{A}} = \frac{13}{32} \cdot ql, \qquad R_{\mathrm{B}} = \frac{3}{32} \cdot ql$$
       $$J_{\mathrm{A}} = \frac{11}{192} \cdot ql^2, \qquad J_{\mathrm{B}} = \frac{5}{192} \cdot ql^2$$
 
       <p>検算: $R_{\mathrm{A}} + R_{\mathrm{B}} = \dfrac{13+3}{32} \cdot ql = \dfrac{ql}{2}$ ✓（合計荷重 $q \cdot l/2$ と一致）</p>
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>両端固定梁・左半分等分布荷重の解答</h4>
+        $$R_{\mathrm{A}} = \frac{13}{32} \cdot ql, \qquad R_{\mathrm{B}} = \frac{3}{32} \cdot ql$$
+        $$J_{\mathrm{A}} = \frac{11}{192} \cdot ql^2, \qquad J_{\mathrm{B}} = \frac{5}{192} \cdot ql^2$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
 
       <p><strong>荷重区間</strong>（$0 \le x \le l/2$）:</p>
       $$V(x) = R_{\mathrm{A}} - qx = \frac{13}{32}\,ql - qx$$
@@ -215,8 +228,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
 
       <p><strong>荷重区間</strong>（$0 \le x \le l/2$）:</p>
       $$M(x) = -J_{\mathrm{A}} + R_{\mathrm{A}} x - \frac{qx^2}{2} = -\frac{11}{192}\,ql^2 + \frac{13}{32}\,qlx - \frac{qx^2}{2}$$
@@ -256,23 +268,7 @@
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
 
-      <!-- 6. たわみ -->
-      <h2 id="deflection">たわみ</h2>
-      <p>部分分布荷重の場合、たわみの解析解はやや複雑です。たわみの微分方程式 $EI\,y'' = M(x)$ を各区間で積分し、境界条件と連続条件を適用して求めます。</p>
-      <p>最大たわみは荷重が非対称なので、梁の中央からやや左側（荷重側）にずれた位置で発生します。</p>
-
-      <!-- 7. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>両端固定梁・左半分等分布荷重の公式</h4>
-        $$R_{\mathrm{A}} = \frac{13}{32} \cdot ql, \qquad R_{\mathrm{B}} = \frac{3}{32} \cdot ql$$
-        $$J_{\mathrm{A}} = \frac{11}{192} \cdot ql^2, \qquad J_{\mathrm{B}} = \frac{5}{192} \cdot ql^2$$
-        $$V(x) = \begin{cases} \dfrac{13}{32}\,ql - qx & (0 \le x \le l/2) \\[8pt] -\dfrac{3}{32}\,ql & (l/2 \le x \le l) \end{cases}$$
-        $$M(x) = -\frac{11}{192}\,ql^2 + \frac{13}{32}\,qlx - \frac{qx^2}{2} \quad (0 \le x \le l/2)$$
-      </div>
-
-      <!-- 8. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li><strong>偏心集中荷重の結果を積分</strong>するだけで、連立方程式を解かずに全反力が求まります。</li>

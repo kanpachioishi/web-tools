@@ -107,19 +107,43 @@
     <div class="beam-section" id="cantilever">
       <h2>片持ち梁</h2>
       <div class="beam-grid">
-        <a class="beam-card" href="cantilever-point-load/">
+        <a class="beam-card" href="cantilever-point-load/index.html">
           <strong>集中荷重（自由端）</strong>
           <span>自由端に集中荷重 P が作用</span>
         </a>
-        <a class="beam-card" href="cantilever-distributed-load/">
-          <strong>等分布荷重</strong>
+        <a class="beam-card" href="cantilever-point-load-center/index.html">
+          <strong>集中荷重（中央）</strong>
+          <span>中央に集中荷重 P が作用</span>
+        </a>
+        <a class="beam-card" href="cantilever-eccentric-load/index.html">
+          <strong>偏心集中荷重</strong>
+          <span>任意の位置 al に集中荷重 P が作用</span>
+        </a>
+        <a class="beam-card" href="cantilever-distributed-load/index.html">
+          <strong>等分布荷重（全体）</strong>
           <span>全長にわたって等分布荷重 q が作用</span>
         </a>
-        <a class="beam-card" href="cantilever-moment-load/">
+        <a class="beam-card" href="cantilever-distributed-half-left/index.html">
+          <strong>等分布荷重（左半分）</strong>
+          <span>固定端側の左半分に等分布荷重 q が作用</span>
+        </a>
+        <a class="beam-card" href="cantilever-distributed-half-right/index.html">
+          <strong>等分布荷重（右半分）</strong>
+          <span>自由端側の右半分に等分布荷重 q が作用</span>
+        </a>
+        <a class="beam-card" href="cantilever-triangular-load/index.html">
+          <strong>三角形分布荷重（左端 q → 右端 0）</strong>
+          <span>固定端側 q から自由端側 0 へ線形に減少</span>
+        </a>
+        <a class="beam-card" href="cantilever-triangular-load-reverse/index.html">
+          <strong>三角形分布荷重（左端 0 → 右端 q）</strong>
+          <span>固定端側 0 から自由端側 q へ線形に増加</span>
+        </a>
+        <a class="beam-card" href="cantilever-moment-load/index.html">
           <strong>モーメント荷重（自由端）</strong>
           <span>自由端にモーメント M₀ が作用</span>
         </a>
-        <a class="beam-card" href="cantilever-moment-center/">
+        <a class="beam-card" href="cantilever-moment-center/index.html">
           <strong>モーメント荷重（中央）</strong>
           <span>中央にモーメント M₀ が作用</span>
         </a>
@@ -130,11 +154,11 @@
     <div class="beam-section" id="cantilever-spring">
       <h2>片持ち梁 + ばね支持</h2>
       <div class="beam-grid">
-        <a class="beam-card" href="cantilever-spring-point-load/">
+        <a class="beam-card" href="cantilever-spring-point-load/index.html">
           <strong>集中荷重（中央）</strong>
           <span>ばね支持端 + 中央に集中荷重 P</span>
         </a>
-        <a class="beam-card" href="cantilever-spring-distributed/">
+        <a class="beam-card" href="cantilever-spring-distributed/index.html">
           <strong>等分布荷重</strong>
           <span>ばね支持端 + 全長に等分布荷重 q</span>
         </a>
@@ -145,21 +169,29 @@
     <div class="beam-section" id="propped">
       <h2>一端固定・他端ローラー支持梁</h2>
       <div class="beam-grid">
-        <a class="beam-card" href="propped-cantilever-point-load/">
+        <a class="beam-card" href="propped-cantilever-point-load/index.html">
           <strong>集中荷重（中央）</strong>
           <span>中央に集中荷重 P が作用</span>
         </a>
-        <a class="beam-card" href="propped-cantilever-distributed/">
+        <a class="beam-card" href="propped-cantilever-distributed/index.html">
           <strong>等分布荷重</strong>
           <span>全長に等分布荷重 q が作用</span>
         </a>
-        <a class="beam-card" href="propped-cantilever-moment-center/">
+        <a class="beam-card" href="propped-cantilever-moment-center/index.html">
           <strong>モーメント荷重（中央）</strong>
           <span>中央にモーメント M₀ が作用</span>
         </a>
-        <a class="beam-card" href="propped-cantilever-moment/">
+        <a class="beam-card" href="propped-cantilever-moment/index.html">
           <strong>モーメント荷重（右端）</strong>
           <span>ローラー端にモーメント M₀ が作用</span>
+        </a>
+        <a class="beam-card" href="propped-cantilever-triangular-load/index.html">
+          <strong>三角形分布荷重（固定端 q → ローラー端 0）</strong>
+          <span>固定端側 q からローラー端側 0 へ線形に減少</span>
+        </a>
+        <a class="beam-card" href="propped-cantilever-triangular-load-reverse/index.html">
+          <strong>三角形分布荷重（固定端 0 → ローラー端 q）</strong>
+          <span>固定端側 0 からローラー端側 q へ線形に増加</span>
         </a>
       </div>
     </div>
@@ -168,17 +200,21 @@
     <div class="beam-section" id="simply-supported">
       <h2>単純支持梁</h2>
       <div class="beam-grid">
-        <a class="beam-card" href="simply-supported-point-load/">
+        <a class="beam-card" href="simply-supported-point-load/index.html">
           <strong>集中荷重（中央）</strong>
           <span>中央に集中荷重 P が作用</span>
         </a>
-        <a class="beam-card" href="simply-supported-eccentric-load/">
+        <a class="beam-card" href="simply-supported-eccentric-load/index.html">
           <strong>偏心集中荷重</strong>
           <span>任意の位置 al に集中荷重 P が作用</span>
         </a>
-        <a class="beam-card" href="simply-supported-distributed/">
+        <a class="beam-card" href="simply-supported-distributed/index.html">
           <strong>等分布荷重</strong>
           <span>全長に等分布荷重 q が作用</span>
+        </a>
+        <a class="beam-card" href="simply-supported-moment-center/index.html">
+          <strong>モーメント荷重（中央）</strong>
+          <span>中央にモーメント M₀ が作用</span>
         </a>
       </div>
     </div>
@@ -187,21 +223,25 @@
     <div class="beam-section" id="fixed">
       <h2>両端固定梁</h2>
       <div class="beam-grid">
-        <a class="beam-card" href="fixed-beam-point-load/">
+        <a class="beam-card" href="fixed-beam-point-load/index.html">
           <strong>集中荷重（中央）</strong>
           <span>中央に集中荷重 P が作用</span>
         </a>
-        <a class="beam-card" href="fixed-beam-eccentric-load/">
+        <a class="beam-card" href="fixed-beam-eccentric-load/index.html">
           <strong>偏心集中荷重</strong>
           <span>任意の位置 al に集中荷重 P が作用</span>
         </a>
-        <a class="beam-card" href="fixed-beam-distributed/">
+        <a class="beam-card" href="fixed-beam-distributed/index.html">
           <strong>等分布荷重（全体）</strong>
           <span>全長に等分布荷重 q が作用</span>
         </a>
-        <a class="beam-card" href="fixed-beam-distributed-half/">
+        <a class="beam-card" href="fixed-beam-distributed-half/index.html">
           <strong>等分布荷重（左半分）</strong>
           <span>左半分に等分布荷重 q が作用</span>
+        </a>
+        <a class="beam-card" href="fixed-beam-triangular-load/index.html">
+          <strong>山形分布荷重</strong>
+          <span>中央 q・両端 0 の三角形分布荷重が作用</span>
         </a>
       </div>
     </div>

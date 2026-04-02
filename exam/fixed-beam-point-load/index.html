@@ -63,21 +63,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#method">解法の方針</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみ</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の両端固定梁において、左端Aと右端Bがともに固定端です。梁の中央（$x = l/2$）に下向きの集中荷重 $P$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
@@ -125,10 +121,17 @@
         <figcaption>図1: 両端固定梁・中央集中荷重</figcaption>
       </figure>
 
-      <p>固定端Aから右方向に $x$ 軸を取ります。</p>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント（反偶力）$J_{\mathrm{A}},\, J_{\mathrm{B}}$</li>
+        <li>最大たわみ $\delta_{\max}$</li>
+      </ol>
 
-      <!-- 2. 解法の方針 -->
-      <h2 id="method">解法の方針</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>解法の方針</h3>
       <p>両端固定梁は<strong>2次不静定構造</strong>です。静力学の釣り合い式だけでは反力を求められないため、<strong>重ね合わせ法</strong>を用います。</p>
       <ul class="step-list">
         <li><strong>基本系の設定</strong>: 反偶力 $J_{\mathrm{A}}$, $J_{\mathrm{B}}$ を冗長力とし、両端を単純支持梁（ピン・ローラー）に置き換えた基本系を考えます。</li>
@@ -137,8 +140,7 @@
       </ul>
       <p>ここでは対称性を利用して、$R_{\mathrm{A}} = R_{\mathrm{B}} = P/2$、$J_{\mathrm{A}} = J_{\mathrm{B}}$ と置けるため、適合条件は1つで済みます。</p>
 
-      <!-- 3. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <h3>反力の算出</h3>
       <p>対称性から、鉛直反力は均等に分配されます。</p>
       $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{P}{2}$$
 
@@ -149,8 +151,26 @@
       <p>対称性と重ね合わせ法の結果:</p>
       $$J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{Pl}{8}$$
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>たわみ</h3>
+      <p>最大たわみは中央（$x = l/2$）で発生します。</p>
+
+      $$\delta_{\max} = \frac{Pl^3}{192EI}$$
+
+      <p>これは単純支持梁の中央集中荷重の場合（$\delta = \frac{Pl^3}{48EI}$）の<strong>1/4</strong>です。両端を固定することで、たわみが大幅に抑えられることがわかります。</p>
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>両端固定梁・中央集中荷重の解答</h4>
+        $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{P}{2}$$
+        $$J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{Pl}{8}$$
+        $$\delta_{\max} = \frac{Pl^3}{192EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>任意の位置 $x$ でのせん断力は:</p>
 
       $$V(x) = \frac{P}{2} \quad (0 \le x < l/2)$$
@@ -181,8 +201,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>曲げモーメントは:</p>
 
       $$M(x) = \frac{Px}{2} - \frac{Pl}{8} \quad (0 \le x \le l/2)$$
@@ -218,27 +237,7 @@
         <figcaption>図3: 曲げモーメント図（W字型）</figcaption>
       </figure>
 
-      <!-- 6. たわみ -->
-      <h2 id="deflection">たわみ</h2>
-      <p>最大たわみは中央（$x = l/2$）で発生します。</p>
-
-      $$\delta_{\max} = \frac{Pl^3}{192EI}$$
-
-      <p>これは単純支持梁の中央集中荷重の場合（$\delta = \frac{Pl^3}{48EI}$）の<strong>1/4</strong>です。両端を固定することで、たわみが大幅に抑えられることがわかります。</p>
-
-      <!-- 7. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>両端固定梁・中央集中荷重の公式</h4>
-        $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{P}{2}$$
-        $$J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{Pl}{8}$$
-        $$V(x) = \begin{cases} P/2 & (0 \le x < l/2) \\ -P/2 & (l/2 < x \le l) \end{cases}$$
-        $$M(x) = \frac{Px}{2} - \frac{Pl}{8} \quad (0 \le x \le l/2)$$
-        $$\delta_{\max} = \frac{Pl^3}{192EI}$$
-      </div>
-
-      <!-- 8. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>両端固定梁は<strong>2次不静定</strong>であり、重ね合わせ法（または3モーメント法など）で解く必要があります。</li>

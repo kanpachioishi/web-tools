@@ -63,21 +63,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#method">解法の方針</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみ</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の両端固定梁において、左端Aと右端Bがともに固定端です。A端から距離 $al$ の点Cに下向きの集中荷重 $P$ が作用しています。$a$, $b$ は無次元の比率で $a + b = 1$ とし、梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
@@ -134,10 +130,17 @@
         <figcaption>図1: 両端固定梁・偏心集中荷重</figcaption>
       </figure>
 
-      <p>固定端Aから右方向に $x$ 軸を取ります。</p>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント（反偶力）$J_{\mathrm{A}},\, J_{\mathrm{B}}$</li>
+        <li>荷重点C（$x = al$）のたわみ $\delta_{\mathrm{C}}$</li>
+      </ol>
 
-      <!-- 2. 解法の方針 -->
-      <h2 id="method">解法の方針</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>解法の方針</h3>
       <p>両端固定梁は<strong>2次不静定構造</strong>です。右端Bの固定を外して片持ち梁（左端A固定）とし、自由端Bに上向き反力 $R_{\mathrm{B}}$ と時計回りの反偶力 $J_{\mathrm{B}}$ を冗長力として作用させます。</p>
 
       <figure class="beam-figure">
@@ -184,10 +187,9 @@
       </ul>
       <p>偏心荷重では $a \neq b$ のため、対称性は使えません。連立方程式を解いて $R_{\mathrm{B}}$, $J_{\mathrm{B}}$ を求めます。</p>
 
-      <!-- 3. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <h3>反力の算出</h3>
 
-      <h3>片持ち梁の公式（B端でのたわみ・たわみ角）</h3>
+      <h4>片持ち梁の公式（B端でのたわみ・たわみ角）</h4>
       <p>片持ち梁（A端固定）に対して、各荷重がB端に与えるたわみ $\delta_{\mathrm{B}}$（下向き正）とたわみ角 $\theta_{\mathrm{B}}$（時計回り正）は:</p>
 
       <p><strong>① 荷重 $P$（$x = al$ に下向き）:</strong></p>
@@ -199,7 +201,7 @@
       <p><strong>③ 反偶力 $J_{\mathrm{B}}$（$x = l$ に時計回り）:</strong></p>
       $$\delta_{\mathrm{B}3} = \frac{1}{2} \cdot \frac{J_{\mathrm{B}} l^2}{EI}, \qquad \theta_{\mathrm{B}3} = \frac{J_{\mathrm{B}} l}{EI}$$
 
-      <h3>適合条件（連立方程式）</h3>
+      <h4>適合条件（連立方程式）</h4>
       <p>B端は元の両端固定梁では固定端なので、たわみ・たわみ角ともにゼロ:</p>
 
       $$\delta_{\mathrm{B}} = \delta_{\mathrm{B}1} + \delta_{\mathrm{B}2} + \delta_{\mathrm{B}3} = 0$$
@@ -210,7 +212,7 @@
       $$\frac{a^2(3-a)}{6} \cdot Pl^3 - \frac{1}{3} R_{\mathrm{B}} l^3 + \frac{1}{2} J_{\mathrm{B}} l^2 = 0 \quad \cdots (i)$$
       $$\frac{a^2}{2} \cdot Pl^2 - \frac{1}{2} R_{\mathrm{B}} l^2 + J_{\mathrm{B}} l = 0 \quad \cdots (ii)$$
 
-      <h3>連立方程式の求解</h3>
+      <h4>連立方程式の求解</h4>
       <p>式(ii)より:</p>
       $$R_{\mathrm{B}} = a^2 P + \frac{2J_{\mathrm{B}}}{l} \quad \cdots (ii')$$
 
@@ -230,7 +232,7 @@
 
       $$\boxed{R_{\mathrm{B}} = a^2(3-2a) \cdot P}$$
 
-      <h3>$R_{\mathrm{A}}$, $J_{\mathrm{A}}$ の算出</h3>
+      <h4>$R_{\mathrm{A}}$, $J_{\mathrm{A}}$ の算出</h4>
       <p>対称性から、B端を固定端とする片持ち梁モデルで考えると、$a$ を $b$ に置き換えた同じ形の式が成り立ちます:</p>
       $$\boxed{R_{\mathrm{A}} = b^2(3-2b) \cdot P}$$
       $$\boxed{J_{\mathrm{A}} = b^2(1-b) \cdot Pl}$$
@@ -239,11 +241,29 @@
 
       <p>検算: $R_{\mathrm{A}} + R_{\mathrm{B}} = (1 - 3a^2 + 2a^3) \cdot P + a^2(3-2a) \cdot P = (1 - 3a^2 + 2a^3 + 3a^2 - 2a^3) \cdot P = P$ ✓</p>
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>たわみ</h3>
+      <p>荷重点C（$x = al$）でのたわみは:</p>
 
-      $$V(x) = R_{\mathrm{A}} = b^2(3a+b) \cdot P \quad (0 \le x < al)$$
-      $$V(x) = R_{\mathrm{A}} - P = -a^2(a+3b) \cdot P = -R_{\mathrm{B}} \quad (al < x \le l)$$
+      $$\delta_{\mathrm{C}} = \frac{a^3 b^3}{3} \cdot \frac{Pl^3}{EI}$$
+
+      <p>$a = b = 1/2$（中央荷重）の場合: $\delta_{\mathrm{C}} = \frac{(1/2)^3(1/2)^3}{3} \cdot \frac{Pl^3}{EI} = \frac{1}{192} \cdot \frac{Pl^3}{EI}$ となり、中央集中荷重の公式と一致します。</p>
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>両端固定梁・偏心集中荷重の解答（$a + b = 1$）</h4>
+        $$R_{\mathrm{A}} = b^2(3-2b) \cdot P, \qquad R_{\mathrm{B}} = a^2(3-2a) \cdot P$$
+        $$J_{\mathrm{A}} = b^2(1-b) \cdot Pl, \qquad J_{\mathrm{B}} = a^2(1-a) \cdot Pl$$
+        $$\delta_{\mathrm{C}} = \frac{a^3 b^3}{3} \cdot \frac{Pl^3}{EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
+
+      $$V(x) = R_{\mathrm{A}} = b^2(3-2b) \cdot P \quad (0 \le x < al)$$
+      $$V(x) = R_{\mathrm{A}} - P = -a^2(3-2a) \cdot P = -R_{\mathrm{B}} \quad (al < x \le l)$$
 
       <p>荷重点Cでせん断力が $P$ だけ不連続に変化します。</p>
 
@@ -271,11 +291,10 @@
         <figcaption>図3: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
 
       <p>$0 \le x \le al$ の区間:</p>
-      $$M(x) = R_{\mathrm{A}} x - J_{\mathrm{A}} = b^2(3a+b) \cdot Px - b^2(1-b) \cdot Pl$$
+      $$M(x) = R_{\mathrm{A}} x - J_{\mathrm{A}} = b^2(3-2b) \cdot Px - b^2(1-b) \cdot Pl$$
 
       <p>$al \le x \le l$ の区間:</p>
       $$M(x) = R_{\mathrm{A}} x - J_{\mathrm{A}} - P(x - al)$$
@@ -311,26 +330,7 @@
         <figcaption>図4: 曲げモーメント図</figcaption>
       </figure>
 
-      <!-- 6. たわみ -->
-      <h2 id="deflection">たわみ</h2>
-      <p>荷重点C（$x = al$）でのたわみは:</p>
-
-      $$\delta_{\mathrm{C}} = \frac{a^3 b^3}{3} \cdot \frac{Pl^3}{EI}$$
-
-      <p>$a = b = 1/2$（中央荷重）の場合: $\delta_{\mathrm{C}} = \frac{(1/2)^3(1/2)^3}{3} \cdot \frac{Pl^3}{EI} = \frac{1}{192} \cdot \frac{Pl^3}{EI}$ となり、中央集中荷重の公式と一致します。</p>
-
-      <!-- 7. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>両端固定梁・偏心集中荷重の公式（$a + b = 1$）</h4>
-        $$R_{\mathrm{A}} = b^2(3a+b) \cdot P, \qquad R_{\mathrm{B}} = a^2(a+3b) \cdot P$$
-        $$J_{\mathrm{A}} = b^2(1-b) \cdot Pl, \qquad J_{\mathrm{B}} = a^2(1-a) \cdot Pl$$
-        $$M(al) = 2a^2 b^2 \cdot Pl \quad \text{（荷重点での正の最大モーメント）}$$
-        $$\delta_{\mathrm{C}} = \frac{a^3 b^3}{3} \cdot \frac{Pl^3}{EI}$$
-      </div>
-
-      <!-- 8. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>偏心荷重では $J_{\mathrm{A}} \neq J_{\mathrm{B}}$、$R_{\mathrm{A}} \neq R_{\mathrm{B}}$ となり、対称性が使えません。</li>

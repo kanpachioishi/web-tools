@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>片持ち梁の偏心集中荷重（任意点） - たわみ・曲げモーメント・せん断力の求め方 | SimpleToolKit</title>
+  <meta name="description" content="片持ち梁の任意点に集中荷重が作用する場合の反力・せん断力図・曲げモーメント図・たわみの求め方をステップごとに詳しく解説。区分けした公式と図解付き。">
+  <meta property="og:title" content="片持ち梁の偏心集中荷重（任意点） - 解法と公式まとめ">
+  <meta property="og:description" content="片持ち梁の固定端からa離れた任意点に集中荷重Pが作用する場合の反力・SFD・BMD・たわみをステップごとに解説。一般解から自由端・中央の特殊ケースも導出。">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://simpletoolkit.net/exam/cantilever-eccentric-load/">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <link rel="stylesheet" href="../../common/style.css">
+
+  <style>
+    .beam-figure {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .beam-figure svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .beam-figure figcaption {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .formula-box {
+      background: var(--surface);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .formula-box h4 {
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .formula-box .katex-display {
+      margin: 8px 0;
+    }
+    .step-list {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+    }
+    .step-list li {
+      counter-increment: step;
+      padding: 12px 0 12px 48px;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-list li:last-child {
+      border-bottom: none;
+    }
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .related-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .related-links a {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .related-links a:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .related-links a span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+  </style>
+
+  <!-- JSON-LD 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "片持ち梁の偏心集中荷重（任意点） - たわみ・曲げモーメント・せん断力の求め方",
+    "description": "片持ち梁の固定端からa離れた任意点に集中荷重が作用する場合の反力・せん断力図・曲げモーメント図・たわみの求め方をステップごとに詳しく解説。",
+    "author": { "@type": "Organization", "name": "SimpleToolKit" },
+    "publisher": { "@type": "Organization", "name": "SimpleToolKit" },
+    "mainEntityOfPage": "https://simpletoolkit.net/exam/cantilever-eccentric-load/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+
+  <main>
+    <script src="../../common/breadcrumb.js"></script>
+
+    <p style="margin-bottom: 8px;"><a href="../index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;" class="back-to-list">&larr; 梁の公式集に戻る</a></p>
+
+    <h1>片持ち梁の偏心集中荷重（任意点）</h1>
+    <p class="tool-description">固定端Aと自由端Bを持つ片持ち梁の固定端から距離 $a$ の任意点Cに集中荷重 $P$ が作用する場合の反力・せん断力・曲げモーメント・たわみを求めます。</p>
+
+    <!-- 目次 -->
+    <div class="article-toc">
+      <p>目次</p>
+      <ol>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
+        <li><a href="#points">ポイント</a></li>
+      </ol>
+    </div>
+
+    <div class="article-body">
+
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の片持ち梁において、左端Aを固定端、右端Bを自由端とします。固定端Aから距離 $a$（$0 < a \le l$）の点Cに下向きの集中荷重 $P$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 230" width="600" height="230" font-family="'Times New Roman', serif">
+          <defs>
+            <pattern id="beam-hatch" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
+              <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="600" height="230" fill="#1a1a2e" rx="8"/>
+          <!-- 壁 -->
+          <rect x="40" y="20" width="30" height="160" fill="#3d3d5c" stroke="#9999bb" stroke-width="2"/>
+          <line x1="40" y1="35" x2="55" y2="20" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="55" x2="70" y2="25" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="75" x2="70" y2="45" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="95" x2="70" y2="65" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="115" x2="70" y2="85" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="135" x2="70" y2="105" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="155" x2="70" y2="125" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="40" y1="175" x2="70" y2="145" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="50" y1="180" x2="70" y2="165" stroke="#7777aa" stroke-width="1.2"/>
+          <line x1="60" y1="180" x2="70" y2="177" stroke="#7777aa" stroke-width="1.2"/>
+          <!-- 梁 -->
+          <rect x="70" y="90" width="460" height="16" fill="url(#beam-hatch)" stroke="#999" stroke-width="1.5"/>
+          <!-- 荷重P（点C：固定端から40%の位置 = 70 + 460*0.4 = 254） -->
+          <rect x="251" y="38" width="6" height="38" fill="#b0b0b0"/>
+          <polygon points="254,90 238.7,68 269.3,68" fill="#b0b0b0"/>
+          <text x="254" y="28" font-size="26" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">P</text>
+          <!-- ラベル A, B, C -->
+          <text x="80" y="125" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
+          <text x="530" y="125" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">B</text>
+          <text x="254" y="125" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">C</text>
+          <!-- 寸法線 a: A→C -->
+          <line x1="70" y1="158" x2="70" y2="178" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="254" y1="158" x2="254" y2="178" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="70" y1="168" x2="254" y2="168" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="70,168 83,163 83,173" fill="#b0b0b0"/>
+          <polygon points="254,168 241,163 241,173" fill="#b0b0b0"/>
+          <text x="162" y="192" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">a</text>
+          <!-- 寸法線 l: A→B -->
+          <line x1="530" y1="158" x2="530" y2="178" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="70" y1="210" x2="530" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="70" y1="200" x2="70" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="530" y1="200" x2="530" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="70,210 83,205 83,215" fill="#b0b0b0"/>
+          <polygon points="530,210 517,205 517,215" fill="#b0b0b0"/>
+          <text x="300" y="228" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l</text>
+        </svg>
+        <figcaption>図1: 片持ち梁・任意点集中荷重（偏心荷重）</figcaption>
+      </figure>
+
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}}$ と固定端モーメント（反偶力）$J_{\mathrm{A}}$</li>
+        <li>自由端のたわみ $\delta_{\max}$</li>
+      </ol>
+
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>反力の算出</h3>
+      <p>固定端Aには鉛直反力 $R_{\mathrm{A}}$ と反偶力 $J_{\mathrm{A}}$ が発生します。力の釣り合いとモーメントの釣り合いから求めます。</p>
+
+      <ul class="step-list">
+        <li>
+          <strong>鉛直方向の力の釣り合い</strong>
+          $$R_{\mathrm{A}} - P = 0 \quad \Rightarrow \quad R_{\mathrm{A}} = P$$
+        </li>
+        <li>
+          <strong>A点まわりのモーメントの釣り合い</strong>
+          <p>反時計回りを正とします。荷重 $P$ はA点から距離 $a$ の位置に作用します。</p>
+          $$J_{\mathrm{A}} - P \cdot a = 0 \quad \Rightarrow \quad J_{\mathrm{A}} = Pa$$
+        </li>
+      </ul>
+
+      <p>自由端荷重（$a = l$）の場合は $J_{\mathrm{A}} = Pl$ となり、既知の公式に一致します。</p>
+
+      <h3>たわみとたわみ角</h3>
+      <p>荷重点Cで梁を2区間に分けて解きます。境界条件は固定端（$x = 0$）でたわみ $y = 0$、たわみ角 $y' = 0$、荷重点C（$x = a$）での連続条件（たわみとたわみ角が一致）です。</p>
+
+      <h4>区間 1：$0 \le x \le a$</h4>
+      <p>この区間の曲げモーメントは $M(x) = P(a - x)$ なので、たわみの微分方程式は:</p>
+      $$EI\,y_1'' = P(a - x)$$
+
+      <p>1回積分してたわみ角:</p>
+      $$EI\,y_1' = P\left(ax - \frac{x^2}{2}\right) + C_1$$
+
+      <p>境界条件 $y_1'(0) = 0$ より $C_1 = 0$。</p>
+      $$EI\,y_1' = P\left(ax - \frac{x^2}{2}\right)$$
+
+      <p>もう1回積分してたわみ:</p>
+      $$EI\,y_1 = P\left(\frac{ax^2}{2} - \frac{x^3}{6}\right) + C_2$$
+
+      <p>境界条件 $y_1(0) = 0$ より $C_2 = 0$。</p>
+
+      $$\boxed{y_1(x) = \frac{P}{EI}\left(\frac{ax^2}{2} - \frac{x^3}{6}\right)} \quad (0 \le x \le a)$$
+
+      <h4>区間 2：$a < x \le l$</h4>
+      <p>この区間の曲げモーメントは $M(x) = 0$ なので:</p>
+      $$EI\,y_2'' = 0$$
+
+      <p>積分すると $y_2'' = 0$ より $y_2$ は一次関数です。</p>
+      $$EI\,y_2' = C_3, \qquad EI\,y_2 = C_3 x + C_4$$
+
+      <p>連続条件から $C_3$, $C_4$ を求めます。$x = a$ でのたわみ角：</p>
+      $$C_3 = EI\,y_1'(a) = P\left(a \cdot a - \frac{a^2}{2}\right) = \frac{Pa^2}{2}$$
+
+      <p>$x = a$ でのたわみ：</p>
+      $$EI\,y_1(a) = P\left(\frac{a^3}{2} - \frac{a^3}{6}\right) = \frac{Pa^3}{3}$$
+      $$C_4 = EI\,y_1(a) - C_3 \cdot a = \frac{Pa^3}{3} - \frac{Pa^2}{2} \cdot a = -\frac{Pa^3}{6}$$
+
+      <p>したがって:</p>
+      $$EI\,y_2 = \frac{Pa^2}{2} x - \frac{Pa^3}{6}$$
+
+      $$\boxed{y_2(x) = \frac{Pa^2(3x - a)}{6EI}} \quad (a < x \le l)$$
+
+      <h4>主要な値</h4>
+
+      <p><strong>荷重点Cのたわみ</strong>（$x = a$）:</p>
+      $$y(a) = \frac{Pa^3}{3EI}$$
+
+      <p><strong>最大たわみ角</strong>（荷重点C以降は一定）:</p>
+      $$\theta_{\max} = y_1'(a) = \frac{Pa^2}{2EI}$$
+
+      <p><strong>最大たわみ</strong>（自由端 $x = l$）:</p>
+      $$\delta_{\max} = y_2(l) = \frac{Pa^2(3l - a)}{6EI}$$
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>片持ち梁・任意点集中荷重の解答</h4>
+        $$R_{\mathrm{A}} = P, \qquad J_{\mathrm{A}} = Pa$$
+        $$\delta_{\max} = \frac{Pa^2(3l - a)}{6EI}, \qquad \theta_{\max} = \frac{Pa^2}{2EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
+      <p>梁を任意の位置 $x$ で切断し、左側の釣り合いを考えます。</p>
+
+      <p><strong>荷重点Cより左側 $0 \le x \le a$：</strong></p>
+      $$V(x) = R_{\mathrm{A}} = P$$
+
+      <p><strong>荷重点Cより右側 $a < x \le l$：</strong></p>
+      $$V(x) = R_{\mathrm{A}} - P = P - P = 0$$
+
+      <p>荷重点Cより左は $P$ 一定、右はゼロになります。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="160" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="120" x2="545" y2="120" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="30" x2="70" y2="140" stroke="#666" stroke-width="1.5"/>
+          <!-- SFD: P from A(70) to C(254), then 0 from C(254) to B(530) -->
+          <!-- Region A to C: V = P (positive) -->
+          <line x1="70" y1="50" x2="254" y2="50" stroke="#5cb8ff" stroke-width="2.5"/>
+          <!-- Drop at C -->
+          <line x1="254" y1="50" x2="254" y2="120" stroke="#5cb8ff" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <!-- Region C to B: V = 0 -->
+          <line x1="254" y1="120" x2="530" y2="120" stroke="#5cb8ff" stroke-width="2.5"/>
+          <!-- Fill -->
+          <rect x="70" y="50" width="184" height="70" fill="#5cb8ff" fill-opacity="0.1"/>
+          <!-- Labels -->
+          <text x="40" y="55" font-size="20" text-anchor="middle" font-weight="bold" fill="#5cb8ff">P</text>
+          <text x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">せん断力図（SFD）</text>
+          <text x="40" y="124" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="254" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">C</text>
+          <text x="530" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図2: せん断力図（荷重点Cで急変し右側はゼロ）</figcaption>
+      </figure>
+
+      <h3>曲げモーメント図（BMD）</h3>
+      <p>任意の位置 $x$ での曲げモーメントを求めます。</p>
+
+      <p><strong>荷重点Cより左側 $0 \le x \le a$：</strong></p>
+      $$M(x) = J_{\mathrm{A}} - R_{\mathrm{A}} \cdot x = Pa - Px = P(a - x)$$
+
+      <p><strong>荷重点Cより右側 $a < x \le l$：</strong></p>
+      $$M(x) = J_{\mathrm{A}} - R_{\mathrm{A}} \cdot x + P(x - a) = Pa - Px + Px - Pa = 0$$
+
+      <ul>
+        <li>$x = 0$（固定端A）: $M = Pa$（最大）</li>
+        <li>$x = a$（荷重点C）: $M = 0$</li>
+        <li>$x = a$ から $x = l$（自由端B）: $M = 0$（一定）</li>
+      </ul>
+
+      <p>曲げモーメントは固定端で最大 $Pa$ となり、荷重点Cまで線形に減少し、そこから右はゼロです。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="160" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="120" x2="545" y2="120" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="30" x2="70" y2="140" stroke="#666" stroke-width="1.5"/>
+          <!-- BMD: triangle from A(70,50) to C(254,120), then 0 line to B(530,120) -->
+          <polygon points="70,50 254,120 70,120" fill="#ff7eb3" fill-opacity="0.15" stroke="none"/>
+          <line x1="70" y1="50" x2="254" y2="120" stroke="#ff7eb3" stroke-width="2.5"/>
+          <line x1="70" y1="50" x2="70" y2="120" stroke="#ff7eb3" stroke-width="2.5"/>
+          <line x1="254" y1="120" x2="530" y2="120" stroke="#ff7eb3" stroke-width="2.5"/>
+          <!-- Labels -->
+          <text x="28" y="55" font-size="18" text-anchor="middle" font-weight="bold" fill="#ff7eb3">Pa</text>
+          <text x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">曲げモーメント図（BMD）</text>
+          <text x="40" y="124" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="254" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">C</text>
+          <text x="530" y="145" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図3: 曲げモーメント図（固定端Aで最大 $Pa$、荷重点Cからゼロ）</figcaption>
+      </figure>
+
+      <!-- 4. ポイント -->
+      <h2 id="points">ポイント</h2>
+      <ul>
+        <li>これは<strong>一般解（汎用公式）</strong>です。荷重位置 $a$ を変えるだけで様々なケースを網羅できます。</li>
+        <li><strong>$a = l$（自由端荷重）</strong>と置くと:
+          $$\delta_{\max} = \frac{Pl^2(3l - l)}{6EI} = \frac{Pl^3}{3EI}, \quad \theta_{\max} = \frac{Pl^2}{2EI}$$
+          これは片持ち梁の自由端集中荷重の公式に一致します。</li>
+        <li><strong>$a = l/2$（中央荷重）</strong>と置くと:
+          $$\delta_{\max} = \frac{P(l/2)^2(3l - l/2)}{6EI} = \frac{5Pl^3}{48EI}$$
+          こちらも既知の公式に一致します。</li>
+        <li>荷重点Cより右の区間（$a < x \le l$）は曲げモーメントがゼロのため、<strong>梁は直線的に変形</strong>します（たわみが $x$ の一次関数になる）。</li>
+        <li>最大たわみは常に自由端Bで生じ、最大たわみ角は荷重点C以降一定（$= Pa^2/(2EI)$）です。</li>
+      </ul>
+
+      <!-- 関連コンテンツ -->
+      <div class="content-section">
+        <h2>関連する問題パターン</h2>
+        <div class="related-links">
+          <a href="../cantilever-point-load/">
+            <strong>片持ち梁・集中荷重（自由端）</strong><br>
+            <span>自由端に荷重が作用する基本ケース（$a = l$）</span>
+          </a>
+          <a href="../cantilever-point-load-center/">
+            <strong>片持ち梁・集中荷重（中央）</strong><br>
+            <span>中央点に荷重が作用する場合（$a = l/2$）</span>
+          </a>
+          <a href="../cantilever-distributed-load/">
+            <strong>片持ち梁・等分布荷重</strong><br>
+            <span>全長にわたって等分布荷重が作用する場合</span>
+          </a>
+          <a href="../simply-supported-eccentric-load/">
+            <strong>単純支持梁・偏心集中荷重</strong><br>
+            <span>両端ピン支持の任意点に荷重が作用する場合</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

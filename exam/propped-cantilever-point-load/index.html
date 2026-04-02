@@ -63,20 +63,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#method">解法の方針（重ね合わせ法）</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の梁において、左端Aを固定端、右端Bをローラー支持とし、中央C（$x = l/2$）に下向きの集中荷重 $P$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
       <p>この梁は反力が3つ（$R_{\mathrm{A}}$, $J_{\mathrm{A}}$, $R_{\mathrm{B}}$）あるのに対し、釣り合い条件は2つしかないため、<strong>1次不静定構造</strong>です。</p>
 
@@ -129,8 +126,16 @@
         <figcaption>図1: 一端固定・他端ローラー支持梁・中央集中荷重</figcaption>
       </figure>
 
-      <!-- 2. 解法の方針 -->
-      <h2 id="method">解法の方針（重ね合わせ法）</h2>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント $J_{\mathrm{A}}$</li>
+      </ol>
+
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>解法の方針（重ね合わせ法）</h3>
       <p>ローラー支持Bの反力 $R_{\mathrm{B}}$ を<strong>冗長力</strong>とし、Bの拘束を解除して片持ち梁（固定端A、自由端B）に分解します。</p>
 
       <ul class="step-list">
@@ -151,8 +156,7 @@
         </li>
       </ul>
 
-      <!-- 3. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <h3>反力の算出</h3>
       <p>適合条件から冗長力を求めます。</p>
 
       $$R_{\mathrm{B}} = \frac{5P}{16}$$
@@ -168,8 +172,18 @@
         $$R_{\mathrm{A}} = \frac{11P}{16}, \quad R_{\mathrm{B}} = \frac{5P}{16}, \quad J_{\mathrm{A}} = \frac{3Pl}{16}$$
       </div>
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <!-- 解答まとめ -->
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>一端固定・他端ローラー支持梁・中央集中荷重の公式</h4>
+        $$R_{\mathrm{A}} = \frac{11P}{16}, \quad R_{\mathrm{B}} = \frac{5P}{16}, \quad J_{\mathrm{A}} = \frac{3Pl}{16}$$
+      </div>
+
+      <!-- 3. 補足：せん断力図・曲げモーメント図 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>固定端Aから右方向に $x$ 軸を取り、任意断面でのせん断力を求めます。</p>
 
       <p><strong>区間1</strong>（$0 \le x &lt; l/2$）:</p>
@@ -208,8 +222,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>任意の位置 $x$ での曲げモーメントを求めます（下側引張を正とする）。</p>
 
       <p><strong>区間1</strong>（$0 \le x \le l/2$）:</p>
@@ -257,17 +270,7 @@
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
 
-      <!-- 6. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>一端固定・他端ローラー支持梁・中央集中荷重の公式</h4>
-        $$R_{\mathrm{A}} = \frac{11P}{16}, \quad R_{\mathrm{B}} = \frac{5P}{16}, \quad J_{\mathrm{A}} = \frac{3Pl}{16}$$
-        $$V(x) = \begin{cases} \dfrac{11P}{16} & (0 \le x < l/2) \\[6pt] -\dfrac{5P}{16} & (l/2 < x \le l) \end{cases}$$
-        $$M(x) = \begin{cases} -\dfrac{3Pl}{16} + \dfrac{11Px}{16} & (0 \le x \le l/2) \\[6pt] \dfrac{5P(l-x)}{16} & (l/2 \le x \le l) \end{cases}$$
-      </div>
-
-      <!-- 7. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>この梁は<strong>1次不静定</strong>であり、釣り合い条件だけでは反力が求まりません。変形の適合条件（ローラー点のたわみ＝0）が必要です。</li>

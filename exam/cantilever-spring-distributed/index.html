@@ -63,21 +63,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#approach">解法の方針 — 重ね合わせ法（適合条件法）</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみ</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の片持ち梁において、左端Aを固定端、右端Bをばね定数 $k$ のばねで支持します。梁の全長にわたって等分布荷重 $q$（単位長さあたりの荷重、下向き）が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <p>固定端Aには鉛直反力 $R_{\mathrm{A}}$ と反偶力 $J_{\mathrm{A}}$ が、ばね支持端Bにはばね反力 $R_{\mathrm{B}}$ が発生します。未知反力が3つに対して釣り合い式が2つなので、<strong>1次不静定</strong>です。</p>
@@ -98,33 +94,29 @@
           <!-- 梁 -->
           <rect x="70" y="90" width="440" height="14" fill="#3d3d5c" stroke="#9999bb" stroke-width="1.5"/>
           <!-- 等分布荷重（下向き矢印群） -->
-          <line x1="70" y1="40" x2="510" y2="40" stroke="#ff7eb3" stroke-width="2"/>
+          <line x1="70" y1="40" x2="530" y2="40" stroke="#ff7eb3" stroke-width="2"/>
           <line x1="70" y1="40" x2="70" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
           <polygon points="70,90 64,78 76,78" fill="#ff7eb3"/>
-          <line x1="90" y1="40" x2="90" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="90,90 84,78 96,78" fill="#ff7eb3"/>
-          <line x1="130" y1="40" x2="130" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="130,90 124,78 136,78" fill="#ff7eb3"/>
-          <line x1="170" y1="40" x2="170" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="170,90 164,78 176,78" fill="#ff7eb3"/>
-          <line x1="210" y1="40" x2="210" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="210,90 204,78 216,78" fill="#ff7eb3"/>
-          <line x1="250" y1="40" x2="250" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="250,90 244,78 256,78" fill="#ff7eb3"/>
-          <line x1="290" y1="40" x2="290" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="290,90 284,78 296,78" fill="#ff7eb3"/>
-          <line x1="330" y1="40" x2="330" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="330,90 324,78 336,78" fill="#ff7eb3"/>
-          <line x1="370" y1="40" x2="370" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="370,90 364,78 376,78" fill="#ff7eb3"/>
-          <line x1="410" y1="40" x2="410" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="410,90 404,78 416,78" fill="#ff7eb3"/>
-          <line x1="450" y1="40" x2="450" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="450,90 444,78 456,78" fill="#ff7eb3"/>
-          <line x1="490" y1="40" x2="490" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="490,90 484,78 496,78" fill="#ff7eb3"/>
-          <line x1="510" y1="40" x2="510" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
-          <polygon points="510,90 504,78 516,78" fill="#ff7eb3"/>
+          <line x1="116" y1="40" x2="116" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="116,90 110,78 122,78" fill="#ff7eb3"/>
+          <line x1="162" y1="40" x2="162" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="162,90 156,78 168,78" fill="#ff7eb3"/>
+          <line x1="208" y1="40" x2="208" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="208,90 202,78 214,78" fill="#ff7eb3"/>
+          <line x1="254" y1="40" x2="254" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="254,90 248,78 260,78" fill="#ff7eb3"/>
+          <line x1="300" y1="40" x2="300" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="300,90 294,78 306,78" fill="#ff7eb3"/>
+          <line x1="346" y1="40" x2="346" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="346,90 340,78 352,78" fill="#ff7eb3"/>
+          <line x1="392" y1="40" x2="392" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="392,90 386,78 398,78" fill="#ff7eb3"/>
+          <line x1="438" y1="40" x2="438" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="438,90 432,78 444,78" fill="#ff7eb3"/>
+          <line x1="484" y1="40" x2="484" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="484,90 478,78 490,78" fill="#ff7eb3"/>
+          <line x1="530" y1="40" x2="530" y2="82" stroke="#ff7eb3" stroke-width="1.5"/>
+          <polygon points="530,90 524,78 536,78" fill="#ff7eb3"/>
           <!-- 分布荷重ラベル -->
           <text x="290" y="30" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#ff7eb3">q</text>
           <!-- ばね（B端下方ジグザグ） -->
@@ -152,10 +144,17 @@
         <figcaption>図1: 片持ち梁＋ばね支持・等分布荷重</figcaption>
       </figure>
 
-      <p>固定端Aから右方向に $x$ 軸を取ります。</p>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>ばね反力 $R_{\mathrm{B}}$</li>
+        <li>固定端反力 $R_{\mathrm{A}}$ および固定端モーメント $J_{\mathrm{A}}$</li>
+        <li>自由端Bのたわみ $y_B$</li>
+      </ol>
 
-      <!-- 2. 解法の方針 -->
-      <h2 id="approach">解法の方針 — 重ね合わせ法（適合条件法）</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>解法の方針 — 重ね合わせ法（適合条件法）</h3>
       <p>この問題は<strong>1次不静定</strong>であり、力の釣り合いだけでは反力を決定できません。そこで<strong>重ね合わせ法（適合条件法）</strong>を用います。</p>
 
       <p>考え方は次の通りです:</p>
@@ -179,18 +178,17 @@
         </li>
       </ul>
 
-      <!-- 3. 反力の算出 -->
-      <h2 id="reactions">反力の算出</h2>
+      <h3>反力の算出</h3>
 
-      <h3>ケース1: 等分布荷重による自由端Bのたわみ</h3>
+      <h4>ケース1: 等分布荷重による自由端Bのたわみ</h4>
       <p>片持ち梁に等分布荷重 $q$ が全長に作用するとき、自由端（$x = l$）のたわみは:</p>
       $$\delta_q = \frac{ql^4}{8EI}$$
 
-      <h3>ケース2: ばね反力 $R_{\mathrm{B}}$ による自由端Bの上向きたわみ</h3>
+      <h4>ケース2: ばね反力 $R_{\mathrm{B}}$ による自由端Bの上向きたわみ</h4>
       <p>自由端Bに上向きの力 $R_{\mathrm{B}}$ が作用するとき、Bでのたわみは:</p>
       $$\delta_R = \frac{R_{\mathrm{B}} l^3}{3EI}$$
 
-      <h3>適合条件</h3>
+      <h4>適合条件</h4>
       <p>B端の実際のたわみ（下向き）はばねの伸びに等しいから:</p>
       $$\delta_q - \delta_R = \frac{R_{\mathrm{B}}}{k}$$
 
@@ -206,15 +204,45 @@
         $$R_{\mathrm{B}} = \frac{3kql^4}{8(3EI + kl^3)}$$
       </div>
 
-      <h3>固定端の反力</h3>
+      <h4>固定端の反力</h4>
       <p>鉛直方向の釣り合いとA点まわりのモーメントの釣り合いから:</p>
 
       $$R_{\mathrm{A}} = ql - R_{\mathrm{B}}$$
 
       $$J_{\mathrm{A}} = \frac{ql^2}{2} - R_{\mathrm{B}} l$$
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>たわみ</h3>
+      <p>たわみは重ね合わせの原理により、等分布荷重 $q$ によるたわみからばね反力 $R_{\mathrm{B}}$ によるたわみを差し引くことで求められます。</p>
+
+      <h4>自由端Bのたわみ</h4>
+      <p>B端のたわみはばねの伸びに等しく:</p>
+      $$y_B = \frac{R_{\mathrm{B}}}{k} = \frac{3ql^4}{8(3EI + kl^3)}$$
+
+      <h4>たわみの一般式</h4>
+      <p>等分布荷重による片持ち梁のたわみ:</p>
+      $$y_q(x) = \frac{q}{24EI}(x^4 - 4lx^3 + 6l^2 x^2)$$
+
+      <p>自由端の集中荷重 $R_{\mathrm{B}}$ による片持ち梁のたわみ:</p>
+      $$y_R(x) = \frac{R_{\mathrm{B}} x^2}{6EI}(3l - x)$$
+
+      <p>実際のたわみ:</p>
+      $$y(x) = y_q(x) - y_R(x) = \frac{q}{24EI}(x^4 - 4lx^3 + 6l^2 x^2) - \frac{R_{\mathrm{B}} x^2}{6EI}(3l - x)$$
+
+      <!-- 解答まとめ -->
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>片持ち梁＋ばね支持・等分布荷重の公式</h4>
+        $$R_{\mathrm{B}} = \frac{3kql^4}{8(3EI + kl^3)}$$
+        $$R_{\mathrm{A}} = ql - R_{\mathrm{B}}$$
+        $$J_{\mathrm{A}} = \frac{ql^2}{2} - R_{\mathrm{B}} l$$
+        $$y_B = \frac{R_{\mathrm{B}}}{k}$$
+      </div>
+
+      <!-- 3. 補足：せん断力図・曲げモーメント図 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>固定端Aから右向きに $x$ を取り、左側の釣り合いを考えます。</p>
 
       $$V(x) = R_{\mathrm{A}} - qx$$
@@ -251,8 +279,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>任意の位置 $x$ での曲げモーメント:</p>
 
       $$M(x) = J_{\mathrm{A}} - R_{\mathrm{A}} x + \frac{qx^2}{2}$$
@@ -286,38 +313,7 @@
         <figcaption>図3: 曲げモーメント図（概形）</figcaption>
       </figure>
 
-      <!-- 6. たわみ -->
-      <h2 id="deflection">たわみ</h2>
-      <p>たわみは重ね合わせの原理により、等分布荷重 $q$ によるたわみからばね反力 $R_{\mathrm{B}}$ によるたわみを差し引くことで求められます。</p>
-
-      <h3>自由端Bのたわみ</h3>
-      <p>B端のたわみはばねの伸びに等しく:</p>
-      $$y_B = \frac{R_{\mathrm{B}}}{k} = \frac{3ql^4}{8(3EI + kl^3)}$$
-
-      <h3>たわみの一般式</h3>
-      <p>等分布荷重による片持ち梁のたわみ:</p>
-      $$y_q(x) = \frac{q}{24EI}(x^4 - 4lx^3 + 6l^2 x^2)$$
-
-      <p>自由端の集中荷重 $R_{\mathrm{B}}$ による片持ち梁のたわみ:</p>
-      $$y_R(x) = \frac{R_{\mathrm{B}} x^2}{6EI}(3l - x)$$
-
-      <p>実際のたわみ:</p>
-      $$y(x) = y_q(x) - y_R(x) = \frac{q}{24EI}(x^4 - 4lx^3 + 6l^2 x^2) - \frac{R_{\mathrm{B}} x^2}{6EI}(3l - x)$$
-
-      <!-- 7. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>片持ち梁＋ばね支持・等分布荷重の公式</h4>
-        $$R_{\mathrm{B}} = \frac{3kql^4}{8(3EI + kl^3)}$$
-        $$R_{\mathrm{A}} = ql - R_{\mathrm{B}}$$
-        $$J_{\mathrm{A}} = \frac{ql^2}{2} - R_{\mathrm{B}} l$$
-        $$V(x) = R_{\mathrm{A}} - qx$$
-        $$M(x) = J_{\mathrm{A}} - R_{\mathrm{A}} x + \frac{qx^2}{2}$$
-        $$y_B = \frac{R_{\mathrm{B}}}{k}$$
-      </div>
-
-      <!-- 8. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>等分布荷重の場合も、重ね合わせ法の手順は集中荷重の場合と同じ。<strong>「ばねを外す → たわみを2ケース計算 → 適合条件で $R_{\mathrm{B}}$ を決定」</strong>という流れを覚えておこう。</li>

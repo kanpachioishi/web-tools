@@ -63,21 +63,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#method">解法の方針</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみ</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の両端固定梁において、左端Aと右端Bがともに固定端です。全長にわたって下向きの等分布荷重 $q$（単位長さあたり）が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
@@ -103,35 +99,29 @@
           <rect x="530" y="40" width="30" height="200" fill="url(#hatch-right)"/>
           <!-- 梁 -->
           <rect x="70" y="130" width="460" height="16" fill="url(#beam-hatch)" stroke="#999" stroke-width="1.5"/>
-          <!-- 等分布荷重の矢印群 -->
+          <!-- 等分布荷重の矢印群（40px等間隔: 70,110,...,530） -->
           <line x1="70" y1="65" x2="530" y2="65" stroke="#b0b0b0" stroke-width="2"/>
-          <line x1="70" y1="65" x2="70" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
+          <line x1="70" y1="65" x2="70" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
           <polygon points="70,130 64,118 76,118" fill="#b0b0b0"/>
-          <line x1="90" y1="65" x2="90" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="90,130 84,118 96,118" fill="#b0b0b0"/>
-          <line x1="130" y1="65" x2="130" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="130,130 124,118 136,118" fill="#b0b0b0"/>
-          <line x1="170" y1="65" x2="170" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="170,130 164,118 176,118" fill="#b0b0b0"/>
-          <line x1="210" y1="65" x2="210" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="210,130 204,118 216,118" fill="#b0b0b0"/>
-          <line x1="250" y1="65" x2="250" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="250,130 244,118 256,118" fill="#b0b0b0"/>
-          <line x1="290" y1="65" x2="290" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="290,130 284,118 296,118" fill="#b0b0b0"/>
-          <line x1="330" y1="65" x2="330" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="330,130 324,118 336,118" fill="#b0b0b0"/>
-          <line x1="370" y1="65" x2="370" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="370,130 364,118 376,118" fill="#b0b0b0"/>
-          <line x1="410" y1="65" x2="410" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="410,130 404,118 416,118" fill="#b0b0b0"/>
-          <line x1="450" y1="65" x2="450" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="450,130 444,118 456,118" fill="#b0b0b0"/>
-          <line x1="490" y1="65" x2="490" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="490,130 484,118 496,118" fill="#b0b0b0"/>
-          <line x1="510" y1="65" x2="510" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
-          <polygon points="510,130 504,118 516,118" fill="#b0b0b0"/>
-          <line x1="530" y1="65" x2="530" y2="125" stroke="#b0b0b0" stroke-width="1.2"/>
+          <line x1="116" y1="65" x2="116" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="116,130 110,118 122,118" fill="#b0b0b0"/>
+          <line x1="162" y1="65" x2="162" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="162,130 156,118 168,118" fill="#b0b0b0"/>
+          <line x1="208" y1="65" x2="208" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="208,130 202,118 214,118" fill="#b0b0b0"/>
+          <line x1="254" y1="65" x2="254" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="254,130 248,118 260,118" fill="#b0b0b0"/>
+          <line x1="300" y1="65" x2="300" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="300,130 294,118 306,118" fill="#b0b0b0"/>
+          <line x1="346" y1="65" x2="346" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="346,130 340,118 352,118" fill="#b0b0b0"/>
+          <line x1="392" y1="65" x2="392" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="392,130 386,118 398,118" fill="#b0b0b0"/>
+          <line x1="438" y1="65" x2="438" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="438,130 432,118 444,118" fill="#b0b0b0"/>
+          <line x1="484" y1="65" x2="484" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
+          <polygon points="484,130 478,118 490,118" fill="#b0b0b0"/>
+          <line x1="530" y1="65" x2="530" y2="122" stroke="#b0b0b0" stroke-width="1.2"/>
           <polygon points="530,130 524,118 536,118" fill="#b0b0b0"/>
           <text x="300" y="55" font-size="22" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">q</text>
           <!-- ラベル -->
@@ -148,30 +138,62 @@
         <figcaption>図1: 両端固定梁・等分布荷重</figcaption>
       </figure>
 
-      <p>固定端Aから右方向に $x$ 軸を取ります。</p>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント（反偶力）$J_{\mathrm{A}},\, J_{\mathrm{B}}$</li>
+        <li>最大たわみ $\delta_{\max}$</li>
+      </ol>
 
-      <!-- 2. 解法の方針 -->
-      <h2 id="method">解法の方針</h2>
-      <p>両端固定梁は<strong>2次不静定構造</strong>です。重ね合わせ法で反偶力 $J_{\mathrm{A}}$, $J_{\mathrm{B}}$ を冗長力として解きます。</p>
-      <ul class="step-list">
-        <li><strong>基本系の設定</strong>: 反偶力 $J_{\mathrm{A}}$, $J_{\mathrm{B}}$ を冗長力とし、両端を単純支持梁に置き換えます。</li>
-        <li><strong>適合条件</strong>: 固定端でのたわみ角がゼロ：$\theta_A = 0$, $\theta_B = 0$。</li>
-        <li><strong>対称性の利用</strong>: 等分布荷重は対称なので $R_{\mathrm{A}} = R_{\mathrm{B}}$, $J_{\mathrm{A}} = J_{\mathrm{B}}$ となり、適合条件は1つで済みます。</li>
-      </ul>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
 
-      <!-- 3. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
-      <p>対称性から:</p>
-      $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{ql}{2}$$
+      <p>荷重の合力は:</p>
+      $$W = q \times l = ql$$
 
-      <p>反偶力は、単純支持梁の等分布荷重による端部たわみ角 $\theta = \frac{ql^3}{24EI}$ と、端部モーメントによるたわみ角 $\theta = \frac{Ml}{3EI}$ を重ね合わせ、$\theta_A = 0$ とすることで:</p>
-      $$\frac{ql^3}{24EI} = \frac{J_{\mathrm{A}} l}{3EI} \quad \Rightarrow \quad J_{\mathrm{A}} = \frac{ql^2}{8} \cdots$$
+      <h3>解法の方針</h3>
+      <p>等分布荷重は微小な集中荷重の重ね合わせです。<a href="../fixed-beam-eccentric-load/">両端固定梁の偏心集中荷重</a>の結果を積分することで、連立方程式を解くことなく反力・固定端モーメントが求まります。</p>
 
-      <p>対称性と重ね合わせ法の正しい結果:</p>
-      $$J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{ql^2}{12}$$
+      <p>偏心集中荷重 $P$ の結果（$a$, $b$ は無次元比率、$a + b = 1$）:</p>
+      $$R_{\mathrm{B}} = a^2(3-2a) \cdot P, \qquad J_{\mathrm{B}} = a^2(1-a) \cdot Pl$$
+      $$R_{\mathrm{A}} = b^2(3-2b) \cdot P, \qquad J_{\mathrm{A}} = b^2(1-b) \cdot Pl$$
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <p>等分布荷重 $q$ の微小区間に作用する荷重は $P = ql\,da$ です。荷重範囲は全長なので $a \in [0, 1]$ で積分します。</p>
+
+      <h3>反力の算出</h3>
+
+      <h4>B端の反偶力 $J_{\mathrm{B}}$</h4>
+      $$\frac{J_{\mathrm{B}}}{ql^2} = \int_0^{1} a^2(1-a)\,da = \left[\frac{a^3}{3} - \frac{a^4}{4}\right]_0^{1} = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}$$
+
+      <h4>B端の鉛直反力 $R_{\mathrm{B}}$</h4>
+      $$\frac{R_{\mathrm{B}}}{ql} = \int_0^{1} a^2(3-2a)\,da = \left[a^3 - \frac{a^4}{2}\right]_0^{1} = 1 - \frac{1}{2} = \frac{1}{2}$$
+
+      <h4>まとめと検算</h4>
+      <p>対称性から $R_{\mathrm{A}} = R_{\mathrm{B}}$, $J_{\mathrm{A}} = J_{\mathrm{B}}$ です。</p>
+      $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{ql}{2}, \qquad J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{ql^2}{12}$$
+
+      <p>検算: $R_{\mathrm{A}} + R_{\mathrm{B}} = ql$ ✓（合計荷重と一致）</p>
+
+      <h3>たわみ</h3>
+      <p>最大たわみは中央（$x = l/2$）で発生します。</p>
+
+      $$\delta_{\max} = \frac{ql^4}{384EI}$$
+
+      <p>これは単純支持梁の等分布荷重の場合（$\delta = \frac{5ql^4}{384EI}$）の<strong>1/5</strong>です。</p>
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>両端固定梁・等分布荷重の解答</h4>
+        $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{ql}{2}$$
+        $$J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{ql^2}{12}$$
+        $$\delta_{\max} = \frac{ql^4}{384EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
 
       $$V(x) = R_{\mathrm{A}} - qx = q\left(\frac{l}{2} - x\right)$$
 
@@ -203,8 +225,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
 
       $$M(x) = \frac{qlx}{2} - \frac{qx^2}{2} - \frac{ql^2}{12}$$
 
@@ -240,27 +261,7 @@
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
 
-      <!-- 6. たわみ -->
-      <h2 id="deflection">たわみ</h2>
-      <p>最大たわみは中央（$x = l/2$）で発生します。</p>
-
-      $$\delta_{\max} = \frac{ql^4}{384EI}$$
-
-      <p>これは単純支持梁の等分布荷重の場合（$\delta = \frac{5ql^4}{384EI}$）の<strong>1/5</strong>です。</p>
-
-      <!-- 7. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>両端固定梁・等分布荷重の公式</h4>
-        $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{ql}{2}$$
-        $$J_{\mathrm{A}} = J_{\mathrm{B}} = \frac{ql^2}{12}$$
-        $$V(x) = q\left(\frac{l}{2} - x\right)$$
-        $$M(x) = \frac{qlx}{2} - \frac{qx^2}{2} - \frac{ql^2}{12}$$
-        $$\delta_{\max} = \frac{ql^4}{384EI}$$
-      </div>
-
-      <!-- 8. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>反偶力 $\frac{ql^2}{12}$ は頻出値です。必ず覚えましょう。</li>

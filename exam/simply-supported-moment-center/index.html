@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>単純支持梁の中心モーメント荷重 - たわみ・曲げモーメント・せん断力の求め方 | SimpleToolKit</title>
+  <meta name="description" content="単純支持梁の中央に集中モーメントM₀が作用する場合の反力・せん断力図・曲げモーメント図・たわみの求め方を特異関数法でステップごとに詳しく解説。公式一覧と図解付き。">
+  <meta property="og:title" content="単純支持梁の中心モーメント荷重 - 解法と公式まとめ">
+  <meta property="og:description" content="単純支持梁の中央にモーメントM₀が作用する場合の反力・SFD・BMD・たわみを特異関数法で解説。">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://simpletoolkit.net/exam/simply-supported-moment-center/">
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+  <link rel="stylesheet" href="../../common/style.css">
+
+  <style>
+    .beam-figure { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 20px 0; text-align: center; }
+    .beam-figure svg { max-width: 100%; height: auto; }
+    .beam-figure figcaption { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
+    .formula-box { background: var(--surface); border: 1px solid var(--primary); border-radius: var(--radius); padding: 20px 24px; margin: 20px 0; }
+    .formula-box h4 { font-size: 0.95rem; color: var(--primary); margin-bottom: 12px; }
+    .formula-box .katex-display { margin: 8px 0; }
+    .step-list { counter-reset: step; list-style: none; padding-left: 0; }
+    .step-list li { counter-increment: step; padding: 12px 0 12px 48px; position: relative; border-bottom: 1px solid var(--border); }
+    .step-list li:last-child { border-bottom: none; }
+    .step-list li::before { content: counter(step); position: absolute; left: 0; top: 12px; width: 32px; height: 32px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+    .related-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 16px; }
+    .related-links a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; text-decoration: none; color: var(--text); transition: box-shadow 0.2s, transform 0.2s; }
+    .related-links a:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .related-links a span { font-size: 0.82rem; color: var(--text-muted); }
+  </style>
+
+  <!-- JSON-LD 構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "単純支持梁の中心モーメント荷重 - たわみ・曲げモーメント・せん断力の求め方",
+    "description": "単純支持梁の中央に集中モーメントM₀が作用する場合の反力・せん断力図・曲げモーメント図・たわみの求め方を特異関数法でステップごとに詳しく解説。",
+    "author": { "@type": "Organization", "name": "SimpleToolKit" },
+    "publisher": { "@type": "Organization", "name": "SimpleToolKit" },
+    "mainEntityOfPage": "https://simpletoolkit.net/exam/simply-supported-moment-center/"
+  }
+  </script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+
+  <main>
+    <script src="../../common/breadcrumb.js"></script>
+
+    <p style="margin-bottom: 8px;"><a href="../index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;" class="back-to-list">&larr; 梁の公式集に戻る</a></p>
+
+    <h1>単純支持梁の中心モーメント荷重</h1>
+    <p class="tool-description">左端Aをピン支持、右端Bをローラー支持とする単純支持梁の中央に集中モーメント $M_0$（時計回り）が作用する場合の反力・せん断力・曲げモーメント・たわみを求めます。</p>
+
+    <!-- 目次 -->
+    <div class="article-toc">
+      <p>目次</p>
+      <ol>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
+        <li><a href="#points">ポイント</a></li>
+      </ol>
+    </div>
+
+    <div class="article-body">
+
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の単純支持梁において、左端Aをピン支持、右端Bをローラー支持とします。梁の中央（$x = l/2$）に時計回りの集中モーメント $M_0$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" width="600" height="280" font-family="'Times New Roman', serif">
+          <defs>
+            <pattern id="beam-hatch" patternUnits="userSpaceOnUse" width="8" height="8">
+              <line x1="0" y1="0" x2="8" y2="8" stroke="#999" stroke-width="0.8"/>
+              <line x1="8" y1="0" x2="0" y2="8" stroke="#999" stroke-width="0.8"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="600" height="280" fill="#1a1a2e" rx="8"/>
+          <!-- 梁 -->
+          <rect x="70" y="130" width="440" height="16" fill="url(#beam-hatch)" stroke="#999" stroke-width="1.5"/>
+          <!-- ピン支持A -->
+          <polygon points="70,146 56,175 84,175" fill="none" stroke="#b0b0b0" stroke-width="2" stroke-linejoin="round"/>
+          <line x1="48" y1="175" x2="92" y2="175" stroke="#b0b0b0" stroke-width="2"/>
+          <!-- ローラー支持B -->
+          <polygon points="510,146 500,166 520,166" fill="none" stroke="#b0b0b0" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="502" cy="170.5" r="4.5" fill="none" stroke="#b0b0b0" stroke-width="1.5"/>
+          <circle cx="518" cy="170.5" r="4.5" fill="none" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="492" y1="175" x2="528" y2="175" stroke="#b0b0b0" stroke-width="2"/>
+          <!-- モーメント荷重（時計回り）at center x=290, r=30 -->
+          <path d="M 275,164 A 30,30 0 1 1 315,121" fill="none" stroke="#b0b0b0" stroke-width="2.5"/>
+          <polygon points="321,129 319,118 311,124" fill="#b0b0b0"/>
+          <text x="330" y="116" font-size="26" text-anchor="start" font-weight="bold" fill="#b0b0b0"><tspan font-style="italic">M</tspan><tspan font-size="18" dy="4" font-style="normal">0</tspan></text>
+          <!-- ラベル -->
+          <text x="70" y="198" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">A</text>
+          <text x="510" y="198" font-size="22" text-anchor="middle" font-weight="bold" fill="#b0b0b0">B</text>
+          <!-- 寸法線: l/2 + l/2 -->
+          <line x1="70" y1="200" x2="70" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="290" y1="200" x2="290" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <line x1="510" y1="200" x2="510" y2="220" stroke="#b0b0b0" stroke-width="1.5"/>
+          <!-- 左半分 -->
+          <line x1="70" y1="210" x2="290" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="70,210 83,205 83,215" fill="#b0b0b0"/>
+          <polygon points="290,210 277,205 277,215" fill="#b0b0b0"/>
+          <text x="180" y="237" font-size="20" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l/2</text>
+          <!-- 右半分 -->
+          <line x1="290" y1="210" x2="510" y2="210" stroke="#b0b0b0" stroke-width="1.5"/>
+          <polygon points="510,210 497,205 497,215" fill="#b0b0b0"/>
+          <text x="400" y="237" font-size="20" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">l/2</text>
+        </svg>
+        <figcaption>図1: 単純支持梁・中心モーメント荷重</figcaption>
+      </figure>
+
+      <p>左端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}}$, $R_{\mathrm{B}}$</li>
+        <li>最大たわみ $\delta_{\max}$</li>
+      </ol>
+
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>反力の算出</h3>
+      <p>ピン支持Aには鉛直反力 $R_{\mathrm{A}}$、ローラー支持Bには鉛直反力 $R_{\mathrm{B}}$ が発生する。外力はモーメントのみ（鉛直力なし）なので、反力は偶力として現れる。</p>
+
+      <ul class="step-list">
+        <li>
+          <strong>A点まわりのモーメントの釣り合い</strong>
+          <p>反時計回りを正とする。中央に時計回りの $M_0$ が作用し、B端の鉛直反力 $R_{\mathrm{B}}$ が距離 $l$ で反時計回りモーメントを作る。</p>
+          $$R_{\mathrm{B}} \cdot l - M_0 = 0 \quad \Rightarrow \quad R_{\mathrm{B}} = \frac{M_0}{l}$$
+          <p>ただし力の方向を確認すると、$R_{\mathrm{B}}$ は<strong>下向き</strong>に作用する（$M_0/l$ 下向き）。</p>
+        </li>
+        <li>
+          <strong>B点まわりのモーメントの釣り合い</strong>
+          $$-R_{\mathrm{A}} \cdot l + M_0 = 0 \quad \Rightarrow \quad R_{\mathrm{A}} = \frac{M_0}{l} \quad \text{（上向き）}$$
+        </li>
+        <li>
+          <strong>鉛直方向の力の釣り合い（検算）</strong>
+          $$R_{\mathrm{A}} - R_{\mathrm{B}} = \frac{M_0}{l} - \frac{M_0}{l} = 0$$
+          <p>外力に鉛直力がないので、反力の合計がゼロとなり整合する。</p>
+        </li>
+      </ul>
+
+      <h3>特異関数法</h3>
+
+      <p>たわみの微分方程式 $-EI\,y'' = M(x)$ を直接積分します。特異関数（Macaulayの括弧）を使うことで、モーメント荷重の作用点で場合分けせずに、1本の式で梁全体のたわみを求めることができます。</p>
+
+      <h4>Macaulayの括弧（特異関数）</h4>
+      <p>特異関数 $\langle x - c \rangle^n$ は次のように定義されます:</p>
+      $$\langle x - c \rangle^n = \begin{cases} (x - c)^n & (x \ge c) \\ 0 & (x < c) \end{cases}$$
+
+      <p>積分公式:</p>
+      $$\int \langle x - c \rangle^n \, dx = \frac{\langle x - c \rangle^{n+1}}{n+1} \quad (n \ge 0)$$
+
+      <p>特異関数を使うと、荷重作用点の前後で区間分けせずに、せん断力・曲げモーメント・たわみを1本の式で統一的に扱えます。</p>
+
+      <h3>たわみ</h3>
+
+      <p>たわみ $y$ は<strong>下向きを正</strong>とします。特異関数を使うと、区間分けせずに微分方程式を1本の式で積分できます。</p>
+
+      <h4>曲げモーメント</h4>
+      <p>$x = l/2$ で時計回りのモーメント $M_0$ が作用するので、特異関数を使って:</p>
+      $$M(x) = \frac{M_0}{l}\,x - M_0\langle x - l/2 \rangle^0$$
+
+      <ul>
+        <li>$x < l/2$: $\langle x - l/2 \rangle^0 = 0$ なので $M = M_0 x / l$</li>
+        <li>$x > l/2$: $\langle x - l/2 \rangle^0 = 1$ なので $M = M_0 x / l - M_0 = M_0(x/l - 1)$</li>
+      </ul>
+
+      <h4>微分方程式の積分</h4>
+      $$-EI\,y'' = M(x) = \frac{M_0}{l}\,x - M_0\langle x - l/2 \rangle^0$$
+
+      <p>1回積分してたわみ角:</p>
+      $$-EI\,y' = \frac{M_0}{2l}\,x^2 - M_0\langle x - l/2 \rangle + C_1$$
+
+      <p>もう1回積分してたわみ:</p>
+      $$-EI\,y = \frac{M_0}{6l}\,x^3 - \frac{M_0}{2}\langle x - l/2 \rangle^2 + C_1 x + C_2$$
+
+      <h4>境界条件</h4>
+      <p>$y(0) = 0$ より: $\langle 0 - l/2 \rangle = 0$ なので $C_2 = 0$。</p>
+
+      <p>$y(l) = 0$ より:</p>
+      $$0 = \frac{M_0}{6l} \cdot l^3 - \frac{M_0}{2}\left(\frac{l}{2}\right)^2 + C_1 \cdot l = \frac{M_0 l^2}{6} - \frac{M_0 l^2}{8} + C_1 l$$
+      $$C_1 l = -\frac{M_0 l^2}{6} + \frac{M_0 l^2}{8} = -\frac{M_0 l^2}{24}$$
+      $$C_1 = -\frac{M_0 l}{24}$$
+
+      <h4>たわみの式</h4>
+      $$-EI\,y = \frac{M_0}{6l}\,x^3 - \frac{M_0}{2}\langle x - l/2 \rangle^2 - \frac{M_0 l}{24}\,x$$
+
+      $$\boxed{y(x) = \frac{M_0}{24EIl}\left[l^2 x - 4x^3 + 12l\langle x - l/2 \rangle^2\right]}$$
+
+      <h4>最大たわみの位置</h4>
+      <p>左半分（$0 \le x < l/2$）では $\langle x - l/2 \rangle = 0$ なので:</p>
+      $$y(x) = \frac{M_0}{24EIl}\left(l^2 x - 4x^3\right)$$
+
+      <p>$y'(x) = 0$ とおく:</p>
+      $$\frac{M_0}{24EIl}\left(l^2 - 12x^2\right) = 0 \quad \Rightarrow \quad x^2 = \frac{l^2}{12}$$
+      $$x = \frac{l}{2\sqrt{3}} \approx 0.289\,l$$
+
+      <h4>最大たわみの値</h4>
+      <p>$x = l/(2\sqrt{3})$ を代入:</p>
+      $$l^2 x - 4x^3 = l^2 \cdot \frac{l}{2\sqrt{3}} - 4 \cdot \frac{l^3}{24\sqrt{3}} = \frac{l^3}{2\sqrt{3}} - \frac{l^3}{6\sqrt{3}} = \frac{l^3}{3\sqrt{3}} = \frac{l^3\sqrt{3}}{9}$$
+
+      $$\delta_{\max} = \frac{M_0}{24EIl} \cdot \frac{l^3\sqrt{3}}{9} = \frac{\sqrt{3}}{216} \cdot \frac{M_0 l^2}{EI}$$
+
+      <p>反対称性により、右半分でも $x = l - l/(2\sqrt{3}) \approx 0.711\,l$ の位置に同じ大きさの逆向きたわみが生じる。</p>
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>単純支持梁・中心モーメント荷重の解答</h4>
+        $$R_{\mathrm{A}} = \frac{M_0}{l} \quad \text{（上向き）}, \qquad R_{\mathrm{B}} = \frac{M_0}{l} \quad \text{（下向き）}$$
+        $$y(x) = \frac{M_0}{24EIl}\left[l^2 x - 4x^3 + 12l\langle x - l/2 \rangle^2\right]$$
+        $$\delta_{\max} = \frac{\sqrt{3}}{216} \cdot \frac{M_0 l^2}{EI} \quad \left(x = \frac{l}{2\sqrt{3}} \approx 0.289\,l\right)$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
+      <p>モーメント荷重は鉛直力を生じないため、せん断力に不連続は生じない。特異関数を使うと、梁全長にわたって:</p>
+
+      $$V(x) = R_{\mathrm{A}} = \frac{M_0}{l} \quad (0 \le x \le l)$$
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="160" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="110" x2="530" y2="110" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="30" x2="70" y2="140" stroke="#666" stroke-width="1.5"/>
+          <!-- SFD（一定値） -->
+          <rect x="70" y="60" width="440" height="50" fill="#5cb8ff" fill-opacity="0.1"/>
+          <line x1="70" y1="60" x2="510" y2="60" stroke="#5cb8ff" stroke-width="2.5"/>
+          <line x1="70" y1="60" x2="70" y2="110" stroke="#5cb8ff" stroke-width="2.5"/>
+          <line x1="510" y1="60" x2="510" y2="110" stroke="#5cb8ff" stroke-width="2.5"/>
+          <!-- ラベル -->
+          <text x="25" y="66" font-size="15" text-anchor="middle" font-weight="bold" fill="#5cb8ff">M&#x2080;/l</text>
+          <text x="290" y="20" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">せん断力図（SFD）</text>
+          <text x="55" y="115" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="80" y="150" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="510" y="150" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+        </svg>
+        <figcaption>図2: せん断力図</figcaption>
+      </figure>
+
+      <h3>曲げモーメント図（BMD）</h3>
+      <p>特異関数を使うと、曲げモーメントは1本の式で:</p>
+
+      $$M(x) = \frac{M_0}{l}\,x - M_0\langle x - l/2 \rangle^0$$
+
+      <ul>
+        <li>$x = 0$: $M = 0$</li>
+        <li>$x = l/2$（左極限）: $M = M_0/2$</li>
+        <li>$x = l/2$（右極限）: $M = M_0/2 - M_0 = -M_0/2$</li>
+        <li>$x = l$: $M = M_0 - M_0 = 0$</li>
+      </ul>
+
+      <p>$x = l/2$ で時計回りモーメント $M_0$ により、$M_0/2$ から $-M_0/2$ へ $M_0$ だけ不連続に降下します。</p>
+
+      <figure class="beam-figure">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200" font-family="'Times New Roman', serif">
+          <rect x="0" y="0" width="600" height="200" fill="#1a1a2e" rx="8"/>
+          <!-- 軸 -->
+          <line x1="70" y1="100" x2="530" y2="100" stroke="#666" stroke-width="1.5"/>
+          <line x1="70" y1="25" x2="70" y2="180" stroke="#666" stroke-width="1.5"/>
+          <!-- BMD 正の領域（左半分: 0→M₀/2） -->
+          <polygon points="70,100 290,45 290,100" fill="#ff7eb3" fill-opacity="0.15"/>
+          <line x1="70" y1="100" x2="290" y2="45" stroke="#ff7eb3" stroke-width="2.5"/>
+          <!-- BMD 不連続（縦線） -->
+          <line x1="290" y1="45" x2="290" y2="155" stroke="#ff7eb3" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <!-- BMD 負の領域（右半分: -M₀/2→0） -->
+          <polygon points="290,155 510,100 290,100" fill="#ff7eb3" fill-opacity="0.15"/>
+          <line x1="290" y1="155" x2="510" y2="100" stroke="#ff7eb3" stroke-width="2.5"/>
+          <!-- ラベル -->
+          <text x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold" fill="#8888bb">曲げモーメント図（BMD）</text>
+          <text x="55" y="105" font-size="16" text-anchor="middle" fill="#666">0</text>
+          <text x="310" y="40" font-size="15" text-anchor="start" font-weight="bold" fill="#ff7eb3">M&#x2080;/2</text>
+          <text x="310" y="165" font-size="15" text-anchor="start" font-weight="bold" fill="#ff7eb3">&#x2212;M&#x2080;/2</text>
+          <text x="80" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">A</text>
+          <text x="510" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">B</text>
+          <text x="290" y="190" font-size="16" text-anchor="middle" fill="#b0b0b0">l/2</text>
+        </svg>
+        <figcaption>図3: 曲げモーメント図</figcaption>
+      </figure>
+
+      <!-- 4. ポイント -->
+      <h2 id="points">ポイント</h2>
+      <ul>
+        <li>モーメント荷重では鉛直方向の外力がないため、反力は<strong>偶力</strong>（大きさが等しく向きが反対）になります。$R_{\mathrm{A}} + R_{\mathrm{B}} = 0$ であることを検算で必ず確認しましょう。</li>
+        <li><strong>特異関数（Macaulayの括弧）</strong>を使うことで、モーメント荷重の作用点での場合分けが不要になり、1本の式で梁全体を表せます。積分定数も境界条件だけで決まるため、接続条件を考える必要がありません。</li>
+        <li>集中モーメントが作用する点では、せん断力は<strong>連続</strong>ですが、曲げモーメントは $M_0$ だけ<strong>不連続</strong>に変化します。集中荷重のときとは逆のパターンです。</li>
+        <li>中央モーメント荷重では、たわみの分布が<strong>反対称</strong>（奇関数的）になります。そのため中央（$x = l/2$）のたわみはゼロとなり、最大たわみは中央の左右に現れます。</li>
+        <li>最大たわみの位置 $x = l/(2\sqrt{3}) \approx 0.289\,l$ は、梁の約3割の位置に相当します。対称荷重では最大たわみが中央に生じますが、反対称荷重ではそうならない点に注意しましょう。</li>
+      </ul>
+
+      <!-- 関連コンテンツ -->
+      <div class="content-section">
+        <h2>関連する問題パターン</h2>
+        <div class="related-links">
+          <a href="../simply-supported-point-load/">
+            <strong>単純支持梁・集中荷重（中央）</strong>
+            <span>中央に集中荷重Pが作用する場合</span>
+          </a>
+          <a href="../simply-supported-eccentric-load/">
+            <strong>単純支持梁・偏心集中荷重</strong>
+            <span>中央以外の位置に荷重が作用する場合</span>
+          </a>
+          <a href="../simply-supported-distributed/">
+            <strong>単純支持梁・等分布荷重</strong>
+            <span>全長にわたって等分布荷重が作用する場合</span>
+          </a>
+          <a href="../cantilever-moment-center/">
+            <strong>片持ち梁・中央モーメント荷重</strong>
+            <span>片持ち梁の中央にモーメントが作用する場合</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../../common/footer.js"></script>
+</body>
+</html>

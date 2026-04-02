@@ -135,21 +135,18 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみとたわみ角</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
-      <p>長さ $l$ の片持ち梁において、左端Aを固定端、右端Bを自由端とし、梁の中央C（$x = l/2$）に時計回りのモーメント $M_0$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の片持ち梁において、左端Aを固定端、右端Bを自由端とします。梁の中央C（$x = l/2$）に時計回りのモーメント $M_0$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" width="600" height="220" font-family="'Times New Roman', serif">
@@ -200,10 +197,16 @@
         <figcaption>図1: 片持ち梁・中央モーメント荷重</figcaption>
       </figure>
 
-      <p>固定端Aから右方向に $x$ 軸を取ります。</p>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}}$ と固定端モーメント（反偶力）$J_{\mathrm{A}}$</li>
+        <li>自由端のたわみ $\delta_{\max}$</li>
+      </ol>
 
-      <!-- 2. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>反力の算出</h3>
       <p>固定端Aには鉛直反力 $R_{\mathrm{A}}$ と反偶力 $J_{\mathrm{A}}$ が発生します。力の釣り合いとモーメントの釣り合いから求めます。</p>
 
       <ul class="step-list">
@@ -221,8 +224,66 @@
 
       <p>モーメントの作用位置が中央であっても自由端であっても、固定端の反モーメントは $M_0$ で同じです。ただし、たわみの式は異なります。</p>
 
-      <!-- 3. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>たわみとたわみ角</h3>
+      <p>モーメント荷重の作用点で曲げモーメントが不連続なので、区間ごとにたわみの微分方程式を解きます。境界条件は固定端（$x = 0$）で $y = 0$, $y' = 0$、接続条件はC点（$x = l/2$）でたわみとたわみ角が連続です。</p>
+
+      <h4>区間1: $0 \le x \le l/2$</h4>
+
+      $$EI\,y_1'' = M_0$$
+
+      <p>1回積分:</p>
+      $$EI\,y_1' = M_0 x + C_1$$
+
+      <p>境界条件 $y_1'(0) = 0$ より $C_1 = 0$。</p>
+
+      <p>もう1回積分:</p>
+      $$EI\,y_1 = \frac{M_0 x^2}{2} + C_2$$
+
+      <p>境界条件 $y_1(0) = 0$ より $C_2 = 0$。</p>
+
+      <p><strong>区間1の結果:</strong></p>
+      $$y_1(x) = \frac{M_0 x^2}{2EI}, \qquad \theta_1(x) = \frac{M_0 x}{EI}$$
+
+      <h4>区間2: $l/2 \le x \le l$</h4>
+
+      $$EI\,y_2'' = 0$$
+
+      <p>1回積分:</p>
+      $$EI\,y_2' = C_3$$
+
+      <p>接続条件 $y_2'(l/2) = y_1'(l/2)$ より:</p>
+      $$C_3 = M_0 \cdot \frac{l}{2} = \frac{M_0 l}{2}$$
+
+      <p>もう1回積分:</p>
+      $$EI\,y_2 = \frac{M_0 l}{2}\,x + C_4$$
+
+      <p>接続条件 $y_2(l/2) = y_1(l/2)$ より:</p>
+      $$\frac{M_0 l}{2} \cdot \frac{l}{2} + C_4 = \frac{M_0}{2} \cdot \frac{l^2}{4}$$
+      $$\frac{M_0 l^2}{4} + C_4 = \frac{M_0 l^2}{8} \quad \Rightarrow \quad C_4 = -\frac{M_0 l^2}{8}$$
+
+      <p><strong>区間2の結果:</strong></p>
+      $$y_2(x) = \frac{M_0 l}{2EI}\left(x - \frac{l}{4}\right), \qquad \theta_2(x) = \frac{M_0 l}{2EI}$$
+
+      <h4>最大たわみ・最大たわみ角</h4>
+
+      <p><strong>最大たわみ</strong>（自由端 $x = l$）:</p>
+      $$\delta_{\max} = y_2(l) = \frac{M_0 l}{2EI}\left(l - \frac{l}{4}\right) = \frac{3M_0 l^2}{8EI}$$
+
+      <p><strong>最大たわみ角</strong>（$x \ge l/2$ で一定）:</p>
+      $$\theta_{\max} = \frac{M_0 l}{2EI}$$
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>片持ち梁・中央モーメント荷重の解答</h4>
+        $$R_{\mathrm{A}} = 0, \qquad J_{\mathrm{A}} = M_0$$
+        $$\delta_{\max} = \frac{3M_0 l^2}{8EI}, \qquad \theta_{\max} = \frac{M_0 l}{2EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>鉛直方向の外力が存在しないため、梁のどの位置で切断してもせん断力はゼロです。</p>
 
       $$V(x) = 0 \quad (0 \le x \le l)$$
@@ -245,15 +306,14 @@
         <figcaption>図2: せん断力図（全区間でゼロ）</figcaption>
       </figure>
 
-      <!-- 4. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>曲げモーメントは、モーメント荷重の作用点C（$x = l/2$）で不連続に変化します。</p>
 
-      <h3>区間1: $0 \le x \le l/2$（A〜C間）</h3>
+      <h4>区間1: $0 \le x \le l/2$（A〜C間）</h4>
       <p>固定端のモーメント $J_{\mathrm{A}} = M_0$ がそのまま伝わります。</p>
       $$M(x) = M_0$$
 
-      <h3>区間2: $l/2 \le x \le l$（C〜B間）</h3>
+      <h4>区間2: $l/2 \le x \le l$（C〜B間）</h4>
       <p>点CでモーメントM₀が作用するため、C以降の曲げモーメントは打ち消されます。</p>
       $$M(x) = 0$$
 
@@ -279,68 +339,7 @@
         <figcaption>図3: 曲げモーメント図（階段状の不連続変化）</figcaption>
       </figure>
 
-      <!-- 5. たわみ -->
-      <h2 id="deflection">たわみとたわみ角</h2>
-      <p>モーメント荷重の作用点で曲げモーメントが不連続なので、区間ごとにたわみの微分方程式を解きます。境界条件は固定端（$x = 0$）で $y = 0$, $y' = 0$、接続条件はC点（$x = l/2$）でたわみとたわみ角が連続です。</p>
-
-      <h3>区間1: $0 \le x \le l/2$</h3>
-
-      $$EI\,y_1'' = M_0$$
-
-      <p>1回積分:</p>
-      $$EI\,y_1' = M_0 x + C_1$$
-
-      <p>境界条件 $y_1'(0) = 0$ より $C_1 = 0$。</p>
-
-      <p>もう1回積分:</p>
-      $$EI\,y_1 = \frac{M_0 x^2}{2} + C_2$$
-
-      <p>境界条件 $y_1(0) = 0$ より $C_2 = 0$。</p>
-
-      <p><strong>区間1の結果:</strong></p>
-      $$y_1(x) = \frac{M_0 x^2}{2EI}, \qquad \theta_1(x) = \frac{M_0 x}{EI}$$
-
-      <h3>区間2: $l/2 \le x \le l$</h3>
-
-      $$EI\,y_2'' = 0$$
-
-      <p>1回積分:</p>
-      $$EI\,y_2' = C_3$$
-
-      <p>接続条件 $y_2'(l/2) = y_1'(l/2)$ より:</p>
-      $$C_3 = M_0 \cdot \frac{l}{2} = \frac{M_0 l}{2}$$
-
-      <p>もう1回積分:</p>
-      $$EI\,y_2 = \frac{M_0 l}{2}\,x + C_4$$
-
-      <p>接続条件 $y_2(l/2) = y_1(l/2)$ より:</p>
-      $$\frac{M_0 l}{2} \cdot \frac{l}{2} + C_4 = \frac{M_0}{2} \cdot \frac{l^2}{4}$$
-      $$\frac{M_0 l^2}{4} + C_4 = \frac{M_0 l^2}{8} \quad \Rightarrow \quad C_4 = -\frac{M_0 l^2}{8}$$
-
-      <p><strong>区間2の結果:</strong></p>
-      $$y_2(x) = \frac{M_0 l}{2EI}\left(x - \frac{l}{4}\right), \qquad \theta_2(x) = \frac{M_0 l}{2EI}$$
-
-      <h3>最大たわみ・最大たわみ角</h3>
-
-      <p><strong>最大たわみ</strong>（自由端 $x = l$）:</p>
-      $$\delta_{\max} = y_2(l) = \frac{M_0 l}{2EI}\left(l - \frac{l}{4}\right) = \frac{3M_0 l^2}{8EI}$$
-
-      <p><strong>最大たわみ角</strong>（$x \ge l/2$ で一定）:</p>
-      $$\theta_{\max} = \frac{M_0 l}{2EI}$$
-
-      <!-- 6. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>片持ち梁・中央モーメント荷重の公式</h4>
-        $$R_{\mathrm{A}} = 0, \qquad J_{\mathrm{A}} = M_0$$
-        $$V(x) = 0$$
-        $$M(x) = \begin{cases} M_0 & (0 \le x \le l/2) \\ 0 & (l/2 \le x \le l) \end{cases}$$
-        $$y(x) = \begin{cases} \dfrac{M_0 x^2}{2EI} & (0 \le x \le l/2) \\[8pt] \dfrac{M_0 l}{2EI}\left(x - \dfrac{l}{4}\right) & (l/2 \le x \le l) \end{cases}$$
-        $$\delta_{\max} = \frac{3M_0 l^2}{8EI}, \qquad \theta_{\max} = \frac{M_0 l}{2EI}$$
-      </div>
-
-      <!-- 7. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>モーメントの作用点でBMDが<strong>不連続に変化</strong>するのがこの問題の最大の特徴です。集中モーメントがBMDにジャンプ（不連続変化）を与えることを理解しましょう。</li>

@@ -63,20 +63,17 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#method">解法の方針（重ね合わせ法）</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
       <p>長さ $l$ の梁において、左端Aを固定端、右端Bをローラー支持とし、全長にわたって等分布荷重 $q$（単位長さあたり）が下向きに作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
       <p>この梁は反力が3つ（$R_{\mathrm{A}}$, $J_{\mathrm{A}}$, $R_{\mathrm{B}}$）あるのに対し、釣り合い条件は2つしかないため、<strong>1次不静定構造</strong>です。</p>
 
@@ -110,24 +107,24 @@
           <rect x="70" y="80" width="460" height="5" fill="#b0b0b0" opacity="0.4"/>
           <line x1="70" y1="85" x2="70" y2="140" stroke="#b0b0b0" stroke-width="1"/>
           <polygon points="70,140 65,125 75,125" fill="#b0b0b0"/>
-          <line x1="100" y1="85" x2="100" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="100,140 95,125 105,125" fill="#b0b0b0"/>
-          <line x1="150" y1="85" x2="150" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="150,140 145,125 155,125" fill="#b0b0b0"/>
-          <line x1="200" y1="85" x2="200" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="200,140 195,125 205,125" fill="#b0b0b0"/>
-          <line x1="250" y1="85" x2="250" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="250,140 245,125 255,125" fill="#b0b0b0"/>
+          <line x1="116" y1="85" x2="116" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="116,140 111,125 121,125" fill="#b0b0b0"/>
+          <line x1="162" y1="85" x2="162" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="162,140 157,125 167,125" fill="#b0b0b0"/>
+          <line x1="208" y1="85" x2="208" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="208,140 203,125 213,125" fill="#b0b0b0"/>
+          <line x1="254" y1="85" x2="254" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="254,140 249,125 259,125" fill="#b0b0b0"/>
           <line x1="300" y1="85" x2="300" y2="140" stroke="#b0b0b0" stroke-width="1"/>
           <polygon points="300,140 295,125 305,125" fill="#b0b0b0"/>
-          <line x1="350" y1="85" x2="350" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="350,140 345,125 355,125" fill="#b0b0b0"/>
-          <line x1="400" y1="85" x2="400" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="400,140 395,125 405,125" fill="#b0b0b0"/>
-          <line x1="450" y1="85" x2="450" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="450,140 445,125 455,125" fill="#b0b0b0"/>
-          <line x1="500" y1="85" x2="500" y2="140" stroke="#b0b0b0" stroke-width="1"/>
-          <polygon points="500,140 495,125 505,125" fill="#b0b0b0"/>
+          <line x1="346" y1="85" x2="346" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="346,140 341,125 351,125" fill="#b0b0b0"/>
+          <line x1="392" y1="85" x2="392" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="392,140 387,125 397,125" fill="#b0b0b0"/>
+          <line x1="438" y1="85" x2="438" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="438,140 433,125 443,125" fill="#b0b0b0"/>
+          <line x1="484" y1="85" x2="484" y2="140" stroke="#b0b0b0" stroke-width="1"/>
+          <polygon points="484,140 479,125 489,125" fill="#b0b0b0"/>
           <line x1="530" y1="85" x2="530" y2="140" stroke="#b0b0b0" stroke-width="1"/>
           <polygon points="530,140 525,125 535,125" fill="#b0b0b0"/>
           <text x="300" y="70" font-size="24" text-anchor="middle" font-style="italic" font-weight="bold" fill="#b0b0b0">q</text>
@@ -145,8 +142,16 @@
         <figcaption>図1: 一端固定・他端ローラー支持梁・等分布荷重</figcaption>
       </figure>
 
-      <!-- 2. 解法の方針 -->
-      <h2 id="method">解法の方針（重ね合わせ法）</h2>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>固定端モーメント $J_{\mathrm{A}}$</li>
+      </ol>
+
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>解法の方針（重ね合わせ法）</h3>
       <p>ローラー支持Bの反力 $R_{\mathrm{B}}$ を<strong>冗長力</strong>とし、Bの拘束を解除して片持ち梁（固定端A、自由端B）に分解します。</p>
 
       <ul class="step-list">
@@ -167,8 +172,7 @@
         </li>
       </ul>
 
-      <!-- 3. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <h3>反力の算出</h3>
       <p>適合条件から冗長力を求めます。</p>
 
       $$R_{\mathrm{B}} = \frac{3ql}{8}$$
@@ -184,8 +188,18 @@
         $$R_{\mathrm{A}} = \frac{5ql}{8}, \quad R_{\mathrm{B}} = \frac{3ql}{8}, \quad J_{\mathrm{A}} = \frac{ql^2}{8}$$
       </div>
 
-      <!-- 4. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <!-- 解答まとめ -->
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>一端固定・他端ローラー支持梁・等分布荷重の公式</h4>
+        $$R_{\mathrm{A}} = \frac{5ql}{8}, \quad R_{\mathrm{B}} = \frac{3ql}{8}, \quad J_{\mathrm{A}} = \frac{ql^2}{8}$$
+      </div>
+
+      <!-- 3. 補足：せん断力図・曲げモーメント図 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>固定端Aから右方向に $x$ 軸を取り、任意断面でのせん断力を求めます。</p>
 
       $$V(x) = R_{\mathrm{A}} - qx = \frac{5ql}{8} - qx$$
@@ -221,8 +235,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 5. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>任意の位置 $x$ での曲げモーメントを求めます（下側引張を正とする）。</p>
 
       $$M(x) = -J_{\mathrm{A}} + R_{\mathrm{A}} x - \frac{qx^2}{2} = -\frac{ql^2}{8} + \frac{5qlx}{8} - \frac{qx^2}{2}$$
@@ -259,18 +272,7 @@
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
 
-      <!-- 6. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>一端固定・他端ローラー支持梁・等分布荷重の公式</h4>
-        $$R_{\mathrm{A}} = \frac{5ql}{8}, \quad R_{\mathrm{B}} = \frac{3ql}{8}, \quad J_{\mathrm{A}} = \frac{ql^2}{8}$$
-        $$V(x) = \frac{5ql}{8} - qx$$
-        $$M(x) = -\frac{ql^2}{8} + \frac{5qlx}{8} - \frac{qx^2}{2}$$
-        $$M_{\max}(\text{サギング}) = \frac{9ql^2}{128} \quad \text{at} \quad x = \frac{5l}{8}$$
-      </div>
-
-      <!-- 7. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>この梁は<strong>1次不静定</strong>であり、釣り合い条件だけでは反力が求まりません。変形の適合条件（ローラー点のたわみ＝0）が必要です。</li>

@@ -135,21 +135,18 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみとたわみ角</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
-      <p>長さ $l$ の片持ち梁において、左端Aを固定端、右端Bを自由端とし、自由端Bに時計回りのモーメント $M_0$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の片持ち梁において、左端Aを固定端、右端Bを自由端とします。自由端Bに時計回りのモーメント $M_0$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" width="600" height="220" font-family="'Times New Roman', serif">
@@ -194,10 +191,16 @@
         <figcaption>図1: 片持ち梁・自由端モーメント荷重</figcaption>
       </figure>
 
-      <p>固定端Aから右方向に $x$ 軸を取ります。</p>
+      <p>固定端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}}$ と固定端モーメント（反偶力）$J_{\mathrm{A}}$</li>
+        <li>自由端のたわみ $\delta_{\max}$</li>
+      </ol>
 
-      <!-- 2. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>反力の算出</h3>
       <p>固定端Aには鉛直反力 $R_{\mathrm{A}}$ と反偶力 $J_{\mathrm{A}}$ が発生します。力の釣り合いとモーメントの釣り合いから求めます。</p>
 
       <ul class="step-list">
@@ -215,8 +218,51 @@
 
       <p>モーメント荷重のみが作用する場合、鉛直反力はゼロとなります。固定端には外力のモーメントと等しい反モーメントだけが発生します。</p>
 
-      <!-- 3. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>たわみとたわみ角</h3>
+      <p>たわみの微分方程式 $EI\,y'' = M(x)$ を解きます。境界条件は固定端（$x = 0$）でたわみ $y = 0$、たわみ角 $y' = 0$ です。</p>
+
+      <h4>微分方程式の解</h4>
+
+      $$EI\,y'' = M_0$$
+
+      <p>1回積分してたわみ角:</p>
+      $$EI\,y' = M_0 x + C_1$$
+
+      <p>境界条件 $y'(0) = 0$ より $C_1 = 0$。</p>
+
+      $$EI\,y' = M_0 x$$
+
+      <p>もう1回積分してたわみ:</p>
+      $$EI\,y = \frac{M_0 x^2}{2} + C_2$$
+
+      <p>境界条件 $y(0) = 0$ より $C_2 = 0$。</p>
+
+      <h4>結果</h4>
+
+      <p><strong>たわみ:</strong></p>
+      $$y(x) = \frac{M_0 x^2}{2EI}$$
+
+      <p><strong>たわみ角:</strong></p>
+      $$\theta(x) = y'(x) = \frac{M_0 x}{EI}$$
+
+      <p><strong>最大たわみ</strong>（自由端 $x = l$）:</p>
+      $$\delta_{\max} = y(l) = \frac{M_0 l^2}{2EI}$$
+
+      <p><strong>最大たわみ角</strong>（自由端 $x = l$）:</p>
+      $$\theta_{\max} = \theta(l) = \frac{M_0 l}{EI}$$
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>片持ち梁・自由端モーメント荷重の解答</h4>
+        $$R_{\mathrm{A}} = 0, \qquad J_{\mathrm{A}} = M_0$$
+        $$\delta_{\max} = \frac{M_0 l^2}{2EI}, \qquad \theta_{\max} = \frac{M_0 l}{EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>鉛直方向の外力が存在しないため、梁のどの位置で切断してもせん断力はゼロです。</p>
 
       $$V(x) = 0 \quad (0 \le x \le l)$$
@@ -238,8 +284,7 @@
         <figcaption>図2: せん断力図（全区間でゼロ）</figcaption>
       </figure>
 
-      <!-- 4. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>任意の位置 $x$ での曲げモーメントを考えます。せん断力がゼロであるため、曲げモーメントは変化しません。</p>
 
       $$M(x) = M_0 \quad (0 \le x \le l)$$
@@ -266,53 +311,7 @@
         <figcaption>図3: 曲げモーメント図（一定値）</figcaption>
       </figure>
 
-      <!-- 5. たわみ -->
-      <h2 id="deflection">たわみとたわみ角</h2>
-      <p>たわみの微分方程式 $EI\,y'' = M(x)$ を解きます。境界条件は固定端（$x = 0$）でたわみ $y = 0$、たわみ角 $y' = 0$ です。</p>
-
-      <h3>微分方程式の解</h3>
-
-      $$EI\,y'' = M_0$$
-
-      <p>1回積分してたわみ角:</p>
-      $$EI\,y' = M_0 x + C_1$$
-
-      <p>境界条件 $y'(0) = 0$ より $C_1 = 0$。</p>
-
-      $$EI\,y' = M_0 x$$
-
-      <p>もう1回積分してたわみ:</p>
-      $$EI\,y = \frac{M_0 x^2}{2} + C_2$$
-
-      <p>境界条件 $y(0) = 0$ より $C_2 = 0$。</p>
-
-      <h3>結果</h3>
-
-      <p><strong>たわみ:</strong></p>
-      $$y(x) = \frac{M_0 x^2}{2EI}$$
-
-      <p><strong>たわみ角:</strong></p>
-      $$\theta(x) = y'(x) = \frac{M_0 x}{EI}$$
-
-      <p><strong>最大たわみ</strong>（自由端 $x = l$）:</p>
-      $$\delta_{\max} = y(l) = \frac{M_0 l^2}{2EI}$$
-
-      <p><strong>最大たわみ角</strong>（自由端 $x = l$）:</p>
-      $$\theta_{\max} = \theta(l) = \frac{M_0 l}{EI}$$
-
-      <!-- 6. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>片持ち梁・自由端モーメント荷重の公式</h4>
-        $$R_{\mathrm{A}} = 0, \qquad J_{\mathrm{A}} = M_0$$
-        $$V(x) = 0$$
-        $$M(x) = M_0$$
-        $$y(x) = \frac{M_0 x^2}{2EI}$$
-        $$\delta_{\max} = \frac{M_0 l^2}{2EI}, \qquad \theta_{\max} = \frac{M_0 l}{EI}$$
-      </div>
-
-      <!-- 7. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>モーメント荷重のみの場合、<strong>せん断力がゼロ</strong>になるのが大きな特徴です。$\frac{dM}{dx} = V = 0$ という関係から、曲げモーメントが一定になることが分かります。</li>

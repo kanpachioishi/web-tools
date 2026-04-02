@@ -63,21 +63,18 @@
     <div class="article-toc">
       <p>目次</p>
       <ol>
-        <li><a href="#setup">問題設定</a></li>
-        <li><a href="#reactions">反力の算出</a></li>
-        <li><a href="#sfd">せん断力図（SFD）</a></li>
-        <li><a href="#bmd">曲げモーメント図（BMD）</a></li>
-        <li><a href="#deflection">たわみとたわみ角</a></li>
-        <li><a href="#formulas">公式まとめ</a></li>
+        <li><a href="#problem">問題</a></li>
+        <li><a href="#answer">解答</a></li>
+        <li><a href="#supplement">補足：せん断力図・曲げモーメント図</a></li>
         <li><a href="#points">ポイント</a></li>
       </ol>
     </div>
 
     <div class="article-body">
 
-      <!-- 1. 問題設定 -->
-      <h2 id="setup">問題設定</h2>
-      <p>長さ $l$ の単純支持梁において、左端Aをピン支持、右端Bをローラー支持とし、梁の中央（$x = l/2$）に下向きの集中荷重 $P$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
+      <!-- 1. 問題 -->
+      <h2 id="problem">問題</h2>
+      <p>長さ $l$ の単純支持梁において、左端Aをピン支持、右端Bをローラー支持とします。梁の中央（$x = l/2$）に下向きの集中荷重 $P$ が作用しています。梁の曲げ剛性は $EI$（一様）とします。</p>
 
       <figure class="beam-figure">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240" width="600" height="240" font-family="'Times New Roman', serif">
@@ -120,10 +117,16 @@
         <figcaption>図1: 単純支持梁・中央集中荷重</figcaption>
       </figure>
 
-      <p>左端Aから右方向に $x$ 軸を取ります。</p>
+      <p>左端Aから右方向に $x$ 軸を取るとき、以下を求めてください。</p>
+      <ol>
+        <li>反力 $R_{\mathrm{A}},\, R_{\mathrm{B}}$</li>
+        <li>最大たわみ $\delta_{\max}$</li>
+      </ol>
 
-      <!-- 2. 反力 -->
-      <h2 id="reactions">反力の算出</h2>
+      <!-- 2. 解答 -->
+      <h2 id="answer">解答</h2>
+
+      <h3>反力の算出</h3>
       <p>ピン支持Aとローラー支持Bにはそれぞれ鉛直反力 $R_{\mathrm{A}}$、$R_{\mathrm{B}}$ が発生します。力の釣り合いとモーメントの釣り合いから求めます。</p>
 
       <ul class="step-list">
@@ -140,8 +143,50 @@
 
       <p>対称性からも明らかなように、$R_{\mathrm{A}} = R_{\mathrm{B}} = P/2$ となります。</p>
 
-      <!-- 3. SFD -->
-      <h2 id="sfd">せん断力図（SFD）</h2>
+      <h3>たわみとたわみ角</h3>
+      <p>たわみの微分方程式 $EI\,y'' = M(x)$ を解きます。対称性を利用して左半分（$0 \le x \le l/2$）のみ考えます。境界条件は $y(0) = 0$、$y'(l/2) = 0$（対称条件）です。</p>
+
+      <h4>微分方程式の解</h4>
+
+      <p>左半分（$0 \le x \le l/2$）:</p>
+      $$EI\,y'' = \frac{Px}{2}$$
+
+      <p>1回積分してたわみ角:</p>
+      $$EI\,y' = \frac{Px^2}{4} + C_1$$
+
+      <p>対称条件 $y'(l/2) = 0$ より:</p>
+      $$0 = \frac{P(l/2)^2}{4} + C_1 \quad \Rightarrow \quad C_1 = -\frac{Pl^2}{16}$$
+
+      $$EI\,y' = \frac{Px^2}{4} - \frac{Pl^2}{16}$$
+
+      <p>もう1回積分してたわみ:</p>
+      $$EI\,y = \frac{Px^3}{12} - \frac{Pl^2 x}{16} + C_2$$
+
+      <p>境界条件 $y(0) = 0$ より $C_2 = 0$。</p>
+
+      <h4>結果</h4>
+
+      <p><strong>たわみ</strong>（$0 \le x \le l/2$、対称）:</p>
+      $$y(x) = \frac{Px}{48EI}(3l^2 - 4x^2)$$
+
+      <p><strong>最大たわみ</strong>（中央 $x = l/2$）:</p>
+      $$\delta_{\max} = y\!\left(\frac{l}{2}\right) = \frac{Pl^3}{48EI}$$
+
+      <p><strong>端部のたわみ角</strong>（$x = 0$）:</p>
+      $$\theta_A = \theta_B = \frac{Pl^2}{16EI}$$
+
+      <h3>解答まとめ</h3>
+
+      <div class="formula-box">
+        <h4>単純支持梁・中央集中荷重の解答</h4>
+        $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{P}{2}$$
+        $$\delta_{\max} = \frac{Pl^3}{48EI}$$
+      </div>
+
+      <!-- 3. 補足 -->
+      <h2 id="supplement">補足：せん断力図・曲げモーメント図</h2>
+
+      <h3>せん断力図（SFD）</h3>
       <p>任意の位置 $x$ で梁を切断し、左側の釣り合いを考えます。</p>
 
       <p><strong>左半分</strong>（$0 \le x < l/2$）:</p>
@@ -176,8 +221,7 @@
         <figcaption>図2: せん断力図</figcaption>
       </figure>
 
-      <!-- 4. BMD -->
-      <h2 id="bmd">曲げモーメント図（BMD）</h2>
+      <h3>曲げモーメント図（BMD）</h3>
       <p>任意の位置 $x$ での曲げモーメントは:</p>
 
       <p><strong>左半分</strong>（$0 \le x \le l/2$）:</p>
@@ -211,53 +255,7 @@
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
 
-      <!-- 5. たわみ -->
-      <h2 id="deflection">たわみとたわみ角</h2>
-      <p>たわみの微分方程式 $EI\,y'' = M(x)$ を解きます。対称性を利用して左半分（$0 \le x \le l/2$）のみ考えます。境界条件は $y(0) = 0$、$y'(l/2) = 0$（対称条件）です。</p>
-
-      <h3>微分方程式の解</h3>
-
-      <p>左半分（$0 \le x \le l/2$）:</p>
-      $$EI\,y'' = \frac{Px}{2}$$
-
-      <p>1回積分してたわみ角:</p>
-      $$EI\,y' = \frac{Px^2}{4} + C_1$$
-
-      <p>対称条件 $y'(l/2) = 0$ より:</p>
-      $$0 = \frac{P(l/2)^2}{4} + C_1 \quad \Rightarrow \quad C_1 = -\frac{Pl^2}{16}$$
-
-      $$EI\,y' = \frac{Px^2}{4} - \frac{Pl^2}{16}$$
-
-      <p>もう1回積分してたわみ:</p>
-      $$EI\,y = \frac{Px^3}{12} - \frac{Pl^2 x}{16} + C_2$$
-
-      <p>境界条件 $y(0) = 0$ より $C_2 = 0$。</p>
-
-      <h3>結果</h3>
-
-      <p><strong>たわみ</strong>（$0 \le x \le l/2$、対称）:</p>
-      $$y(x) = \frac{Px}{48EI}(3l^2 - 4x^2)$$
-
-      <p><strong>最大たわみ</strong>（中央 $x = l/2$）:</p>
-      $$\delta_{\max} = y\!\left(\frac{l}{2}\right) = \frac{Pl^3}{48EI}$$
-
-      <p><strong>端部のたわみ角</strong>（$x = 0$）:</p>
-      $$\theta_A = \theta_B = \frac{Pl^2}{16EI}$$
-
-      <!-- 6. 公式まとめ -->
-      <h2 id="formulas">公式まとめ</h2>
-
-      <div class="formula-box">
-        <h4>単純支持梁・中央集中荷重の公式</h4>
-        $$R_{\mathrm{A}} = R_{\mathrm{B}} = \frac{P}{2}$$
-        $$V(x) = \begin{cases} \dfrac{P}{2} & (0 \le x < l/2) \\[6pt] -\dfrac{P}{2} & (l/2 < x \le l) \end{cases}$$
-        $$M(x) = \begin{cases} \dfrac{Px}{2} & (0 \le x \le l/2) \\[6pt] \dfrac{P(l-x)}{2} & (l/2 \le x \le l) \end{cases}$$
-        $$M_{\max} = \frac{Pl}{4}$$
-        $$y(x) = \frac{Px}{48EI}(3l^2 - 4x^2) \quad (0 \le x \le l/2)$$
-        $$\delta_{\max} = \frac{Pl^3}{48EI}$$
-      </div>
-
-      <!-- 7. ポイント -->
+      <!-- 4. ポイント -->
       <h2 id="points">ポイント</h2>
       <ul>
         <li>単純支持梁の中央集中荷重は、材料力学で最も基本的な問題のひとつです。片持ち梁と並んで、まず確実に解けるようにしましょう。</li>
