@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>金利計算・ローン計算 - 無料オンラインローン返済シミュレーター｜SimpleToolkit</title>
-  <meta name="description" content="借入額・金利・返済期間を入力するだけでローン返済額を瞬時に計算。元利均等・元金均等の両方式に対応。返済総額や利息総額も表示。登録不要・無料。">
-  <meta property="og:title" content="金利計算・ローン計算 - 無料オンラインローン返済シミュレーター｜SimpleToolkit">
-  <meta property="og:description" content="借入額・金利・返済期間を入力するだけでローン返済額を瞬時に計算。元利均等・元金均等の両方式に対応。登録不要・無料。">
+  <title>ローン返済シミュレーター【住宅・車・教育】金利計算が無料でできる</title>
+  <meta name="description" content="借入額・金利・返済期間を入力するだけで毎月の返済額を即計算。元利均等・元金均等の両方式に対応。住宅ローン・カーローン・教育ローンの返済総額と利息がグラフで一目瞭然。無料・登録不要。">
+  <meta property="og:title" content="ローン返済シミュレーター【住宅・車・教育】金利計算が無料でできる">
+  <meta property="og:description" content="借入額・金利・返済期間を入力するだけで毎月の返済額を即計算。住宅・車・教育ローンの返済総額と利息が一目瞭然。無料。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://simpletoolkit.net/tools/loan-calculator/">
   <link rel="canonical" href="https://simpletoolkit.net/tools/loan-calculator/">
@@ -14,8 +14,8 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "金利計算・ローン計算 - 無料オンラインローン返済シミュレーター",
-    "description": "借入額・金利・返済期間を入力するだけでローン返済額を瞬時に計算。元利均等・元金均等の両方式に対応。返済総額や利息総額も表示。",
+    "name": "ローン返済シミュレーター - 住宅・車・教育ローンの金利計算",
+    "description": "借入額・金利・返済期間を入力するだけで毎月の返済額を即計算。元利均等・元金均等の両方式に対応。住宅ローン・カーローン・教育ローンの返済総額と利息が一目瞭然。",
     "url": "https://simpletoolkit.net/tools/loan-calculator/",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
@@ -49,6 +49,22 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "いいえ、すべての計算処理はブラウザ内で完結します。借入額や金利のデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "固定金利と変動金利の違いは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "固定金利は借入期間中ずっと金利が変わらないため返済計画が立てやすい方式です。変動金利は市場金利に連動して定期的に見直されるため、金利が低い時期は返済額が少なくなりますが、将来の金利上昇リスクがあります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "繰り上げ返済のメリットは？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "繰り上げ返済をすると元金が減るため、その分の利息がなくなり返済総額を大幅に減らせます。期間短縮型なら返済期間が短くなり、返済額軽減型なら毎月の返済額が下がります。特にローン初期の繰り上げ返済は利息削減効果が大きいです。"
         }
       }
     ]
@@ -257,19 +273,108 @@
     </div>
 
     <section style="margin-top:40px;">
-      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">金利計算の基礎知識</h2>
+
+      <h3 style="font-size:1.05rem;margin-top:20px;margin-bottom:8px;">金利とは？</h3>
+      <p>金利とは、お金を借りた際に支払う利息の割合のことです。年利1.5%の場合、100万円を1年間借りると約1万5千円の利息が発生します。ローンを組む際は、この金利の違いが返済総額に大きく影響します。</p>
+
+      <h3 style="font-size:1.05rem;margin-top:20px;margin-bottom:8px;">固定金利と変動金利の違い</h3>
+      <p><strong>固定金利</strong>は借入期間中ずっと同じ金利が適用されるため、毎月の返済額が変わらず家計管理がしやすいのが特徴です。一方、<strong>変動金利</strong>は市場金利に連動して半年ごとに見直されるため、低金利の恩恵を受けやすい反面、将来の金利上昇リスクがあります。</p>
+
+      <h3 style="font-size:1.05rem;margin-top:20px;margin-bottom:8px;">元利均等返済と元金均等返済</h3>
+      <p><strong>元利均等返済</strong>は毎月の返済額（元金＋利息）が一定となる方式です。返済初期は利息の割合が大きく、徐々に元金の返済割合が増えていきます。<strong>元金均等返済</strong>は毎月の元金返済額が一定で、利息は残高に応じて減少するため、返済が進むにつれ月々の返済額が下がります。総返済額は元金均等返済の方が少なくなります。</p>
+    </section>
+
+    <section style="margin-top:32px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">ローン種別ごとの金利目安（2026年）</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:12px;">
+        <thead>
+          <tr style="background:var(--bg);border-bottom:2px solid var(--border);">
+            <th style="padding:8px 12px;text-align:left;">ローン種別</th>
+            <th style="padding:8px 12px;text-align:center;">金利タイプ</th>
+            <th style="padding:8px 12px;text-align:center;">金利目安</th>
+            <th style="padding:8px 12px;text-align:center;">返済期間</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">住宅ローン</td>
+            <td style="padding:8px 12px;text-align:center;">変動</td>
+            <td style="padding:8px 12px;text-align:center;">0.3〜0.7%</td>
+            <td style="padding:8px 12px;text-align:center;">最長35年</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">住宅ローン</td>
+            <td style="padding:8px 12px;text-align:center;">固定（35年）</td>
+            <td style="padding:8px 12px;text-align:center;">1.5〜2.0%</td>
+            <td style="padding:8px 12px;text-align:center;">最長35年</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">カーローン</td>
+            <td style="padding:8px 12px;text-align:center;">固定</td>
+            <td style="padding:8px 12px;text-align:center;">1.5〜4.0%</td>
+            <td style="padding:8px 12px;text-align:center;">3〜7年</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">教育ローン</td>
+            <td style="padding:8px 12px;text-align:center;">固定</td>
+            <td style="padding:8px 12px;text-align:center;">2.0〜4.0%</td>
+            <td style="padding:8px 12px;text-align:center;">最長15年</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-weight:600;">フリーローン</td>
+            <td style="padding:8px 12px;text-align:center;">固定</td>
+            <td style="padding:8px 12px;text-align:center;">3.0〜15.0%</td>
+            <td style="padding:8px 12px;text-align:center;">1〜7年</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ 金利は金融機関や借入条件によって異なります。上記は2026年時点の一般的な目安です。</p>
+    </section>
+
+    <section style="margin-top:32px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">よくある質問</h2>
+
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">元利均等返済と元金均等返済の違いは？</summary>
+        <p style="margin-top:8px;">元利均等返済は毎月の返済額が一定で家計管理がしやすい方式です。元金均等返済は毎月の元金返済額が一定で、返済が進むにつれ利息が減り月々の返済額も下がります。総返済額は元金均等返済の方が少なくなります。</p>
+      </details>
+
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">住宅ローンの金利相場はどのくらい？</summary>
+        <p style="margin-top:8px;">2026年現在、変動金利は年0.3〜0.7%程度、固定金利（35年）は年1.5〜2.0%程度が相場です。金融機関や借入条件によって異なりますので、複数の金融機関を比較することをおすすめします。</p>
+      </details>
+
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">固定金利と変動金利のどちらがいい？</summary>
+        <p style="margin-top:8px;">固定金利は返済額が変わらず計画が立てやすいため、安定を重視する方におすすめです。変動金利は現在の低金利を活かせますが、将来の金利上昇リスクがあります。返済期間や金利上昇への許容度を考えて選びましょう。</p>
+      </details>
+
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">繰り上げ返済のメリットは？</summary>
+        <p style="margin-top:8px;">繰り上げ返済をすると元金が減り、その分の利息がなくなるため返済総額を大幅に減らせます。期間短縮型なら返済期間が短くなり、返済額軽減型なら毎月の返済額が下がります。特にローン初期の繰り上げ返済は利息削減効果が大きいです。</p>
+      </details>
+
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">入力したデータはサーバーに送信されますか？</summary>
+        <p style="margin-top:8px;">いいえ、すべての計算処理はブラウザ内で完結します。借入額や金利のデータが外部に送信されることはありません。安心してご利用ください。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:32px;">
+      <h2 style="font-size:1.2rem;margin-bottom:12px;">関連ツール</h2>
       <div class="tool-grid">
-        <a href="../furusato-tax/" class="tool-card">
-          <h3 style="font-size:1rem;margin:0;">ふるさと納税計算</h3>
-          <p>控除上限額をシミュレーション</p>
-        </a>
-        <a href="../percent-calc/" class="tool-card">
-          <h3 style="font-size:1rem;margin:0;">割合計算</h3>
-          <p>パーセント計算を簡単に</p>
-        </a>
         <a href="../salary-calculator/" class="tool-card">
           <h3 style="font-size:1rem;margin:0;">手取り計算</h3>
           <p>年収から手取り額を計算</p>
+        </a>
+        <a href="../pension-simulator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">年金シミュレーター</h3>
+          <p>年金受給額をシミュレーション</p>
+        </a>
+        <a href="../furusato-tax/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ふるさと納税計算</h3>
+          <p>控除上限額をシミュレーション</p>
         </a>
       </div>
     </section>

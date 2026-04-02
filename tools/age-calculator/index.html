@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>年齢早見表 2026年（令和8年）- 西暦・和暦・干支・学年｜無料</title>
-  <meta name="description" content="2026年（令和8年）の年齢早見表。生まれ年から年齢・和暦・干支・学年・卒業年度が一発でわかる。昭和・平成・令和対応。検索機能付きで「昭和50年」「うさぎ年」ですぐ見つかる。">
-  <meta property="og:title" content="年齢早見表 2026年（令和8年）- 西暦・和暦・干支・学年｜無料">
-  <meta property="og:description" content="2026年の年齢早見表。生まれ年から年齢・和暦・干支・学年・卒業年度が一発でわかる。昭和・平成・令和対応。">
+  <title>【2026年】年齢早見表 - 生まれ年から何歳？学年・干支・厄年もすぐわかる</title>
+  <meta name="description" content="2026年（令和8年）の年齢早見表。昭和・平成・令和の生まれ年から年齢・干支・学年・卒業年度が一目でわかります。厄年・長寿祝いの一覧付き。検索機能で「昭和50年」「うさぎ年」もすぐ検索可能。">
+  <meta property="og:title" content="【2026年】年齢早見表 - 生まれ年から何歳？学年・干支・厄年もすぐわかる">
+  <meta property="og:description" content="2026年の年齢早見表。昭和・平成・令和の生まれ年から年齢・干支・学年・厄年が一目でわかる。検索機能付き。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://simpletoolkit.net/tools/age-calculator/">
   <link rel="canonical" href="https://simpletoolkit.net/tools/age-calculator/">
@@ -421,9 +421,11 @@
         visibleCount++;
         const tr = document.createElement('tr');
 
-        // 現在の年齢をハイライト
-        const today = new Date();
-        const isCurrentAge = (birthYear === today.getFullYear() - Math.floor((today.getMonth() + 1) / 1)) ? false : false;
+        // 行クリックでハイライト（自分の年齢行をマーク）
+        tr.addEventListener('click', function() {
+          this.classList.toggle('highlight');
+        });
+        tr.style.cursor = 'pointer';
 
         // 時代に応じた背景色（CSSクラスでダークモード対応）
         const eraClass = getEraClass(era);
