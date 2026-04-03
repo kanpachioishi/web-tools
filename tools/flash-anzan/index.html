@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>フラッシュ暗算 - 無料オンライン暗算トレーニング | Web便利ツール集</title>
+  <meta name="description" content="フラッシュ暗算の無料オンラインツール。数字が次々と表示され、すべての合計を暗算で回答。桁数・個数・速度を自由に設定。スコア記録機能付き。登録不要でブラウザだけで完結。">
+  <meta property="og:title" content="フラッシュ暗算 - 無料オンライン暗算トレーニング | Web便利ツール集">
+  <meta property="og:description" content="フラッシュ暗算の無料トレーニングツール。桁数・個数・速度を自由に設定。スコア記録付き。登録不要。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/flash-anzan/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/flash-anzan/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "フラッシュ暗算 - 無料オンライン暗算トレーニング",
+    "description": "数字が次々と表示され、すべての合計を暗算で回答するトレーニングツール。桁数・個数・速度を自由に設定。スコア記録機能付き。",
+    "url": "https://simpletoolkit.net/tools/flash-anzan/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "フラッシュ暗算とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "フラッシュ暗算とは、画面に次々と表示される数字をすべて足し合わせ、合計を暗算で回答するトレーニングです。そろばん教室やテレビ番組でもおなじみの暗算力・集中力を鍛える方法です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのレベルから始めればいいですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "初めての方は1桁・3個・遅い速度から始めることをおすすめします。慣れてきたら桁数や個数を増やし、速度を上げていくとよいでしょう。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スコアはどこに保存されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "スコアや正答率はブラウザのローカルストレージに保存されます。同じブラウザであれば次回訪問時にも記録が残ります。外部サーバーへの送信は一切ありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "スマートフォンでも使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、スマートフォン・タブレット・PCなど、どのデバイスのブラウザでもお使いいただけます。レスポンシブ対応で画面サイズに合わせて自動調整されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "フラッシュ暗算はどんな効果がありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "フラッシュ暗算を継続的に行うことで、暗算力・集中力・記憶力・情報処理速度の向上が期待できます。子どもの学習から大人の脳トレまで幅広く活用されています。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+  <style>
+    .flash-display {
+      width: 100%;
+      max-width: 400px;
+      height: 200px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a2e;
+      border-radius: 16px;
+      font-size: 4rem;
+      font-weight: 700;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .flash-display.active {
+      color: #00ff88;
+      text-shadow: 0 0 20px rgba(0,255,136,0.5);
+    }
+    .flash-display.correct {
+      background: #16a34a;
+      color: #fff;
+    }
+    .flash-display.wrong {
+      background: #dc2626;
+      color: #fff;
+    }
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .setting-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .setting-item label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .setting-item select,
+    .setting-item input {
+      padding: 8px 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fff;
+    }
+    .answer-input {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      display: block;
+      padding: 12px 16px;
+      font-size: 1.5rem;
+      text-align: center;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      outline: none;
+      font-family: 'Courier New', monospace;
+    }
+    .answer-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .stat-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-card .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2563eb;
+    }
+    .stat-card .stat-label {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 4px;
+    }
+    .result-message {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 12px 0;
+      min-height: 1.5em;
+    }
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    @media (max-width: 480px) {
+      .flash-display {
+        height: 160px;
+        font-size: 3rem;
+      }
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>フラッシュ暗算</h1>
+    <h2>オンライン暗算トレーニング</h2>
+    <p class="tool-description">数字が次々と表示されるので、すべての合計を暗算で回答しましょう。桁数・個数・速度を自由に設定できます。無料・登録不要でブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label for="digits">桁数</label>
+          <select id="digits">
+            <option value="1">1桁</option>
+            <option value="2" selected>2桁</option>
+            <option value="3">3桁</option>
+            <option value="4">4桁</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label for="count">表示個数</label>
+          <select id="count">
+            <option value="3">3個</option>
+            <option value="5" selected>5個</option>
+            <option value="7">7個</option>
+            <option value="10">10個</option>
+            <option value="15">15個</option>
+            <option value="20">20個</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label for="speed">表示速度</label>
+          <select id="speed">
+            <option value="1200">遅い</option>
+            <option value="800" selected>普通</option>
+            <option value="500">速い</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flash-display" id="display">スタートを押してください</div>
+
+      <div class="btn-group">
+        <button class="btn" id="startBtn" onclick="startGame()">スタート</button>
+      </div>
+
+      <div id="answerArea" style="display:none;">
+        <input type="number" class="answer-input" id="answerInput" placeholder="合計を入力" inputmode="numeric">
+        <div class="btn-group">
+          <button class="btn" onclick="submitAnswer()">回答する</button>
+        </div>
+      </div>
+
+      <div id="resultMessage" class="result-message"></div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="totalCount">0</div>
+          <div class="stat-label">挑戦回数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="correctCount">0</div>
+          <div class="stat-label">正解数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="accuracy">0%</div>
+          <div class="stat-label">正答率</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="streak">0</div>
+          <div class="stat-label">連続正解</div>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-secondary" onclick="resetStats()">記録リセット</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../reaction-test/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">反射神経テスト</h3>
+          <p>あなたの反応速度を測定してランク判定</p>
+        </a>
+        <a href="../typing-test/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">タイピングテスト</h3>
+          <p>タイピング速度(WPM)と正確率を測定</p>
+        </a>
+        <a href="../deviation-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">偏差値計算</h3>
+          <p>テストの点数から偏差値を自動計算</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>フラッシュ暗算とは？</h2>
+      <p>フラッシュ暗算とは、画面上に次々と表示される数字をすべて暗算で足し合わせ、最終的な合計を回答するトレーニングです。もともとはそろばん教室で珠算式暗算の練習方法として使われていましたが、現在ではテレビ番組やスマートフォンアプリでも広く親しまれています。瞬時に数字を認識し、頭の中で計算を繰り返す作業は、暗算力だけでなく集中力・短期記憶力・情報処理速度の向上にも効果があるとされています。本ツールではブラウザだけで手軽にフラッシュ暗算に挑戦でき、桁数・表示個数・速度の設定を自由にカスタマイズできます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>フラッシュ暗算の使い方</h2>
+      <ol>
+        <li><strong>設定を選ぶ</strong> — 桁数（1〜4桁）、表示個数（3〜20個）、速度（遅い・普通・速い）を選びます。初めての方は「1桁・3個・遅い」がおすすめです。</li>
+        <li><strong>スタートを押す</strong> — 画面に数字が1つずつ表示されるので、頭の中で足し算を繰り返します。</li>
+        <li><strong>合計を入力</strong> — すべての数字が表示されたら、合計値を入力して「回答する」を押します。</li>
+        <li><strong>結果を確認</strong> — 正解・不正解が表示されます。挑戦回数・正解数・正答率・連続正解数が自動で記録されます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>効果的な練習方法</h2>
+      <ul>
+        <li><strong>毎日5〜10分の短時間練習</strong> — 長時間やるより、毎日少しずつ継続することで暗算力が着実に向上します。</li>
+        <li><strong>段階的にレベルアップ</strong> — まず正答率80%以上を安定して出せるようになったら、桁数や個数を1段階上げましょう。</li>
+        <li><strong>速度よりも正確さ優先</strong> — 最初は遅い速度で確実に正解することを目指し、慣れてから速度を上げていきます。</li>
+        <li><strong>数字をイメージ化する</strong> — そろばんの珠や数直線をイメージしながら計算すると、暗算スピードが向上しやすくなります。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>フラッシュ暗算の活用シーン</h2>
+      <ul>
+        <li><strong>子どもの算数学習</strong> — 計算力の基礎を楽しく鍛えられます。ゲーム感覚で取り組めるため、学習意欲の維持にも効果的です。</li>
+        <li><strong>受験・資格試験の準備</strong> — 暗算力を高めることで、試験中の計算スピードが向上し、時間に余裕が生まれます。</li>
+        <li><strong>大人の脳トレ</strong> — 認知機能の維持・向上を目的とした脳のトレーニングとして、年齢を問わず活用できます。</li>
+        <li><strong>そろばん学習の補助</strong> — 珠算式暗算の練習として、そろばん教室の自宅学習にも最適です。</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>フラッシュ暗算とは何ですか？</summary><p>フラッシュ暗算とは、画面に次々と表示される数字をすべて足し合わせ、合計を暗算で回答するトレーニングです。そろばん教室やテレビ番組でもおなじみの暗算力・集中力を鍛える方法です。</p></details>
+      <details><summary>どのレベルから始めればいいですか？</summary><p>初めての方は1桁・3個・遅い速度から始めることをおすすめします。慣れてきたら桁数や個数を増やし、速度を上げていくとよいでしょう。</p></details>
+      <details><summary>スコアはどこに保存されますか？</summary><p>スコアや正答率はブラウザのローカルストレージに保存されます。同じブラウザであれば次回訪問時にも記録が残ります。外部サーバーへの送信は一切ありません。</p></details>
+      <details><summary>スマートフォンでも使えますか？</summary><p>はい、スマートフォン・タブレット・PCなど、どのデバイスのブラウザでもお使いいただけます。レスポンシブ対応で画面サイズに合わせて自動調整されます。</p></details>
+      <details><summary>フラッシュ暗算はどんな効果がありますか？</summary><p>フラッシュ暗算を継続的に行うことで、暗算力・集中力・記憶力・情報処理速度の向上が期待できます。子どもの学習から大人の脳トレまで幅広く活用されています。</p></details>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script src="../../common/affiliate.js"></script>
+  <script src="../../common/newsletter.js"></script>
+  <script>
+    var numbers = [];
+    var correctAnswer = 0;
+    var isRunning = false;
+    var stats = JSON.parse(localStorage.getItem('flash-anzan-stats') || '{"total":0,"correct":0,"streak":0,"maxStreak":0}');
+
+    updateStatsDisplay();
+
+    function generateNumber(digits) {
+      var min = Math.pow(10, digits - 1);
+      var max = Math.pow(10, digits) - 1;
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function startGame() {
+      if (isRunning) return;
+      isRunning = true;
+
+      var digits = parseInt(document.getElementById('digits').value);
+      var count = parseInt(document.getElementById('count').value);
+      var speed = parseInt(document.getElementById('speed').value);
+
+      numbers = [];
+      correctAnswer = 0;
+      for (var i = 0; i < count; i++) {
+        var n = generateNumber(digits);
+        numbers.push(n);
+        correctAnswer += n;
+      }
+
+      var display = document.getElementById('display');
+      var startBtn = document.getElementById('startBtn');
+      var answerArea = document.getElementById('answerArea');
+      var resultMessage = document.getElementById('resultMessage');
+
+      startBtn.disabled = true;
+      answerArea.style.display = 'none';
+      resultMessage.textContent = '';
+      display.className = 'flash-display';
+      display.textContent = '';
+
+      var index = 0;
+
+      // Brief countdown
+      display.textContent = '準備...';
+      setTimeout(function() {
+        showNext();
+      }, 1000);
+
+      function showNext() {
+        if (index >= numbers.length) {
+          // All numbers shown
+          display.className = 'flash-display';
+          display.textContent = '？';
+          answerArea.style.display = 'block';
+          var input = document.getElementById('answerInput');
+          input.value = '';
+          input.focus();
+          startBtn.disabled = false;
+          isRunning = false;
+          return;
+        }
+
+        display.className = 'flash-display active';
+        display.textContent = numbers[index];
+        index++;
+
+        setTimeout(function() {
+          display.className = 'flash-display';
+          display.textContent = '';
+          setTimeout(showNext, 150);
+        }, speed);
+      }
+    }
+
+    function submitAnswer() {
+      var input = document.getElementById('answerInput');
+      var userAnswer = parseInt(input.value);
+      var display = document.getElementById('display');
+      var resultMessage = document.getElementById('resultMessage');
+
+      if (isNaN(userAnswer)) {
+        resultMessage.textContent = '数字を入力してください';
+        resultMessage.style.color = '#d97706';
+        return;
+      }
+
+      stats.total++;
+
+      if (userAnswer === correctAnswer) {
+        stats.correct++;
+        stats.streak++;
+        if (stats.streak > stats.maxStreak) stats.maxStreak = stats.streak;
+        display.className = 'flash-display correct';
+        display.textContent = correctAnswer;
+        resultMessage.textContent = '正解！ 合計: ' + correctAnswer;
+        resultMessage.style.color = '#16a34a';
+      } else {
+        stats.streak = 0;
+        display.className = 'flash-display wrong';
+        display.textContent = correctAnswer;
+        resultMessage.textContent = '不正解... 正解は ' + correctAnswer + '（あなたの回答: ' + userAnswer + '）';
+        resultMessage.style.color = '#dc2626';
+      }
+
+      document.getElementById('answerArea').style.display = 'none';
+      saveStats();
+      updateStatsDisplay();
+    }
+
+    function saveStats() {
+      localStorage.setItem('flash-anzan-stats', JSON.stringify(stats));
+    }
+
+    function updateStatsDisplay() {
+      document.getElementById('totalCount').textContent = stats.total;
+      document.getElementById('correctCount').textContent = stats.correct;
+      document.getElementById('accuracy').textContent = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) + '%' : '0%';
+      document.getElementById('streak').textContent = stats.streak;
+    }
+
+    function resetStats() {
+      if (!confirm('記録をリセットしますか？')) return;
+      stats = { total: 0, correct: 0, streak: 0, maxStreak: 0 };
+      saveStats();
+      updateStatsDisplay();
+      document.getElementById('resultMessage').textContent = '記録をリセットしました';
+      document.getElementById('resultMessage').style.color = '#888';
+    }
+
+    // Enterキーで回答
+    document.getElementById('answerInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') submitAnswer();
+    });
+  </script>
+</body>
+</html>
