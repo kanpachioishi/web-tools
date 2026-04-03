@@ -485,6 +485,15 @@ textarea {
   text-decoration: underline;
 }
 
+.article-body a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.article-body a:hover {
+  color: var(--primary-hover);
+}
+
 /* === Breadcrumb === */
 .breadcrumb {
   font-size: 0.85rem;
