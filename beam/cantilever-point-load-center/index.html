@@ -216,21 +216,27 @@
       <p>自由端荷重の場合と比べ、固定端のモーメントが半分になることに注目してください。</p>
 
       <h3>たわみとたわみ角</h3>
-      <p>荷重作用点 $x = l/2$ を境に式が変わります。それぞれの区間でたわみの微分方程式 $EI\,y'' = M(x)$ を解き、<strong>境界条件</strong>と<strong>連続条件</strong>で積分定数を決定します。</p>
+      <p>荷重作用点 $x = l/2$ を境に式が変わります。それぞれの区間でたわみの微分方程式 $-EI\,y'' = M(x)$ を解き、<strong>境界条件</strong>と<strong>連続条件</strong>で積分定数を決定します。</p>
+
+      <h4>曲げモーメント</h4>
+      <p>位置 $x$ で梁を切断し、左側の釣り合いから:</p>
+      <p><strong>区間1</strong>（$0 \le x \le l/2$）:</p>
+      $$M(x) = R_{\mathrm{A}}\,x - J_{\mathrm{A}} = Px - \frac{Pl}{2} = -P\!\left(\frac{l}{2} - x\right)$$
+      <p><strong>区間2</strong>（$l/2 < x \le l$）: 荷重点より右側には外力がないため $M(x) = 0$。</p>
 
       <h4>区間1: $0 \le x \le l/2$</h4>
 
-      $$EI\,y'' = P\!\left(\frac{l}{2} - x\right)$$
+      $$-EI\,y'' = -P\!\left(\frac{l}{2} - x\right)$$
 
       <p>1回積分してたわみ角:</p>
-      $$EI\,y' = P\!\left(\frac{lx}{2} - \frac{x^2}{2}\right) + C_1$$
+      $$-EI\,y' = -P\!\left(\frac{lx}{2} - \frac{x^2}{2}\right) + C_1$$
 
       <p>境界条件 $y'(0) = 0$（固定端でたわみ角ゼロ）より $C_1 = 0$。</p>
 
-      $$EI\,y' = P\!\left(\frac{lx}{2} - \frac{x^2}{2}\right)$$
+      $$-EI\,y' = -P\!\left(\frac{lx}{2} - \frac{x^2}{2}\right)$$
 
       <p>もう1回積分してたわみ:</p>
-      $$EI\,y = P\!\left(\frac{lx^2}{4} - \frac{x^3}{6}\right) + C_2$$
+      $$-EI\,y = -P\!\left(\frac{lx^2}{4} - \frac{x^3}{6}\right) + C_2$$
 
       <p>境界条件 $y(0) = 0$（固定端でたわみゼロ）より $C_2 = 0$。</p>
 
@@ -238,13 +244,13 @@
 
       <h4>区間2: $l/2 < x \le l$</h4>
 
-      $$EI\,y'' = 0$$
+      $$-EI\,y'' = 0$$
 
       <p>1回積分:</p>
-      $$EI\,y' = C_3$$
+      $$-EI\,y' = C_3$$
 
       <p>もう1回積分:</p>
-      $$EI\,y = C_3 x + C_4$$
+      $$-EI\,y = C_3 x + C_4$$
 
       <h4>連続条件による積分定数の決定</h4>
 
@@ -252,17 +258,17 @@
 
       <p><strong>たわみ角の連続条件</strong>（$y_1'(l/2) = y_2'(l/2)$）:</p>
 
-      $$EI\,y_1'\!\left(\frac{l}{2}\right) = P\!\left(\frac{l \cdot l/2}{2} - \frac{(l/2)^2}{2}\right) = P\!\left(\frac{l^2}{4} - \frac{l^2}{8}\right) = \frac{Pl^2}{8}$$
+      $$-EI\,y_1'\!\left(\frac{l}{2}\right) = -P\!\left(\frac{l \cdot l/2}{2} - \frac{(l/2)^2}{2}\right) = -P\!\left(\frac{l^2}{4} - \frac{l^2}{8}\right) = -\frac{Pl^2}{8}$$
 
-      $$\therefore\; C_3 = \frac{Pl^2}{8}$$
+      $$\therefore\; C_3 = -\frac{Pl^2}{8}$$
 
       <p><strong>たわみの連続条件</strong>（$y_1(l/2) = y_2(l/2)$）:</p>
 
-      $$EI\,y_1\!\left(\frac{l}{2}\right) = P\!\left(\frac{l \cdot (l/2)^2}{4} - \frac{(l/2)^3}{6}\right) = P\!\left(\frac{l^3}{16} - \frac{l^3}{48}\right) = \frac{Pl^3}{24}$$
+      $$-EI\,y_1\!\left(\frac{l}{2}\right) = -P\!\left(\frac{l \cdot (l/2)^2}{4} - \frac{(l/2)^3}{6}\right) = -P\!\left(\frac{l^3}{16} - \frac{l^3}{48}\right) = -\frac{Pl^3}{24}$$
 
-      $$EI\,y_2\!\left(\frac{l}{2}\right) = C_3 \cdot \frac{l}{2} + C_4 = \frac{Pl^2}{8} \cdot \frac{l}{2} + C_4 = \frac{Pl^3}{16} + C_4$$
+      $$-EI\,y_2\!\left(\frac{l}{2}\right) = C_3 \cdot \frac{l}{2} + C_4 = -\frac{Pl^2}{8} \cdot \frac{l}{2} + C_4 = -\frac{Pl^3}{16} + C_4$$
 
-      $$\frac{Pl^3}{24} = \frac{Pl^3}{16} + C_4 \quad \Rightarrow \quad C_4 = \frac{Pl^3}{24} - \frac{Pl^3}{16} = -\frac{Pl^3}{48}$$
+      $$-\frac{Pl^3}{24} = -\frac{Pl^3}{16} + C_4 \quad \Rightarrow \quad C_4 = -\frac{Pl^3}{24} + \frac{Pl^3}{16} = \frac{Pl^3}{48}$$
 
       <p>よって区間2のたわみ:</p>
 

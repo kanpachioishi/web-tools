@@ -164,17 +164,21 @@
       <p>対称性からも明らかなように、$R_{\mathrm{A}} = R_{\mathrm{B}} = ql/2$ となります。</p>
 
       <h3>たわみとたわみ角</h3>
-      <p>たわみの微分方程式 $EI\,y'' = M(x)$ を解きます。境界条件は $y(0) = 0$、$y(l) = 0$ です。</p>
+      <p>たわみの微分方程式 $-EI\,y'' = M(x)$ を解きます。境界条件は $y(0) = 0$、$y(l) = 0$ です。</p>
+
+      <h4>曲げモーメント</h4>
+      <p>位置 $x$ で梁を切断し、左側の釣り合いから:</p>
+      $$M(x) = R_{\mathrm{A}}\,x - \frac{qx^2}{2} = \frac{ql}{2}x - \frac{qx^2}{2} = \frac{qx(l-x)}{2}$$
 
       <h4>微分方程式の解</h4>
 
-      $$EI\,y'' = \frac{qx(l-x)}{2} = \frac{q}{2}(lx - x^2)$$
+      $$-EI\,y'' = \frac{qx(l-x)}{2} = \frac{q}{2}(lx - x^2)$$
 
       <p>1回積分してたわみ角:</p>
-      $$EI\,y' = \frac{q}{2}\left(\frac{lx^2}{2} - \frac{x^3}{3}\right) + C_1$$
+      $$-EI\,y' = \frac{q}{2}\left(\frac{lx^2}{2} - \frac{x^3}{3}\right) + C_1$$
 
       <p>もう1回積分してたわみ:</p>
-      $$EI\,y = \frac{q}{2}\left(\frac{lx^3}{6} - \frac{x^4}{12}\right) + C_1 x + C_2$$
+      $$-EI\,y = \frac{q}{2}\left(\frac{lx^3}{6} - \frac{x^4}{12}\right) + C_1 x + C_2$$
 
       <p>境界条件 $y(0) = 0$ より $C_2 = 0$。</p>
 

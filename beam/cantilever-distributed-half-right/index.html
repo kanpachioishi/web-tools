@@ -257,51 +257,60 @@
       </ul>
 
       <h3>たわみとたわみ角</h3>
-      <p>たわみの微分方程式 $EI\,y'' = M(x)$ を各区間で解きます。境界条件は固定端（$x = 0$）でたわみ $y = 0$、たわみ角 $y' = 0$ です。また、$x = l/2$ での連続条件（たわみと傾きが一致）を用います。</p>
+      <p>たわみの微分方程式 $-EI\,y'' = M(x)$ を各区間で解きます。境界条件は固定端（$x = 0$）でたわみ $y = 0$、たわみ角 $y' = 0$ です。また、$x = l/2$ での連続条件（たわみと傾きが一致）を用います。</p>
+
+      <h4>曲げモーメント</h4>
+      <p>位置 $x$ で梁を切断し、左側の釣り合いから:</p>
+      <p><strong>区間1</strong>（$0 \le x \le l/2$）: 荷重領域の手前なので:</p>
+      $$M(x) = R_{\mathrm{A}}\,x - J_{\mathrm{A}} = \frac{ql}{2}x - \frac{3ql^2}{8}$$
+      <p><strong>区間2</strong>（$l/2 \le x \le l$）:</p>
+      $$M(x) = R_{\mathrm{A}}\,x - J_{\mathrm{A}} - \frac{q(x - l/2)^2}{2} = -\frac{q(l-x)^2}{2}$$
 
       <h4>区間1（$0 \le x \le l/2$）の解</h4>
 
-      $$EI\,y'' = \frac{3ql^2}{8} - \frac{ql}{2}\,x$$
+      $$-EI\,y'' = \frac{ql}{2}\,x - \frac{3ql^2}{8}$$
 
       <p>1回積分（境界条件 $y'(0)=0$ より積分定数 $=0$）:</p>
-      $$EI\,y' = \frac{3ql^2}{8}\,x - \frac{ql}{4}\,x^2$$
+      $$-EI\,y' = -\frac{3ql^2}{8}\,x + \frac{ql}{4}\,x^2$$
 
       <p>もう1回積分（境界条件 $y(0)=0$ より積分定数 $=0$）:</p>
-      $$EI\,y = \frac{3ql^2}{16}\,x^2 - \frac{ql}{12}\,x^3$$
+      $$-EI\,y = -\frac{3ql^2}{16}\,x^2 + \frac{ql}{12}\,x^3$$
 
       <p>$x = l/2$ での値（区間2の境界条件として使用）:</p>
-      $$EI\,y\!\left(\frac{l}{2}\right) = \frac{3ql^2}{16}\cdot\frac{l^2}{4} - \frac{ql}{12}\cdot\frac{l^3}{8} = \frac{3ql^4}{64} - \frac{ql^4}{96} = \frac{7ql^4}{192}$$
-      $$EI\,y'\!\left(\frac{l}{2}\right) = \frac{3ql^2}{8}\cdot\frac{l}{2} - \frac{ql}{4}\cdot\frac{l^2}{4} = \frac{3ql^3}{16} - \frac{ql^3}{16} = \frac{ql^3}{8}$$
+      $$-EI\,y\!\left(\frac{l}{2}\right) = -\frac{3ql^2}{16}\cdot\frac{l^2}{4} + \frac{ql}{12}\cdot\frac{l^3}{8} = -\frac{3ql^4}{64} + \frac{ql^4}{96} = -\frac{7ql^4}{192}$$
+      $$-EI\,y'\!\left(\frac{l}{2}\right) = -\frac{3ql^2}{8}\cdot\frac{l}{2} + \frac{ql}{4}\cdot\frac{l^2}{4} = -\frac{3ql^3}{16} + \frac{ql^3}{16} = -\frac{ql^3}{8}$$
 
       <h4>区間2（$l/2 \le x \le l$）の解</h4>
 
-      $$EI\,y'' = \frac{q(l-x)^2}{2}$$
+      $$-EI\,y'' = -\frac{q(l-x)^2}{2}$$
 
       <p>1回積分（積分定数を $D_1$）:</p>
-      $$EI\,y' = -\frac{q(l-x)^3}{6} + D_1$$
+      $$-EI\,y' = \frac{q(l-x)^3}{6} + D_1$$
 
-      <p>連続条件 $y'(l/2) = ql^3/(8EI)$ を適用:</p>
-      $$\frac{ql^3}{8} = -\frac{q(l/2)^3}{6} + D_1 = -\frac{ql^3}{48} + D_1 \quad \Rightarrow \quad D_1 = \frac{ql^3}{8} + \frac{ql^3}{48} = \frac{7ql^3}{48}$$
+      <p>連続条件 $-EI\,y'(l/2) = -ql^3/8$ を適用:</p>
+      $$-\frac{ql^3}{8} = \frac{q(l/2)^3}{6} + D_1 = \frac{ql^3}{48} + D_1 \quad \Rightarrow \quad D_1 = -\frac{ql^3}{8} - \frac{ql^3}{48} = -\frac{7ql^3}{48}$$
 
-      $$EI\,y' = -\frac{q(l-x)^3}{6} + \frac{7ql^3}{48}$$
+      $$-EI\,y' = \frac{q(l-x)^3}{6} - \frac{7ql^3}{48}$$
 
       <p>もう1回積分（積分定数を $D_2$）:</p>
-      $$EI\,y = \frac{q(l-x)^4}{24} + \frac{7ql^3}{48}\,x + D_2$$
+      $$-EI\,y = -\frac{q(l-x)^4}{24} - \frac{7ql^3 x}{48} + D_2$$
 
-      <p>連続条件 $y(l/2) = 7ql^4/(192EI)$ を適用:</p>
-      $$\frac{7ql^4}{192} = \frac{q(l/2)^4}{24} + \frac{7ql^3}{48}\cdot\frac{l}{2} + D_2 = \frac{ql^4}{384} + \frac{7ql^4}{96} + D_2$$
-      $$D_2 = \frac{7ql^4}{192} - \frac{ql^4}{384} - \frac{7ql^4}{96} = \frac{14ql^4}{384} - \frac{ql^4}{384} - \frac{28ql^4}{384} = -\frac{15ql^4}{384} = -\frac{5ql^4}{128}$$
+      <p>連続条件 $-EI\,y(l/2) = -7ql^4/192$ を適用:</p>
+      $$-\frac{7ql^4}{192} = -\frac{q(l/2)^4}{24} - \frac{7ql^3}{48}\cdot\frac{l}{2} + D_2 = -\frac{ql^4}{384} - \frac{7ql^4}{96} + D_2$$
+      $$D_2 = -\frac{7ql^4}{192} + \frac{ql^4}{384} + \frac{7ql^4}{96} = \frac{-14ql^4 + ql^4 + 28ql^4}{384} = \frac{15ql^4}{384} = \frac{5ql^4}{128}$$
 
-      $$EI\,y = \frac{q(l-x)^4}{24} + \frac{7ql^3 x}{48} - \frac{5ql^4}{128}$$
+      $$-EI\,y = -\frac{q(l-x)^4}{24} - \frac{7ql^3 x}{48} + \frac{5ql^4}{128}$$
 
       <h4>最大たわみ・最大たわみ角（自由端 $x = l$）</h4>
 
       <p><strong>最大たわみ:</strong></p>
-      $$\delta_{\max} = y(l) = \frac{1}{EI}\!\left(0 + \frac{7ql^4}{48} - \frac{5ql^4}{128}\right) = \frac{1}{EI}\!\left(\frac{7 \times 128 - 5 \times 48}{48 \times 128}\,ql^4\right) = \frac{1}{EI}\cdot\frac{896 - 240}{6144}\,ql^4$$
-      $$\boxed{\delta_{\max} = \frac{41ql^4}{384EI}}$$
+      <p>$x = l$ を代入すると $(l-x)^4 = 0$ なので:</p>
+      $$-EI\,y(l) = 0 - \frac{7ql^4}{48} + \frac{5ql^4}{128} = -\frac{7 \times 128 - 5 \times 48}{48 \times 128}\,ql^4 = -\frac{896 - 240}{6144}\,ql^4 = -\frac{41ql^4}{384}$$
+      $$\boxed{\delta_{\max} = y(l) = \frac{41ql^4}{384EI}}$$
 
       <p><strong>最大たわみ角:</strong></p>
-      $$\theta_{\max} = y'(l) = \frac{1}{EI}\!\left(0 + \frac{7ql^3}{48}\right) = \boxed{\frac{7ql^3}{48EI}}$$
+      <p>$x = l$ を代入すると $(l-x)^3 = 0$ なので:</p>
+      $$-EI\,y'(l) = 0 - \frac{7ql^3}{48} \quad \Rightarrow \quad \boxed{\theta_{\max} = y'(l) = \frac{7ql^3}{48EI}}$$
 
       <h3>解答まとめ</h3>
 
