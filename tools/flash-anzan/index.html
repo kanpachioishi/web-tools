@@ -117,15 +117,20 @@
     .setting-item label {
       font-weight: 600;
       font-size: 0.9rem;
-      color: #555;
+      color: var(--text-muted);
     }
     .setting-item select,
     .setting-item input {
       padding: 8px 12px;
-      border: 2px solid #ddd;
+      border: 2px solid var(--border);
       border-radius: 8px;
       font-size: 1rem;
-      background: #fff;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .setting-item select:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
     .answer-input {
       width: 100%;
@@ -135,13 +140,13 @@
       padding: 12px 16px;
       font-size: 1.5rem;
       text-align: center;
-      border: 2px solid #ddd;
+      border: 2px solid var(--border);
       border-radius: 12px;
       outline: none;
       font-family: 'Courier New', monospace;
     }
     .answer-input:focus {
-      border-color: #2563eb;
+      border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
     }
     .stats-grid {
@@ -151,7 +156,8 @@
       margin-top: 20px;
     }
     .stat-card {
-      background: #f8f9fa;
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px;
       text-align: center;
@@ -159,11 +165,11 @@
     .stat-card .stat-value {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #2563eb;
+      color: var(--primary);
     }
     .stat-card .stat-label {
       font-size: 0.8rem;
-      color: #888;
+      color: var(--text-muted);
       margin-top: 4px;
     }
     .result-message {
@@ -172,6 +178,7 @@
       font-weight: 600;
       margin: 12px 0;
       min-height: 1.5em;
+      color: var(--text-muted);
     }
     .btn-group {
       display: flex;
@@ -238,13 +245,17 @@
       </div>
 
       <div id="answerArea" style="display:none;">
-        <input type="number" class="answer-input" id="answerInput" placeholder="合計を入力" inputmode="numeric">
+        <input type="number" class="answer-input" id="answerInput" placeholder="合計を入力" inputmode="numeric" aria-label="合計を入力" min="0">
         <div class="btn-group">
           <button class="btn" onclick="submitAnswer()">回答する</button>
         </div>
       </div>
 
-      <div id="resultMessage" class="result-message"></div>
+      <div id="resultMessage" class="result-message" aria-live="assertive"></div>
+
+      <div id="retryArea" class="btn-group" style="display:none;">
+        <button class="btn" id="retryBtn" onclick="startGame()">もう一度挑戦</button>
+      </div>
 
       <div class="stats-grid">
         <div class="stat-card">
@@ -262,6 +273,10 @@
         <div class="stat-card">
           <div class="stat-value" id="streak">0</div>
           <div class="stat-label">連続正解</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="maxStreak">0</div>
+          <div class="stat-label">最大連続正解</div>
         </div>
       </div>
 
@@ -349,6 +364,12 @@
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    function setSettingsDisabled(disabled) {
+      document.getElementById('digits').disabled = disabled;
+      document.getElementById('count').disabled = disabled;
+      document.getElementById('speed').disabled = disabled;
+    }
+
     function startGame() {
       if (isRunning) return;
       isRunning = true;
@@ -369,9 +390,12 @@
       var startBtn = document.getElementById('startBtn');
       var answerArea = document.getElementById('answerArea');
       var resultMessage = document.getElementById('resultMessage');
+      var retryArea = document.getElementById('retryArea');
 
       startBtn.disabled = true;
+      setSettingsDisabled(true);
       answerArea.style.display = 'none';
+      retryArea.style.display = 'none';
       resultMessage.textContent = '';
       display.className = 'flash-display';
       display.textContent = '';
@@ -394,6 +418,7 @@
           input.value = '';
           input.focus();
           startBtn.disabled = false;
+          setSettingsDisabled(false);
           isRunning = false;
           return;
         }
@@ -441,6 +466,7 @@
       }
 
       document.getElementById('answerArea').style.display = 'none';
+      document.getElementById('retryArea').style.display = 'flex';
       saveStats();
       updateStatsDisplay();
     }
@@ -454,6 +480,7 @@
       document.getElementById('correctCount').textContent = stats.correct;
       document.getElementById('accuracy').textContent = stats.total > 0 ? Math.round(stats.correct / stats.total * 100) + '%' : '0%';
       document.getElementById('streak').textContent = stats.streak;
+      document.getElementById('maxStreak').textContent = stats.maxStreak;
     }
 
     function resetStats() {
@@ -462,12 +489,12 @@
       saveStats();
       updateStatsDisplay();
       document.getElementById('resultMessage').textContent = '記録をリセットしました';
-      document.getElementById('resultMessage').style.color = '#888';
+      document.getElementById('resultMessage').style.color = '';
     }
 
     // Enterキーで回答
     document.getElementById('answerInput').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') submitAnswer();
+      if (e.key === 'Enter' && document.getElementById('answerArea').style.display !== 'none') submitAnswer();
     });
   </script>
 </body>
