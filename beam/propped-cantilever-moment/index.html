@@ -226,7 +226,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" width="600" height="220" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="110" x2="540" y2="110" stroke-width="1.5"/>
+          <polygon points="545.0,110.0 535.0,105.0 535.0,115.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="20" x2="70" y2="200" stroke-width="1.5"/>
+          <polygon points="70.0,205.0 65.0,195.0 75.0,195.0" style="fill: var(--svg-axis)"/>
           <!-- BMD（線形: M₀/2 at A → -M₀ at B） -->
           <!-- A(M₀/2): y=75, ゼロ点(l/3→pixel=70+460/3=223): y=110, B(-M₀): y=180 -->
           <!-- 正の部分 -->
@@ -242,9 +244,13 @@
           <text style="fill: var(--svg-bmd)" x="560" y="188" font-size="14" text-anchor="middle" font-weight="bold">-M₀</text>
           <text style="fill: var(--svg-fg)" x="223" y="102" font-size="13" text-anchor="middle">l/3</text>
           <text style="fill: var(--svg-title)" x="300" y="18" font-size="18" text-anchor="middle" font-weight="bold">曲げモーメント図（BMD）</text>
-          <text style="fill: var(--svg-axis)" x="50" y="114" font-size="16" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80" y="200" font-size="16" text-anchor="middle">A</text>
-          <text style="fill: var(--svg-fg)" x="530" y="200" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="551.0" y="115.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="67.0" y="223.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">M</text>
+          <!-- 原点・端点 -->
+          <text x="62.0" y="116.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="530" y1="106.0" x2="530" y2="114.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="530" y="133.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>

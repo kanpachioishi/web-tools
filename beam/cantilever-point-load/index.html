@@ -305,18 +305,25 @@
       <p>曲げモーメントは梁全長にわたって負（ホギング）で、固定端で絶対値最大 $Pl$ となり、自由端に向かって線形に $0$ へ近づきます。</p>
 
       <figure class="beam-figure">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
-          <!-- 軸 -->
-          <line x1="70" y1="40" x2="530" y2="40" style="stroke: var(--svg-axis)" stroke-width="1.5"/>
-          <line x1="70" y1="20" x2="70" y2="140" style="stroke: var(--svg-axis)" stroke-width="1.5"/>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 195" width="600" height="195" font-family="'Times New Roman', serif">
+          <!-- x軸（矢印付き） -->
+          <line x1="70" y1="40" x2="535" y2="40" style="stroke: var(--svg-axis)" stroke-width="1.5"/>
+          <polygon points="540,40 530,35 530,45" style="fill: var(--svg-axis)"/>
+          <!-- y軸（矢印付き・下向き正） -->
+          <line x1="70" y1="20" x2="70" y2="148" style="stroke: var(--svg-axis)" stroke-width="1.5"/>
+          <polygon points="70,153 65,143 75,143" style="fill: var(--svg-axis)"/>
           <!-- BMD（三角形・負の領域） -->
           <polygon points="70,40 70,130 510,40" style="fill: var(--svg-bmd); stroke: var(--svg-bmd)" fill-opacity="0.15" stroke-width="2.5"/>
           <!-- ラベル -->
           <text x="26" y="135" font-size="18" text-anchor="middle" font-weight="bold" style="fill: var(--svg-bmd)">−Pl</text>
           <text x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold" style="fill: var(--svg-title)">曲げモーメント図（BMD）</text>
-          <text x="40" y="44" font-size="16" text-anchor="middle" style="fill: var(--svg-axis)">0</text>
-          <text x="80" y="155" font-size="16" text-anchor="middle" style="fill: var(--svg-fg)">A</text>
-          <text x="510" y="55" font-size="16" text-anchor="middle" style="fill: var(--svg-fg)">B</text>
+          <!-- 軸ラベル -->
+          <text x="546" y="45" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="67" y="171" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">M</text>
+          <!-- 原点・端点 -->
+          <text x="62" y="46" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="510" y1="36" x2="510" y2="44" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="510" y="63" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図3: 曲げモーメント図</figcaption>
       </figure>
