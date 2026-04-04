@@ -412,6 +412,8 @@
     var timeLeft = 60;
     var started = false;
     var finished = false;
+    var sentenceQueue = [];
+    var currentSentenceIndex = 0;
     var currentText = "";
     var currentPos = 0;
     var totalKeystrokes = 0;
@@ -429,9 +431,28 @@
       return a;
     }
 
-    function generateText() {
-      var shuffled = shuffleArray(sentences);
-      return shuffled.join(" ");
+    function buildQueue() {
+      sentenceQueue = shuffleArray(sentences);
+      currentSentenceIndex = 0;
+    }
+
+    function renderCurrentSentence() {
+      currentText = sentenceQueue[currentSentenceIndex];
+      currentPos = 0;
+      var display = document.getElementById('text-display');
+      display.innerHTML = '';
+      displayChars = [];
+      for (var i = 0; i < currentText.length; i++) {
+        var span = document.createElement('span');
+        span.className = 'char pending';
+        span.textContent = currentText[i];
+        display.appendChild(span);
+        displayChars.push(span);
+      }
+      if (displayChars.length > 0 && !finished) {
+        displayChars[0].classList.add('current');
+        displayChars[0].classList.remove('pending');
+      }
     }
 
     function setTime(t) {
@@ -461,25 +482,8 @@
       document.getElementById('result-panel').classList.remove('show');
       document.getElementById('typing-prompt').style.display = 'block';
       document.getElementById('text-display').style.display = 'none';
-      currentText = generateText();
-      renderText();
-    }
-
-    function renderText() {
-      var display = document.getElementById('text-display');
-      display.innerHTML = '';
-      displayChars = [];
-      for (var i = 0; i < currentText.length; i++) {
-        var span = document.createElement('span');
-        span.className = 'char pending';
-        span.textContent = currentText[i];
-        display.appendChild(span);
-        displayChars.push(span);
-      }
-      if (displayChars.length > 0 && !finished) {
-        displayChars[0].classList.add('current');
-        displayChars[0].classList.remove('pending');
-      }
+      buildQueue();
+      renderCurrentSentence();
     }
 
     function focusInput() {
@@ -489,10 +493,6 @@
       if (!started && !finished) {
         document.getElementById('typing-prompt').style.display = 'none';
         document.getElementById('text-display').style.display = 'block';
-        if (!currentText) {
-          currentText = generateText();
-          renderText();
-        }
       }
     }
 
@@ -594,9 +594,12 @@
             displayChars[currentPos].className = 'char current';
           }
           if (currentPos >= currentText.length) {
-            currentText = generateText();
-            currentPos = 0;
-            renderText();
+            currentSentenceIndex++;
+            if (currentSentenceIndex >= sentenceQueue.length) {
+              sentenceQueue = shuffleArray(sentences);
+              currentSentenceIndex = 0;
+            }
+            renderCurrentSentence();
           }
         } else {
           missKeystrokes++;
@@ -612,8 +615,8 @@
     });
 
     // Initial setup
-    currentText = generateText();
-    renderText();
+    buildQueue();
+    renderCurrentSentence();
   </script>
 </body>
 </html>

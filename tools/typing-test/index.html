@@ -354,7 +354,6 @@
     var romajiChars = [];
     var sentenceQueue = [];
     var currentSentenceIndex = 0;
-    var romajiOffsets = []; // maps romaji position to sentence index
 
     function shuffleArray(arr) {
       var a = arr.slice();
@@ -368,74 +367,35 @@
     function buildText() {
       sentenceQueue = shuffleArray(sentences);
       currentSentenceIndex = 0;
-      // Build a long romaji string from multiple sentences
-      var romajiParts = [];
-      var offsets = [];
-      for (var i = 0; i < sentenceQueue.length; i++) {
-        if (i > 0) {
-          romajiParts.push(" ");
-          offsets.push(-1); // space separator
-        }
-        var r = sentenceQueue[i].roma;
-        for (var j = 0; j < r.length; j++) {
-          romajiParts.push(r[j]);
-          offsets.push(i);
-        }
-      }
-      currentRomaji = romajiParts.join("");
-      romajiOffsets = offsets;
     }
 
-    function renderDisplay() {
-      // Render hiragana line
+    function renderCurrentSentence() {
+      var sentence = sentenceQueue[currentSentenceIndex];
+      currentRomaji = sentence.roma;
+      currentPos = 0;
+
+      // Render hiragana line - current sentence only
       var hiraEl = document.getElementById('hiragana-display');
       hiraEl.innerHTML = '';
-      for (var i = 0; i < sentenceQueue.length; i++) {
-        if (i > 0) {
-          var spacer = document.createElement('span');
-          spacer.textContent = '　';
-          hiraEl.appendChild(spacer);
-        }
-        var span = document.createElement('span');
-        span.className = 'h-char h-pending';
-        span.textContent = sentenceQueue[i].hira;
-        span.setAttribute('data-idx', i);
-        hiraEl.appendChild(span);
-      }
-      updateHiraganaHighlight();
+      var span = document.createElement('span');
+      span.className = 'h-char h-current';
+      span.textContent = sentence.hira;
+      hiraEl.appendChild(span);
 
-      // Render romaji line
+      // Render romaji line - current sentence only
       var romaEl = document.getElementById('romaji-display');
       romaEl.innerHTML = '';
       romajiChars = [];
       for (var i = 0; i < currentRomaji.length; i++) {
-        var span = document.createElement('span');
-        span.className = 'char pending';
-        span.textContent = currentRomaji[i];
-        romaEl.appendChild(span);
-        romajiChars.push(span);
+        var s = document.createElement('span');
+        s.className = 'char pending';
+        s.textContent = currentRomaji[i];
+        romaEl.appendChild(s);
+        romajiChars.push(s);
       }
       if (romajiChars.length > 0 && !finished) {
         romajiChars[0].classList.add('current');
         romajiChars[0].classList.remove('pending');
-      }
-    }
-
-    function updateHiraganaHighlight() {
-      var hiraEl = document.getElementById('hiragana-display');
-      var spans = hiraEl.querySelectorAll('.h-char');
-      // Determine which sentence the current position is in
-      var currentSIdx = currentPos < romajiOffsets.length ? romajiOffsets[currentPos] : sentenceQueue.length;
-      if (currentSIdx === -1) currentSIdx = currentPos > 0 ? romajiOffsets[currentPos - 1] + 1 : 0;
-      for (var i = 0; i < spans.length; i++) {
-        var idx = parseInt(spans[i].getAttribute('data-idx'));
-        if (idx < currentSIdx) {
-          spans[i].className = 'h-char h-done';
-        } else if (idx === currentSIdx) {
-          spans[i].className = 'h-char h-current';
-        } else {
-          spans[i].className = 'h-char h-pending';
-        }
       }
     }
 
@@ -467,7 +427,7 @@
       document.getElementById('typing-prompt').style.display = 'block';
       document.getElementById('text-display').style.display = 'none';
       buildText();
-      renderDisplay();
+      renderCurrentSentence();
     }
 
     function focusInput() {
@@ -574,11 +534,15 @@
           if (currentPos < romajiChars.length) {
             romajiChars[currentPos].className = 'char current';
           }
-          updateHiraganaHighlight();
           if (currentPos >= currentRomaji.length) {
-            buildText();
-            currentPos = 0;
-            renderDisplay();
+            // Move to next sentence
+            currentSentenceIndex++;
+            if (currentSentenceIndex >= sentenceQueue.length) {
+              // Reshuffle and start over
+              sentenceQueue = shuffleArray(sentences);
+              currentSentenceIndex = 0;
+            }
+            renderCurrentSentence();
           }
         } else {
           missKeystrokes++;
@@ -595,7 +559,7 @@
 
     // Init
     buildText();
-    renderDisplay();
+    renderCurrentSentence();
   </script>
 </body>
 </html>
