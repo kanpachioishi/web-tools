@@ -476,12 +476,9 @@
           if (nextR) result += nextR[0];
           i++; continue;
         }
-        // ー (long vowel - repeat previous vowel)
+        // ー (長音符 = hyphen key)
         if (hira[i] === 'ー') {
-          if (result.length > 0) {
-            var last = result[result.length - 1];
-            if ('aiueo'.indexOf(last) >= 0) result += last;
-          }
+          result += '-';
           i++; continue;
         }
         // 拗音 (2-char combo)
