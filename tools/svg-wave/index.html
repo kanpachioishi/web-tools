@@ -330,6 +330,139 @@
         </a>
       </div>
     </section>
+
+    <section class="content-section">
+      <h2>SVGウェーブとは？</h2>
+      <p>SVGウェーブは、Webサイトの背景やセクションの区切りに使われる波形のSVG（Scalable Vector Graphics）画像です。ベクター形式のため、どんな画面サイズでも劣化せず美しく表示されます。CSSの<code>background-image</code>として使用したり、HTMLに直接埋め込むことができ、ファイルサイズも非常に軽量です。ランディングページやポートフォリオサイトなどで、セクション間の自然な区切りとして広く活用されています。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>SVGウェーブの使い方</h2>
+      <ol>
+        <li><strong>プリセットを選択</strong> — 海・夕焼け・森・ネオンなど10種類のプリセットから好みのスタイルを選びます。</li>
+        <li><strong>パラメータを調整</strong> — 波の高さ・周波数・レイヤー数・ランダム度・色をスライダーとカラーピッカーで調整します。「再生成」ボタンでランダムパターンを変更できます。</li>
+        <li><strong>プレビューを確認</strong> — リアルタイムでプレビューが更新されるので、イメージに合うデザインに仕上げます。上下反転も可能です。</li>
+        <li><strong>コードをコピーまたはダウンロード</strong> — SVGコードをHTMLに直接貼り付けるか、CSSコードタブからbackground-imageとして使用できます。SVGファイルとしてダウンロードも可能です。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>SVG基本図形一覧</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>要素名</th>
+            <th>説明</th>
+            <th>タグ例</th>
+            <th>主な用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>&lt;rect&gt;</code></td>
+            <td>長方形</td>
+            <td><code>&lt;rect width="100" height="50"/&gt;</code></td>
+            <td>背景、ボタン、カード</td>
+          </tr>
+          <tr>
+            <td><code>&lt;circle&gt;</code></td>
+            <td>円</td>
+            <td><code>&lt;circle cx="50" cy="50" r="40"/&gt;</code></td>
+            <td>アイコン、ドット、装飾</td>
+          </tr>
+          <tr>
+            <td><code>&lt;ellipse&gt;</code></td>
+            <td>楕円</td>
+            <td><code>&lt;ellipse cx="50" cy="50" rx="40" ry="20"/&gt;</code></td>
+            <td>雲、影、装飾</td>
+          </tr>
+          <tr>
+            <td><code>&lt;line&gt;</code></td>
+            <td>直線</td>
+            <td><code>&lt;line x1="0" y1="0" x2="100" y2="100"/&gt;</code></td>
+            <td>区切り線、矢印</td>
+          </tr>
+          <tr>
+            <td><code>&lt;polyline&gt;</code></td>
+            <td>折れ線</td>
+            <td><code>&lt;polyline points="0,0 50,50 100,0"/&gt;</code></td>
+            <td>グラフ、チャート</td>
+          </tr>
+          <tr>
+            <td><code>&lt;polygon&gt;</code></td>
+            <td>多角形</td>
+            <td><code>&lt;polygon points="50,0 100,100 0,100"/&gt;</code></td>
+            <td>星、三角形、装飾</td>
+          </tr>
+          <tr>
+            <td><code>&lt;path&gt;</code></td>
+            <td>パス（自由曲線）</td>
+            <td><code>&lt;path d="M0,0 C50,100 100,0"/&gt;</code></td>
+            <td>波形、複雑な形状、ロゴ</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>Webサイトで波形デザインを使う場面</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>使用場面</th>
+            <th>説明</th>
+            <th>推奨設定</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ヒーローセクションの下部</td>
+            <td>メインビジュアルとコンテンツの境目を自然に繋ぐ</td>
+            <td>高さ: 80〜120、レイヤー: 2〜3</td>
+          </tr>
+          <tr>
+            <td>フッターの上部</td>
+            <td>コンテンツからフッターへの切り替えを滑らかに</td>
+            <td>上下反転、高さ: 60〜80</td>
+          </tr>
+          <tr>
+            <td>セクション間の区切り</td>
+            <td>背景色が異なるセクションの境界をおしゃれに</td>
+            <td>高さ: 40〜60、レイヤー: 1〜2</td>
+          </tr>
+          <tr>
+            <td>CTAセクションの背景</td>
+            <td>お問い合わせや申し込みセクションを目立たせる</td>
+            <td>鮮やかな配色、レイヤー: 2〜3</td>
+          </tr>
+          <tr>
+            <td>料金表・プランセクション</td>
+            <td>料金プランのセクションを視覚的に分離</td>
+            <td>控えめな配色、高さ: 40〜60</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>生成したSVGは商用利用できますか？</summary>
+        <p>はい、このツールで生成したSVGは商用・個人問わず自由にご利用いただけます。クレジット表記も不要です。クライアントワークやプロダクトのWebサイトにもそのままお使いいただけます。</p>
+      </details>
+      <details>
+        <summary>SVGとPNG、どちらを使うべきですか？</summary>
+        <p>波形の背景にはSVGが圧倒的におすすめです。SVGはベクター形式のため、どんな画面サイズでも美しく表示され、ファイルサイズも非常に小さくなります。PNGはラスター形式のため、拡大すると劣化し、ファイルサイズも大きくなります。</p>
+      </details>
+      <details>
+        <summary>SVGウェーブをレスポンシブにするにはどうすればいいですか？</summary>
+        <p>SVGに<code>preserveAspectRatio="none"</code>属性を設定し、CSSで<code>width: 100%</code>を指定すれば、画面幅に合わせて自動的に伸縮します。このツールで生成されるSVGにはこの設定が含まれているため、そのまま使えます。</p>
+      </details>
+      <details>
+        <summary>CSSコードとSVGコード、どちらを使うのがいいですか？</summary>
+        <p>HTMLに直接SVGを埋め込む方法は、コードの管理がしやすく、アニメーションも追加しやすいメリットがあります。CSSのbackground-imageとして使う方法は、HTMLの構造をシンプルに保てます。用途に応じて使い分けてください。</p>
+      </details>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <div class="copy-toast" id="copyToast">コピーしました</div>

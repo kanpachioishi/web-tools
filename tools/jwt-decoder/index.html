@@ -288,6 +288,136 @@
       <p>JWTのPayloadはBase64URLエンコードされているだけで、<strong>暗号化されていません</strong>。誰でもデコードして中身を読むことができます。パスワードやクレジットカード番号などの機密情報をPayloadに含めてはいけません。</p>
     </div>
 
+    <!-- リファレンス情報セクション -->
+    <section class="content-section">
+      <h2>JWTデコーダーとは？</h2>
+      <p>JWTデコーダーは、JWT（JSON Web Token）を構成する3つのパート（Header・Payload・Signature）を分解し、人間が読める形式で表示するツールです。JWTはWeb認証やAPI間のデータ受け渡しに広く使われており、トークンの中身を確認・デバッグする場面で活躍します。本ツールではブラウザ内で完結するため、機密性の高いトークンも安全にデコードできます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li>入力欄にJWTトークン（<code>eyJ...</code>で始まる文字列）を貼り付けます。</li>
+        <li>「デコード」ボタンをクリックします（Ctrl+Enterでも実行可能）。</li>
+        <li>Header（アルゴリズム情報）、Payload（クレーム情報）、Signature（署名データ）が分解表示されます。</li>
+        <li>Payloadに<code>exp</code>フィールドがある場合、有効期限の判定結果（有効/期限切れ）が自動表示されます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>JWTの構造</h2>
+      <p>JWTはドット（<code>.</code>）で区切られた3つのBase64URLエンコード文字列で構成されます。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>パート</th>
+            <th>役割</th>
+            <th>内容の例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Header</td>
+            <td>トークンのメタ情報</td>
+            <td><code>{"alg":"HS256","typ":"JWT"}</code></td>
+          </tr>
+          <tr>
+            <td>Payload</td>
+            <td>クレーム（主張・データ）</td>
+            <td><code>{"sub":"1234","name":"Taro","iat":1516239022}</code></td>
+          </tr>
+          <tr>
+            <td>Signature</td>
+            <td>改ざん検証用の署名</td>
+            <td>HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>主要なJWTクレーム一覧</h2>
+      <p>JWTのPayloadに含まれる標準クレーム（RFC 7519で定義）の一覧です。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>クレーム名</th>
+            <th>正式名称</th>
+            <th>説明</th>
+            <th>値の例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>iss</code></td>
+            <td>Issuer</td>
+            <td>トークンの発行者を識別する</td>
+            <td><code>"https://auth.example.com"</code></td>
+          </tr>
+          <tr>
+            <td><code>sub</code></td>
+            <td>Subject</td>
+            <td>トークンの主体（通常はユーザーID）</td>
+            <td><code>"user-12345"</code></td>
+          </tr>
+          <tr>
+            <td><code>aud</code></td>
+            <td>Audience</td>
+            <td>トークンの受信者（対象サービス）</td>
+            <td><code>"https://api.example.com"</code></td>
+          </tr>
+          <tr>
+            <td><code>exp</code></td>
+            <td>Expiration Time</td>
+            <td>有効期限（Unixタイムスタンプ）</td>
+            <td><code>1716239022</code></td>
+          </tr>
+          <tr>
+            <td><code>nbf</code></td>
+            <td>Not Before</td>
+            <td>有効開始日時（Unixタイムスタンプ）</td>
+            <td><code>1516239022</code></td>
+          </tr>
+          <tr>
+            <td><code>iat</code></td>
+            <td>Issued At</td>
+            <td>トークンの発行日時（Unixタイムスタンプ）</td>
+            <td><code>1516239022</code></td>
+          </tr>
+          <tr>
+            <td><code>jti</code></td>
+            <td>JWT ID</td>
+            <td>トークンの一意な識別子（リプレイ攻撃防止）</td>
+            <td><code>"abc-123-def"</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>JWTとセッションCookieの違いは何ですか？</summary>
+        <p>セッションCookieはサーバー側にセッション情報を保存しますが、JWTはトークン自体に情報を含むため、サーバー側で状態を持つ必要がありません（ステートレス）。これにより、マイクロサービス間の認証やスケーラブルなシステム構築に適しています。</p>
+      </details>
+      <details>
+        <summary>JWTの署名アルゴリズムにはどんな種類がありますか？</summary>
+        <p>代表的なアルゴリズムとして、<strong>HS256</strong>（HMAC + SHA-256、共通鍵方式）、<strong>RS256</strong>（RSA + SHA-256、公開鍵方式）、<strong>ES256</strong>（ECDSA + SHA-256、楕円曲線方式）があります。公開鍵方式は発行者と検証者が異なるケースに適しています。</p>
+      </details>
+      <details>
+        <summary>JWTのPayloadに機密情報を入れても大丈夫ですか？</summary>
+        <p>いいえ。PayloadはBase64URLエンコードされているだけで暗号化はされていないため、誰でもデコードして中身を読むことができます。パスワードやクレジットカード番号などの機密情報はPayloadに含めないでください。暗号化が必要な場合はJWE（JSON Web Encryption）の利用を検討してください。</p>
+      </details>
+      <details>
+        <summary>JWTの有効期限（exp）はどのくらいに設定すべきですか？</summary>
+        <p>アクセストークンは短めの有効期限（5分〜1時間程度）が推奨されます。長期間有効なトークンはリフレッシュトークンとして別途管理し、アクセストークンを短期間で更新する設計が一般的です。</p>
+      </details>
+      <details>
+        <summary>このツールでJWTの署名検証はできますか？</summary>
+        <p>本ツールはJWTのデコード（中身の確認）に特化しています。署名検証には秘密鍵または公開鍵が必要なため、本ツールでは対応していません。署名検証が必要な場合は、サーバーサイドのライブラリ（jsonwebtokenなど）をご利用ください。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
       <div class="tool-grid">

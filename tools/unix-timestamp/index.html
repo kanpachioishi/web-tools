@@ -186,6 +186,172 @@
     </section>
 
     <section class="content-section">
+      <h2>主要なタイムスタンプ形式の比較</h2>
+      <p>日時データの表現にはさまざまな形式があります。以下の表で各形式の特徴と用途を比較できます。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>形式</th>
+            <th>例</th>
+            <th>特徴</th>
+            <th>主な用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Unixタイムスタンプ（秒）</td>
+            <td>1712188800</td>
+            <td>1970-01-01 UTCからの経過秒数。整数値。</td>
+            <td>Unix/Linux、多くのプログラミング言語</td>
+          </tr>
+          <tr>
+            <td>Unixタイムスタンプ（ミリ秒）</td>
+            <td>1712188800000</td>
+            <td>ミリ秒精度。13桁の整数値。</td>
+            <td>JavaScript（Date.now()）、Java</td>
+          </tr>
+          <tr>
+            <td>ISO 8601</td>
+            <td>2024-04-04T00:00:00Z</td>
+            <td>国際標準。タイムゾーン情報を含む。</td>
+            <td>REST API、JSON、データ交換</td>
+          </tr>
+          <tr>
+            <td>RFC 2822</td>
+            <td>Thu, 04 Apr 2024 00:00:00 +0000</td>
+            <td>人間が読みやすい形式。</td>
+            <td>メールヘッダー、HTTP</td>
+          </tr>
+          <tr>
+            <td>Microsoft FILETIME</td>
+            <td>133567776000000000</td>
+            <td>1601-01-01からの100ナノ秒単位。</td>
+            <td>Windows OS内部</td>
+          </tr>
+          <tr>
+            <td>NTP タイムスタンプ</td>
+            <td>3923212800</td>
+            <td>1900-01-01からの経過秒数。</td>
+            <td>NTPプロトコル</td>
+          </tr>
+          <tr>
+            <td>Julian Day Number</td>
+            <td>2460405.5</td>
+            <td>紀元前4713年からの日数。小数で時刻を表現。</td>
+            <td>天文学</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>プログラミング言語別タイムスタンプ取得方法</h2>
+      <p>各プログラミング言語でUnixタイムスタンプを取得するコードの一覧です。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>言語</th>
+            <th>取得コード</th>
+            <th>単位</th>
+            <th>戻り値の型</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>JavaScript</td>
+            <td><code>Date.now()</code></td>
+            <td>ミリ秒</td>
+            <td>number</td>
+          </tr>
+          <tr>
+            <td>JavaScript</td>
+            <td><code>Math.floor(Date.now() / 1000)</code></td>
+            <td>秒</td>
+            <td>number</td>
+          </tr>
+          <tr>
+            <td>Python</td>
+            <td><code>time.time()</code></td>
+            <td>秒（小数点以下あり）</td>
+            <td>float</td>
+          </tr>
+          <tr>
+            <td>Python</td>
+            <td><code>int(time.time())</code></td>
+            <td>秒（整数）</td>
+            <td>int</td>
+          </tr>
+          <tr>
+            <td>PHP</td>
+            <td><code>time()</code></td>
+            <td>秒</td>
+            <td>int</td>
+          </tr>
+          <tr>
+            <td>Java</td>
+            <td><code>System.currentTimeMillis()</code></td>
+            <td>ミリ秒</td>
+            <td>long</td>
+          </tr>
+          <tr>
+            <td>Ruby</td>
+            <td><code>Time.now.to_i</code></td>
+            <td>秒</td>
+            <td>Integer</td>
+          </tr>
+          <tr>
+            <td>Go</td>
+            <td><code>time.Now().Unix()</code></td>
+            <td>秒</td>
+            <td>int64</td>
+          </tr>
+          <tr>
+            <td>C#</td>
+            <td><code>DateTimeOffset.UtcNow.ToUnixTimeSeconds()</code></td>
+            <td>秒</td>
+            <td>long</td>
+          </tr>
+          <tr>
+            <td>Bash</td>
+            <td><code>date +%s</code></td>
+            <td>秒</td>
+            <td>文字列</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>主要なタイムゾーン一覧</h2>
+      <p>Unixタイムスタンプ自体はUTC基準ですが、日時に変換する際にはタイムゾーンが重要です。主要なタイムゾーンのUTCからのオフセットを以下にまとめました。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>略称</th>
+            <th>正式名称</th>
+            <th>UTCオフセット</th>
+            <th>主な都市・地域</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>UTC</td><td>協定世界時</td><td>+00:00</td><td>基準時刻</td></tr>
+          <tr><td>JST</td><td>日本標準時</td><td>+09:00</td><td>東京</td></tr>
+          <tr><td>CST（中国）</td><td>中国標準時</td><td>+08:00</td><td>北京、上海</td></tr>
+          <tr><td>KST</td><td>韓国標準時</td><td>+09:00</td><td>ソウル</td></tr>
+          <tr><td>IST</td><td>インド標準時</td><td>+05:30</td><td>ムンバイ、デリー</td></tr>
+          <tr><td>CET</td><td>中央ヨーロッパ時間</td><td>+01:00</td><td>パリ、ベルリン</td></tr>
+          <tr><td>GMT</td><td>グリニッジ標準時</td><td>+00:00</td><td>ロンドン（冬季）</td></tr>
+          <tr><td>EST</td><td>米国東部標準時</td><td>-05:00</td><td>ニューヨーク</td></tr>
+          <tr><td>CST（米国）</td><td>米国中部標準時</td><td>-06:00</td><td>シカゴ</td></tr>
+          <tr><td>PST</td><td>米国太平洋標準時</td><td>-08:00</td><td>ロサンゼルス</td></tr>
+          <tr><td>AEST</td><td>オーストラリア東部標準時</td><td>+10:00</td><td>シドニー</td></tr>
+          <tr><td>NZST</td><td>ニュージーランド標準時</td><td>+12:00</td><td>オークランド</td></tr>
+        </tbody>
+      </table>
+      <p>夏時間（DST）を採用している地域では、夏季にオフセットが1時間進みます（例: EST → EDT で -05:00 → -04:00）。日本は夏時間を採用していません。</p>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details><summary>Unixタイムスタンプとは何ですか？</summary><p>1970年1月1日0時0分0秒（UTC）からの経過秒数で時刻を表現する方式です。コンピュータシステムの内部で広く使われており、タイムゾーンに依存しない世界共通の時刻表現です。</p></details>
       <details><summary>ミリ秒のタイムスタンプにも対応していますか？</summary><p>はい、10桁（秒）と13桁（ミリ秒）のタイムスタンプを自動的に判定して正しく変換します。JavaScriptのDate.now()はミリ秒を返すため、13桁の値もそのまま入力できます。</p></details>

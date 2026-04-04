@@ -521,6 +521,139 @@
       </div>
     </div>
 
+    <section class="content-section">
+      <h2>TDEE（1日の総消費カロリー）とは？</h2>
+      <p>TDEE（Total Daily Energy Expenditure）は、1日に身体が消費する総エネルギー量のことです。基礎代謝（BMR）、食事誘発性熱産生（DIT）、日常活動や運動による消費カロリーの合計で構成されます。TDEEを正確に把握することで、ダイエット（減量）、体重維持、増量（バルクアップ）のそれぞれに適した目標カロリーを設定できます。本ツールではMifflin-St Jeor式を使用して、科学的根拠に基づいた計算を行います。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>TDEE計算ツールの使い方</h2>
+      <ol>
+        <li>性別を選択します（男性・女性）</li>
+        <li>年齢・身長（cm）・体重（kg）を入力します</li>
+        <li>日常の活動レベルをプルダウンから選択します</li>
+        <li>「計算する」ボタンをクリックすると、TDEE・BMR・目標カロリー・マクロ栄養素の目安が表示されます</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>活動レベル別TDEE係数一覧</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:12px;">
+        <thead>
+          <tr style="background:var(--bg);border-bottom:2px solid var(--border);">
+            <th style="padding:8px 12px;text-align:left;">活動レベル</th>
+            <th style="padding:8px 12px;text-align:center;">係数</th>
+            <th style="padding:8px 12px;text-align:left;">具体例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">座りがち</td>
+            <td style="padding:8px 12px;text-align:center;">1.2</td>
+            <td style="padding:8px 12px;">デスクワーク中心、運動習慣なし</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">軽い運動</td>
+            <td style="padding:8px 12px;text-align:center;">1.375</td>
+            <td style="padding:8px 12px;">週1〜3回の軽い運動やウォーキング</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">中程度の運動</td>
+            <td style="padding:8px 12px;text-align:center;">1.55</td>
+            <td style="padding:8px 12px;">週3〜5回の中程度の運動、立ち仕事</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">活発な運動</td>
+            <td style="padding:8px 12px;text-align:center;">1.725</td>
+            <td style="padding:8px 12px;">週6〜7回のハードな運動、肉体労働</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-weight:600;">非常に活発</td>
+            <td style="padding:8px 12px;text-align:center;">1.9</td>
+            <td style="padding:8px 12px;">毎日の激しいトレーニング、プロアスリート</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ TDEE = BMR（基礎代謝） x 活動係数 で計算されます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>目的別マクロ栄養素バランスの目安</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:12px;">
+        <thead>
+          <tr style="background:var(--bg);border-bottom:2px solid var(--border);">
+            <th style="padding:8px 12px;text-align:left;">目的</th>
+            <th style="padding:8px 12px;text-align:center;">タンパク質</th>
+            <th style="padding:8px 12px;text-align:center;">脂質</th>
+            <th style="padding:8px 12px;text-align:center;">炭水化物</th>
+            <th style="padding:8px 12px;text-align:left;">ポイント</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">体重維持</td>
+            <td style="padding:8px 12px;text-align:center;">15〜20%</td>
+            <td style="padding:8px 12px;text-align:center;">20〜30%</td>
+            <td style="padding:8px 12px;text-align:center;">50〜65%</td>
+            <td style="padding:8px 12px;">厚労省推奨のバランスに近い</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">減量（ダイエット）</td>
+            <td style="padding:8px 12px;text-align:center;">25〜30%</td>
+            <td style="padding:8px 12px;text-align:center;">20〜25%</td>
+            <td style="padding:8px 12px;text-align:center;">45〜55%</td>
+            <td style="padding:8px 12px;">高タンパクで筋肉量を維持</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">増量（バルクアップ）</td>
+            <td style="padding:8px 12px;text-align:center;">25〜35%</td>
+            <td style="padding:8px 12px;text-align:center;">20〜30%</td>
+            <td style="padding:8px 12px;text-align:center;">40〜55%</td>
+            <td style="padding:8px 12px;">高タンパク・高カロリー</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:8px 12px;font-weight:600;">ローファット</td>
+            <td style="padding:8px 12px;text-align:center;">30%</td>
+            <td style="padding:8px 12px;text-align:center;">10〜20%</td>
+            <td style="padding:8px 12px;text-align:center;">50〜60%</td>
+            <td style="padding:8px 12px;">脂質を抑えて減量</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-weight:600;">ケトジェニック</td>
+            <td style="padding:8px 12px;text-align:center;">20〜25%</td>
+            <td style="padding:8px 12px;text-align:center;">60〜75%</td>
+            <td style="padding:8px 12px;text-align:center;">5〜10%</td>
+            <td style="padding:8px 12px;">超低糖質で脂肪をエネルギー源に</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ タンパク質は1gあたり4kcal、脂質は1gあたり9kcal、炭水化物は1gあたり4kcalで計算。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>TDEEに関するよくある質問</h2>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">TDEEとBMR（基礎代謝）の違いは何ですか？</summary>
+        <p style="margin-top:8px;">BMR（基礎代謝）は完全に安静な状態で生命維持に必要な最低限のエネルギーです。TDEEはBMRに日常の活動（仕事、運動、食事の消化など）で消費するエネルギーを加えた1日の総消費カロリーです。TDEEは通常BMRの1.2〜1.9倍になります。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">ダイエットにはTDEEからどのくらい減らすべきですか？</summary>
+        <p style="margin-top:8px;">一般的にTDEEから500kcal/日を引いた量を目標摂取カロリーにすると、週に約0.5kgのペースで健康的に減量できます。TDEEの20%以上のカロリーカットは筋肉量の低下やリバウンドの原因になるため避けることが推奨されます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">Mifflin-St Jeor式とHarris-Benedict式の違いは？</summary>
+        <p style="margin-top:8px;">Mifflin-St Jeor式は1990年に発表された比較的新しい計算式で、現代人の体格に合った精度の高い結果が得られるとされています。Harris-Benedict式は1919年に開発された歴史ある計算式ですが、現代人の基礎代謝をやや高めに算出する傾向があります。本ツールではより正確とされるMifflin-St Jeor式を採用しています。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">活動レベルの選び方がわかりません</summary>
+        <p style="margin-top:8px;">迷った場合は「座りがち」か「軽い運動」を選ぶのがおすすめです。多くの人は自分の活動量を過大評価しがちです。デスクワーク中心で特別な運動をしていなければ「座りがち」、通勤で歩く程度であれば「軽い運動」が適切です。運動を始めて効果が出てきたら、段階的にレベルを上げていきましょう。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">TDEEは毎日変わりますか？</summary>
+        <p style="margin-top:8px;">はい、厳密にはTDEEは日によって変動します。運動量、体調、気温、ストレスなどの影響を受けます。ただし、日々の細かい変動を気にするよりも、1週間単位でカロリー収支を管理する方が実用的です。計算結果はあくまで目安として、体重の変化を見ながら調整していきましょう。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
       <div class="tool-grid">

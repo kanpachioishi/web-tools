@@ -437,6 +437,149 @@
         </a>
       </div>
     </section>
+
+    <section class="content-section">
+      <h2>CSSグラデーションとは？</h2>
+      <p>CSSグラデーションは、2つ以上の色の間で滑らかに変化する背景をコードだけで作成できるCSS機能です。画像ファイルを使わずに美しい背景を実現できるため、ページの読み込み速度を落とさずにデザイン性を高められます。CSSグラデーションにはlinear-gradient（線形）、radial-gradient（放射状）、conic-gradient（円錐状）の3種類があり、それぞれ異なる表現が可能です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>CSSグラデーションの使い方</h2>
+      <ol>
+        <li><strong>グラデーションタイプを選択</strong> — Linear（直線）、Radial（放射状）、Conic（円錐状）から目的に合ったタイプを選びます。</li>
+        <li><strong>色とポジションを設定</strong> — カラーピッカーで色を選び、スライダーで各色の位置（0%〜100%）を調整します。「+ 色を追加」で最大10色まで追加できます。</li>
+        <li><strong>角度を調整</strong> — LinearとConicタイプでは、スライダーでグラデーションの角度（0°〜360°）を調整できます。</li>
+        <li><strong>CSSコードをコピー</strong> — プレビューを確認したら、生成されたCSSコードの「コピー」ボタンをクリックし、スタイルシートに貼り付けます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>CSSグラデーションの種類比較</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>種類</th>
+            <th>CSS関数</th>
+            <th>方向</th>
+            <th>主な用途</th>
+            <th>ブラウザ対応</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>線形グラデーション</td>
+            <td><code>linear-gradient()</code></td>
+            <td>直線（角度指定）</td>
+            <td>背景、ボタン、ヘッダー</td>
+            <td>全ブラウザ対応</td>
+          </tr>
+          <tr>
+            <td>放射状グラデーション</td>
+            <td><code>radial-gradient()</code></td>
+            <td>中心から外側へ</td>
+            <td>スポットライト効果、丸いアイコン</td>
+            <td>全ブラウザ対応</td>
+          </tr>
+          <tr>
+            <td>円錐グラデーション</td>
+            <td><code>conic-gradient()</code></td>
+            <td>中心点の周りを回転</td>
+            <td>円グラフ、カラーホイール</td>
+            <td>主要ブラウザ対応</td>
+          </tr>
+          <tr>
+            <td>繰り返し線形</td>
+            <td><code>repeating-linear-gradient()</code></td>
+            <td>直線（繰り返し）</td>
+            <td>ストライプ模様、パターン背景</td>
+            <td>全ブラウザ対応</td>
+          </tr>
+          <tr>
+            <td>繰り返し放射状</td>
+            <td><code>repeating-radial-gradient()</code></td>
+            <td>中心から外側（繰り返し）</td>
+            <td>同心円パターン、レーダー風</td>
+            <td>全ブラウザ対応</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>人気のグラデーション配色例</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>名前</th>
+            <th>色1</th>
+            <th>色2</th>
+            <th>CSSコード例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>サンセット</td>
+            <td>#f093fb</td>
+            <td>#f5576c</td>
+            <td><code>linear-gradient(135deg, #f093fb, #f5576c)</code></td>
+          </tr>
+          <tr>
+            <td>オーシャンブルー</td>
+            <td>#4facfe</td>
+            <td>#00f2fe</td>
+            <td><code>linear-gradient(135deg, #4facfe, #00f2fe)</code></td>
+          </tr>
+          <tr>
+            <td>エメラルド</td>
+            <td>#43e97b</td>
+            <td>#38f9d7</td>
+            <td><code>linear-gradient(135deg, #43e97b, #38f9d7)</code></td>
+          </tr>
+          <tr>
+            <td>ナイトスカイ</td>
+            <td>#0f0c29</td>
+            <td>#24243e</td>
+            <td><code>linear-gradient(180deg, #0f0c29, #302b63, #24243e)</code></td>
+          </tr>
+          <tr>
+            <td>コーラルピンク</td>
+            <td>#ff9a9e</td>
+            <td>#fecfef</td>
+            <td><code>linear-gradient(135deg, #ff9a9e, #fecfef)</code></td>
+          </tr>
+          <tr>
+            <td>ゴールド</td>
+            <td>#f7971e</td>
+            <td>#ffd200</td>
+            <td><code>linear-gradient(135deg, #f7971e, #ffd200)</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>CSSグラデーションは画像の代わりになりますか？</summary>
+        <p>多くの場合、背景のグラデーションであればCSSだけで十分に代替できます。CSSグラデーションは画像ファイルを読み込む必要がないため、ページの表示速度が向上します。ただし、写真やイラストのような複雑なグラデーションは画像の方が適しています。</p>
+      </details>
+      <details>
+        <summary>グラデーションの色は何色まで指定できますか？</summary>
+        <p>CSS仕様上、グラデーションの色数に制限はありません。このツールでは最大10色まで追加できます。実用的には2〜4色程度が美しく見えることが多いです。色が多すぎると、かえって雑然とした印象になることがあります。</p>
+      </details>
+      <details>
+        <summary>古いブラウザでもグラデーションは表示されますか？</summary>
+        <p>linear-gradientとradial-gradientはIE10以降を含むほぼすべてのブラウザで対応しています。conic-gradientはIEでは非対応ですが、Chrome、Firefox、Safari、Edgeなど主要なモダンブラウザでは問題なく表示されます。非対応ブラウザ向けにfallbackの背景色を指定しておくと安心です。</p>
+      </details>
+      <details>
+        <summary>グラデーションをテキストに適用するにはどうすればいいですか？</summary>
+        <p>テキストにグラデーションを適用するには、<code>background: linear-gradient(...)</code>と<code>-webkit-background-clip: text</code>、<code>-webkit-text-fill-color: transparent</code>を組み合わせます。見出しやタイトルに使うとインパクトのあるデザインになります。</p>
+      </details>
+      <details>
+        <summary>グラデーションのパフォーマンスへの影響はありますか？</summary>
+        <p>CSSグラデーションはブラウザが描画するため、画像ファイルの読み込みよりも高速です。ただし、非常に複雑なグラデーション（多数の色や複数のグラデーションの重ね合わせ）を大量の要素に適用すると、描画パフォーマンスに影響する可能性があります。通常の使用では問題ありません。</p>
+      </details>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

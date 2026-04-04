@@ -181,6 +181,39 @@
     </section>
 
     <section class="content-section">
+      <h2>diffアルゴリズムの種類と特徴</h2>
+      <p>テキスト差分の検出にはさまざまなアルゴリズムが使われています。以下は代表的なdiffアルゴリズムの比較です。</p>
+      <table>
+        <thead>
+          <tr><th>アルゴリズム</th><th>概要</th><th>計算量</th><th>特徴</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Myers（マイヤーズ）</td><td>最短編集距離を求める</td><td>O(ND)</td><td>Git等で標準採用。最小限の差分を高速に検出</td></tr>
+          <tr><td>Patience Diff</td><td>共通のユニーク行を基準に分割</td><td>O(N log N)</td><td>コード移動時に直感的な差分を生成</td></tr>
+          <tr><td>Histogram Diff</td><td>Patience Diffの改良版</td><td>O(N log N)</td><td>低頻出行を活用し精度向上。JGitで採用</td></tr>
+          <tr><td>Hunt-Szymanski</td><td>LCS（最長共通部分列）ベース</td><td>O(N log N)</td><td>共通部分が多い場合に高速</td></tr>
+          <tr><td>Wu（呉）</td><td>Myersの改良版</td><td>O(NP)</td><td>差分が少ない場合にMyersより高速</td></tr>
+        </tbody>
+      </table>
+
+      <h3>主要な差分比較ツールの比較</h3>
+      <p>用途やプラットフォームに応じて、さまざまな差分比較ツールが利用できます。</p>
+      <table>
+        <thead>
+          <tr><th>ツール名</th><th>種別</th><th>対応OS</th><th>料金</th><th>主な特徴</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>diff（コマンド）</td><td>CLI</td><td>Linux / macOS</td><td>無料</td><td>UNIX標準。シェルスクリプトとの連携が容易</td></tr>
+          <tr><td>WinMerge</td><td>GUI</td><td>Windows</td><td>無料</td><td>ディレクトリ比較・3ウェイマージ対応</td></tr>
+          <tr><td>Meld</td><td>GUI</td><td>Linux / Windows</td><td>無料</td><td>視覚的な3ウェイ比較が可能</td></tr>
+          <tr><td>Beyond Compare</td><td>GUI</td><td>Win / Mac / Linux</td><td>有料</td><td>バイナリ比較・FTP連携など高機能</td></tr>
+          <tr><td>VS Code（内蔵diff）</td><td>エディタ</td><td>Win / Mac / Linux</td><td>無料</td><td>Git統合。インラインdiffが便利</td></tr>
+          <tr><td>本ツール</td><td>Web</td><td>ブラウザ全般</td><td>無料</td><td>インストール不要。ブラウザだけで即座に比較可能</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details><summary>テキスト差分比較は無料ですか？</summary><p>はい、完全無料で何度でもご利用いただけます。登録不要でブラウザだけで動作します。</p></details>
       <details><summary>入力したテキストはサーバーに送信されますか？</summary><p>いいえ、すべての処理はブラウザ内で完結します。テキストが外部に送信されることはありません。機密情報を含むテキストも安心してご利用ください。</p></details>

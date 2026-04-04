@@ -140,6 +140,33 @@
     </section>
 
     <section class="content-section">
+      <h2>全角・半角文字のUnicodeコードポイント対応表</h2>
+      <p>全角文字と半角文字は、Unicodeでは異なるコードポイントが割り当てられています。以下は代表的な文字の対応表です。</p>
+      <table>
+        <thead>
+          <tr><th>文字種</th><th>全角</th><th>全角コードポイント</th><th>半角</th><th>半角コードポイント</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>数字 0</td><td>０</td><td>U+FF10</td><td>0</td><td>U+0030</td></tr>
+          <tr><td>数字 1</td><td>１</td><td>U+FF11</td><td>1</td><td>U+0031</td></tr>
+          <tr><td>数字 9</td><td>９</td><td>U+FF19</td><td>9</td><td>U+0039</td></tr>
+          <tr><td>英大文字 A</td><td>Ａ</td><td>U+FF21</td><td>A</td><td>U+0041</td></tr>
+          <tr><td>英大文字 Z</td><td>Ｚ</td><td>U+FF3A</td><td>Z</td><td>U+005A</td></tr>
+          <tr><td>英小文字 a</td><td>ａ</td><td>U+FF41</td><td>a</td><td>U+0061</td></tr>
+          <tr><td>英小文字 z</td><td>ｚ</td><td>U+FF5A</td><td>z</td><td>U+007A</td></tr>
+          <tr><td>スペース</td><td>　（全角）</td><td>U+3000</td><td> （半角）</td><td>U+0020</td></tr>
+          <tr><td>カタカナ ア</td><td>ア</td><td>U+30A2</td><td>ｱ</td><td>U+FF71</td></tr>
+          <tr><td>カタカナ カ</td><td>カ</td><td>U+30AB</td><td>ｶ</td><td>U+FF76</td></tr>
+          <tr><td>カタカナ ガ（濁音）</td><td>ガ</td><td>U+30AC</td><td>ｶﾞ</td><td>U+FF76 + U+FF9E</td></tr>
+          <tr><td>カタカナ パ（半濁音）</td><td>パ</td><td>U+30D1</td><td>ﾊﾟ</td><td>U+FF8A + U+FF9F</td></tr>
+          <tr><td>記号 ！</td><td>！</td><td>U+FF01</td><td>!</td><td>U+0021</td></tr>
+          <tr><td>記号 ？</td><td>？</td><td>U+FF1F</td><td>?</td><td>U+003F</td></tr>
+        </tbody>
+      </table>
+      <p>全角英数字はUnicode上で U+FF01〜U+FF5E の範囲（Fullwidth Forms）に配置されており、対応する半角文字のコードポイントに 0xFEE0 を引くと変換できます。半角カタカナは U+FF65〜U+FF9F の範囲に配置されています。</p>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details><summary>全角と半角の違いは何ですか？</summary><p>全角文字は1文字あたり半角文字2つ分の幅を占める文字です。日本語の漢字やひらがな、全角カタカナが全角に該当します。半角文字はASCIIコードの英数字や半角カタカナで、全角の半分の幅です。データ処理やフォーム入力では表記を統一する必要があるため、全角半角変換ツールが活躍します。</p></details>
       <details><summary>ひらがなの全角半角変換はできますか？</summary><p>ひらがなにはJIS規格上の半角文字が存在しないため、変換の対象外となります。このツールではカタカナ・英数字・記号の3種類の文字種について全角⇔半角の変換が可能です。</p></details>

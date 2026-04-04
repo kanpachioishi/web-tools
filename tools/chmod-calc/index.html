@@ -394,6 +394,162 @@
       </table>
     </div>
 
+    <!-- リファレンス情報セクション -->
+    <section class="content-section">
+      <h2>chmod計算機とは？</h2>
+      <p>chmod計算機は、Linux/Unixシステムのファイルパーミッション（アクセス権限）を視覚的に設定・確認できるツールです。チェックボックスを使って直感的に権限を設定でき、数値（8進数）表記やシンボリック表記、実際に使用するchmodコマンドを自動生成します。数値からの逆引きにも対応しているため、既存のパーミッション設定の確認にも便利です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li>パーミッション設定のチェックボックスで、Owner・Group・Othersそれぞれに対してRead・Write・Executeの権限を選択します。</li>
+        <li>数値（8進数）やシンボリック表記がリアルタイムに更新されます。既存の数値から逆引きする場合は「数値で入力」欄に3桁の数値を入力します。</li>
+        <li>ファイル名を入力すると、そのまま使えるchmodコマンドが生成されます。</li>
+        <li>「コピー」ボタンでコマンドをクリップボードにコピーし、ターミナルで実行できます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>Linuxパーミッション一覧表</h2>
+      <p>パーミッションの各権限に対応する数値と意味の一覧です。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>数値</th>
+            <th>シンボル</th>
+            <th>権限</th>
+            <th>ファイルに対する意味</th>
+            <th>ディレクトリに対する意味</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>4</td>
+            <td>r</td>
+            <td>Read（読み取り）</td>
+            <td>ファイルの内容を読める</td>
+            <td>ディレクトリ内のファイル一覧を表示できる</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>w</td>
+            <td>Write（書き込み）</td>
+            <td>ファイルの内容を変更できる</td>
+            <td>ディレクトリ内でファイルの作成・削除ができる</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>x</td>
+            <td>Execute（実行）</td>
+            <td>ファイルをプログラムとして実行できる</td>
+            <td>ディレクトリに入る（cdで移動）ことができる</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>-</td>
+            <td>権限なし</td>
+            <td>一切の操作不可</td>
+            <td>一切の操作不可</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よく使うchmodパターン一覧</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>chmod値</th>
+            <th>シンボリック</th>
+            <th>用途</th>
+            <th>具体例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>644</td>
+            <td>rw-r--r--</td>
+            <td>一般的なファイル</td>
+            <td>HTML, CSS, 画像ファイル</td>
+          </tr>
+          <tr>
+            <td>755</td>
+            <td>rwxr-xr-x</td>
+            <td>実行ファイル・公開ディレクトリ</td>
+            <td>シェルスクリプト、Webルート</td>
+          </tr>
+          <tr>
+            <td>600</td>
+            <td>rw-------</td>
+            <td>所有者のみ読み書き</td>
+            <td>設定ファイル、パスワードファイル</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>r--------</td>
+            <td>所有者のみ読み取り</td>
+            <td>SSH秘密鍵（id_rsa, id_ed25519）</td>
+          </tr>
+          <tr>
+            <td>700</td>
+            <td>rwx------</td>
+            <td>所有者のみ全権限</td>
+            <td>ホームディレクトリ、.sshディレクトリ</td>
+          </tr>
+          <tr>
+            <td>750</td>
+            <td>rwxr-x---</td>
+            <td>グループまで読み取り・実行</td>
+            <td>共有プロジェクトディレクトリ</td>
+          </tr>
+          <tr>
+            <td>444</td>
+            <td>r--r--r--</td>
+            <td>全員読み取り専用</td>
+            <td>公開ドキュメント（変更不可）</td>
+          </tr>
+          <tr>
+            <td>666</td>
+            <td>rw-rw-rw-</td>
+            <td>全員読み書き（実行不可）</td>
+            <td>一時的な共有ファイル</td>
+          </tr>
+          <tr>
+            <td>777</td>
+            <td>rwxrwxrwx</td>
+            <td>全権限（非推奨）</td>
+            <td>デバッグ時の一時的な使用のみ</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>chmod 777は危険ですか？</summary>
+        <p>はい。chmod 777はすべてのユーザーに対して読み取り・書き込み・実行の全権限を与えるため、セキュリティリスクが非常に高くなります。Webサーバー上でこの設定を使うと、悪意のあるユーザーがファイルを改ざんできてしまいます。デバッグ時の一時的な使用に留め、必ず適切な権限に戻してください。</p>
+      </details>
+      <details>
+        <summary>SSH秘密鍵のパーミッションは何にすべきですか？</summary>
+        <p>SSH秘密鍵は<code>chmod 400</code>または<code>chmod 600</code>に設定してください。SSHクライアントは秘密鍵のパーミッションが緩いと接続を拒否します（"Permissions are too open"エラー）。<code>.ssh</code>ディレクトリ自体は<code>chmod 700</code>が推奨です。</p>
+      </details>
+      <details>
+        <summary>chmodの数値とシンボリック表記の違いは何ですか？</summary>
+        <p>数値表記（例: 755）はOwner・Group・Othersの権限を3桁の数字で一度に指定します。シンボリック表記（例: u+x, go-w）は特定のユーザーに対して権限を追加・削除する形式です。数値は全体を一括設定する場合に、シンボリックは一部だけ変更する場合に便利です。</p>
+      </details>
+      <details>
+        <summary>ディレクトリにexecute権限がないとどうなりますか？</summary>
+        <p>ディレクトリのexecute（x）権限がないと、そのディレクトリにcd（移動）できなくなります。また、ディレクトリ内のファイルにもアクセスできなくなります。read（r）権限だけではファイル名の一覧は見えますが、ファイルの中身にはアクセスできません。</p>
+      </details>
+      <details>
+        <summary>スティッキービット（1777）とは何ですか？</summary>
+        <p>スティッキービットは、ディレクトリ内のファイルを「所有者のみが削除できる」ようにする特殊なパーミッションです。<code>/tmp</code>ディレクトリに設定されており（1777）、全ユーザーがファイルを作成できますが、他人のファイルは削除できません。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
       <div class="tool-grid">

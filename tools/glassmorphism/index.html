@@ -340,6 +340,139 @@
         </a>
       </div>
     </section>
+
+    <section class="content-section">
+      <h2>Glassmorphismとは？</h2>
+      <p>Glassmorphism（グラスモーフィズム）は、すりガラスのような半透明エフェクトを特徴とするUIデザイントレンドです。背景をぼかしつつ透過させることで、奥行き感と洗練された美しさを両立します。AppleのmacOSやiOS、MicrosoftのFluent Designでも採用されており、モダンなWebデザインで広く使われています。CSSの<code>backdrop-filter</code>プロパティを中心に実装します。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Glassmorphism CSSの使い方</h2>
+      <ol>
+        <li><strong>背景を選択</strong> — プレビューエリアの上部で背景パターン（グラデーション・カラフル・幾何学模様）を選びます。Glassmorphismはカラフルな背景で効果が際立ちます。</li>
+        <li><strong>プリセットを試す</strong> — ライト・ダーク・カラフル・ミニマル・ネオンの5つのプリセットからスタイルを選択できます。</li>
+        <li><strong>パラメータを調整</strong> — 透明度・ぼかし・彩度・枠線・角丸・影の6つのスライダーで、お好みのすりガラス感に仕上げます。</li>
+        <li><strong>CSSコードをコピー</strong> — 「コピー」ボタンで生成されたCSSをクリップボードにコピーし、プロジェクトに貼り付けるだけで完成です。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>Glassmorphismの主要CSSプロパティ</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>プロパティ</th>
+            <th>役割</th>
+            <th>推奨値</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>background</code></td>
+            <td>半透明背景</td>
+            <td><code>rgba(255,255,255, 0.1〜0.3)</code></td>
+            <td>白の半透明で背景を透過させるベース</td>
+          </tr>
+          <tr>
+            <td><code>backdrop-filter</code></td>
+            <td>背景のぼかし</td>
+            <td><code>blur(10〜20px)</code></td>
+            <td>背後のコンテンツをぼかしてすりガラス感を演出</td>
+          </tr>
+          <tr>
+            <td><code>-webkit-backdrop-filter</code></td>
+            <td>Safari対応</td>
+            <td>同上</td>
+            <td>Safariブラウザ用のベンダープレフィックス</td>
+          </tr>
+          <tr>
+            <td><code>border</code></td>
+            <td>枠線</td>
+            <td><code>1px solid rgba(255,255,255, 0.18)</code></td>
+            <td>白の半透明枠線でガラスのエッジ感を表現</td>
+          </tr>
+          <tr>
+            <td><code>border-radius</code></td>
+            <td>角丸</td>
+            <td><code>12〜20px</code></td>
+            <td>丸みを帯びた形状で柔らかい印象に</td>
+          </tr>
+          <tr>
+            <td><code>box-shadow</code></td>
+            <td>影</td>
+            <td><code>0 8px 32px rgba(0,0,0, 0.2〜0.3)</code></td>
+            <td>浮遊感を出し、背景との分離を強調</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>モダンUIデザイントレンド比較</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>トレンド名</th>
+            <th>特徴</th>
+            <th>主なCSS技術</th>
+            <th>代表的な採用例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Glassmorphism</td>
+            <td>すりガラス風の半透明エフェクト</td>
+            <td>backdrop-filter, rgba背景</td>
+            <td>macOS, iOS, Windows 11</td>
+          </tr>
+          <tr>
+            <td>Neumorphism</td>
+            <td>柔らかい凹凸で立体感を表現</td>
+            <td>box-shadow（内側・外側）</td>
+            <td>ダッシュボード、設定画面</td>
+          </tr>
+          <tr>
+            <td>Flat Design</td>
+            <td>影や立体感を排したシンプルデザイン</td>
+            <td>単色背景、ボーダー</td>
+            <td>Material Design初期、Metro UI</td>
+          </tr>
+          <tr>
+            <td>Material Design 3</td>
+            <td>色彩豊かで動きのあるデザイン</td>
+            <td>elevation, color token</td>
+            <td>Google系アプリ、Android</td>
+          </tr>
+          <tr>
+            <td>Claymorphism</td>
+            <td>粘土のような3D立体感</td>
+            <td>box-shadow, border-radius</td>
+            <td>ランディングページ、カード</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>Glassmorphismはすべてのブラウザで使えますか？</summary>
+        <p><code>backdrop-filter</code>はChrome、Firefox、Safari、Edgeなど主要なモダンブラウザで対応しています。Internet Explorerでは非対応のため、フォールバックとして半透明の背景色（rgba）を指定しておくことをお勧めします。これにより、非対応ブラウザでも最低限のデザインが維持されます。</p>
+      </details>
+      <details>
+        <summary>Glassmorphismを使う際のデザインのコツは？</summary>
+        <p>カラフルで鮮やかな背景の上で使うと、すりガラス効果が最も映えます。透明度は0.1〜0.3程度、blurは10〜20pxが一般的に美しく見えます。また、白い半透明の枠線（border）を加えるとガラスのエッジ感が強調されます。背景が単色の場合は効果が薄いため、グラデーションや画像の上に配置しましょう。</p>
+      </details>
+      <details>
+        <summary>パフォーマンスへの影響はありますか？</summary>
+        <p><code>backdrop-filter</code>はGPUを使った描画処理を行うため、低スペックのデバイスや大きな要素に適用すると、パフォーマンスに影響する場合があります。必要な要素にのみ使用し、<code>will-change: backdrop-filter</code>を指定してGPUレンダリングを最適化することをお勧めします。</p>
+      </details>
+      <details>
+        <summary>ダークモードでもGlassmorphismは使えますか？</summary>
+        <p>はい、ダークモードでも効果的に使えます。ダークモードの場合は、背景色を<code>rgba(0, 0, 0, 0.15〜0.25)</code>に変更し、枠線も暗い半透明色に調整します。このツールの「ダーク」プリセットを参考にしてください。</p>
+      </details>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script>

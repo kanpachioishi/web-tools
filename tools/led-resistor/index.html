@@ -398,6 +398,134 @@
       </div>
     </div>
 
+    <section class="content-section">
+      <h2>LED抵抗計算とは？</h2>
+      <p>LEDは電流制限機能を持たないため、電源に直接接続すると過電流が流れて破損します。適切な値の抵抗を直列に接続することで電流を制限し、LEDを安全に点灯させることができます。</p>
+      <p>抵抗値は R = (Vs - Vf × n) / If で計算します。Vsは電源電圧、Vfは LED1個あたりの順電圧、nは直列LED数、Ifは順電流です。本ツールではE24系列の推奨値や消費電力も合わせて計算します。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>LED抵抗値計算ツールの使い方</h2>
+      <ol>
+        <li><strong>LEDの色を選択（任意）</strong> — プリセットボタンでLEDの色を選ぶと、代表的な順電圧・順電流が自動入力されます。</li>
+        <li><strong>回路パラメータを入力</strong> — 電源電圧（Vs）、LED順電圧（Vf）、LED順電流（If）、直列LED数を入力・選択します。</li>
+        <li><strong>計算結果を確認</strong> — 必要な抵抗値（計算値・E24推奨値）と抵抗の消費電力が表示されます。250mW超の場合は警告が出ます。</li>
+        <li><strong>回路図を確認</strong> — 入力した条件に対応する回路図が自動生成され、接続方法を視覚的に確認できます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>LED色別 順電圧（Vf）・順電流（If）一覧</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>LEDの色</th>
+            <th>順電圧 Vf (V)</th>
+            <th>順電流 If (mA)</th>
+            <th>波長 (nm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>赤</td>
+            <td>1.8 〜 2.2</td>
+            <td>20</td>
+            <td>620 〜 750</td>
+          </tr>
+          <tr>
+            <td>橙</td>
+            <td>2.0 〜 2.2</td>
+            <td>20</td>
+            <td>590 〜 620</td>
+          </tr>
+          <tr>
+            <td>黄</td>
+            <td>2.0 〜 2.2</td>
+            <td>20</td>
+            <td>570 〜 590</td>
+          </tr>
+          <tr>
+            <td>緑</td>
+            <td>2.0 〜 3.5</td>
+            <td>20</td>
+            <td>495 〜 570</td>
+          </tr>
+          <tr>
+            <td>青</td>
+            <td>3.0 〜 3.5</td>
+            <td>20</td>
+            <td>450 〜 495</td>
+          </tr>
+          <tr>
+            <td>白</td>
+            <td>3.0 〜 3.5</td>
+            <td>20</td>
+            <td>—（可視光全域）</td>
+          </tr>
+          <tr>
+            <td>赤外線</td>
+            <td>1.2 〜 1.6</td>
+            <td>20 〜 100</td>
+            <td>750 〜 1000</td>
+          </tr>
+          <tr>
+            <td>紫外線</td>
+            <td>3.1 〜 4.4</td>
+            <td>20</td>
+            <td>200 〜 400</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>抵抗のカラーコード一覧</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>色</th>
+            <th>数値</th>
+            <th>乗数</th>
+            <th>許容差</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>黒</td><td>0</td><td>×1</td><td>—</td></tr>
+          <tr><td>茶</td><td>1</td><td>×10</td><td>±1%</td></tr>
+          <tr><td>赤</td><td>2</td><td>×100</td><td>±2%</td></tr>
+          <tr><td>橙</td><td>3</td><td>×1k</td><td>—</td></tr>
+          <tr><td>黄</td><td>4</td><td>×10k</td><td>—</td></tr>
+          <tr><td>緑</td><td>5</td><td>×100k</td><td>±0.5%</td></tr>
+          <tr><td>青</td><td>6</td><td>×1M</td><td>±0.25%</td></tr>
+          <tr><td>紫</td><td>7</td><td>×10M</td><td>±0.1%</td></tr>
+          <tr><td>灰</td><td>8</td><td>×100M</td><td>±0.05%</td></tr>
+          <tr><td>白</td><td>9</td><td>×1G</td><td>—</td></tr>
+          <tr><td>金</td><td>—</td><td>×0.1</td><td>±5%</td></tr>
+          <tr><td>銀</td><td>—</td><td>×0.01</td><td>±10%</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>計算値ぴったりの抵抗が無い場合はどうすればよいですか？</summary>
+        <p>市販の抵抗はE24系列（1.0, 1.1, 1.2, ...）などの標準値で販売されています。計算値より少し大きいE24系列の値を選ぶのが安全です。抵抗値が大きいほど電流は小さくなるため、LEDが暗くなりますが破損のリスクは下がります。</p>
+      </details>
+      <details>
+        <summary>LEDを複数並列に接続する場合はどうしますか？</summary>
+        <p>LEDを並列接続する場合は、各LEDに個別の抵抗を付けるのが推奨されます。LEDの順電圧にはばらつきがあるため、1つの抵抗を共有すると特定のLEDに電流が集中して破損する可能性があります。</p>
+      </details>
+      <details>
+        <summary>抵抗のワット数（定格電力）はどう選べばよいですか？</summary>
+        <p>抵抗の消費電力は P = If² × R で求められます。安全のため、定格電力の50%以下で使用するのが一般的です。例えば消費電力が60mWなら、1/8W（125mW）以上の抵抗を選びましょう。</p>
+      </details>
+      <details>
+        <summary>電源電圧とLED順電圧の合計が同じ場合はどうなりますか？</summary>
+        <p>電源電圧がLED順電圧の合計と同じかそれ以下の場合、抵抗で電圧を降下させる余裕がないため、LEDを正しく点灯できません。電源電圧を上げるか、直列に接続するLEDの数を減らしてください。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連ツール</h2>
       <div class="tool-grid">

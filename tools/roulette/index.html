@@ -334,6 +334,88 @@
       </div>
     </div>
 
+    <section class="content-section">
+      <h2>ルーレットとは？</h2>
+      <p>オンラインルーレットは、複数の選択肢からランダムに1つを選ぶための便利なツールです。カジノのルーレットのように円盤が回転し、ポインターが指した項目が結果として選ばれます。このツールでは自由に項目を設定でき、JavaScriptの乱数生成を利用して各項目が均等な確率で選ばれるよう設計されています。食事の決定（ランチルーレット）、罰ゲーム抽選、当番決め、旅行先の選択など、日常のあらゆる「迷った時」に活躍します。すべての処理がブラウザ内で完結し、データがサーバーに送信されることはありません。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>ルーレットの使い方</h2>
+      <ol>
+        <li><strong>項目を入力する</strong> — テキストエリアに選択肢を1行に1つずつ入力します。2〜20個まで設定可能です。</li>
+        <li><strong>ルーレットを回す</strong> — 「スピン！」ボタンをクリックすると、ルーレットが回転を始めます。</li>
+        <li><strong>結果を確認する</strong> — ルーレットが止まると、選ばれた項目がポップアップで表示されます。</li>
+        <li><strong>履歴を確認する</strong> — 直近10回の結果が履歴として表示されるので、偏りの確認にも便利です。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>ランダム選択ツールの比較</h2>
+      <p>ランダムに何かを決めたい時に使えるツールを比較しました。用途に合わせて最適なツールを選びましょう。</p>
+      <table style="width:100%;border-collapse:collapse;margin-top:16px;font-size:0.95rem;">
+        <thead>
+          <tr>
+            <th style="border:1px solid var(--border);padding:10px 14px;text-align:center;background:var(--bg);font-weight:600;">ツール</th>
+            <th style="border:1px solid var(--border);padding:10px 14px;text-align:center;background:var(--bg);font-weight:600;">項目数</th>
+            <th style="border:1px solid var(--border);padding:10px 14px;text-align:center;background:var(--bg);font-weight:600;">視覚的演出</th>
+            <th style="border:1px solid var(--border);padding:10px 14px;text-align:center;background:var(--bg);font-weight:600;">おすすめの用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">ルーレット</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">2〜20</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">回転アニメーション</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">食事決め・抽選イベント</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">あみだくじ</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">2〜10</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">経路アニメーション</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">席決め・担当割り当て</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">ビンゴ</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">75（固定）</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">ボール抽選演出</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">パーティー・イベント</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">サイコロ</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">2〜6面</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">サイコロ回転</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">ゲーム・順番決め</td>
+          </tr>
+          <tr>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">乱数生成</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">任意の範囲</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">数値表示のみ</td>
+            <td style="border:1px solid var(--border);padding:10px 14px;text-align:center;">番号抽選・プログラミング</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>ルーレットの結果は本当にランダムですか？</summary>
+        <p>はい、JavaScriptのMath.random()を使用した疑似乱数で項目を選択しています。各項目が選ばれる確率は均等です。ただし、暗号学的なランダム性が必要な用途（くじの当選者決定など）には専用のシステムをご利用ください。</p>
+      </details>
+      <details>
+        <summary>項目ごとに当選確率を変えることはできますか？</summary>
+        <p>現在のバージョンでは全項目が均等な確率で選ばれます。特定の項目の当選確率を上げたい場合は、同じ項目を複数行入力することで疑似的に確率を調整できます。</p>
+      </details>
+      <details>
+        <summary>スマートフォンでも使えますか？</summary>
+        <p>はい、レスポンシブ対応しているのでスマートフォン・タブレット・PCなどあらゆるデバイスで快適に利用できます。アプリのインストールは不要です。</p>
+      </details>
+      <details>
+        <summary>履歴を保存することはできますか？</summary>
+        <p>直近10回分の結果が画面上に表示されます。ページを閉じると履歴はリセットされます。結果を残しておきたい場合は、スクリーンショットを撮るか結果をメモしておくことをおすすめします。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
       <div class="tool-grid">

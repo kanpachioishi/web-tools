@@ -169,6 +169,151 @@
     </section>
 
     <section class="content-section">
+      <h2>URLで使える文字・使えない文字一覧</h2>
+      <p>URLに使用できる文字はRFC 3986で定義されています。以下の表で、エンコードが必要な文字とそうでない文字を確認できます。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>分類</th>
+            <th>文字</th>
+            <th>エンコード要否</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>英小文字</td>
+            <td>a-z</td>
+            <td>不要（そのまま使用可能）</td>
+          </tr>
+          <tr>
+            <td>英大文字</td>
+            <td>A-Z</td>
+            <td>不要（そのまま使用可能）</td>
+          </tr>
+          <tr>
+            <td>数字</td>
+            <td>0-9</td>
+            <td>不要（そのまま使用可能）</td>
+          </tr>
+          <tr>
+            <td>ハイフン・ピリオド等</td>
+            <td><code>- . _ ~</code></td>
+            <td>不要（非予約文字）</td>
+          </tr>
+          <tr>
+            <td>URL構造文字</td>
+            <td><code>: / ? # [ ] @ ! $ & ' ( ) * + , ; =</code></td>
+            <td>予約文字（パラメータ値内では要エンコード）</td>
+          </tr>
+          <tr>
+            <td>スペース</td>
+            <td>（半角スペース）</td>
+            <td>必要（%20 または +）</td>
+          </tr>
+          <tr>
+            <td>日本語</td>
+            <td>あ、漢、カ など</td>
+            <td>必要（UTF-8バイト列を%XXに変換）</td>
+          </tr>
+          <tr>
+            <td>その他の記号</td>
+            <td><code>" &lt; &gt; { } | \ ^ ` %</code></td>
+            <td>必要</td>
+          </tr>
+          <tr>
+            <td>制御文字</td>
+            <td>タブ、改行 など</td>
+            <td>必要</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>encodeURIとencodeURIComponentの違い</h2>
+      <p>JavaScriptには2つのURL用エンコード関数があります。用途に応じた使い分けが重要です。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>比較項目</th>
+            <th>encodeURI()</th>
+            <th>encodeURIComponent()</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>用途</td>
+            <td>URL全体のエンコード</td>
+            <td>パラメータ値のエンコード</td>
+          </tr>
+          <tr>
+            <td>エンコードしない文字</td>
+            <td><code>: / ? # [ ] @ ! $ & ' ( ) * + , ; = - . _ ~</code></td>
+            <td><code>- . _ ~ ! ' ( ) *</code></td>
+          </tr>
+          <tr>
+            <td>スペースの変換</td>
+            <td>%20</td>
+            <td>%20</td>
+          </tr>
+          <tr>
+            <td><code>/</code> の扱い</td>
+            <td>エンコードしない</td>
+            <td>%2F にエンコード</td>
+          </tr>
+          <tr>
+            <td><code>&</code> の扱い</td>
+            <td>エンコードしない</td>
+            <td>%26 にエンコード</td>
+          </tr>
+          <tr>
+            <td><code>=</code> の扱い</td>
+            <td>エンコードしない</td>
+            <td>%3D にエンコード</td>
+          </tr>
+          <tr>
+            <td>推奨場面</td>
+            <td>完全なURLをそのまま渡す時</td>
+            <td>クエリパラメータの値を渡す時</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>HTTPステータスコード一覧</h2>
+      <p>URLを扱う際に知っておくと便利なHTTPステータスコードの一覧です。Web開発やAPIデバッグの際にご活用ください。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>コード</th>
+            <th>名称</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>200</td><td>OK</td><td>リクエスト成功</td></tr>
+          <tr><td>201</td><td>Created</td><td>リソースの作成に成功</td></tr>
+          <tr><td>204</td><td>No Content</td><td>成功したがレスポンスボディなし</td></tr>
+          <tr><td>301</td><td>Moved Permanently</td><td>恒久的なリダイレクト</td></tr>
+          <tr><td>302</td><td>Found</td><td>一時的なリダイレクト</td></tr>
+          <tr><td>304</td><td>Not Modified</td><td>キャッシュが有効（変更なし）</td></tr>
+          <tr><td>400</td><td>Bad Request</td><td>リクエストが不正（パラメータエラー等）</td></tr>
+          <tr><td>401</td><td>Unauthorized</td><td>認証が必要</td></tr>
+          <tr><td>403</td><td>Forbidden</td><td>アクセス権限がない</td></tr>
+          <tr><td>404</td><td>Not Found</td><td>リソースが見つからない</td></tr>
+          <tr><td>405</td><td>Method Not Allowed</td><td>許可されていないHTTPメソッド</td></tr>
+          <tr><td>408</td><td>Request Timeout</td><td>リクエストがタイムアウト</td></tr>
+          <tr><td>429</td><td>Too Many Requests</td><td>レート制限に到達</td></tr>
+          <tr><td>500</td><td>Internal Server Error</td><td>サーバー内部エラー</td></tr>
+          <tr><td>502</td><td>Bad Gateway</td><td>ゲートウェイのエラー</td></tr>
+          <tr><td>503</td><td>Service Unavailable</td><td>サービス一時停止中</td></tr>
+          <tr><td>504</td><td>Gateway Timeout</td><td>ゲートウェイのタイムアウト</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details>
         <summary>encodeURIとencodeURIComponentの違いは？</summary>

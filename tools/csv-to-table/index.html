@@ -183,6 +183,71 @@
     </section>
 
     <section class="content-section">
+      <h2>データフォーマット比較表</h2>
+      <p>CSV以外にも、データの保存・交換に使われるフォーマットは多数あります。それぞれの特徴を理解して、用途に合った形式を選びましょう。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>フォーマット</th>
+            <th>区切り文字</th>
+            <th>特徴</th>
+            <th>主な用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CSV</td>
+            <td>カンマ（,）</td>
+            <td>軽量・シンプル、Excel対応</td>
+            <td>データのインポート/エクスポート、表計算ソフト</td>
+          </tr>
+          <tr>
+            <td>TSV</td>
+            <td>タブ（\t）</td>
+            <td>カンマを含むデータに強い</td>
+            <td>Excelからのコピー&ペースト、生物情報学データ</td>
+          </tr>
+          <tr>
+            <td>JSON</td>
+            <td>なし（構造化）</td>
+            <td>階層構造を表現可能、Web標準</td>
+            <td>Web API、設定ファイル、NoSQLデータベース</td>
+          </tr>
+          <tr>
+            <td>XML</td>
+            <td>なし（タグベース）</td>
+            <td>厳密なスキーマ定義が可能</td>
+            <td>SOAP API、設定ファイル、RSS/Atomフィード</td>
+          </tr>
+          <tr>
+            <td>YAML</td>
+            <td>なし（インデント）</td>
+            <td>人間が読みやすい、コメント記述可</td>
+            <td>Docker Compose、CI/CD設定（GitHub Actions等）</td>
+          </tr>
+          <tr>
+            <td>Excel（.xlsx）</td>
+            <td>なし（バイナリ）</td>
+            <td>書式・数式・グラフを保持</td>
+            <td>ビジネス文書、データ分析、レポート作成</td>
+          </tr>
+          <tr>
+            <td>Parquet</td>
+            <td>なし（列指向バイナリ）</td>
+            <td>高圧縮・高速読み取り</td>
+            <td>ビッグデータ分析、データレイク、Apache Spark</td>
+          </tr>
+          <tr>
+            <td>SQL</td>
+            <td>なし（クエリ言語）</td>
+            <td>リレーショナルデータを厳密に管理</td>
+            <td>データベースのバックアップ・移行</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details><summary>CSVとTSVの違いは何ですか？</summary><p>CSVはカンマ（,）で値を区切る形式、TSVはタブ文字で区切る形式です。Excelのセルをコピーして貼り付けた場合、タブ区切りになることが多いです。本ツールではどちらの形式にも対応しています。</p></details>
       <details><summary>Excelからコピーしたデータも変換できますか？</summary><p>はい、Excelでセルを選択してコピーすると、タブ区切りのテキストとしてクリップボードに保存されます。区切り文字を「タブ」に切り替えてから貼り付けると、正しくHTMLテーブルに変換できます。</p></details>

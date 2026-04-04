@@ -172,6 +172,137 @@
     </section>
 
     <section class="content-section">
+      <h2>Base64が使われる場面一覧</h2>
+      <p>Base64エンコーディングは、さまざまな技術分野で活用されています。以下の表は、代表的な使用場面とその目的をまとめたものです。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>使用場面</th>
+            <th>具体例</th>
+            <th>目的・理由</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>メール添付（MIME）</td>
+            <td>画像・PDFなどの添付ファイル</td>
+            <td>SMTPはテキストベースのため、バイナリをASCIIに変換して送信</td>
+          </tr>
+          <tr>
+            <td>Data URI</td>
+            <td><code>data:image/png;base64,...</code></td>
+            <td>小さな画像をHTMLやCSSに直接埋め込み、HTTPリクエストを削減</td>
+          </tr>
+          <tr>
+            <td>Basic認証</td>
+            <td><code>Authorization: Basic dXNlcjpwYXNz</code></td>
+            <td>ユーザー名:パスワードをBase64でエンコードしてHTTPヘッダーに設定</td>
+          </tr>
+          <tr>
+            <td>JWT（JSON Web Token）</td>
+            <td>ヘッダー・ペイロード部分</td>
+            <td>JSONデータをURL安全なBase64url形式で表現</td>
+          </tr>
+          <tr>
+            <td>API通信</td>
+            <td>REST APIのリクエスト/レスポンス</td>
+            <td>バイナリデータをJSON内に安全に含めるため</td>
+          </tr>
+          <tr>
+            <td>XML / SOAP</td>
+            <td>バイナリデータの埋め込み</td>
+            <td>XMLではバイナリが直接扱えないため、Base64に変換して格納</td>
+          </tr>
+          <tr>
+            <td>証明書・暗号鍵</td>
+            <td>PEM形式（<code>-----BEGIN CERTIFICATE-----</code>）</td>
+            <td>バイナリのDERデータをテキスト形式で保存・配布するため</td>
+          </tr>
+          <tr>
+            <td>QRコード生成</td>
+            <td>画像データの受け渡し</td>
+            <td>生成したQRコード画像をBase64でWebページに表示</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>文字コードとBase64の関係</h2>
+      <p>Base64エンコードでは、入力テキストをまず特定の文字コードでバイト列に変換し、そのバイト列をBase64に変換します。文字コードの違いにより、同じ文字でもBase64の結果が異なる場合があります。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>文字コード</th>
+            <th>特徴</th>
+            <th>1文字あたりのバイト数</th>
+            <th>主な用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>UTF-8</td>
+            <td>可変長。ASCII互換で世界標準</td>
+            <td>1〜4バイト</td>
+            <td>Web全般、API、現在の標準</td>
+          </tr>
+          <tr>
+            <td>ASCII</td>
+            <td>英数字・記号のみ対応</td>
+            <td>1バイト</td>
+            <td>英語圏の基本テキスト</td>
+          </tr>
+          <tr>
+            <td>Shift_JIS</td>
+            <td>日本語固有。Windows環境で普及</td>
+            <td>1〜2バイト</td>
+            <td>レガシーな日本語システム</td>
+          </tr>
+          <tr>
+            <td>EUC-JP</td>
+            <td>日本語固有。Unix系で使用</td>
+            <td>1〜3バイト</td>
+            <td>古いLinux/Unixシステム</td>
+          </tr>
+          <tr>
+            <td>ISO-8859-1</td>
+            <td>西ヨーロッパ言語向け</td>
+            <td>1バイト</td>
+            <td>レガシーな欧米システム</td>
+          </tr>
+          <tr>
+            <td>UTF-16</td>
+            <td>固定長（BMP範囲）。JavaやWindowsの内部表現</td>
+            <td>2〜4バイト</td>
+            <td>Java、Windows API内部</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>本ツールではUTF-8を使用してBase64エンコード・デコードを行います。日本語を含むすべてのUnicode文字に対応しているため、一般的な用途ではそのままお使いいただけます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Base64変換の仕組み</h2>
+      <p>Base64では、元データの3バイト（24ビット）を6ビットずつ4つに分割し、それぞれを64種類の文字（A-Z, a-z, 0-9, +, /）に変換します。データが3の倍数でない場合は、末尾に「=」（パディング）が付加されます。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Base64文字</th>
+            <th>値（10進）</th>
+            <th>Base64文字</th>
+            <th>値（10進）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>A-Z</td><td>0〜25</td><td>a-z</td><td>26〜51</td></tr>
+          <tr><td>0-9</td><td>52〜61</td><td>+</td><td>62</td></tr>
+          <tr><td>/</td><td>63</td><td>=</td><td>パディング</td></tr>
+        </tbody>
+      </table>
+      <p>例えば、「ABC」（3バイト = 0x41, 0x42, 0x43）は「QUJD」に変換されます。元データが1バイトや2バイトの場合は、末尾に「==」や「=」が付きます。</p>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details>
         <summary>Base64とURLエンコードの違いは？</summary>

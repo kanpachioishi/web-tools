@@ -400,6 +400,165 @@
       </div>
     </div>
 
+    <!-- リファレンス情報セクション -->
+    <section class="content-section">
+      <h2>ビット演算ビジュアライザーとは？</h2>
+      <p>ビット演算ビジュアライザーは、2つの数値に対するビット演算（AND, OR, XOR, NOT, シフト）の結果をビット列で視覚的に表示するツールです。10進・16進・2進の3形式で同時に確認でき、各ビットをクリックしてトグルすることも可能です。8bit/16bit/32bitに対応し、プログラミングやコンピュータサイエンスの学習、デバッグに役立ちます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li>入力形式（10進・16進・2進）とビット幅（8bit/16bit/32bit）を選択します。</li>
+        <li>「値A」と「値B」に数値を入力します。ビット列の各ビットをクリックしてトグルすることもできます。</li>
+        <li>AND, OR, XOR, NOT, 左シフト, 右シフトの演算結果が自動的に計算・表示されます。</li>
+        <li>シフト量はスライダーで調整できます。各演算結果は10進・16進・2進の3形式で表示されます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>ビット演算子一覧表</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>演算</th>
+            <th>記号</th>
+            <th>動作ルール</th>
+            <th>真理値表</th>
+            <th>主な用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AND</td>
+            <td><code>&amp;</code></td>
+            <td>両方が1のとき1</td>
+            <td>0&amp;0=0, 0&amp;1=0, 1&amp;0=0, 1&amp;1=1</td>
+            <td>ビットマスク、特定ビットの抽出</td>
+          </tr>
+          <tr>
+            <td>OR</td>
+            <td><code>|</code></td>
+            <td>どちらかが1なら1</td>
+            <td>0|0=0, 0|1=1, 1|0=1, 1|1=1</td>
+            <td>フラグの設定（ビットを立てる）</td>
+          </tr>
+          <tr>
+            <td>XOR</td>
+            <td><code>^</code></td>
+            <td>異なれば1</td>
+            <td>0^0=0, 0^1=1, 1^0=1, 1^1=0</td>
+            <td>暗号化、値のスワップ、差分検出</td>
+          </tr>
+          <tr>
+            <td>NOT</td>
+            <td><code>~</code></td>
+            <td>ビットを反転</td>
+            <td>~0=1, ~1=0</td>
+            <td>補数計算、ビットの反転</td>
+          </tr>
+          <tr>
+            <td>左シフト</td>
+            <td><code>&lt;&lt;</code></td>
+            <td>ビットを左にn個移動</td>
+            <td>右側に0が入る</td>
+            <td>2のn乗の乗算、ビット位置の調整</td>
+          </tr>
+          <tr>
+            <td>右シフト</td>
+            <td><code>&gt;&gt;</code></td>
+            <td>ビットを右にn個移動</td>
+            <td>左側に0（論理シフト）または符号ビット（算術シフト）が入る</td>
+            <td>2のn乗の除算、ビット位置の調整</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>ビット演算の実際の使用例</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>テクニック</th>
+            <th>演算式</th>
+            <th>説明</th>
+            <th>具体例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>特定ビットの検査</td>
+            <td><code>value & (1 &lt;&lt; n)</code></td>
+            <td>n番目のビットが1かどうか判定</td>
+            <td><code>42 & (1 &lt;&lt; 3)</code> = 8（3番目のビットは1）</td>
+          </tr>
+          <tr>
+            <td>特定ビットを立てる</td>
+            <td><code>value | (1 &lt;&lt; n)</code></td>
+            <td>n番目のビットを1にする</td>
+            <td><code>42 | (1 &lt;&lt; 2)</code> = 46</td>
+          </tr>
+          <tr>
+            <td>特定ビットを落とす</td>
+            <td><code>value & ~(1 &lt;&lt; n)</code></td>
+            <td>n番目のビットを0にする</td>
+            <td><code>42 & ~(1 &lt;&lt; 3)</code> = 34</td>
+          </tr>
+          <tr>
+            <td>特定ビットをトグル</td>
+            <td><code>value ^ (1 &lt;&lt; n)</code></td>
+            <td>n番目のビットを反転する</td>
+            <td><code>42 ^ (1 &lt;&lt; 0)</code> = 43</td>
+          </tr>
+          <tr>
+            <td>偶奇判定</td>
+            <td><code>value & 1</code></td>
+            <td>最下位ビットで偶数/奇数を判定</td>
+            <td><code>42 & 1</code> = 0（偶数）</td>
+          </tr>
+          <tr>
+            <td>2のべき乗判定</td>
+            <td><code>value & (value - 1) == 0</code></td>
+            <td>値が2のべき乗かどうか判定</td>
+            <td><code>8 & 7</code> = 0（2のべき乗）</td>
+          </tr>
+          <tr>
+            <td>下位nビットのマスク</td>
+            <td><code>(1 &lt;&lt; n) - 1</code></td>
+            <td>下位nビットだけを取り出すマスク</td>
+            <td><code>(1 &lt;&lt; 4) - 1</code> = 15 (0b1111)</td>
+          </tr>
+          <tr>
+            <td>RGB色の抽出</td>
+            <td><code>(color &gt;&gt; 8) & 0xFF</code></td>
+            <td>24ビットカラーからG成分を抽出</td>
+            <td><code>(0xFF8040 &gt;&gt; 8) & 0xFF</code> = 128</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>ビット演算はなぜ通常の演算より高速なのですか？</summary>
+        <p>ビット演算はCPUのALU（算術論理演算装置）で直接実行される最も基本的な演算です。加算や乗算のような複雑な演算と異なり、各ビットを個別に処理するだけで完了するため、通常1クロックサイクルで実行されます。特に<code>&lt;&lt; n</code>による2のn乗の乗算は、通常の乗算より高速です。</p>
+      </details>
+      <details>
+        <summary>論理シフトと算術シフトの違いは何ですか？</summary>
+        <p>論理右シフト（<code>&gt;&gt;&gt;</code>）は左側に常に0を補充しますが、算術右シフト（<code>&gt;&gt;</code>）は左側に符号ビット（最上位ビット）を補充します。符号なし整数では違いはありませんが、負の数（符号付き整数）の場合、算術シフトは符号を保持します。JavaScriptでは<code>&gt;&gt;&gt;</code>が論理シフト、<code>&gt;&gt;</code>が算術シフトです。</p>
+      </details>
+      <details>
+        <summary>XOR暗号化とは何ですか？</summary>
+        <p>XOR演算の「同じ値で2回XORすると元に戻る」性質（A ^ K ^ K = A）を利用した暗号化手法です。データに鍵をXORすると暗号化され、同じ鍵で再度XORすると復号されます。単純なXOR暗号は安全ではありませんが、ストリーム暗号やワンタイムパッドの基礎として使われています。</p>
+      </details>
+      <details>
+        <summary>ビットフラグとは何ですか？</summary>
+        <p>ビットフラグは、1つの整数値の各ビットをフラグ（ON/OFF）として利用するテクニックです。例えば、ファイルパーミッション（rwx = 読み取り・書き込み・実行）では3ビットで3つの権限を表現しています。<code>OR</code>でフラグを立て、<code>AND</code>でフラグを検査し、<code>XOR</code>でフラグをトグルします。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">ビット演算の基本</h2>
       <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:24px;">

@@ -467,6 +467,139 @@
       </div>
     </div>
 
+    <section class="content-section">
+      <h2>オームの法則とは？</h2>
+      <p>オームの法則は、電気回路における電圧（V）、電流（I）、抵抗（R）の関係を表す基本法則です。1827年にドイツの物理学者ゲオルク・ジモン・オームが発見しました。この法則は電子工学・電気工学のあらゆる分野で使われ、回路設計や故障解析の基礎となります。</p>
+      <p>本ツールでは、3つの値のうち2つを入力するだけで残りの値と電力（W）を自動的に計算します。単位の自動変換や回路図表示にも対応しています。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>オームの法則計算ツールの使い方</h2>
+      <ol>
+        <li><strong>計算モードを選択</strong> — 求めたい値に応じて「V と R から計算」「V と I から計算」「I と R から計算」のいずれかを選びます。</li>
+        <li><strong>既知の値を入力</strong> — 電圧・電流・抵抗の値を入力します。mV、kV、mA、μA、kΩ、MΩなどの単位も選択可能です。</li>
+        <li><strong>計算結果を確認</strong> — 「計算する」ボタンを押すか、入力と同時にリアルタイムで結果が表示されます。電力（W）も同時に算出されます。</li>
+        <li><strong>回路図で確認</strong> — 計算結果が回路図とオームの法則ホイールにも反映され、直感的に理解できます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>オームの法則 公式一覧表</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>求める値</th>
+            <th>公式</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>電圧 V</td>
+            <td>V = I × R</td>
+            <td>電流と抵抗の積</td>
+          </tr>
+          <tr>
+            <td>電流 I</td>
+            <td>I = V / R</td>
+            <td>電圧を抵抗で割る</td>
+          </tr>
+          <tr>
+            <td>抵抗 R</td>
+            <td>R = V / I</td>
+            <td>電圧を電流で割る</td>
+          </tr>
+          <tr>
+            <td>電力 P</td>
+            <td>P = V × I</td>
+            <td>電圧と電流の積</td>
+          </tr>
+          <tr>
+            <td>電力 P</td>
+            <td>P = I² × R</td>
+            <td>電流の2乗と抵抗の積</td>
+          </tr>
+          <tr>
+            <td>電力 P</td>
+            <td>P = V² / R</td>
+            <td>電圧の2乗を抵抗で割る</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>電気回路の基本用語</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>用語</th>
+            <th>記号</th>
+            <th>単位</th>
+            <th>説明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>電圧</td>
+            <td>V</td>
+            <td>ボルト (V)</td>
+            <td>電気を流そうとする力（電位差）</td>
+          </tr>
+          <tr>
+            <td>電流</td>
+            <td>I</td>
+            <td>アンペア (A)</td>
+            <td>回路を流れる電荷の量</td>
+          </tr>
+          <tr>
+            <td>抵抗</td>
+            <td>R</td>
+            <td>オーム (Ω)</td>
+            <td>電流の流れにくさ</td>
+          </tr>
+          <tr>
+            <td>電力</td>
+            <td>P</td>
+            <td>ワット (W)</td>
+            <td>単位時間あたりのエネルギー消費量</td>
+          </tr>
+          <tr>
+            <td>電気量</td>
+            <td>Q</td>
+            <td>クーロン (C)</td>
+            <td>電荷の総量（Q = I × t）</td>
+          </tr>
+          <tr>
+            <td>コンダクタンス</td>
+            <td>G</td>
+            <td>ジーメンス (S)</td>
+            <td>抵抗の逆数（G = 1/R）</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>オームの法則はどんな場面で使いますか？</summary>
+        <p>オームの法則は、LEDに接続する抵抗値の計算、電源回路の設計、配線の電圧降下の計算、ヒューズの選定など、電気・電子回路のあらゆる場面で使われます。電気工事士試験や電験（電気主任技術者試験）にも頻出する重要な法則です。</p>
+      </details>
+      <details>
+        <summary>直列回路と並列回路での計算方法の違いは？</summary>
+        <p>直列回路では抵抗値は合算（R合計 = R1 + R2 + ...）し、電流はどの部分でも同じです。並列回路では抵抗の逆数の合計の逆数（1/R合計 = 1/R1 + 1/R2 + ...）となり、各抵抗にかかる電圧は同じです。いずれの場合もオームの法則が適用されます。</p>
+      </details>
+      <details>
+        <summary>単位の接頭辞（k、m、μ）はどう変換しますか？</summary>
+        <p>kΩ（キロオーム）は1,000Ω、MΩ（メガオーム）は1,000,000Ωです。mA（ミリアンペア）は0.001A、μA（マイクロアンペア）は0.000001Aです。本ツールではプルダウンで単位を選べば自動変換されます。</p>
+      </details>
+      <details>
+        <summary>電力の計算はなぜ重要ですか？</summary>
+        <p>電力は抵抗やデバイスが消費するエネルギーを表し、部品の定格を超えると過熱・焼損の原因になります。例えば1/4W抵抗に0.5Wを流すと破損するため、電力計算は安全な回路設計に不可欠です。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
       <div class="tool-grid">

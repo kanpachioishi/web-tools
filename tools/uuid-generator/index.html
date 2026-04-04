@@ -291,6 +291,153 @@
       <p>このツールは <code>crypto.getRandomValues()</code> を使用して暗号学的に安全な乱数を生成しています。ただし、ULIDにはタイムスタンプが含まれるため、生成時刻が推測可能な点にご注意ください。</p>
     </div>
 
+    <!-- リファレンス情報セクション -->
+    <section class="content-section">
+      <h2>UUID/ULIDジェネレーターとは？</h2>
+      <p>UUID/ULIDジェネレーターは、システム間で衝突しない一意な識別子を生成するツールです。UUID（Universally Unique Identifier）はデータベースの主キーやAPIのリソース識別に、ULID（Universally Unique Lexicographically Sortable Identifier）は時系列ソートが必要なログやイベントデータのIDとして広く利用されています。本ツールは暗号学的に安全な乱数を使用し、ブラウザ内で完結するため安心して利用できます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li>「UUID v4」または「ULID」タブを選択して、生成するIDの種類を決めます。</li>
+        <li>生成数（1〜100個）を指定し、必要に応じて大文字やハイフンなしのオプションを設定します。</li>
+        <li>「生成」ボタンをクリックすると、指定した数のIDが一括生成されます。</li>
+        <li>「コピー」ボタンで生成結果をクリップボードにコピーできます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>UUIDバージョン比較表</h2>
+      <p>UUIDにはいくつかのバージョンがあり、それぞれ生成方式と用途が異なります。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>バージョン</th>
+            <th>生成方式</th>
+            <th>ソート可能</th>
+            <th>主な用途</th>
+            <th>特徴</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>UUID v1</td>
+            <td>タイムスタンプ + MACアドレス</td>
+            <td>部分的</td>
+            <td>分散システムでの生成</td>
+            <td>MACアドレスが漏れるプライバシーリスクあり</td>
+          </tr>
+          <tr>
+            <td>UUID v4</td>
+            <td>ランダム生成</td>
+            <td>不可</td>
+            <td>汎用的なID生成</td>
+            <td>最も広く使われる。122ビットがランダム</td>
+          </tr>
+          <tr>
+            <td>UUID v5</td>
+            <td>名前空間 + SHA-1ハッシュ</td>
+            <td>不可</td>
+            <td>決定的なID生成</td>
+            <td>同じ入力から常に同じUUIDを生成</td>
+          </tr>
+          <tr>
+            <td>UUID v7</td>
+            <td>タイムスタンプ + ランダム</td>
+            <td>可能</td>
+            <td>データベースの主キー</td>
+            <td>時系列ソート可能。v1の後継として注目</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>UUID vs ULID 詳細比較表</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>比較項目</th>
+            <th>UUID v4</th>
+            <th>ULID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ビット長</td>
+            <td>128ビット</td>
+            <td>128ビット</td>
+          </tr>
+          <tr>
+            <td>文字列長</td>
+            <td>36文字（ハイフン含む）</td>
+            <td>26文字</td>
+          </tr>
+          <tr>
+            <td>エンコード</td>
+            <td>16進数（0-9, a-f）</td>
+            <td>Crockford's Base32（0-9, A-Z除くI,L,O,U）</td>
+          </tr>
+          <tr>
+            <td>タイムスタンプ</td>
+            <td>含まない</td>
+            <td>先頭48ビット（ミリ秒精度）</td>
+          </tr>
+          <tr>
+            <td>ランダム部分</td>
+            <td>122ビット</td>
+            <td>80ビット</td>
+          </tr>
+          <tr>
+            <td>時系列ソート</td>
+            <td>不可（ランダム）</td>
+            <td>可能（先頭がタイムスタンプ）</td>
+          </tr>
+          <tr>
+            <td>標準化</td>
+            <td>RFC 4122（IETF標準）</td>
+            <td>非公式仕様</td>
+          </tr>
+          <tr>
+            <td>DB互換性</td>
+            <td>ほぼ全DB対応</td>
+            <td>文字列型で保存が主流</td>
+          </tr>
+          <tr>
+            <td>大文字小文字</td>
+            <td>区別しない（RFC準拠）</td>
+            <td>区別しない</td>
+          </tr>
+          <tr>
+            <td>生成時の一意性</td>
+            <td>極めて高い（衝突確率 ≈ 2^-61）</td>
+            <td>同一ミリ秒内では80ビットのランダム</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>UUID v4が衝突（重複）する確率はどのくらいですか？</summary>
+        <p>UUID v4は122ビットのランダム値を持つため、理論上の衝突確率は極めて低く、約10^18（100京）個を生成しても衝突確率は約50%です。実用上は衝突しないと考えて問題ありません。</p>
+      </details>
+      <details>
+        <summary>データベースの主キーにはUUIDとULIDのどちらが良いですか？</summary>
+        <p>B-treeインデックスを使うデータベースでは、時系列ソート可能なULIDやUUID v7のほうがインサート性能が良くなります。UUID v4はランダムなため、インデックスのページ分割が発生しやすく、大量データでは性能に影響する場合があります。</p>
+      </details>
+      <details>
+        <summary>UUIDのハイフンは必要ですか？</summary>
+        <p>RFC 4122ではハイフン付きの<code>8-4-4-4-12</code>形式が標準ですが、保存時にはハイフンを除いた32文字の形式で保存しても問題ありません。本ツールの「ハイフンなし」オプションで簡単に切り替えられます。</p>
+      </details>
+      <details>
+        <summary>ULIDからタイムスタンプを取り出すことはできますか？</summary>
+        <p>はい。ULIDの先頭10文字がCrockford's Base32エンコードされたタイムスタンプ（ミリ秒精度）です。デコードすることでIDの生成日時を特定できます。これは監査ログやデバッグに便利です。</p>
+      </details>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
       <div class="tool-grid">

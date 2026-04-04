@@ -125,6 +125,107 @@ console.log(hello);
     </section>
 
     <section class="content-section">
+      <h2>Markdown記法チートシート</h2>
+      <p>Markdownで使える主要な記法の一覧です。このプレビューツールで実際に試しながら覚えましょう。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>要素</th>
+            <th>Markdown記法</th>
+            <th>表示結果</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>見出し1</td>
+            <td><code># 見出し</code></td>
+            <td>最大サイズの見出し</td>
+          </tr>
+          <tr>
+            <td>見出し2</td>
+            <td><code>## 見出し</code></td>
+            <td>2番目のサイズの見出し</td>
+          </tr>
+          <tr>
+            <td>見出し3</td>
+            <td><code>### 見出し</code></td>
+            <td>3番目のサイズの見出し</td>
+          </tr>
+          <tr>
+            <td>太字</td>
+            <td><code>**太字テキスト**</code></td>
+            <td><strong>太字テキスト</strong></td>
+          </tr>
+          <tr>
+            <td>斜体</td>
+            <td><code>*斜体テキスト*</code></td>
+            <td><em>斜体テキスト</em></td>
+          </tr>
+          <tr>
+            <td>太字+斜体</td>
+            <td><code>***太字斜体***</code></td>
+            <td><strong><em>太字斜体</em></strong></td>
+          </tr>
+          <tr>
+            <td>取り消し線</td>
+            <td><code>~~取り消し~~</code></td>
+            <td><del>取り消し</del></td>
+          </tr>
+          <tr>
+            <td>箇条書きリスト</td>
+            <td><code>- 項目1</code></td>
+            <td>・項目1</td>
+          </tr>
+          <tr>
+            <td>番号付きリスト</td>
+            <td><code>1. 項目1</code></td>
+            <td>1. 項目1</td>
+          </tr>
+          <tr>
+            <td>リンク</td>
+            <td><code>[テキスト](URL)</code></td>
+            <td>クリック可能なリンク</td>
+          </tr>
+          <tr>
+            <td>画像</td>
+            <td><code>![代替テキスト](画像URL)</code></td>
+            <td>画像の埋め込み表示</td>
+          </tr>
+          <tr>
+            <td>インラインコード</td>
+            <td><code>`code`</code></td>
+            <td><code>code</code></td>
+          </tr>
+          <tr>
+            <td>コードブロック</td>
+            <td><code>```言語名<br>コード<br>```</code></td>
+            <td>シンタックスハイライト付きコード</td>
+          </tr>
+          <tr>
+            <td>引用</td>
+            <td><code>&gt; 引用テキスト</code></td>
+            <td>インデントされた引用表示</td>
+          </tr>
+          <tr>
+            <td>水平線</td>
+            <td><code>---</code></td>
+            <td>セクション区切り線</td>
+          </tr>
+          <tr>
+            <td>テーブル</td>
+            <td><code>| 列1 | 列2 |</code></td>
+            <td>表形式のデータ表示</td>
+          </tr>
+          <tr>
+            <td>チェックボックス</td>
+            <td><code>- [x] 完了項目</code></td>
+            <td>タスクリスト表示</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details><summary>Markdownとは何ですか？</summary><p>Markdownは、テキストに簡単な記号を付けることで見出しやリスト、太字などの書式を表現できる軽量マークアップ言語です。HTMLより簡潔に記述でき、GitHubやQiitaなどで広く使われています。特別なソフトウェアは不要で、テキストエディタがあれば誰でも書き始められます。</p></details>
       <details><summary>どのMarkdown記法に対応していますか？</summary><p>見出し（h1〜h3）、太字、斜体、箇条書きリスト、コードブロック、インラインコード、リンク、画像、引用（blockquote）、水平線に対応しています。</p></details>

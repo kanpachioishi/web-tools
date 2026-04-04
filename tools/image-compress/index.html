@@ -393,6 +393,176 @@
         </a>
       </div>
     </section>
+
+    <section class="content-section">
+      <h2>画像圧縮とは？</h2>
+      <p>画像圧縮とは、画像ファイルのデータ量を削減してファイルサイズを小さくする処理です。Webサイトに掲載する画像を圧縮することで、ページの読み込み速度が向上し、ユーザー体験の改善やSEO評価の向上につながります。圧縮には「非可逆圧縮」（画質を多少犠牲にして大幅にサイズ削減）と「可逆圧縮」（画質を保ったままサイズ削減）の2種類があります。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>画像圧縮の使い方</h2>
+      <ol>
+        <li><strong>画像をアップロード</strong> — ドラッグ&ドロップまたはクリックで画像ファイルを選択します。複数の画像を一度にアップロードできます。</li>
+        <li><strong>品質を調整</strong> — 品質スライダーで圧縮率を設定します（1%〜100%）。デフォルトの80%で十分な画質を維持しつつ大幅にサイズを削減できます。</li>
+        <li><strong>出力形式を選択</strong> — JPEG、WebP、PNGから出力形式を選びます。WebP形式は最も効率的な圧縮が可能です。</li>
+        <li><strong>ダウンロード</strong> — Before/Afterのプレビューで画質を確認し、個別ダウンロードまたはZIPでまとめてダウンロードします。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>画像フォーマット比較表</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>フォーマット</th>
+            <th>拡張子</th>
+            <th>圧縮方式</th>
+            <th>透過</th>
+            <th>アニメーション</th>
+            <th>圧縮効率</th>
+            <th>適した用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>JPEG</td>
+            <td>.jpg / .jpeg</td>
+            <td>非可逆</td>
+            <td>非対応</td>
+            <td>非対応</td>
+            <td>高い</td>
+            <td>写真、グラデーション画像</td>
+          </tr>
+          <tr>
+            <td>PNG</td>
+            <td>.png</td>
+            <td>可逆</td>
+            <td>対応</td>
+            <td>非対応</td>
+            <td>中程度</td>
+            <td>ロゴ、スクリーンショット、透過画像</td>
+          </tr>
+          <tr>
+            <td>WebP</td>
+            <td>.webp</td>
+            <td>可逆/非可逆</td>
+            <td>対応</td>
+            <td>対応</td>
+            <td>非常に高い</td>
+            <td>Web全般（次世代フォーマット）</td>
+          </tr>
+          <tr>
+            <td>AVIF</td>
+            <td>.avif</td>
+            <td>可逆/非可逆</td>
+            <td>対応</td>
+            <td>対応</td>
+            <td>最も高い</td>
+            <td>Web全般（最新フォーマット）</td>
+          </tr>
+          <tr>
+            <td>GIF</td>
+            <td>.gif</td>
+            <td>可逆</td>
+            <td>対応（1色）</td>
+            <td>対応</td>
+            <td>低い</td>
+            <td>簡単なアニメーション</td>
+          </tr>
+          <tr>
+            <td>SVG</td>
+            <td>.svg</td>
+            <td>ベクター</td>
+            <td>対応</td>
+            <td>対応</td>
+            <td>-</td>
+            <td>アイコン、ロゴ、図形</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>用途別の推奨画像サイズ</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>用途</th>
+            <th>推奨サイズ（px）</th>
+            <th>推奨ファイルサイズ</th>
+            <th>推奨フォーマット</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ブログのサムネイル</td>
+            <td>1200 x 630</td>
+            <td>100〜200KB</td>
+            <td>WebP / JPEG</td>
+          </tr>
+          <tr>
+            <td>OGP画像（SNSシェア）</td>
+            <td>1200 x 630</td>
+            <td>100〜300KB</td>
+            <td>JPEG / PNG</td>
+          </tr>
+          <tr>
+            <td>ヒーロー画像（メインビジュアル）</td>
+            <td>1920 x 1080</td>
+            <td>200〜500KB</td>
+            <td>WebP / JPEG</td>
+          </tr>
+          <tr>
+            <td>商品画像（EC）</td>
+            <td>800 x 800</td>
+            <td>50〜150KB</td>
+            <td>WebP / JPEG</td>
+          </tr>
+          <tr>
+            <td>アイコン・ロゴ</td>
+            <td>512 x 512</td>
+            <td>10〜50KB</td>
+            <td>PNG / SVG</td>
+          </tr>
+          <tr>
+            <td>favicon</td>
+            <td>32 x 32 / 180 x 180</td>
+            <td>5KB以下</td>
+            <td>PNG / ICO</td>
+          </tr>
+          <tr>
+            <td>メール添付画像</td>
+            <td>800 x 600</td>
+            <td>100KB以下</td>
+            <td>JPEG</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>画像の品質はどの程度下がりますか？</summary>
+        <p>品質80%（デフォルト設定）の場合、肉眼ではほとんど違いが分からないレベルです。品質60%程度まで下げても、Web表示用途であれば十分な画質を維持できます。Before/Afterのプレビューで実際に比較して、最適な品質を見つけてください。</p>
+      </details>
+      <details>
+        <summary>WebPとJPEG、どちらを選ぶべきですか？</summary>
+        <p>Web用途であればWebPが推奨です。WebPはJPEGと比較して25〜35%程度ファイルサイズを削減でき、透過もサポートします。ただし、メール添付や古いシステムとの互換性が必要な場合はJPEGが安全です。現在、主要ブラウザはすべてWebPに対応しています。</p>
+      </details>
+      <details>
+        <summary>PNG画像を圧縮しても透過は維持されますか？</summary>
+        <p>出力形式にPNGを選択すれば、透過情報は維持されます。ただし、JPEG形式で出力した場合は透過部分が白色に変換されます。WebP形式でも透過をサポートしているため、透過画像の圧縮にはWebPもおすすめです。</p>
+      </details>
+      <details>
+        <summary>圧縮前の画像に戻すことはできますか？</summary>
+        <p>非可逆圧縮（JPEG、WebP）で圧縮した画像は元の画質に戻すことはできません。圧縮前のオリジナル画像は必ず別途保存しておくことをお勧めします。このツールでは元画像を変更せず、新しい圧縮ファイルを生成するので安心です。</p>
+      </details>
+      <details>
+        <summary>画像はサーバーに送信されますか？</summary>
+        <p>いいえ、すべての圧縮処理はブラウザ内で完結します。画像データが外部サーバーに送信されることは一切ありません。機密性の高い画像も安心してご利用ください。</p>
+      </details>
+    </section>
   </main>
   <script src="../../common/footer.js"></script>
   <script src="jszip.min.js"></script>
