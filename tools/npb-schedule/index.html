@@ -108,8 +108,6 @@
     .today-game-card .vs-text { color: #bbb; font-size: 0.9rem; }
     .today-game-card .game-info { text-align: center; font-size: 0.85rem; color: #ccc; }
     .today-team-name { color: #fff; font-weight: bold; }
-    .today-game-card .team-badge { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.3); flex-shrink: 0; }
-    .week-game .team-badge { width: 10px; height: 10px; }
     .today-game-card .game-status { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-top: 6px; }
     .status-before { background: #2563eb; color: #fff; }
     .status-live { background: #dc2626; color: #fff; animation: pulse 1.5s infinite; }
@@ -164,7 +162,6 @@
     .game-list tr:hover { background: var(--hover-bg); }
     .game-list tr.today-row { background: #fffbeb; }
     .game-list tr.today-row:hover { background: #fef3c7; }
-    .game-list .team-color { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
     .date-header { background: var(--bg); font-weight: bold; }
     .date-header td { padding: 8px 12px; color: var(--text); font-size: 0.95rem; }
 
@@ -204,8 +201,6 @@
     .info-table th { padding: 8px; text-align: left; border-bottom: 2px solid var(--table-border); }
     .info-table td { padding: 8px; border-bottom: 1px solid var(--table-border-light); }
 
-    /* 球団バッジ */
-    .team-badge { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 4px; border: 1px solid rgba(0,0,0,0.15); }
 
     /* ダークモード対応 */
     [data-theme="dark"] {
@@ -221,7 +216,6 @@
     [data-theme="dark"] .team-btn { opacity: 0.45; }
     [data-theme="dark"] .team-btn:hover { opacity: 0.7; }
     [data-theme="dark"] .team-btn.active { opacity: 1; }
-    [data-theme="dark"] .team-badge { border-color: rgba(255,255,255,0.2); }
     [data-theme="dark"] .cal-day .game-dot { border-color: rgba(255,255,255,0.2); }
     [data-theme="dark"] .cal-day { background: var(--surface); }
     [data-theme="dark"] .cal-day:hover { background: var(--hover-bg); }
@@ -348,24 +342,24 @@
       <table class="info-table">
         <thead><tr><th>球団</th><th>本拠地球場</th><th>所在地</th></tr></thead>
         <tbody>
-          <tr><td><span class="team-badge" style="background:#FF6600;"></span> 🐰 巨人</td><td>東京ドーム</td><td>東京都文京区</td></tr>
-          <tr><td><span class="team-badge" style="background:#FFE100;"></span> 🐯 阪神</td><td>阪神甲子園球場</td><td>兵庫県西宮市</td></tr>
-          <tr><td><span class="team-badge" style="background:#0055A5;"></span> ⭐ DeNA</td><td>横浜スタジアム</td><td>神奈川県横浜市</td></tr>
-          <tr><td><span class="team-badge" style="background:#ED1C24;"></span> 🎏 広島</td><td>MAZDA Zoom-Zoom スタジアム広島</td><td>広島県広島市</td></tr>
-          <tr><td><span class="team-badge" style="background:#00468B;"></span> 🐉 中日</td><td>バンテリンドーム ナゴヤ</td><td>愛知県名古屋市</td></tr>
-          <tr><td><span class="team-badge" style="background:#006D44;"></span> 🐦 ヤクルト</td><td>明治神宮野球場</td><td>東京都新宿区</td></tr>
+          <tr><td>🐰 巨人</td><td>東京ドーム</td><td>東京都文京区</td></tr>
+          <tr><td>🐯 阪神</td><td>阪神甲子園球場</td><td>兵庫県西宮市</td></tr>
+          <tr><td>⭐ DeNA</td><td>横浜スタジアム</td><td>神奈川県横浜市</td></tr>
+          <tr><td>🎏 広島</td><td>MAZDA Zoom-Zoom スタジアム広島</td><td>広島県広島市</td></tr>
+          <tr><td>🐉 中日</td><td>バンテリンドーム ナゴヤ</td><td>愛知県名古屋市</td></tr>
+          <tr><td>🐦 ヤクルト</td><td>明治神宮野球場</td><td>東京都新宿区</td></tr>
         </tbody>
       </table>
       <h3>パシフィック・リーグ</h3>
       <table class="info-table">
         <thead><tr><th>球団</th><th>本拠地球場</th><th>所在地</th></tr></thead>
         <tbody>
-          <tr><td><span class="team-badge" style="background:#BA0C2F;"></span> 🦬 オリックス</td><td>京セラドーム大阪</td><td>大阪府大阪市</td></tr>
-          <tr><td><span class="team-badge" style="background:#FDD000;"></span> 🦅 ソフトバンク</td><td>みずほPayPayドーム福岡</td><td>福岡県福岡市</td></tr>
-          <tr><td><span class="team-badge" style="background:#002D73;"></span> 🦁 西武</td><td>ベルーナドーム</td><td>埼玉県所沢市</td></tr>
-          <tr><td><span class="team-badge" style="background:#8D0034;"></span> 🐼 楽天</td><td>楽天モバイルパーク宮城</td><td>宮城県仙台市</td></tr>
-          <tr><td><span class="team-badge" style="background:#221815;"></span> ⚓ ロッテ</td><td>ZOZOマリンスタジアム</td><td>千葉県千葉市</td></tr>
-          <tr><td><span class="team-badge" style="background:#003E7E;"></span> 🦊 日本ハム</td><td>エスコンフィールドHOKKAIDO</td><td>北海道北広島市</td></tr>
+          <tr><td>🦬 オリックス</td><td>京セラドーム大阪</td><td>大阪府大阪市</td></tr>
+          <tr><td>🦅 ソフトバンク</td><td>みずほPayPayドーム福岡</td><td>福岡県福岡市</td></tr>
+          <tr><td>🦁 西武</td><td>ベルーナドーム</td><td>埼玉県所沢市</td></tr>
+          <tr><td>🐼 楽天</td><td>楽天モバイルパーク宮城</td><td>宮城県仙台市</td></tr>
+          <tr><td>⚓ ロッテ</td><td>ZOZOマリンスタジアム</td><td>千葉県千葉市</td></tr>
+          <tr><td>🦊 日本ハム</td><td>エスコンフィールドHOKKAIDO</td><td>北海道北広島市</td></tr>
         </tbody>
       </table>
     </section>
@@ -385,21 +379,21 @@
       <h2 style="font-size:1.2rem;margin-bottom:12px;">球団別 試合日程</h2>
       <h3 style="font-size:1rem;color:var(--sub-heading);margin-bottom:8px;">セ・リーグ</h3>
       <div class="tool-grid" style="margin-bottom:16px;">
-        <a href="giants/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#FF6600;"></span> 🐰 巨人 2026日程</a>
-        <a href="tigers/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#FFE100;"></span> 🐯 阪神 2026日程</a>
-        <a href="dena/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#0055A5;"></span> ⭐ DeNA 2026日程</a>
-        <a href="carp/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#ED1C24;"></span> 🎏 広島 2026日程</a>
-        <a href="dragons/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#00468B;"></span> 🐉 中日 2026日程</a>
-        <a href="swallows/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#006D44;"></span> 🐦 ヤクルト 2026日程</a>
+        <a href="giants/" class="tool-card" style="padding:10px 14px;">🐰 巨人 2026日程</a>
+        <a href="tigers/" class="tool-card" style="padding:10px 14px;">🐯 阪神 2026日程</a>
+        <a href="dena/" class="tool-card" style="padding:10px 14px;">⭐ DeNA 2026日程</a>
+        <a href="carp/" class="tool-card" style="padding:10px 14px;">🎏 広島 2026日程</a>
+        <a href="dragons/" class="tool-card" style="padding:10px 14px;">🐉 中日 2026日程</a>
+        <a href="swallows/" class="tool-card" style="padding:10px 14px;">🐦 ヤクルト 2026日程</a>
       </div>
       <h3 style="font-size:1rem;color:var(--sub-heading);margin-bottom:8px;">パ・リーグ</h3>
       <div class="tool-grid">
-        <a href="buffaloes/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#BA0C2F;"></span> 🦬 オリックス 2026日程</a>
-        <a href="hawks/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#FDD000;"></span> 🦅 ソフトバンク 2026日程</a>
-        <a href="lions/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#002D73;"></span> 🦁 西武 2026日程</a>
-        <a href="eagles/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#8D0034;"></span> 🐼 楽天 2026日程</a>
-        <a href="marines/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#221815;"></span> ⚓ ロッテ 2026日程</a>
-        <a href="fighters/" class="tool-card" style="padding:10px 14px;"><span class="team-badge" style="background:#003E7E;"></span> 🦊 日本ハム 2026日程</a>
+        <a href="buffaloes/" class="tool-card" style="padding:10px 14px;">🦬 オリックス 2026日程</a>
+        <a href="hawks/" class="tool-card" style="padding:10px 14px;">🦅 ソフトバンク 2026日程</a>
+        <a href="lions/" class="tool-card" style="padding:10px 14px;">🦁 西武 2026日程</a>
+        <a href="eagles/" class="tool-card" style="padding:10px 14px;">🐼 楽天 2026日程</a>
+        <a href="marines/" class="tool-card" style="padding:10px 14px;">⚓ ロッテ 2026日程</a>
+        <a href="fighters/" class="tool-card" style="padding:10px 14px;">🦊 日本ハム 2026日程</a>
       </div>
     </section>
 
