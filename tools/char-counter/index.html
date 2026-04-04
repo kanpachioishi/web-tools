@@ -184,6 +184,73 @@
     </section>
 
     <section class="content-section">
+      <h2>主要サービスの文字数制限一覧</h2>
+      <p>SNS・ブログ・ビジネス文書など、主要サービスの文字数制限を一覧にまとめました。投稿前のチェックにご活用ください。</p>
+      <h3>SNS・メッセージ</h3>
+      <table>
+        <thead>
+          <tr><th>サービス</th><th>対象</th><th>文字数制限</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>X（Twitter）</td><td>通常投稿</td><td>140文字</td></tr>
+          <tr><td>X（Twitter）Premium</td><td>投稿</td><td>25,000文字</td></tr>
+          <tr><td>Instagram</td><td>キャプション</td><td>2,200文字</td></tr>
+          <tr><td>Instagram</td><td>プロフィール</td><td>150文字</td></tr>
+          <tr><td>Facebook</td><td>投稿</td><td>63,206文字</td></tr>
+          <tr><td>TikTok</td><td>キャプション</td><td>4,000文字</td></tr>
+          <tr><td>YouTube</td><td>タイトル</td><td>100文字</td></tr>
+          <tr><td>YouTube</td><td>説明欄</td><td>5,000文字</td></tr>
+          <tr><td>LINE</td><td>メッセージ</td><td>10,000文字</td></tr>
+          <tr><td>Threads</td><td>投稿</td><td>500文字</td></tr>
+        </tbody>
+      </table>
+      <h3>ビジネス・SEO</h3>
+      <table>
+        <thead>
+          <tr><th>対象</th><th>推奨文字数</th><th>備考</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SEO titleタグ</td><td>30〜35文字</td><td>Google検索結果に表示される上限目安</td></tr>
+          <tr><td>meta description</td><td>80〜120文字</td><td>検索結果のスニペットに表示される</td></tr>
+          <tr><td>SEOブログ記事</td><td>2,000〜5,000文字</td><td>上位表示の目安（内容の質が最重要）</td></tr>
+          <tr><td>メールの件名</td><td>20〜30文字</td><td>スマホ表示を考慮した推奨値</td></tr>
+          <tr><td>Slack メッセージ</td><td>40,000文字</td><td>1メッセージあたりの上限</td></tr>
+        </tbody>
+      </table>
+      <h3>学術・応募</h3>
+      <table>
+        <thead>
+          <tr><th>対象</th><th>一般的な文字数</th><th>備考</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>大学レポート</td><td>2,000〜4,000文字</td><td>科目や教授の指定による</td></tr>
+          <tr><td>卒業論文</td><td>20,000〜40,000文字</td><td>学部・専攻による</td></tr>
+          <tr><td>エントリーシート（志望動機）</td><td>200〜400文字</td><td>企業の指定に従う</td></tr>
+          <tr><td>エントリーシート（自己PR）</td><td>300〜600文字</td><td>企業の指定に従う</td></tr>
+          <tr><td>履歴書（志望動機欄）</td><td>200〜300文字</td><td>手書きの場合はスペースに収まる量</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>文字数とバイト数の違い</h2>
+      <p>文字数とバイト数は混同されがちですが、まったく異なる概念です。文字数はテキストに含まれる文字の個数、バイト数はそのテキストをコンピュータが保存する際のデータサイズです。</p>
+      <p>バイト数は使用する文字コード（エンコーディング）によって変わります。現在最も広く使われているUTF-8では、文字の種類によってバイト数が異なります。</p>
+      <table>
+        <thead>
+          <tr><th>文字の種類</th><th>UTF-8でのバイト数</th><th>例</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>半角英数字・記号</td><td>1バイト</td><td>A, 1, @</td></tr>
+          <tr><td>ラテン文字（アクセント付き）</td><td>2バイト</td><td>é, ñ, ü</td></tr>
+          <tr><td>日本語（ひらがな・カタカナ・漢字）</td><td>3バイト</td><td>あ, ア, 漢</td></tr>
+          <tr><td>絵文字</td><td>4バイト</td><td>😀, 🎉, 👍</td></tr>
+        </tbody>
+      </table>
+      <p>例えば「Hello」は5文字・5バイトですが、「こんにちは」は5文字・15バイトになります。データベースのカラムサイズやAPIのペイロード制限など、バイト数で制限されるケースでは注意が必要です。</p>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details>
         <summary>Twitterの文字数制限は何文字ですか？</summary>

@@ -173,6 +173,71 @@
     </section>
 
     <section class="content-section">
+      <h2>パスワードの長さと解読時間の目安</h2>
+      <p>パスワードの強度は「文字種の数 × 文字数」で決まります。以下は、大文字・小文字・数字・記号（約90文字種）を含むランダムパスワードを、毎秒1000億回の試行で総当たり攻撃した場合の解読時間の目安です。</p>
+      <table>
+        <thead>
+          <tr><th>文字数</th><th>組み合わせ数</th><th>解読時間の目安</th><th>評価</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>6文字</td><td>約5,300億</td><td>数秒</td><td>危険</td></tr>
+          <tr><td>8文字</td><td>約4.3京</td><td>数時間〜数日</td><td>不十分</td></tr>
+          <tr><td>10文字</td><td>約3.5垓</td><td>数年</td><td>最低ライン</td></tr>
+          <tr><td>12文字</td><td>約2.8澗</td><td>約2万年</td><td>推奨</td></tr>
+          <tr><td>16文字</td><td>約1.9溝</td><td>約1兆年</td><td>非常に安全</td></tr>
+          <tr><td>20文字</td><td>約1.2那由他</td><td>宇宙の寿命以上</td><td>極めて安全</td></tr>
+        </tbody>
+      </table>
+      <p>※ 上記は理論上の目安です。実際の解読時間はハードウェア性能やハッシュ関数の種類によって大きく変動します。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>安全なパスワード管理のポイント</h2>
+      <p>強いパスワードを生成しても、管理方法が悪ければ意味がありません。以下のポイントを押さえておきましょう。</p>
+      <table>
+        <thead>
+          <tr><th>やるべきこと</th><th>理由</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>サービスごとに異なるパスワードを使う</td><td>1つが漏洩しても他に波及しない</td></tr>
+          <tr><td>パスワードマネージャーを使う</td><td>ランダムな長いパスワードを安全に管理できる</td></tr>
+          <tr><td>二要素認証（2FA）を有効にする</td><td>パスワードが漏洩しても不正ログインを防げる</td></tr>
+          <tr><td>定期的に漏洩チェックをする</td><td>Have I Been Pwned等で自分のアカウントの漏洩を確認</td></tr>
+        </tbody>
+      </table>
+      <h3>やってはいけないこと</h3>
+      <table>
+        <thead>
+          <tr><th>NG行為</th><th>リスク</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>同じパスワードの使い回し</td><td>1サービスの漏洩で全アカウントが危険に</td></tr>
+          <tr><td>誕生日・名前・電話番号の使用</td><td>SNS等から推測されやすい</td></tr>
+          <tr><td>「password」「123456」等の簡単な文字列</td><td>辞書攻撃で一瞬で突破される</td></tr>
+          <tr><td>メモ帳やスプレッドシートでの管理</td><td>暗号化されていないため漏洩リスクが高い</td></tr>
+          <tr><td>ブラウザの自動保存のみに依存</td><td>端末紛失・マルウェアでの流出リスク</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>主要パスワードマネージャーの比較</h2>
+      <p>ランダムパスワードの管理にはパスワードマネージャーが必須です。代表的なサービスを比較しました。</p>
+      <table>
+        <thead>
+          <tr><th>サービス</th><th>無料プラン</th><th>特徴</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1Password</td><td>なし（14日間無料体験）</td><td>UIが使いやすく、家族・チームプランが充実</td></tr>
+          <tr><td>Bitwarden</td><td>あり（個人利用は無料）</td><td>オープンソースで透明性が高い、自己ホストも可能</td></tr>
+          <tr><td>Google パスワードマネージャー</td><td>あり</td><td>Chrome・Androidに統合済み、導入がもっとも簡単</td></tr>
+          <tr><td>Apple キーチェーン</td><td>あり</td><td>Apple製品間でシームレスに同期、パスキー対応</td></tr>
+          <tr><td>Dashlane</td><td>あり（25件まで）</td><td>VPN機能付き、ダークウェブモニタリング機能あり</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details><summary>生成されたパスワードは安全ですか？</summary><p>はい、暗号学的に安全な乱数生成器（crypto.getRandomValues）を使用しています。この方式はブラウザの標準APIであり、予測不可能なランダム値を生成するため、非常に安全です。</p></details>
       <details><summary>パスワードはサーバーに保存されますか？</summary><p>いいえ、パスワードの生成はすべてお使いのブラウザ内で行われます。外部サーバーへの送信や保存は一切行いません。安心してご利用ください。</p></details>

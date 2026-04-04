@@ -165,6 +165,56 @@
     </section>
 
     <section class="content-section">
+      <h2>QRコードの誤り訂正レベル</h2>
+      <p>QRコードには4段階の誤り訂正レベルがあり、コードの一部が汚れたり破損しても読み取れるようになっています。用途に応じて適切なレベルを選びましょう。</p>
+      <table>
+        <thead>
+          <tr><th>レベル</th><th>訂正能力</th><th>適した用途</th><th>データ容量への影響</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>L（Low）</td><td>約7%の損傷を復元可能</td><td>画面表示、Webサイト、クリーンな環境</td><td>最大容量（データが多い場合に最適）</td></tr>
+          <tr><td>M（Medium）</td><td>約15%の損傷を復元可能</td><td>一般的な印刷物、名刺、チラシ</td><td>やや減少（最もバランスが良い）</td></tr>
+          <tr><td>Q（Quartile）</td><td>約25%の損傷を復元可能</td><td>屋外ポスター、商品パッケージ</td><td>かなり減少</td></tr>
+          <tr><td>H（High）</td><td>約30%の損傷を復元可能</td><td>工場、物流ラベル、デザインQR（ロゴ入り）</td><td>最小容量（データ量が最も制限される）</td></tr>
+        </tbody>
+      </table>
+      <p>本ツールでは誤り訂正レベルM（Medium）を使用しています。名刺やチラシなど一般的な用途には最適なレベルです。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>QRコードの最大データ容量</h2>
+      <p>QRコードに格納できるデータ量は、データの種類と誤り訂正レベルによって異なります。</p>
+      <table>
+        <thead>
+          <tr><th>データの種類</th><th>最大容量（レベルL）</th><th>最大容量（レベルM）</th><th>具体例</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>数字のみ</td><td>7,089文字</td><td>5,596文字</td><td>電話番号、商品コード</td></tr>
+          <tr><td>英数字</td><td>4,296文字</td><td>3,391文字</td><td>URL、メールアドレス</td></tr>
+          <tr><td>バイナリ（UTF-8）</td><td>2,953バイト</td><td>2,331バイト</td><td>日本語テキスト（約770文字）</td></tr>
+        </tbody>
+      </table>
+      <p>実用上は、URLなど100文字程度のデータが最も読み取りやすいサイズです。データが多いほどQRコードのドットが細かくなり、印刷や読み取りの品質が求められます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>QRコードの印刷ガイド</h2>
+      <p>QRコードを印刷物に使う場合、サイズや余白の確保が重要です。以下の推奨値を参考にしてください。</p>
+      <table>
+        <thead>
+          <tr><th>印刷物</th><th>推奨サイズ</th><th>読み取り距離</th><th>注意点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>名刺</td><td>15〜20mm角</td><td>10〜15cm</td><td>シンプルなURLに限定する</td></tr>
+          <tr><td>チラシ（A4）</td><td>25〜30mm角</td><td>15〜30cm</td><td>背景色との余白を4セル以上確保</td></tr>
+          <tr><td>ポスター（A2〜A1）</td><td>50〜80mm角</td><td>30〜100cm</td><td>離れた位置からの読み取りを考慮</td></tr>
+          <tr><td>看板・横断幕</td><td>100mm角以上</td><td>1〜3m</td><td>誤り訂正レベルQ以上を推奨</td></tr>
+        </tbody>
+      </table>
+      <p>QRコードの周囲には最低4セル分の「クワイエットゾーン」（白い余白）が必要です。余白が不足すると正しく読み取れない場合があります。また、印刷解像度は300dpi以上を推奨します。</p>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details>
         <summary>QRコードに入力できる最大文字数は？</summary>

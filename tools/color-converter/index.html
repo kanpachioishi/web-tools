@@ -164,6 +164,59 @@
       <details><summary>CSSではどのカラーコードを使うべきですか？</summary><p>どの形式でもCSSは対応していますが、用途に応じて使い分けるのがベストです。一般的にはHEXが最も普及しています。透明度が必要な場合はRGBAやHSLA、配色テーマを動的に変更する場合はHSLが適しています。チームの方針に合わせて統一するのがおすすめです。</p></details>
     </section>
 
+    <section class="content-section">
+      <h2>Webでよく使われる色のカラーコード一覧</h2>
+      <p>Webデザインで頻繁に使われる基本色のカラーコードを一覧にまとめました。CSSでの記述にそのままコピーしてお使いいただけます。</p>
+      <h3>基本カラー</h3>
+      <table>
+        <thead>
+          <tr><th>色名</th><th>HEX</th><th>RGB</th><th>用途の例</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="color:#000000;">ブラック</td><td>#000000</td><td>rgb(0, 0, 0)</td><td>テキスト、ボーダー</td></tr>
+          <tr><td style="color:#666;">ホワイト</td><td>#FFFFFF</td><td>rgb(255, 255, 255)</td><td>背景、余白</td></tr>
+          <tr><td style="color:#EF4444;">レッド</td><td>#EF4444</td><td>rgb(239, 68, 68)</td><td>エラー、警告、削除ボタン</td></tr>
+          <tr><td style="color:#3B82F6;">ブルー</td><td>#3B82F6</td><td>rgb(59, 130, 246)</td><td>リンク、プライマリボタン</td></tr>
+          <tr><td style="color:#22C55E;">グリーン</td><td>#22C55E</td><td>rgb(34, 197, 94)</td><td>成功、確認、有効状態</td></tr>
+          <tr><td style="color:#F59E0B;">イエロー/アンバー</td><td>#F59E0B</td><td>rgb(245, 158, 11)</td><td>注意、警告バッジ</td></tr>
+          <tr><td style="color:#6B7280;">グレー</td><td>#6B7280</td><td>rgb(107, 114, 128)</td><td>サブテキスト、プレースホルダー</td></tr>
+        </tbody>
+      </table>
+      <h3>人気のUIフレームワークのカラー</h3>
+      <table>
+        <thead>
+          <tr><th>フレームワーク/サービス</th><th>メインカラー</th><th>HEX</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Tailwind CSS（Blue 500）</td><td style="color:#3B82F6;">Blue</td><td>#3B82F6</td></tr>
+          <tr><td>Bootstrap（Primary）</td><td style="color:#0D6EFD;">Blue</td><td>#0D6EFD</td></tr>
+          <tr><td>Material Design（Blue 500）</td><td style="color:#2196F3;">Blue</td><td>#2196F3</td></tr>
+          <tr><td>GitHub</td><td style="color:#24292E;">Dark</td><td>#24292E</td></tr>
+          <tr><td>Twitter/X</td><td style="color:#1DA1F2;">Blue</td><td>#1DA1F2</td></tr>
+          <tr><td>LINE</td><td style="color:#06C755;">Green</td><td>#06C755</td></tr>
+          <tr><td>YouTube</td><td style="color:#FF0000;">Red</td><td>#FF0000</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>配色のコツ：色の組み合わせパターン</h2>
+      <p>Webデザインで美しい配色を作るには、色彩理論の基本パターンを知っておくと便利です。HSLカラーモデルを使うと、これらのパターンを簡単に作成できます。</p>
+      <table>
+        <thead>
+          <tr><th>パターン名</th><th>説明</th><th>HSLでの作り方</th><th>印象</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>補色（Complementary）</td><td>色相環の反対側の色</td><td>色相を180度ずらす</td><td>コントラストが強く、目を引く</td></tr>
+          <tr><td>類似色（Analogous）</td><td>色相環で隣り合う色</td><td>色相を±30度ずらす</td><td>調和がとれ、落ち着いた印象</td></tr>
+          <tr><td>トライアド（Triadic）</td><td>色相環を3等分した色</td><td>色相を120度ずつずらす</td><td>バランスの良い鮮やかさ</td></tr>
+          <tr><td>モノクロマティック</td><td>同じ色相で明度・彩度を変える</td><td>H固定、S・Lを変動</td><td>統一感があり、洗練された印象</td></tr>
+          <tr><td>スプリットコンプリメンタリー</td><td>補色の両隣の色を使う</td><td>色相を±150度ずらす</td><td>補色より柔らかく、変化がある</td></tr>
+        </tbody>
+      </table>
+      <p>Webサイトの配色では、メインカラー1色 + アクセントカラー1色 + ニュートラルカラー（グレー系）の3色を基本にすると、まとまりのあるデザインになります。</p>
+    </section>
+
     <section style="margin-top:40px;">
       <h2 style="font-size:1.2rem;margin-bottom:12px;">関連記事</h2>
       <a href="../../blog/color-code-guide/" class="tool-card" style="display:block;margin-bottom:8px;">

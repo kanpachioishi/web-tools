@@ -175,6 +175,57 @@
     </section>
 
     <section class="content-section">
+      <h2>よくあるJSONエラーと対処法</h2>
+      <p>JSONの構文は厳格で、わずかなミスでもパースエラーになります。以下は開発現場で頻繁に遭遇するエラーと、その原因・対処法の一覧です。</p>
+      <table>
+        <thead>
+          <tr><th>エラーの種類</th><th>原因</th><th>対処法</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Unexpected token</td><td>シングルクォーテーション使用、末尾カンマ、コメント記述</td><td>ダブルクォーテーションに統一、末尾カンマを削除、コメントを除去</td></tr>
+          <tr><td>Unexpected end of JSON</td><td>括弧 { } や [ ] の閉じ忘れ</td><td>開き括弧と閉じ括弧の対応を確認</td></tr>
+          <tr><td>Unexpected number</td><td>キーをクォーテーションで囲んでいない</td><td>すべてのキーを "key" の形式にする</td></tr>
+          <tr><td>Bad control character</td><td>文字列内の改行やタブがエスケープされていない</td><td>\n や \t でエスケープする</td></tr>
+          <tr><td>Duplicate key</td><td>同じオブジェクト内にキーが重複</td><td>重複キーを削除または名前を変更</td></tr>
+        </tbody>
+      </table>
+      <h3>JSONで許可されていないこと</h3>
+      <p>JSONは見た目がJavaScriptに似ていますが、以下の点で異なります。間違えやすいポイントをまとめました。</p>
+      <table>
+        <thead>
+          <tr><th>書き方</th><th>JavaScript</th><th>JSON</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>シングルクォーテーション（'key'）</td><td>OK</td><td>NG — ダブルクォーテーションのみ</td></tr>
+          <tr><td>末尾カンマ（trailing comma）</td><td>OK</td><td>NG — 最後の要素の後にカンマ不可</td></tr>
+          <tr><td>コメント（// や /* */）</td><td>OK</td><td>NG — コメントは記述不可</td></tr>
+          <tr><td>キーのクォーテーション省略</td><td>OK</td><td>NG — キーは必ず "" で囲む</td></tr>
+          <tr><td>undefined</td><td>OK</td><td>NG — null を使用する</td></tr>
+          <tr><td>NaN / Infinity</td><td>OK</td><td>NG — 数値として無効</td></tr>
+          <tr><td>16進数（0xFF）</td><td>OK</td><td>NG — 10進数のみ</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>JSONが使われる主な場面</h2>
+      <p>JSONは現在のWeb開発において最も広く使われるデータフォーマットです。以下のような場面で日常的に登場します。</p>
+      <table>
+        <thead>
+          <tr><th>場面</th><th>具体例</th><th>特徴</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Web API</td><td>REST API、GraphQLのレスポンス</td><td>サーバーとクライアント間のデータ交換の標準形式</td></tr>
+          <tr><td>設定ファイル</td><td>package.json、tsconfig.json、.eslintrc</td><td>プロジェクトの設定を宣言的に記述</td></tr>
+          <tr><td>データベース</td><td>MongoDB、PostgreSQL（JSONB型）</td><td>スキーマレスなデータの保存に利用</td></tr>
+          <tr><td>ログ出力</td><td>構造化ログ（JSON Lines形式）</td><td>ログ解析ツールでのパースが容易</td></tr>
+          <tr><td>メッセージキュー</td><td>AWS SQS、RabbitMQのメッセージ本文</td><td>システム間のデータ受け渡し</td></tr>
+          <tr><td>LocalStorage</td><td>ブラウザのクライアント側データ保存</td><td>JSON.stringify / JSON.parse で読み書き</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
       <h2>よくある質問</h2>
       <details><summary>JSON整形ツールは無料ですか？</summary><p>はい、完全無料です。登録不要でブラウザだけで使えます。何度でも利用可能です。</p></details>
       <details><summary>JSONのエラーを検出できますか？</summary><p>はい、不正なJSON形式を入力するとエラーメッセージが表示され、問題箇所を特定できます。括弧の対応やカンマの過不足など、よくあるミスを素早く発見できます。</p></details>
