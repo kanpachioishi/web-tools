@@ -154,14 +154,17 @@
     /* 開催都市マップ */
     .venue-map-container { position: relative; margin: 16px 0; }
     .venue-map { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); }
-    .venue-pin { cursor: pointer; transition: transform 0.15s; }
-    .venue-pin:hover { transform: scale(1.15); }
+    .venue-pin { cursor: pointer; }
+    .venue-pin .pin-hit { opacity: 0; }
+    .venue-pin .pin-content { transition: transform 0.15s; transform-origin: center; pointer-events: none; }
+    .venue-pin:hover .pin-content { transform: scale(1.2); }
+    .venue-pin .pin-label { font-size: 9px; font-weight: bold; fill: var(--text); text-shadow: 0 0 3px var(--surface), 0 0 3px var(--surface), 0 0 3px var(--surface); }
     .venue-tooltip { position: absolute; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); pointer-events: none; z-index: 10; font-size: 0.85rem; max-width: 220px; }
     .tooltip-city { font-weight: bold; font-size: 0.95rem; color: var(--text); margin-bottom: 4px; }
     .tooltip-stadium { color: var(--text-muted); margin-bottom: 2px; }
     .tooltip-tz { color: #2563eb; font-weight: bold; }
-    [data-theme="dark"] { --map-bg: #1a2332; --map-land: #2d4a2d; --map-land-stroke: #4a7a4a; --map-legend-bg: rgba(30,41,59,0.95); --map-legend-border: #475569; }
     [data-theme="dark"] .tooltip-tz { color: #60a5fa; }
+    [data-theme="dark"] .venue-pin .pin-label { fill: #e2e8f0; }
   </style>
 </head>
 <body>
@@ -287,108 +290,194 @@
       <h2>開催都市マップ</h2>
       <p>16の開催都市をマップで確認できます。ピンをタップすると詳細が表示されます。</p>
       <div class="venue-map-container">
-        <svg class="venue-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-          <!-- 背景 -->
-          <rect width="800" height="500" fill="var(--map-bg, #e8f4fd)" rx="12"/>
-          <!-- 北米大陸の簡易シルエット -->
-          <path class="map-land" d="
-            M120,60 L180,50 L250,45 L320,55 L380,50 L440,40 L500,35 L560,50 L620,70
-            L650,90 L660,120 L670,150 L680,170 L690,190 L695,210 L690,230 L680,245
-            L670,255 L650,270 L630,280 L610,285 L590,288 L570,290 L560,295 L555,310
-            L560,330 L570,345 L575,360 L570,375 L560,385 L545,390 L530,388 L520,380
-            L510,370 L505,355 L500,340 L490,330 L475,325 L460,330 L445,340 L430,355
-            L420,370 L410,380 L395,385 L380,382 L370,375 L365,365 L360,350 L350,340
-            L340,335 L325,338 L310,345 L300,355 L290,365 L280,370 L265,368 L250,360
-            L240,350 L235,340 L230,325 L220,310 L210,300 L195,295 L180,290 L165,280
-            L150,265 L140,250 L130,230 L120,210 L115,190 L110,170 L105,150 L100,130
-            L105,110 L110,90 L115,75 Z
-          " fill="var(--map-land, #c8dfc8)" stroke="var(--map-land-stroke, #8ab88a)" stroke-width="1.5"/>
+        <svg class="venue-map" viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style>
+              .map-usa { fill: #bfdbfe; stroke: #6b9bd2; stroke-width: 1; }
+              .map-canada { fill: #fde68a; stroke: #d4a843; stroke-width: 1; }
+              .map-mexico { fill: #bbf7d0; stroke: #6bc78f; stroke-width: 1; }
+              .map-water { fill: #dbeafe; }
+              [data-theme="dark"] .map-usa { fill: #1e3a5f; stroke: #3b6fa0; }
+              [data-theme="dark"] .map-canada { fill: #5c4a1e; stroke: #8a7030; }
+              [data-theme="dark"] .map-mexico { fill: #1a4a2e; stroke: #2d7a4a; }
+              [data-theme="dark"] .map-water { fill: #0f1a2e; }
+              [data-theme="dark"] .map-bg-rect { fill: #111827; }
+            </style>
+          </defs>
+          <!-- 背景（海） -->
+          <rect class="map-bg-rect" width="800" height="520" fill="#e0efff" rx="12"/>
+
+          <!-- カナダ -->
+          <path class="map-canada" d="
+            M95,28 L120,25 L155,22 L190,18 L230,15 L280,12 L330,10 L380,12 L430,15
+            L470,20 L510,18 L545,15 L575,20 L600,28 L625,35 L645,45 L660,55 L670,68
+            L672,80 L665,88 L655,92 L640,88 L625,82 L610,80 L598,84 L592,92 L600,100
+            L615,105 L630,102 L645,98 L658,102 L665,110 L670,120 L668,130 L660,135
+            L648,132 L635,128 L620,130 L610,138 L605,148 L608,158
+            L600,162 L585,155 L570,150 L555,148
+            L540,145 L520,142 L500,138 L480,135 L460,130 L440,128 L420,125
+            L400,120 L380,118 L360,115 L340,112 L320,108 L300,105
+            L280,102 L260,98 L240,95 L220,92 L200,90 L180,88
+            L160,85 L140,82 L120,78 L108,72 L100,62 L95,50 Z
+          "/>
+          <!-- 五大湖 -->
+          <ellipse class="map-water" cx="530" cy="140" rx="22" ry="12"/>
+          <ellipse class="map-water" cx="560" cy="148" rx="15" ry="9"/>
+          <ellipse class="map-water" cx="505" cy="150" rx="12" ry="8"/>
+          <ellipse class="map-water" cx="545" cy="158" rx="10" ry="6"/>
+          <ellipse class="map-water" cx="575" cy="160" rx="10" ry="7"/>
+
+          <!-- アメリカ本土 -->
+          <path class="map-usa" d="
+            M108,72 L120,78 L140,82 L160,85 L180,88 L200,90 L220,92
+            L240,95 L260,98 L280,102 L300,105 L320,108 L340,112 L360,115
+            L380,118 L400,120 L420,125 L440,128 L460,130 L480,135
+            L500,138 L520,142 L540,145 L555,148 L570,150 L585,155 L600,162
+            L608,158 L612,165 L618,175 L625,185 L630,195
+            L632,210 L630,225 L625,240 L618,255 L610,268
+            L598,278 L585,285 L572,290 L558,294
+            L548,298 L545,310 L550,325 L560,338 L568,348
+            L572,360 L570,372 L562,380 L550,385
+            L545,375 L540,365 L538,352 L535,340 L530,330
+            L525,322 L518,316 L510,312
+            L498,310 L486,308 L475,305
+            L462,305 L450,308 L438,312
+            L426,318 L415,325 L405,332
+            L395,338 L385,340 L375,338
+            L368,332 L362,325 L358,316
+            L355,305 L348,295 L340,288
+            L330,282 L318,278 L305,276
+            L290,275 L275,278 L262,282
+            L250,288 L240,295 L232,302
+            L222,308 L210,310 L198,308
+            L185,302 L175,295 L165,285
+            L155,272 L148,258 L142,242
+            L138,225 L132,208 L128,192
+            L122,175 L118,158 L115,142
+            L112,125 L110,108 L108,92 Z
+          "/>
+
+          <!-- フロリダ半島 -->
+          <path class="map-usa" d="
+            M550,385 L555,392 L562,400 L568,412 L572,425 L570,438
+            L565,448 L558,455 L548,458 L540,452 L535,442
+            L532,430 L530,418 L532,405 L535,395 L540,388 L545,382 Z
+          "/>
+
           <!-- メキシコ -->
-          <path class="map-land" d="
-            M180,290 L195,295 L210,300 L220,310 L230,325 L235,340 L240,350 L250,360
-            L260,365 L265,368 L280,370 L290,365 L300,355 L310,345 L315,340
-            L310,350 L300,370 L285,390 L270,400 L255,405 L240,402 L225,395
-            L215,385 L210,375 L205,360 L195,350 L185,345 L175,340 L165,330
-            L160,315 L165,300 L175,295 Z
-          " fill="var(--map-land, #c8dfc8)" stroke="var(--map-land-stroke, #8ab88a)" stroke-width="1.5"/>
+          <path class="map-mexico" d="
+            M108,92 L110,108 L112,125 L115,142 L118,158 L122,175
+            L128,192 L132,208 L138,225 L142,242 L148,258 L155,272
+            L165,285 L175,295 L185,302 L198,308 L210,310
+            L222,308 L232,302 L240,295 L250,288 L262,282 L275,278
+            L290,275 L305,276 L318,278 L330,282 L340,288
+            L345,295 L348,305 L345,318
+            L338,332 L328,345 L315,358
+            L300,370 L285,380 L272,388
+            L260,395 L248,400 L238,402
+            L228,398 L220,390 L215,380
+            L212,368 L208,355 L202,345
+            L195,338 L186,332 L178,328
+            L170,322 L162,315 L155,305
+            L148,295 L140,282 L132,268
+            L125,252 L118,235 L112,218
+            L108,200 L105,180 L102,160
+            L100,140 L98,120 L98,105 Z
+          "/>
 
           <!-- 凡例 -->
-          <g transform="translate(620,400)">
-            <rect width="160" height="80" rx="6" fill="var(--map-legend-bg, rgba(255,255,255,0.9))" stroke="var(--map-legend-border, #ccc)" stroke-width="1"/>
-            <text x="12" y="20" font-size="11" fill="var(--text)" font-weight="bold">開催国</text>
-            <text x="12" y="38" font-size="18">🇺🇸</text><text x="34" y="38" font-size="11" fill="var(--text)">アメリカ（11都市）</text>
-            <text x="12" y="55" font-size="18">🇲🇽</text><text x="34" y="55" font-size="11" fill="var(--text)">メキシコ（3都市）</text>
-            <text x="12" y="72" font-size="18">🇨🇦</text><text x="34" y="72" font-size="11" fill="var(--text)">カナダ（2都市）</text>
-          </g>
-
-          <!-- 都市ピン: アメリカ -->
-          <g class="venue-pin" data-city="シアトル" data-stadium="ルーメン・フィールド" data-tz="-16時間">
-            <circle cx="148" cy="100" r="14" fill="#3b82f6" opacity="0.2"/><text x="148" y="105" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="148" y="85" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">シアトル</text>
-          </g>
-          <g class="venue-pin" data-city="サンフランシスコ" data-stadium="リーバイス・スタジアム" data-tz="-16時間">
-            <circle cx="130" cy="175" r="14" fill="#3b82f6" opacity="0.2"/><text x="130" y="180" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="130" y="162" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">SF</text>
-          </g>
-          <g class="venue-pin" data-city="ロサンゼルス" data-stadium="ソーファイ・スタジアム" data-tz="-16時間">
-            <circle cx="145" cy="215" r="14" fill="#3b82f6" opacity="0.2"/><text x="145" y="220" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="145" y="237" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">LA</text>
-          </g>
-          <g class="venue-pin" data-city="カンザスシティ" data-stadium="アローヘッド・スタジアム" data-tz="-14時間">
-            <circle cx="400" cy="185" r="14" fill="#3b82f6" opacity="0.2"/><text x="400" y="190" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="400" y="175" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">KC</text>
-          </g>
-          <g class="venue-pin" data-city="ダラス" data-stadium="AT&amp;Tスタジアム" data-tz="-14時間">
-            <circle cx="370" cy="260" r="14" fill="#3b82f6" opacity="0.2"/><text x="370" y="265" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="370" y="280" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">ダラス</text>
-          </g>
-          <g class="venue-pin" data-city="ヒューストン" data-stadium="NRGスタジアム" data-tz="-14時間">
-            <circle cx="400" cy="300" r="14" fill="#3b82f6" opacity="0.2"/><text x="400" y="305" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="400" y="318" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">ヒューストン</text>
-          </g>
-          <g class="venue-pin" data-city="アトランタ" data-stadium="メルセデス・ベンツ・スタジアム" data-tz="-13時間">
-            <circle cx="530" cy="240" r="14" fill="#3b82f6" opacity="0.2"/><text x="530" y="245" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="530" y="258" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">アトランタ</text>
-          </g>
-          <g class="venue-pin" data-city="マイアミ" data-stadium="ハードロック・スタジアム" data-tz="-13時間">
-            <circle cx="580" cy="320" r="14" fill="#3b82f6" opacity="0.2"/><text x="580" y="325" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="580" y="338" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">マイアミ</text>
-          </g>
-          <g class="venue-pin" data-city="フィラデルフィア" data-stadium="リンカーン・フィナンシャル・フィールド" data-tz="-13時間">
-            <circle cx="600" cy="155" r="14" fill="#3b82f6" opacity="0.2"/><text x="600" y="160" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="600" y="145" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">フィラデルフィア</text>
-          </g>
-          <g class="venue-pin" data-city="ニューヨーク/NJ" data-stadium="メットライフ・スタジアム" data-tz="-13時間">
-            <circle cx="620" cy="135" r="14" fill="#3b82f6" opacity="0.2"/><text x="620" y="140" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="635" y="125" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">NY/NJ</text>
-          </g>
-          <g class="venue-pin" data-city="ボストン" data-stadium="ジレット・スタジアム" data-tz="-13時間">
-            <circle cx="645" cy="110" r="14" fill="#3b82f6" opacity="0.2"/><text x="645" y="115" text-anchor="middle" font-size="20">🇺🇸</text>
-            <text x="660" y="100" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">ボストン</text>
-          </g>
-
-          <!-- 都市ピン: メキシコ -->
-          <g class="venue-pin" data-city="メキシコシティ" data-stadium="エスタディオ・アステカ" data-tz="-14時間">
-            <circle cx="270" cy="375" r="14" fill="#ef4444" opacity="0.2"/><text x="270" y="380" text-anchor="middle" font-size="20">🇲🇽</text>
-            <text x="270" y="395" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">メキシコシティ</text>
-          </g>
-          <g class="venue-pin" data-city="グアダラハラ" data-stadium="エスタディオ・アクロン" data-tz="-14時間">
-            <circle cx="230" cy="355" r="14" fill="#ef4444" opacity="0.2"/><text x="230" y="360" text-anchor="middle" font-size="20">🇲🇽</text>
-            <text x="215" y="345" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">グアダラハラ</text>
-          </g>
-          <g class="venue-pin" data-city="モンテレイ" data-stadium="エスタディオBBVA" data-tz="-14時間">
-            <circle cx="300" cy="330" r="14" fill="#ef4444" opacity="0.2"/><text x="300" y="335" text-anchor="middle" font-size="20">🇲🇽</text>
-            <text x="300" y="320" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">モンテレイ</text>
+          <g transform="translate(625,415)">
+            <rect width="158" height="85" rx="6" fill="var(--surface, rgba(255,255,255,0.92))" stroke="var(--border, #ccc)" stroke-width="1"/>
+            <text x="12" y="18" font-size="11" fill="var(--text, #333)" font-weight="bold">開催国</text>
+            <rect x="12" y="26" width="12" height="12" rx="2" fill="#bfdbfe" stroke="#6b9bd2"/><text x="30" y="36" font-size="10" fill="var(--text, #333)">アメリカ（11都市）</text>
+            <rect x="12" y="44" width="12" height="12" rx="2" fill="#bbf7d0" stroke="#6bc78f"/><text x="30" y="54" font-size="10" fill="var(--text, #333)">メキシコ（3都市）</text>
+            <rect x="12" y="62" width="12" height="12" rx="2" fill="#fde68a" stroke="#d4a843"/><text x="30" y="72" font-size="10" fill="var(--text, #333)">カナダ（2都市）</text>
           </g>
 
           <!-- 都市ピン: カナダ -->
           <g class="venue-pin" data-city="バンクーバー" data-stadium="BCプレイス" data-tz="-16時間">
-            <circle cx="155" cy="72" r="14" fill="#22c55e" opacity="0.2"/><text x="155" y="77" text-anchor="middle" font-size="20">🇨🇦</text>
-            <text x="175" y="65" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">バンクーバー</text>
+            <circle class="pin-hit" cx="152" cy="78" r="22"/>
+            <g class="pin-content"><circle cx="152" cy="78" r="10" fill="#dc2626" stroke="#fff" stroke-width="2"/><text x="152" y="83" text-anchor="middle" font-size="12" fill="#fff">🇨🇦</text></g>
+            <text class="pin-label" x="152" y="62" text-anchor="middle">バンクーバー</text>
           </g>
           <g class="venue-pin" data-city="トロント" data-stadium="BMOフィールド" data-tz="-13時間">
-            <circle cx="570" cy="105" r="14" fill="#22c55e" opacity="0.2"/><text x="570" y="110" text-anchor="middle" font-size="20">🇨🇦</text>
-            <text x="570" y="93" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">トロント</text>
+            <circle class="pin-hit" cx="565" cy="128" r="22"/>
+            <g class="pin-content"><circle cx="565" cy="128" r="10" fill="#dc2626" stroke="#fff" stroke-width="2"/><text x="565" y="133" text-anchor="middle" font-size="12" fill="#fff">🇨🇦</text></g>
+            <text class="pin-label" x="565" y="112" text-anchor="middle">トロント</text>
+          </g>
+
+          <!-- 都市ピン: アメリカ -->
+          <g class="venue-pin" data-city="シアトル" data-stadium="ルーメン・フィールド" data-tz="-16時間">
+            <circle class="pin-hit" cx="138" cy="102" r="22"/>
+            <g class="pin-content"><circle cx="138" cy="102" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="138" y="107" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="118" y="112" text-anchor="middle">シアトル</text>
+          </g>
+          <g class="venue-pin" data-city="サンフランシスコ" data-stadium="リーバイス・スタジアム" data-tz="-16時間">
+            <circle class="pin-hit" cx="118" cy="195" r="22"/>
+            <g class="pin-content"><circle cx="118" cy="195" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="118" y="200" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="100" y="185" text-anchor="middle">SF</text>
+          </g>
+          <g class="venue-pin" data-city="ロサンゼルス" data-stadium="ソーファイ・スタジアム" data-tz="-16時間">
+            <circle class="pin-hit" cx="132" cy="228" r="22"/>
+            <g class="pin-content"><circle cx="132" cy="228" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="132" y="233" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="132" y="248" text-anchor="middle">LA</text>
+          </g>
+          <g class="venue-pin" data-city="カンザスシティ" data-stadium="アローヘッド・スタジアム" data-tz="-14時間">
+            <circle class="pin-hit" cx="405" cy="195" r="22"/>
+            <g class="pin-content"><circle cx="405" cy="195" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="405" y="200" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="405" y="182" text-anchor="middle">KC</text>
+          </g>
+          <g class="venue-pin" data-city="ダラス" data-stadium="AT&amp;Tスタジアム" data-tz="-14時間">
+            <circle class="pin-hit" cx="370" cy="278" r="22"/>
+            <g class="pin-content"><circle cx="370" cy="278" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="370" y="283" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="370" y="298" text-anchor="middle">ダラス</text>
+          </g>
+          <g class="venue-pin" data-city="ヒューストン" data-stadium="NRGスタジアム" data-tz="-14時間">
+            <circle class="pin-hit" cx="398" cy="315" r="22"/>
+            <g class="pin-content"><circle cx="398" cy="315" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="398" y="320" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="398" y="335" text-anchor="middle">ヒューストン</text>
+          </g>
+          <g class="venue-pin" data-city="アトランタ" data-stadium="メルセデス・ベンツ・スタジアム" data-tz="-13時間">
+            <circle class="pin-hit" cx="522" cy="258" r="22"/>
+            <g class="pin-content"><circle cx="522" cy="258" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="522" y="263" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="522" y="248" text-anchor="middle">アトランタ</text>
+          </g>
+          <g class="venue-pin" data-city="マイアミ" data-stadium="ハードロック・スタジアム" data-tz="-13時間">
+            <circle class="pin-hit" cx="558" cy="440" r="22"/>
+            <g class="pin-content"><circle cx="558" cy="440" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="558" y="445" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="575" y="450" text-anchor="start">マイアミ</text>
+          </g>
+          <g class="venue-pin" data-city="フィラデルフィア" data-stadium="リンカーン・フィナンシャル・フィールド" data-tz="-13時間">
+            <circle class="pin-hit" cx="608" cy="178" r="22"/>
+            <g class="pin-content"><circle cx="608" cy="178" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="608" y="183" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="608" y="196" text-anchor="middle">フィラデルフィア</text>
+          </g>
+          <g class="venue-pin" data-city="ニューヨーク/NJ" data-stadium="メットライフ・スタジアム" data-tz="-13時間">
+            <circle class="pin-hit" cx="622" cy="162" r="22"/>
+            <g class="pin-content"><circle cx="622" cy="162" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="622" y="167" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="640" y="156" text-anchor="start">NY/NJ</text>
+          </g>
+          <g class="venue-pin" data-city="ボストン" data-stadium="ジレット・スタジアム" data-tz="-13時間">
+            <circle class="pin-hit" cx="642" cy="145" r="22"/>
+            <g class="pin-content"><circle cx="642" cy="145" r="10" fill="#2563eb" stroke="#fff" stroke-width="2"/><text x="642" y="150" text-anchor="middle" font-size="12" fill="#fff">🇺🇸</text></g>
+            <text class="pin-label" x="660" y="138" text-anchor="start">ボストン</text>
+          </g>
+
+          <!-- 都市ピン: メキシコ -->
+          <g class="venue-pin" data-city="モンテレイ" data-stadium="エスタディオBBVA" data-tz="-14時間">
+            <circle class="pin-hit" cx="280" cy="328" r="22"/>
+            <g class="pin-content"><circle cx="280" cy="328" r="10" fill="#16a34a" stroke="#fff" stroke-width="2"/><text x="280" y="333" text-anchor="middle" font-size="12" fill="#fff">🇲🇽</text></g>
+            <text class="pin-label" x="280" y="315" text-anchor="middle">モンテレイ</text>
+          </g>
+          <g class="venue-pin" data-city="グアダラハラ" data-stadium="エスタディオ・アクロン" data-tz="-14時間">
+            <circle class="pin-hit" cx="225" cy="362" r="22"/>
+            <g class="pin-content"><circle cx="225" cy="362" r="10" fill="#16a34a" stroke="#fff" stroke-width="2"/><text x="225" y="367" text-anchor="middle" font-size="12" fill="#fff">🇲🇽</text></g>
+            <text class="pin-label" x="200" y="356" text-anchor="middle">グアダラハラ</text>
+          </g>
+          <g class="venue-pin" data-city="メキシコシティ" data-stadium="エスタディオ・アステカ" data-tz="-14時間">
+            <circle class="pin-hit" cx="260" cy="385" r="22"/>
+            <g class="pin-content"><circle cx="260" cy="385" r="10" fill="#16a34a" stroke="#fff" stroke-width="2"/><text x="260" y="390" text-anchor="middle" font-size="12" fill="#fff">🇲🇽</text></g>
+            <text class="pin-label" x="260" y="403" text-anchor="middle">メキシコシティ</text>
           </g>
         </svg>
         <!-- ツールチップ -->
