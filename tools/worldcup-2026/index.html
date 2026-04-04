@@ -136,6 +136,32 @@
     }
     [data-theme="dark"] .match-table tr.japan-match { background: #2a1a00; }
     [data-theme="dark"] .match-table tr.japan-match:hover { background: #3a2500; }
+
+    /* 時差情報テーブル */
+    .tz-info-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 16px 0; }
+    .tz-info-table th { padding: 8px; text-align: left; border-bottom: 2px solid var(--border); background: var(--surface); color: var(--text); }
+    .tz-info-table td { padding: 8px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .tz-info-table .tz-diff { font-weight: bold; color: #2563eb; }
+    [data-theme="dark"] .tz-info-table .tz-diff { color: #60a5fa; }
+
+    /* 時差変換ツール */
+    .conv-description { font-size: 0.9rem; color: var(--text-muted); margin: 0 0 16px; }
+    .conv-input { width: 100%; padding: 10px; font-size: 1rem; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); }
+    .conv-result-box { margin-top: 16px; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: none; }
+    .conv-result-value { font-size: 1.3rem; color: #2563eb; font-weight: bold; }
+    [data-theme="dark"] .conv-result-value { color: #60a5fa; }
+
+    /* 開催都市マップ */
+    .venue-map-container { position: relative; margin: 16px 0; }
+    .venue-map { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border); }
+    .venue-pin { cursor: pointer; transition: transform 0.15s; }
+    .venue-pin:hover { transform: scale(1.15); }
+    .venue-tooltip { position: absolute; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); pointer-events: none; z-index: 10; font-size: 0.85rem; max-width: 220px; }
+    .tooltip-city { font-weight: bold; font-size: 0.95rem; color: var(--text); margin-bottom: 4px; }
+    .tooltip-stadium { color: var(--text-muted); margin-bottom: 2px; }
+    .tooltip-tz { color: #2563eb; font-weight: bold; }
+    [data-theme="dark"] { --map-bg: #1a2332; --map-land: #2d4a2d; --map-land-stroke: #4a7a4a; --map-legend-bg: rgba(30,41,59,0.95); --map-legend-border: #475569; }
+    [data-theme="dark"] .tooltip-tz { color: #60a5fa; }
   </style>
 </head>
 <body>
@@ -215,11 +241,11 @@
     <!-- カスタム時差変換 -->
     <div class="tool-area" style="margin-top:24px;">
       <h3 style="margin:0 0 12px;">時差変換ツール</h3>
-      <p style="font-size:0.9rem;color:#666;margin:0 0 16px;">開催都市の現地時間を入力すると、日本時間に変換します。</p>
+      <p class="conv-description">開催都市の現地時間を入力すると、日本時間に変換します。</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
         <div style="flex:1;min-width:160px;">
           <label for="conv-city">開催都市</label>
-          <select id="conv-city" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;">
+          <select id="conv-city" class="conv-input">
             <option value="-4">東部時間 (ET) - ニューヨーク, マイアミ等</option>
             <option value="-5">中部時間 (CT) - ヒューストン, ダラス等</option>
             <option value="-7">太平洋時間 (PT) - ロサンゼルス, シアトル等</option>
@@ -228,16 +254,16 @@
         </div>
         <div style="min-width:140px;">
           <label for="conv-date">日付</label>
-          <input type="date" id="conv-date" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;">
+          <input type="date" id="conv-date" class="conv-input">
         </div>
         <div style="min-width:120px;">
           <label for="conv-time">現地時間</label>
-          <input type="time" id="conv-time" value="18:00" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:6px;">
+          <input type="time" id="conv-time" value="18:00" class="conv-input">
         </div>
         <button class="btn" onclick="convertTime()">変換</button>
       </div>
-      <div id="conv-result" style="margin-top:16px;padding:16px;background:#f0f7ff;border-radius:8px;display:none;">
-        <strong>日本時間 (JST):</strong> <span id="conv-jst" style="font-size:1.3rem;color:#2563eb;font-weight:bold;"></span>
+      <div id="conv-result" class="conv-result-box">
+        <strong>日本時間 (JST):</strong> <span id="conv-jst" class="conv-result-value"></span>
       </div>
     </div>
 
@@ -256,25 +282,143 @@
       </ul>
     </section>
 
+    <!-- 開催都市マップ -->
+    <section class="content-section">
+      <h2>開催都市マップ</h2>
+      <p>16の開催都市をマップで確認できます。ピンをタップすると詳細が表示されます。</p>
+      <div class="venue-map-container">
+        <svg class="venue-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+          <!-- 背景 -->
+          <rect width="800" height="500" fill="var(--map-bg, #e8f4fd)" rx="12"/>
+          <!-- 北米大陸の簡易シルエット -->
+          <path class="map-land" d="
+            M120,60 L180,50 L250,45 L320,55 L380,50 L440,40 L500,35 L560,50 L620,70
+            L650,90 L660,120 L670,150 L680,170 L690,190 L695,210 L690,230 L680,245
+            L670,255 L650,270 L630,280 L610,285 L590,288 L570,290 L560,295 L555,310
+            L560,330 L570,345 L575,360 L570,375 L560,385 L545,390 L530,388 L520,380
+            L510,370 L505,355 L500,340 L490,330 L475,325 L460,330 L445,340 L430,355
+            L420,370 L410,380 L395,385 L380,382 L370,375 L365,365 L360,350 L350,340
+            L340,335 L325,338 L310,345 L300,355 L290,365 L280,370 L265,368 L250,360
+            L240,350 L235,340 L230,325 L220,310 L210,300 L195,295 L180,290 L165,280
+            L150,265 L140,250 L130,230 L120,210 L115,190 L110,170 L105,150 L100,130
+            L105,110 L110,90 L115,75 Z
+          " fill="var(--map-land, #c8dfc8)" stroke="var(--map-land-stroke, #8ab88a)" stroke-width="1.5"/>
+          <!-- メキシコ -->
+          <path class="map-land" d="
+            M180,290 L195,295 L210,300 L220,310 L230,325 L235,340 L240,350 L250,360
+            L260,365 L265,368 L280,370 L290,365 L300,355 L310,345 L315,340
+            L310,350 L300,370 L285,390 L270,400 L255,405 L240,402 L225,395
+            L215,385 L210,375 L205,360 L195,350 L185,345 L175,340 L165,330
+            L160,315 L165,300 L175,295 Z
+          " fill="var(--map-land, #c8dfc8)" stroke="var(--map-land-stroke, #8ab88a)" stroke-width="1.5"/>
+
+          <!-- 凡例 -->
+          <g transform="translate(620,400)">
+            <rect width="160" height="80" rx="6" fill="var(--map-legend-bg, rgba(255,255,255,0.9))" stroke="var(--map-legend-border, #ccc)" stroke-width="1"/>
+            <text x="12" y="20" font-size="11" fill="var(--text)" font-weight="bold">開催国</text>
+            <text x="12" y="38" font-size="18">🇺🇸</text><text x="34" y="38" font-size="11" fill="var(--text)">アメリカ（11都市）</text>
+            <text x="12" y="55" font-size="18">🇲🇽</text><text x="34" y="55" font-size="11" fill="var(--text)">メキシコ（3都市）</text>
+            <text x="12" y="72" font-size="18">🇨🇦</text><text x="34" y="72" font-size="11" fill="var(--text)">カナダ（2都市）</text>
+          </g>
+
+          <!-- 都市ピン: アメリカ -->
+          <g class="venue-pin" data-city="シアトル" data-stadium="ルーメン・フィールド" data-tz="-16時間">
+            <circle cx="148" cy="100" r="14" fill="#3b82f6" opacity="0.2"/><text x="148" y="105" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="148" y="85" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">シアトル</text>
+          </g>
+          <g class="venue-pin" data-city="サンフランシスコ" data-stadium="リーバイス・スタジアム" data-tz="-16時間">
+            <circle cx="130" cy="175" r="14" fill="#3b82f6" opacity="0.2"/><text x="130" y="180" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="130" y="162" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">SF</text>
+          </g>
+          <g class="venue-pin" data-city="ロサンゼルス" data-stadium="ソーファイ・スタジアム" data-tz="-16時間">
+            <circle cx="145" cy="215" r="14" fill="#3b82f6" opacity="0.2"/><text x="145" y="220" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="145" y="237" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">LA</text>
+          </g>
+          <g class="venue-pin" data-city="カンザスシティ" data-stadium="アローヘッド・スタジアム" data-tz="-14時間">
+            <circle cx="400" cy="185" r="14" fill="#3b82f6" opacity="0.2"/><text x="400" y="190" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="400" y="175" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">KC</text>
+          </g>
+          <g class="venue-pin" data-city="ダラス" data-stadium="AT&amp;Tスタジアム" data-tz="-14時間">
+            <circle cx="370" cy="260" r="14" fill="#3b82f6" opacity="0.2"/><text x="370" y="265" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="370" y="280" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">ダラス</text>
+          </g>
+          <g class="venue-pin" data-city="ヒューストン" data-stadium="NRGスタジアム" data-tz="-14時間">
+            <circle cx="400" cy="300" r="14" fill="#3b82f6" opacity="0.2"/><text x="400" y="305" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="400" y="318" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">ヒューストン</text>
+          </g>
+          <g class="venue-pin" data-city="アトランタ" data-stadium="メルセデス・ベンツ・スタジアム" data-tz="-13時間">
+            <circle cx="530" cy="240" r="14" fill="#3b82f6" opacity="0.2"/><text x="530" y="245" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="530" y="258" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">アトランタ</text>
+          </g>
+          <g class="venue-pin" data-city="マイアミ" data-stadium="ハードロック・スタジアム" data-tz="-13時間">
+            <circle cx="580" cy="320" r="14" fill="#3b82f6" opacity="0.2"/><text x="580" y="325" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="580" y="338" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">マイアミ</text>
+          </g>
+          <g class="venue-pin" data-city="フィラデルフィア" data-stadium="リンカーン・フィナンシャル・フィールド" data-tz="-13時間">
+            <circle cx="600" cy="155" r="14" fill="#3b82f6" opacity="0.2"/><text x="600" y="160" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="600" y="145" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">フィラデルフィア</text>
+          </g>
+          <g class="venue-pin" data-city="ニューヨーク/NJ" data-stadium="メットライフ・スタジアム" data-tz="-13時間">
+            <circle cx="620" cy="135" r="14" fill="#3b82f6" opacity="0.2"/><text x="620" y="140" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="635" y="125" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">NY/NJ</text>
+          </g>
+          <g class="venue-pin" data-city="ボストン" data-stadium="ジレット・スタジアム" data-tz="-13時間">
+            <circle cx="645" cy="110" r="14" fill="#3b82f6" opacity="0.2"/><text x="645" y="115" text-anchor="middle" font-size="20">🇺🇸</text>
+            <text x="660" y="100" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">ボストン</text>
+          </g>
+
+          <!-- 都市ピン: メキシコ -->
+          <g class="venue-pin" data-city="メキシコシティ" data-stadium="エスタディオ・アステカ" data-tz="-14時間">
+            <circle cx="270" cy="375" r="14" fill="#ef4444" opacity="0.2"/><text x="270" y="380" text-anchor="middle" font-size="20">🇲🇽</text>
+            <text x="270" y="395" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">メキシコシティ</text>
+          </g>
+          <g class="venue-pin" data-city="グアダラハラ" data-stadium="エスタディオ・アクロン" data-tz="-14時間">
+            <circle cx="230" cy="355" r="14" fill="#ef4444" opacity="0.2"/><text x="230" y="360" text-anchor="middle" font-size="20">🇲🇽</text>
+            <text x="215" y="345" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">グアダラハラ</text>
+          </g>
+          <g class="venue-pin" data-city="モンテレイ" data-stadium="エスタディオBBVA" data-tz="-14時間">
+            <circle cx="300" cy="330" r="14" fill="#ef4444" opacity="0.2"/><text x="300" y="335" text-anchor="middle" font-size="20">🇲🇽</text>
+            <text x="300" y="320" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">モンテレイ</text>
+          </g>
+
+          <!-- 都市ピン: カナダ -->
+          <g class="venue-pin" data-city="バンクーバー" data-stadium="BCプレイス" data-tz="-16時間">
+            <circle cx="155" cy="72" r="14" fill="#22c55e" opacity="0.2"/><text x="155" y="77" text-anchor="middle" font-size="20">🇨🇦</text>
+            <text x="175" y="65" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">バンクーバー</text>
+          </g>
+          <g class="venue-pin" data-city="トロント" data-stadium="BMOフィールド" data-tz="-13時間">
+            <circle cx="570" cy="105" r="14" fill="#22c55e" opacity="0.2"/><text x="570" y="110" text-anchor="middle" font-size="20">🇨🇦</text>
+            <text x="570" y="93" text-anchor="middle" font-size="9" fill="var(--text)" font-weight="bold">トロント</text>
+          </g>
+        </svg>
+        <!-- ツールチップ -->
+        <div class="venue-tooltip" id="venue-tooltip" style="display:none;">
+          <div class="tooltip-city"></div>
+          <div class="tooltip-stadium"></div>
+          <div class="tooltip-tz"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- 開催都市と時差 -->
     <section class="content-section">
       <h2>開催都市と日本との時差</h2>
       <p>W杯の開催期間（6〜7月）は全開催地で夏時間（サマータイム）が適用されます。日本との時差は以下の通りです。</p>
-      <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin:16px 0;">
+      <table class="tz-info-table">
         <thead>
-          <tr style="background:#f3f4f6;">
-            <th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">タイムゾーン</th>
-            <th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">開催都市</th>
-            <th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">UTC</th>
-            <th style="padding:8px;text-align:left;border-bottom:2px solid #ddd;">日本との時差</th>
+          <tr>
+            <th>タイムゾーン</th>
+            <th>開催都市</th>
+            <th>UTC</th>
+            <th>日本との時差</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;">東部夏時間 (EDT)</td><td style="padding:8px;border-bottom:1px solid #eee;">ニューヨーク、マイアミ、フィラデルフィア、ボストン、アトランタ、トロント</td><td style="padding:8px;border-bottom:1px solid #eee;">UTC-4</td><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;color:#2563eb;">-13時間</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;">中部夏時間 (CDT)</td><td style="padding:8px;border-bottom:1px solid #eee;">ヒューストン、ダラス、カンザスシティ、アーリントン</td><td style="padding:8px;border-bottom:1px solid #eee;">UTC-5</td><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;color:#2563eb;">-14時間</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;">山岳部夏時間 (MDT)</td><td style="padding:8px;border-bottom:1px solid #eee;">デンバー</td><td style="padding:8px;border-bottom:1px solid #eee;">UTC-6</td><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;color:#2563eb;">-15時間</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;">太平洋夏時間 (PDT)</td><td style="padding:8px;border-bottom:1px solid #eee;">ロサンゼルス、サンフランシスコ、シアトル、バンクーバー</td><td style="padding:8px;border-bottom:1px solid #eee;">UTC-7</td><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;color:#2563eb;">-16時間</td></tr>
-          <tr><td style="padding:8px;border-bottom:1px solid #eee;">メキシコ中部夏時間 (CDT)</td><td style="padding:8px;border-bottom:1px solid #eee;">メキシコシティ、グアダラハラ、モンテレイ</td><td style="padding:8px;border-bottom:1px solid #eee;">UTC-5</td><td style="padding:8px;border-bottom:1px solid #eee;font-weight:bold;color:#2563eb;">-14時間</td></tr>
+          <tr><td>東部夏時間 (EDT)</td><td>ニューヨーク、マイアミ、フィラデルフィア、ボストン、アトランタ、トロント</td><td>UTC-4</td><td class="tz-diff">-13時間</td></tr>
+          <tr><td>中部夏時間 (CDT)</td><td>ヒューストン、ダラス、カンザスシティ、アーリントン</td><td>UTC-5</td><td class="tz-diff">-14時間</td></tr>
+          <tr><td>山岳部夏時間 (MDT)</td><td>デンバー</td><td>UTC-6</td><td class="tz-diff">-15時間</td></tr>
+          <tr><td>太平洋夏時間 (PDT)</td><td>ロサンゼルス、サンフランシスコ、シアトル、バンクーバー</td><td>UTC-7</td><td class="tz-diff">-16時間</td></tr>
+          <tr><td>メキシコ中部夏時間 (CDT)</td><td>メキシコシティ、グアダラハラ、モンテレイ</td><td>UTC-5</td><td class="tz-diff">-14時間</td></tr>
         </tbody>
       </table>
       <p><strong>例:</strong> ニューヨークで午後7時（19:00 EDT）キックオフの試合は、日本時間の翌日午前8時（8:00 JST）になります。</p>
@@ -652,6 +796,56 @@
 
     // 変換ツールの初期日付
     document.getElementById('conv-date').value = '2026-06-15';
+
+    // 開催都市マップ ツールチップ
+    (function() {
+      const tooltip = document.getElementById('venue-tooltip');
+      if (!tooltip) return;
+      const container = document.querySelector('.venue-map-container');
+      document.querySelectorAll('.venue-pin').forEach(pin => {
+        pin.addEventListener('mouseenter', function(e) {
+          const city = this.dataset.city;
+          const stadium = this.dataset.stadium;
+          const tz = this.dataset.tz;
+          tooltip.querySelector('.tooltip-city').textContent = city;
+          tooltip.querySelector('.tooltip-stadium').textContent = stadium;
+          tooltip.querySelector('.tooltip-tz').textContent = '日本との時差: ' + tz;
+          tooltip.style.display = 'block';
+        });
+        pin.addEventListener('mousemove', function(e) {
+          const rect = container.getBoundingClientRect();
+          let x = e.clientX - rect.left + 12;
+          let y = e.clientY - rect.top - 10;
+          if (x + 220 > rect.width) x = e.clientX - rect.left - 230;
+          tooltip.style.left = x + 'px';
+          tooltip.style.top = y + 'px';
+        });
+        pin.addEventListener('mouseleave', function() {
+          tooltip.style.display = 'none';
+        });
+        pin.addEventListener('click', function() {
+          const tooltip = document.getElementById('venue-tooltip');
+          if (tooltip.style.display === 'block') {
+            tooltip.style.display = 'none';
+          } else {
+            const city = this.dataset.city;
+            tooltip.querySelector('.tooltip-city').textContent = city;
+            tooltip.querySelector('.tooltip-stadium').textContent = this.dataset.stadium;
+            tooltip.querySelector('.tooltip-tz').textContent = '日本との時差: ' + this.dataset.tz;
+            tooltip.style.display = 'block';
+            const rect = container.getBoundingClientRect();
+            const circle = this.querySelector('circle');
+            const svgRect = container.querySelector('svg').getBoundingClientRect();
+            const cx = parseFloat(circle.getAttribute('cx'));
+            const cy = parseFloat(circle.getAttribute('cy'));
+            const scaleX = svgRect.width / 800;
+            const scaleY = svgRect.height / 500;
+            tooltip.style.left = (cx * scaleX + 20) + 'px';
+            tooltip.style.top = (cy * scaleY - 10) + 'px';
+          }
+        });
+      });
+    })();
   </script>
 </body>
 </html>
