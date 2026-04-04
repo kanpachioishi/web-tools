@@ -179,6 +179,32 @@
       border: 1px solid var(--border); padding: 8px 12px; text-align: center;
     }
     .rank-table th { background: var(--bg); font-weight: 600; }
+    .romaji-settings { margin-bottom: 20px; }
+    .romaji-settings summary {
+      cursor: pointer; font-size: 0.95rem; color: var(--text-muted);
+      padding: 8px 0; user-select: none;
+    }
+    .romaji-settings summary:hover { color: var(--primary); }
+    .settings-grid {
+      display: flex; flex-wrap: wrap; gap: 12px; padding: 12px 0;
+    }
+    .setting-item {
+      display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+    }
+    .setting-item .setting-kana {
+      min-width: 24px; font-weight: 600; color: var(--text);
+    }
+    .setting-toggle {
+      display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .setting-toggle button {
+      padding: 4px 10px; border: none; background: var(--bg); color: var(--text-muted);
+      font-size: 0.85rem; cursor: pointer; font-family: monospace; transition: all 0.15s;
+    }
+    .setting-toggle button + button { border-left: 1px solid var(--border); }
+    .setting-toggle button.active {
+      background: var(--primary); color: #fff;
+    }
     @media (max-width: 600px) {
       .hiragana-line { font-size: 1.1rem; }
       .romaji-line { font-size: 1rem; }
@@ -211,6 +237,19 @@
         <button class="time-btn active" onclick="setTime(60)" data-time="60">60秒</button>
         <button class="time-btn" onclick="setTime(120)" data-time="120">120秒</button>
       </div>
+
+      <details class="romaji-settings" id="romaji-settings">
+        <summary>ローマ字設定</summary>
+        <div class="settings-grid">
+          <div class="setting-item"><span class="setting-kana">し</span><div class="setting-toggle" data-key="shi"><button class="active" data-val="si">si</button><button data-val="shi">shi</button></div></div>
+          <div class="setting-item"><span class="setting-kana">ち</span><div class="setting-toggle" data-key="chi"><button class="active" data-val="ti">ti</button><button data-val="chi">chi</button></div></div>
+          <div class="setting-item"><span class="setting-kana">つ</span><div class="setting-toggle" data-key="tsu"><button class="active" data-val="tu">tu</button><button data-val="tsu">tsu</button></div></div>
+          <div class="setting-item"><span class="setting-kana">ふ</span><div class="setting-toggle" data-key="fu"><button class="active" data-val="hu">hu</button><button data-val="fu">fu</button></div></div>
+          <div class="setting-item"><span class="setting-kana">じ</span><div class="setting-toggle" data-key="ji"><button class="active" data-val="zi">zi</button><button data-val="ji">ji</button></div></div>
+          <div class="setting-item"><span class="setting-kana">ん</span><div class="setting-toggle" data-key="nn"><button class="active" data-val="n">n</button><button data-val="nn">nn</button></div></div>
+          <div class="setting-item"><span class="setting-kana">を</span><div class="setting-toggle" data-key="wo"><button class="active" data-val="wo">wo</button><button data-val="o">o</button></div></div>
+        </div>
+      </details>
 
       <div class="typing-stats">
         <div class="stat-item">
@@ -310,36 +349,146 @@
   </main>
   <script src="../../common/footer.js"></script>
   <script>
-    // Sentences: each has hiragana display and romaji to type
-    // romaji uses the most common input method
     var sentences = [
-      { hira: "きょうはとてもいいてんきです", roma: "kyouhatotemoiitenkidesu" },
-      { hira: "ぷろぐらみんぐはたのしい", roma: "puroguraminnguhatanosii" },
-      { hira: "おはようございます", roma: "ohayougozaimasu" },
-      { hira: "ありがとうございました", roma: "arigatougozaimasita" },
-      { hira: "はじめましてよろしくおねがいします", roma: "hajimemasiteyorosikuonegaisimasu" },
-      { hira: "きれいなはながさいている", roma: "kireinahanagasaiteiru" },
-      { hira: "あしたはあめがふるでしょう", roma: "asitahaamegahurudesyou" },
-      { hira: "でんしゃにのっておでかけする", roma: "densyaninotteodekakesuru" },
-      { hira: "おいしいりょうりをたべたい", roma: "oisiiryouriwotabetai" },
-      { hira: "としょかんでほんをよむ", roma: "tosyokandehonwoyomu" },
-      { hira: "がっこうでべんきょうする", roma: "gakkoudebenkyousuru" },
-      { hira: "やまにのぼってけしきをみる", roma: "yamaninobottekesikiwomiru" },
-      { hira: "うみでおよぐのがすきです", roma: "umideoyogunogasukidesu" },
-      { hira: "えいがをみにいきましょう", roma: "eigawominiikimasyou" },
-      { hira: "しゅくだいをおわらせる", roma: "syukudaiwoowaraseru" },
-      { hira: "かぜにきをつけてください", roma: "kazenikiwotsuketekudasai" },
-      { hira: "しんかんせんはとてもはやい", roma: "sinkansenhatotemohayai" },
-      { hira: "こうえんでさんぽをする", roma: "kouendesanpowosuru" },
-      { hira: "おかあさんにでんわする", roma: "okaasannidenwasuru" },
-      { hira: "にちようびはやすみです", roma: "nitiyoubihayasumidesu" },
-      { hira: "ともだちとあそびにいく", roma: "tomodatitoasobiniiku" },
-      { hira: "じてんしゃでかいものにいく", roma: "jitensyadekaimononiiku" },
-      { hira: "たいぴんぐのれんしゅうをする", roma: "taipingunorennsyuuwosuru" },
-      { hira: "こんぴゅーたーをつかう", roma: "konpyuutaawotsukau" },
-      { hira: "いんたーねっとでしらべる", roma: "intaanettodesiraberu" }
+      "きょうはとてもいいてんきです",
+      "ぷろぐらみんぐはたのしい",
+      "おはようございます",
+      "ありがとうございました",
+      "はじめましてよろしくおねがいします",
+      "きれいなはながさいている",
+      "あしたはあめがふるでしょう",
+      "でんしゃにのっておでかけする",
+      "おいしいりょうりをたべたい",
+      "としょかんでほんをよむ",
+      "がっこうでべんきょうする",
+      "やまにのぼってけしきをみる",
+      "うみでおよぐのがすきです",
+      "えいがをみにいきましょう",
+      "しゅくだいをおわらせる",
+      "かぜにきをつけてください",
+      "しんかんせんはとてもはやい",
+      "こうえんでさんぽをする",
+      "おかあさんにでんわする",
+      "にちようびはやすみです",
+      "ともだちとあそびにいく",
+      "じてんしゃでかいものにいく",
+      "たいぴんぐのれんしゅうをする",
+      "こんぴゅーたーをつかう",
+      "いんたーねっとでしらべる"
     ];
 
+    // --- Romaji settings ---
+    var rSettings = { shi:'si', chi:'ti', tsu:'tu', fu:'hu', ji:'zi', nn:'n', wo:'wo' };
+
+    function loadSettings() {
+      try {
+        var s = JSON.parse(localStorage.getItem('typing_romaji_settings'));
+        if (s) for (var k in s) { if (rSettings.hasOwnProperty(k)) rSettings[k] = s[k]; }
+      } catch(e) {}
+    }
+    function saveSettings() {
+      localStorage.setItem('typing_romaji_settings', JSON.stringify(rSettings));
+    }
+
+    function initSettingsUI() {
+      var toggles = document.querySelectorAll('.setting-toggle');
+      for (var i = 0; i < toggles.length; i++) {
+        var key = toggles[i].getAttribute('data-key');
+        var btns = toggles[i].querySelectorAll('button');
+        for (var j = 0; j < btns.length; j++) {
+          btns[j].classList.toggle('active', btns[j].getAttribute('data-val') === rSettings[key]);
+        }
+      }
+      document.getElementById('romaji-settings').addEventListener('click', function(e) {
+        var btn = e.target;
+        if (btn.tagName !== 'BUTTON') return;
+        var toggle = btn.parentElement;
+        var key = toggle.getAttribute('data-key');
+        var val = btn.getAttribute('data-val');
+        if (!key) return;
+        rSettings[key] = val;
+        saveSettings();
+        var sibs = toggle.querySelectorAll('button');
+        for (var i = 0; i < sibs.length; i++) sibs[i].classList.toggle('active', sibs[i] === btn);
+        if (!started) resetTest();
+      });
+    }
+
+    // --- Kana to Romaji converter ---
+    function kanaToRomaji(hira) {
+      var s = rSettings;
+      // Build combo map (拗音) based on settings
+      var shB = s.shi === 'si' ? 'sy' : 'sh';
+      var chB = s.chi === 'ti' ? 'ty' : 'ch';
+      var jB = s.ji === 'zi' ? 'zy' : 'j';
+      var combo = {
+        'きゃ':'kya','きゅ':'kyu','きょ':'kyo',
+        'しゃ':shB+'a','しゅ':shB+'u','しょ':shB+'o',
+        'ちゃ':chB+'a','ちゅ':chB+'u','ちょ':chB+'o',
+        'にゃ':'nya','にゅ':'nyu','にょ':'nyo',
+        'ひゃ':'hya','ひゅ':'hyu','ひょ':'hyo',
+        'みゃ':'mya','みゅ':'myu','みょ':'myo',
+        'りゃ':'rya','りゅ':'ryu','りょ':'ryo',
+        'ぎゃ':'gya','ぎゅ':'gyu','ぎょ':'gyo',
+        'じゃ':jB+'a','じゅ':jB+'u','じょ':jB+'o',
+        'びゃ':'bya','びゅ':'byu','びょ':'byo',
+        'ぴゃ':'pya','ぴゅ':'pyu','ぴょ':'pyo'
+      };
+      var single = {
+        'あ':'a','い':'i','う':'u','え':'e','お':'o',
+        'か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko',
+        'さ':'sa','し':s.shi,'す':'su','せ':'se','そ':'so',
+        'た':'ta','ち':s.chi,'つ':s.tsu,'て':'te','と':'to',
+        'な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no',
+        'は':'ha','ひ':'hi','ふ':s.fu,'へ':'he','ほ':'ho',
+        'ま':'ma','み':'mi','む':'mu','め':'me','も':'mo',
+        'や':'ya','ゆ':'yu','よ':'yo',
+        'ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro',
+        'わ':'wa','を':s.wo,'ん':s.nn,
+        'が':'ga','ぎ':'gi','ぐ':'gu','げ':'ge','ご':'go',
+        'ざ':'za','じ':s.ji,'ず':'zu','ぜ':'ze','ぞ':'zo',
+        'だ':'da','ぢ':'di','づ':'du','で':'de','ど':'do',
+        'ば':'ba','び':'bi','ぶ':'bu','べ':'be','ぼ':'bo',
+        'ぱ':'pa','ぴ':'pi','ぷ':'pu','ぺ':'pe','ぽ':'po'
+      };
+
+      var result = '';
+      var i = 0;
+      while (i < hira.length) {
+        // っ (geminate)
+        if (hira[i] === 'っ') {
+          var nextR = '';
+          if (i + 2 < hira.length && combo[hira[i+1] + hira[i+2]]) {
+            nextR = combo[hira[i+1] + hira[i+2]];
+          } else if (i + 1 < hira.length && single[hira[i+1]]) {
+            nextR = single[hira[i+1]];
+          }
+          if (nextR) result += nextR[0];
+          i++; continue;
+        }
+        // ー (long vowel - repeat previous vowel)
+        if (hira[i] === 'ー') {
+          if (result.length > 0) {
+            var last = result[result.length - 1];
+            if ('aiueo'.indexOf(last) >= 0) result += last;
+          }
+          i++; continue;
+        }
+        // 拗音 (2-char combo)
+        if (i + 1 < hira.length && combo[hira[i] + hira[i+1]]) {
+          result += combo[hira[i] + hira[i+1]];
+          i += 2; continue;
+        }
+        // Single kana
+        if (single[hira[i]]) {
+          result += single[hira[i]];
+        }
+        i++;
+      }
+      return result;
+    }
+
+    // --- Typing test state ---
     var timeLimit = 60;
     var timer = null;
     var timeLeft = 60;
@@ -370,19 +519,17 @@
     }
 
     function renderCurrentSentence() {
-      var sentence = sentenceQueue[currentSentenceIndex];
-      currentRomaji = sentence.roma;
+      var hira = sentenceQueue[currentSentenceIndex];
+      currentRomaji = kanaToRomaji(hira);
       currentPos = 0;
 
-      // Render hiragana line - current sentence only
       var hiraEl = document.getElementById('hiragana-display');
       hiraEl.innerHTML = '';
       var span = document.createElement('span');
       span.className = 'h-char h-current';
-      span.textContent = sentence.hira;
+      span.textContent = hira;
       hiraEl.appendChild(span);
 
-      // Render romaji line - current sentence only
       var romaEl = document.getElementById('romaji-display');
       romaEl.innerHTML = '';
       romajiChars = [];
@@ -488,7 +635,6 @@
       document.getElementById('result-miss').textContent = missKeystrokes;
       document.getElementById('result-panel').classList.add('show');
 
-      // Best record
       var storageKey = 'typing_best_ja_' + timeLimit;
       var best = parseInt(localStorage.getItem(storageKey) || '0');
       var bestEl = document.getElementById('best-record');
@@ -535,10 +681,8 @@
             romajiChars[currentPos].className = 'char current';
           }
           if (currentPos >= currentRomaji.length) {
-            // Move to next sentence
             currentSentenceIndex++;
             if (currentSentenceIndex >= sentenceQueue.length) {
-              // Reshuffle and start over
               sentenceQueue = shuffleArray(sentences);
               currentSentenceIndex = 0;
             }
@@ -558,6 +702,8 @@
     });
 
     // Init
+    loadSettings();
+    initSettingsUI();
     buildText();
     renderCurrentSentence();
   </script>
