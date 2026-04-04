@@ -179,11 +179,21 @@
       border: 1px solid var(--border); padding: 8px 12px; text-align: center;
     }
     .rank-table th { background: var(--bg); font-weight: 600; }
-    .romaji-settings { margin-bottom: 20px; }
-    .romaji-settings summary {
-      cursor: pointer; font-size: 0.95rem; color: var(--text-muted);
-      padding: 8px 0; user-select: none;
+    .romaji-settings {
+      margin-bottom: 20px; border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0 16px;
     }
+    .romaji-settings[open] { padding-bottom: 4px; }
+    .romaji-settings summary {
+      cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--text);
+      padding: 12px 0; user-select: none; list-style: none;
+    }
+    .romaji-settings summary::-webkit-details-marker { display: none; }
+    .romaji-settings summary::before { content: '⚙ '; }
+    .romaji-settings summary::after {
+      content: '▸'; float: right; transition: transform 0.2s;
+    }
+    .romaji-settings[open] summary::after { transform: rotate(90deg); }
     .romaji-settings summary:hover { color: var(--primary); }
     .settings-grid {
       display: flex; flex-wrap: wrap; gap: 12px; padding: 12px 0;
