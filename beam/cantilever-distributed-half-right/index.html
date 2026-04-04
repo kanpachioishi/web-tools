@@ -338,9 +338,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="130" x2="540" y2="130" stroke-width="1.5"/>
+          <polygon points="545.0,130.0 535.0,125.0 535.0,135.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="30"  x2="70"  y2="148" stroke-width="1.5"/>
           <!-- 中間垂直補助線 -->
           <line style="stroke: var(--svg-axis)" x1="300" y1="128" x2="300" y2="142" stroke-width="1" stroke-dasharray="4,3"/>
+          <polygon points="300.0,147.0 295.0,137.0 305.0,137.0" style="fill: var(--svg-axis)"/>
           <!-- SFD: 区間1 一定値 ql/2（y=60 → 高さ70px） -->
           <line style="stroke: var(--svg-sfd)" x1="70"  y1="60" x2="300" y2="60" stroke-width="2.5"/>
           <!-- 区間2 線形減少 ql/2→0 -->
@@ -352,10 +354,14 @@
           <!-- ラベル -->
           <text style="fill: var(--svg-sfd)" x="36" y="65" font-size="17" text-anchor="middle" font-weight="bold">ql/2</text>
           <text style="fill: var(--svg-title)" x="290" y="20" font-size="18" text-anchor="middle" font-weight="bold">せん断力図（SFD）</text>
-          <text style="fill: var(--svg-axis)" x="40" y="134" font-size="16" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80"  y="160" font-size="16" text-anchor="middle">A</text>
           <text style="fill: var(--svg-fg)" x="300" y="160" font-size="16" text-anchor="middle">l/2</text>
-          <text style="fill: var(--svg-fg)" x="530" y="160" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="551.0" y="135.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="297.0" y="165.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">F</text>
+          <!-- 原点・端点 -->
+          <text x="292.0" y="136.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="530" y1="126.0" x2="530" y2="134.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="530" y="153.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図2: せん断力図（SFD）</figcaption>
       </figure>
@@ -380,9 +386,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="130" x2="540" y2="130" stroke-width="1.5"/>
+          <polygon points="545.0,130.0 535.0,125.0 535.0,135.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="30"  x2="70"  y2="148" stroke-width="1.5"/>
           <!-- 中間垂直補助線 -->
           <line style="stroke: var(--svg-axis)" x1="300" y1="128" x2="300" y2="142" stroke-width="1" stroke-dasharray="4,3"/>
+          <polygon points="300.0,147.0 295.0,137.0 305.0,137.0" style="fill: var(--svg-axis)"/>
           <!-- BMD: 区間1 線形 -->
           <line style="stroke: var(--svg-bmd)" x1="70" y1="30" x2="300" y2="97" stroke-width="2.5"/>
           <!-- 区間2 放物線 -->
@@ -396,10 +404,14 @@
           <text style="fill: var(--svg-bmd)" x="32" y="34" font-size="15" text-anchor="middle" font-weight="bold">3ql²/8</text>
           <text style="fill: var(--svg-bmd)" x="310" y="90" font-size="14" text-anchor="start">ql²/8</text>
           <text style="fill: var(--svg-title)" x="290" y="20" font-size="18" text-anchor="middle" font-weight="bold">曲げモーメント図（BMD）</text>
-          <text style="fill: var(--svg-axis)" x="40" y="134" font-size="16" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80"  y="160" font-size="16" text-anchor="middle">A</text>
           <text style="fill: var(--svg-fg)" x="300" y="160" font-size="16" text-anchor="middle">l/2</text>
-          <text style="fill: var(--svg-fg)" x="530" y="160" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="551.0" y="135.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="297.0" y="165.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">M</text>
+          <!-- 原点・端点 -->
+          <text x="292.0" y="136.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="530" y1="126.0" x2="530" y2="134.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="530" y="153.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図3: 曲げモーメント図（BMD）</figcaption>
       </figure>

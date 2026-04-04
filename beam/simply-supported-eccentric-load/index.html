@@ -242,7 +242,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 180" width="600" height="180" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="95" x2="530" y2="95" stroke-width="1.5"/>
+          <polygon points="535.0,95.0 525.0,90.0 525.0,100.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="20" x2="70" y2="170" stroke-width="1.5"/>
+          <polygon points="70.0,175.0 65.0,165.0 75.0,165.0" style="fill: var(--svg-axis)"/>
           <!-- SFD -->
           <line style="stroke: var(--svg-sfd)" x1="70" y1="45" x2="216" y2="45" stroke-width="2.5"/>
           <line style="stroke: var(--svg-sfd)" x1="216" y1="45" x2="216" y2="130" stroke-width="2.5" stroke-dasharray="6,4"/>
@@ -253,10 +255,13 @@
           <text style="fill: var(--svg-sfd)" x="30" y="50" font-size="16" text-anchor="middle" font-weight="bold">bP</text>
           <text style="fill: var(--svg-sfd)" x="24" y="136" font-size="16" text-anchor="middle" font-weight="bold">-aP</text>
           <text style="fill: var(--svg-title)" x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold">せん断力図（SFD）</text>
-          <text style="fill: var(--svg-axis)" x="50" y="100" font-size="16" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80" y="165" font-size="16" text-anchor="middle">A</text>
-          <text style="fill: var(--svg-fg)" x="216" y="165" font-size="16" text-anchor="middle">C</text>
-          <text style="fill: var(--svg-fg)" x="510" y="165" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="541.0" y="100.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="67.0" y="193.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">F</text>
+          <!-- 原点・端点 -->
+          <text x="62.0" y="101.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="520.0" y1="91.0" x2="520.0" y2="99.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="520.0" y="118.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図2: せん断力図</figcaption>
       </figure>

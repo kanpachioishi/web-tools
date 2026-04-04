@@ -295,7 +295,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="600" height="200" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="120" x2="530" y2="120" stroke-width="1.5"/>
+          <polygon points="535.0,120.0 525.0,115.0 525.0,125.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="20" x2="70" y2="180" stroke-width="1.5"/>
+          <polygon points="70.0,185.0 65.0,175.0 75.0,175.0" style="fill: var(--svg-axis)"/>
           <!-- BMD: 放物線（M_A → 極値 → 0） -->
           <path style="stroke: var(--svg-bmd)" d="M70,50 Q200,30 358,55 Q450,80 510,120" fill="none" stroke-width="2.5"/>
           <path style="fill: var(--svg-bmd)" d="M70,50 Q200,30 358,55 Q450,80 510,120 L510,120 L70,120 Z" fill-opacity="0.15"/>
@@ -303,9 +305,13 @@
           <!-- ラベル -->
           <text style="fill: var(--svg-bmd)" x="22" y="55" font-size="16" text-anchor="middle" font-weight="bold">M<tspan font-size="11" dy="3">A</tspan></text>
           <text style="fill: var(--svg-title)" x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold">曲げモーメント図（BMD）</text>
-          <text style="fill: var(--svg-axis)" x="50" y="124" font-size="14" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80" y="175" font-size="16" text-anchor="middle">A</text>
-          <text style="fill: var(--svg-fg)" x="510" y="175" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="541.0" y="125.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="67.0" y="203.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">M</text>
+          <!-- 原点・端点 -->
+          <text x="62.0" y="126.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="520.0" y1="116.0" x2="520.0" y2="124.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="520.0" y="143.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図3: 曲げモーメント図（概形）</figcaption>
       </figure>

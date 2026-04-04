@@ -299,7 +299,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="120" x2="545" y2="120" stroke-width="1.5"/>
+          <polygon points="550.0,120.0 540.0,115.0 540.0,125.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="30" x2="70" y2="140" stroke-width="1.5"/>
+          <polygon points="70.0,145.0 65.0,135.0 75.0,135.0" style="fill: var(--svg-axis)"/>
           <!-- SFD: P from A(70) to C(254), then 0 from C(254) to B(530) -->
           <!-- Region A to C: V = P (positive) -->
           <line style="stroke: var(--svg-sfd)" x1="70" y1="50" x2="254" y2="50" stroke-width="2.5"/>
@@ -312,10 +314,13 @@
           <!-- Labels -->
           <text style="fill: var(--svg-sfd)" x="40" y="55" font-size="20" text-anchor="middle" font-weight="bold">P</text>
           <text style="fill: var(--svg-title)" x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold">せん断力図（SFD）</text>
-          <text style="fill: var(--svg-axis)" x="40" y="124" font-size="16" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80" y="145" font-size="16" text-anchor="middle">A</text>
-          <text style="fill: var(--svg-fg)" x="254" y="145" font-size="16" text-anchor="middle">C</text>
-          <text style="fill: var(--svg-fg)" x="530" y="145" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="556.0" y="125.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="67.0" y="163.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">F</text>
+          <!-- 原点・端点 -->
+          <text x="62.0" y="126.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="530" y1="116.0" x2="530" y2="124.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="530" y="143.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図2: せん断力図（荷重点Cで急変し右側はゼロ）</figcaption>
       </figure>
@@ -341,7 +346,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="120" x2="545" y2="120" stroke-width="1.5"/>
+          <polygon points="550.0,120.0 540.0,115.0 540.0,125.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="30" x2="70" y2="140" stroke-width="1.5"/>
+          <polygon points="70.0,145.0 65.0,135.0 75.0,135.0" style="fill: var(--svg-axis)"/>
           <!-- BMD: triangle from A(70,50) to C(254,120), then 0 line to B(530,120) -->
           <polygon style="fill: var(--svg-bmd)" points="70,50 254,120 70,120" fill-opacity="0.15" stroke="none"/>
           <line style="stroke: var(--svg-bmd)" x1="70" y1="50" x2="254" y2="120" stroke-width="2.5"/>
@@ -350,10 +357,13 @@
           <!-- Labels -->
           <text style="fill: var(--svg-bmd)" x="28" y="55" font-size="18" text-anchor="middle" font-weight="bold">Pa</text>
           <text style="fill: var(--svg-title)" x="290" y="15" font-size="18" text-anchor="middle" font-weight="bold">曲げモーメント図（BMD）</text>
-          <text style="fill: var(--svg-axis)" x="40" y="124" font-size="16" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80" y="145" font-size="16" text-anchor="middle">A</text>
-          <text style="fill: var(--svg-fg)" x="254" y="145" font-size="16" text-anchor="middle">C</text>
-          <text style="fill: var(--svg-fg)" x="530" y="145" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="556.0" y="125.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="67.0" y="163.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">M</text>
+          <!-- 原点・端点 -->
+          <text x="62.0" y="126.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="530" y1="116.0" x2="530" y2="124.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="530" y="143.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図3: 曲げモーメント図（固定端Aで最大 $Pa$、荷重点Cからゼロ）</figcaption>
       </figure>

@@ -233,7 +233,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="600" height="160" font-family="'Times New Roman', serif">
           <!-- 軸 -->
           <line style="stroke: var(--svg-axis)" x1="70" y1="110" x2="530" y2="110" stroke-width="1.5"/>
+          <polygon points="535.0,110.0 525.0,105.0 525.0,115.0" style="fill: var(--svg-axis)"/>
           <line style="stroke: var(--svg-axis)" x1="70" y1="30" x2="70" y2="140" stroke-width="1.5"/>
+          <polygon points="70.0,145.0 65.0,135.0 75.0,135.0" style="fill: var(--svg-axis)"/>
           <!-- SFD（一定値） -->
           <rect style="fill: var(--svg-sfd)" x="70" y="60" width="440" height="50" fill-opacity="0.1"/>
           <line style="stroke: var(--svg-sfd)" x1="70" y1="60" x2="510" y2="60" stroke-width="2.5"/>
@@ -242,9 +244,13 @@
           <!-- ラベル -->
           <text style="fill: var(--svg-sfd)" x="25" y="66" font-size="15" text-anchor="middle" font-weight="bold">M&#x2080;/l</text>
           <text style="fill: var(--svg-title)" x="290" y="20" font-size="18" text-anchor="middle" font-weight="bold">せん断力図（SFD）</text>
-          <text style="fill: var(--svg-axis)" x="55" y="115" font-size="16" text-anchor="middle">0</text>
-          <text style="fill: var(--svg-fg)" x="80" y="150" font-size="16" text-anchor="middle">A</text>
-          <text style="fill: var(--svg-fg)" x="510" y="150" font-size="16" text-anchor="middle">B</text>
+          <!-- 軸ラベル -->
+          <text x="541.0" y="115.0" font-size="21" font-style="italic" style="fill: var(--svg-fg)">x</text>
+          <text x="67.0" y="163.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">F</text>
+          <!-- 原点・端点 -->
+          <text x="62.0" y="116.0" font-size="18" text-anchor="end" style="fill: var(--svg-fg)">0</text>
+          <line x1="520.0" y1="106.0" x2="520.0" y2="114.0" stroke-width="1.5" style="stroke: var(--svg-axis)"/>
+          <text x="520.0" y="133.0" font-size="21" text-anchor="middle" font-style="italic" style="fill: var(--svg-fg)">l</text>
         </svg>
         <figcaption>図2: せん断力図</figcaption>
       </figure>
