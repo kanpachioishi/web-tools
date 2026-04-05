@@ -122,11 +122,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/aspect-ratio/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/blog/base64-guide/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -153,16 +148,6 @@
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/case-converter/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/ip-checker/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/emoji-picker/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -213,11 +198,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/radix-converter/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/pdf-tools/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -229,11 +209,6 @@
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/pdf-tools/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/radix-converter/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -283,53 +258,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/calorie-calculator/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/chmod-calc/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/cron-builder/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/css-gradient/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/deviation-calc/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/image-compress/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/jwt-decoder/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/timer/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/stopwatch/</loc>
-    <lastmod>2026-03-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/uuid-generator/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -344,37 +278,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/calorie-calculator/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/electricity-cost/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/uuid-generator/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/css-gradient/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/cron-builder/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/jwt-decoder/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/chmod-calc/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
