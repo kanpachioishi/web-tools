@@ -122,11 +122,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/lorem-generator/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/markdown-preview/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -160,11 +155,6 @@
     <loc>https://simpletoolkit.net/blog/markdown-guide/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/number-to-kanji/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/case-converter/</loc>
@@ -243,22 +233,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/ohms-law/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/pdf-tools/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/reaction-test/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/readability/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -289,12 +269,6 @@
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/radix-converter/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/ohms-law/en/</loc>
-    <lastmod>2026-03-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -374,32 +348,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/email-signature/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/glassmorphism/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/image-compress/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/jwt-decoder/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/meeting-cost/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/noise-generator/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -421,11 +375,6 @@
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/alarm-clock/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/svg-wave/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -495,37 +444,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/noise-generator/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/age-calculator/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/email-signature/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/glassmorphism/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/svg-wave/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/bingo/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/meeting-cost/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
