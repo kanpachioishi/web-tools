@@ -248,41 +248,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/led-resistor/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/resistor-color/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/bitwise-calc/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/bode-plot/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/pid-simulator/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/step-response/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/matrix-calc/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/pdf-tools/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -338,28 +303,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/bode-plot/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/bitwise-calc/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/ohms-law/en/</loc>
     <lastmod>2026-03-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/led-resistor/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/resistor-color/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -489,11 +434,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/noise-meter/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/pomodoro/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -585,11 +525,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/matrix-calc/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/noise-generator/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -631,21 +566,6 @@
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/meeting-cost/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/noise-meter/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/pid-simulator/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/step-response/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
