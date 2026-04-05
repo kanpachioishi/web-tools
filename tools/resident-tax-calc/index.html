@@ -749,11 +749,12 @@
       if (taxableIncomeResident <= 0) {
         return {
           shotokuwari: 0,
-          kintouwari: baseKintou + extraKintou,
-          extraKintou: extraKintou,
+          kintouwari: 0,
+          extraKintou: 0,
           rateAdj: rd.rateAdj,
           regionName: rd.name,
-          total: baseKintou + extraKintou
+          total: 0,
+          isNonTaxable: true
         };
       }
       var shotokuwari = Math.floor(taxableIncomeResident * baseRate);
@@ -1035,14 +1036,29 @@
         }
         var div = document.createElement('div');
         div.className = 'detail-row';
-        div.innerHTML = '<span class="row-label">' + rows[i][0] + '</span><span class="row-value">' + rows[i][1] + '</span>';
+        var labelSpan = document.createElement('span');
+        labelSpan.className = 'row-label';
+        labelSpan.textContent = rows[i][0];
+        var valueSpan = document.createElement('span');
+        valueSpan.className = 'row-value';
+        valueSpan.textContent = rows[i][1];
+        div.appendChild(labelSpan);
+        div.appendChild(valueSpan);
         dl.appendChild(div);
       }
 
       // 合計行
       var totalDiv = document.createElement('div');
       totalDiv.className = 'detail-row total';
-      totalDiv.innerHTML = '<span class="row-label">手取り年収</span><span class="row-value" style="color:var(--primary);">' + formatYen(r.takeHome) + '</span>';
+      var totalLabel = document.createElement('span');
+      totalLabel.className = 'row-label';
+      totalLabel.textContent = '手取り年収';
+      var totalValue = document.createElement('span');
+      totalValue.className = 'row-value';
+      totalValue.style.color = 'var(--primary)';
+      totalValue.textContent = formatYen(r.takeHome);
+      totalDiv.appendChild(totalLabel);
+      totalDiv.appendChild(totalValue);
       dl.appendChild(totalDiv);
 
       document.getElementById('tax-result').classList.add('show');
