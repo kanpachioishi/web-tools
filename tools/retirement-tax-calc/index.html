@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>退職金の手取り計算 - 税金シミュレーター｜Web便利ツール集</title>
+  <meta name="description" content="退職金の額面と勤続年数を入力するだけで手取り額を瞬時に計算。退職所得控除・所得税・住民税の内訳が一目でわかる無料オンラインツール。">
+  <meta property="og:title" content="退職金の手取り計算 - 税金シミュレーター｜Web便利ツール集">
+  <meta property="og:description" content="退職金の額面と勤続年数を入力するだけで手取り額を瞬時に計算。退職所得控除・所得税・住民税の内訳が一目でわかる。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/retirement-tax-calc/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/retirement-tax-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "退職金の手取り計算 - 税金シミュレーター",
+    "description": "退職金の額面と勤続年数を入力するだけで手取り額を瞬時に計算。退職所得控除・所得税・住民税の内訳が一目でわかる無料オンラインツール。",
+    "url": "https://simpletoolkit.net/tools/retirement-tax-calc/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "退職金に確定申告は必要ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "「退職所得の受給に関する申告書」を会社に提出していれば、適正な税額が源泉徴収されるため確定申告は原則不要です。提出していない場合は退職金の20.42%が源泉徴収されるため、確定申告をすれば払いすぎた税金が還付されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "「退職所得の受給に関する申告書」とは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "退職金を受け取る際に勤務先に提出する書類です。この申告書を提出すると、退職所得控除が適用され、正しい税額で源泉徴収されます。提出しないと退職金の額面に対して一律20.42%が源泉徴収されてしまいます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "iDeCo（個人型確定拠出年金）の一時金と退職金の関係は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "iDeCoの一時金も退職所得として扱われます。同じ年に退職金とiDeCoの一時金を受け取ると、退職所得控除の計算で勤続年数が通算されるため、控除額が減る可能性があります。受取時期をずらすことで節税できる場合があります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "退職金に社会保険料はかかりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "退職金には健康保険料・厚生年金保険料・雇用保険料などの社会保険料はかかりません。退職金から差し引かれるのは所得税（復興特別所得税含む）と住民税のみです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。退職金額などのデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 160px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input[type="number"],
+    .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus,
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .checkbox-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .checkbox-field input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    .checkbox-field label {
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .retirement-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .retirement-result.show {
+      display: block;
+    }
+
+    .result-highlight {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .result-highlight .label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-highlight .amount {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .result-highlight .sub-amount {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .result-highlight .rate {
+      font-size: 0.9rem;
+      color: #16a34a;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .breakdown-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .breakdown-card .bd-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .breakdown-card .bd-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .breakdown-card .bd-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .bd-deduction { color: #7c3aed; }
+    .bd-taxable { color: #0891b2; }
+    .bd-income-tax { color: #dc2626; }
+    .bd-resident-tax { color: #ea580c; }
+    .bd-take-home { color: #16a34a; }
+
+    /* CSS Bar Chart */
+    .chart-section {
+      margin-bottom: 24px;
+    }
+    .chart-section h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .stacked-bar {
+      display: flex;
+      height: 40px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .stacked-bar > div {
+      transition: width 0.5s ease;
+      min-width: 0;
+    }
+    .bar-take-home { background: #22c55e; }
+    .bar-income-tax { background: #ef4444; }
+    .bar-resident-tax { background: #f97316; }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.8rem;
+    }
+    .chart-legend span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    /* Detail Breakdown List */
+    .detail-list {
+      margin: 16px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-row.total {
+      font-weight: 700;
+      font-size: 1rem;
+      border-top: 2px solid var(--text);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .detail-row .row-label {
+      color: var(--text-muted);
+    }
+    .detail-row .row-value {
+      font-weight: 600;
+    }
+
+    /* Quick Table */
+    .quick-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.85rem;
+    }
+    .quick-table th, .quick-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: right;
+    }
+    .quick-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+    .quick-table td:first-child {
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+
+    @media (max-width: 600px) {
+      .result-highlight .amount { font-size: 1.8rem; }
+      .breakdown-grid { grid-template-columns: 1fr; }
+      .quick-table { font-size: 0.75rem; }
+      .quick-table th, .quick-table td { padding: 6px 4px; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>退職金の手取り計算シミュレーター</h1>
+    <h2>退職金の税金を無料で自動計算</h2>
+    <p class="tool-description">退職金の額面と勤続年数を入力するだけで、退職所得控除・所得税・住民税を自動計算し、手取り額を瞬時に表示します。役員退職金や障害退職にも対応。登録不要・無料・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="retirement-pay">退職金の額面</label>
+          <input type="number" id="retirement-pay" placeholder="20000000" min="0" max="1000000000" step="10000">
+          <div class="unit">円</div>
+        </div>
+        <div class="input-field">
+          <label for="years-of-service">勤続年数</label>
+          <input type="number" id="years-of-service" placeholder="25" min="1" max="60" step="1">
+          <div class="unit">年（1年未満は切り上げ）</div>
+        </div>
+      </div>
+      <div class="checkbox-field">
+        <input type="checkbox" id="is-officer">
+        <label for="is-officer">役員等である（取締役・監査役・執行役員など）</label>
+      </div>
+      <div class="checkbox-field">
+        <input type="checkbox" id="is-disability">
+        <label for="is-disability">障害者になったことが直接の原因で退職した</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculateRetirement()">手取りを計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="retirement-result" id="retirement-result">
+        <!-- Highlight: Take-home pay -->
+        <div class="result-highlight">
+          <div class="label">退職金の手取り額</div>
+          <div class="amount" id="take-home-amount"></div>
+          <div class="sub-amount">税金合計 <strong id="total-tax"></strong></div>
+          <div class="rate" id="take-home-rate"></div>
+        </div>
+
+        <!-- Breakdown Cards -->
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <div class="bd-label">退職所得控除額</div>
+            <div class="bd-value bd-deduction" id="bd-deduction"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">課税退職所得金額</div>
+            <div class="bd-value bd-taxable" id="bd-taxable"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">所得税（復興税含む）</div>
+            <div class="bd-value bd-income-tax" id="bd-income-tax"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">住民税</div>
+            <div class="bd-value bd-resident-tax" id="bd-resident-tax"></div>
+          </div>
+        </div>
+
+        <!-- Stacked Bar Chart -->
+        <div class="chart-section">
+          <h3>退職金の内訳</h3>
+          <div class="stacked-bar" id="stacked-bar">
+            <div class="bar-take-home" id="bar-take-home"></div>
+            <div class="bar-income-tax" id="bar-income-tax"></div>
+            <div class="bar-resident-tax" id="bar-resident-tax"></div>
+          </div>
+          <div class="chart-legend">
+            <span><span class="legend-dot" style="background:#22c55e;"></span>手取り</span>
+            <span><span class="legend-dot" style="background:#ef4444;"></span>所得税</span>
+            <span><span class="legend-dot" style="background:#f97316;"></span>住民税</span>
+          </div>
+        </div>
+
+        <!-- Detail Breakdown -->
+        <div class="detail-list" id="detail-list">
+          <h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>
+        </div>
+
+        <div class="notice">
+          <strong>注意：</strong>この計算結果は概算値です。実際の手取り額は、他の退職所得（iDeCoの一時金など）との通算、前年以前の退職金の有無、お住まいの自治体の条例などにより異なる場合があります。正確な金額は税理士や勤務先の担当者にご確認ください。
+        </div>
+      </div>
+    </div>
+
+    <section class="content-section">
+      <h2>退職金の税金の仕組み</h2>
+      <p>退職金は「退職所得」として、給与所得とは分けて課税される<strong>分離課税</strong>の対象です。長年の勤務に対する報酬という性質から、税制上の優遇措置が設けられています。</p>
+      <p>退職金にかかる税金は<strong>所得税（復興特別所得税含む）</strong>と<strong>住民税</strong>の2つです。給与と違い、健康保険料や厚生年金などの<strong>社会保険料はかかりません</strong>。</p>
+      <p>計算の流れは次の通りです：</p>
+      <ol>
+        <li>退職所得控除額を計算する（勤続年数に応じて決まる）</li>
+        <li>課税退職所得金額 =（退職金 − 退職所得控除額）× 1/2</li>
+        <li>課税退職所得金額に対して所得税率・住民税率を適用して税額を算出</li>
+        <li>手取り = 退職金 − 所得税 − 住民税</li>
+      </ol>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">※ 役員等で勤続5年以下の場合は、1/2課税の適用がありません。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方（4ステップ）</h2>
+      <ol>
+        <li>「退職金の額面」に受け取る退職金の総額を入力します</li>
+        <li>「勤続年数」を入力します（1年未満の端数は切り上げて計算されます）</li>
+        <li>該当する場合は「役員等である」「障害退職」のチェックボックスにチェックを入れます</li>
+        <li>「手取りを計算」ボタンをクリックすると、控除額・税額・手取り額が表示されます</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>退職所得控除額の早見表</h2>
+      <p>勤続年数ごとの退職所得控除額の一覧です。この金額までの退職金には税金がかかりません。</p>
+      <div style="overflow-x:auto;">
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>勤続年数</th>
+              <th>退職所得控除額</th>
+              <th>勤続年数</th>
+              <th>退職所得控除額</th>
+            </tr>
+          </thead>
+          <tbody id="deduction-table-body"></tbody>
+        </table>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ 障害者になったことが直接の原因で退職した場合は、上記の金額に100万円が加算されます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>退職金にかかる税率</h2>
+      <p>退職金の課税退職所得金額に対して、以下の所得税率が適用されます（累進課税）。</p>
+      <div style="overflow-x:auto;">
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>課税退職所得金額</th>
+              <th>税率</th>
+              <th>控除額</th>
+              <th>速算式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align:left;">195万円以下</td>
+              <td>5%</td>
+              <td>0円</td>
+              <td style="text-align:left;">所得 × 5%</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;">195万円超〜330万円以下</td>
+              <td>10%</td>
+              <td>97,500円</td>
+              <td style="text-align:left;">所得 × 10% − 97,500円</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;">330万円超〜695万円以下</td>
+              <td>20%</td>
+              <td>427,500円</td>
+              <td style="text-align:left;">所得 × 20% − 427,500円</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;">695万円超〜900万円以下</td>
+              <td>23%</td>
+              <td>636,000円</td>
+              <td style="text-align:left;">所得 × 23% − 636,000円</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;">900万円超〜1,800万円以下</td>
+              <td>33%</td>
+              <td>1,536,000円</td>
+              <td style="text-align:left;">所得 × 33% − 1,536,000円</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;">1,800万円超〜4,000万円以下</td>
+              <td>40%</td>
+              <td>2,796,000円</td>
+              <td style="text-align:left;">所得 × 40% − 2,796,000円</td>
+            </tr>
+            <tr>
+              <td style="text-align:left;">4,000万円超</td>
+              <td>45%</td>
+              <td>4,796,000円</td>
+              <td style="text-align:left;">所得 × 45% − 4,796,000円</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ 上記に加え、復興特別所得税（所得税額の2.1%）が加算されます。住民税は課税退職所得金額の10%（都道府県民税4% + 市区町村民税6%）です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>退職金の税金に関するよくある質問</h2>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">退職金に確定申告は必要ですか？</summary>
+        <p style="margin-top:8px;">「退職所得の受給に関する申告書」を退職時に会社に提出していれば、正しい税額が源泉徴収されるため<strong>確定申告は原則不要</strong>です。提出していない場合は退職金に対して一律20.42%が源泉徴収されます。この場合、確定申告をすることで払いすぎた税金が還付されます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">「退職所得の受給に関する申告書」とは何ですか？</summary>
+        <p style="margin-top:8px;">退職金を受け取る際に勤務先に提出する書類です。この申告書を提出すると退職所得控除や1/2課税が適用され、正しい税額で源泉徴収されます。提出しないと額面に対して一律20.42%が源泉徴収され、大幅に手取りが減ります。退職時に会社から渡されるのが一般的ですので、必ず提出しましょう。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">iDeCo（個人型確定拠出年金）の一時金と退職金の関係は？</summary>
+        <p style="margin-top:8px;">iDeCoを一時金で受け取る場合も退職所得として扱われます。同じ年に退職金とiDeCoの一時金を受け取ると、退職所得控除の計算で勤続年数（加入年数）が通算されるため、控除額が減り税負担が増える可能性があります。受取時期を5年以上（役員は20年以上）ずらすことで、それぞれ別々に退職所得控除を適用でき、節税効果が高まります。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">退職金に社会保険料はかかりますか？</summary>
+        <p style="margin-top:8px;">退職金には<strong>社会保険料はかかりません</strong>。健康保険料・厚生年金保険料・雇用保険料のいずれも退職金からは控除されません。退職金から差し引かれるのは所得税（復興特別所得税含む）と住民税の2つだけです。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">役員の退職金は計算が違うのですか？</summary>
+        <p style="margin-top:8px;">役員等で勤続年数が5年以下の場合は、「1/2課税」の特例が適用されません。つまり、退職金から退職所得控除額を差し引いた全額が課税退職所得金額となります。勤続年数が6年以上の場合は、一般の従業員と同じ計算方法（1/2課税あり）が適用されます。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../salary-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">手取り計算シミュレーター</h3>
+          <p>年収から手取り・税金・社会保険料を自動計算</p>
+        </a>
+        <a href="../resident-tax-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">住民税計算ツール</h3>
+          <p>年収から住民税を簡単シミュレーション</p>
+        </a>
+        <a href="../tax-return-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">確定申告シミュレーター</h3>
+          <p>所得税・還付金額を自動計算</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // === 退職金計算ロジック ===
+
+    // 退職所得控除額の計算
+    function calcDeduction(years, isDisability) {
+      var deduction;
+      if (years <= 20) {
+        deduction = 400000 * years;
+        if (deduction < 800000) deduction = 800000;
+      } else {
+        deduction = 8000000 + 700000 * (years - 20);
+      }
+      if (isDisability) {
+        deduction += 1000000;
+      }
+      return deduction;
+    }
+
+    // 所得税（累進課税・速算表）
+    function calcIncomeTax(taxableIncome) {
+      if (taxableIncome <= 0) return 0;
+      var tax = 0;
+      var brackets = [
+        { limit: 1950000, rate: 0.05, deduction: 0 },
+        { limit: 3300000, rate: 0.10, deduction: 97500 },
+        { limit: 6950000, rate: 0.20, deduction: 427500 },
+        { limit: 9000000, rate: 0.23, deduction: 636000 },
+        { limit: 18000000, rate: 0.33, deduction: 1536000 },
+        { limit: 40000000, rate: 0.40, deduction: 2796000 },
+        { limit: Infinity, rate: 0.45, deduction: 4796000 }
+      ];
+      for (var i = 0; i < brackets.length; i++) {
+        if (taxableIncome <= brackets[i].limit) {
+          tax = taxableIncome * brackets[i].rate - brackets[i].deduction;
+          break;
+        }
+      }
+      // 復興特別所得税（2.1%）
+      tax = tax * 1.021;
+      return Math.floor(tax);
+    }
+
+    // 住民税（10%）
+    function calcResidentTax(taxableIncome) {
+      if (taxableIncome <= 0) return 0;
+      return Math.floor(taxableIncome * 0.10);
+    }
+
+    // メイン計算
+    function calcAll(retirementPay, years, isOfficer, isDisability) {
+      var deduction = calcDeduction(years, isDisability);
+
+      // 課税退職所得金額
+      var diff = retirementPay - deduction;
+      if (diff < 0) diff = 0;
+
+      var taxableIncome;
+      // 役員で勤続5年以下 → 1/2なし
+      if (isOfficer && years <= 5) {
+        taxableIncome = diff;
+      } else {
+        taxableIncome = Math.floor(diff / 2);
+      }
+      // 1,000円未満切り捨て
+      taxableIncome = Math.floor(taxableIncome / 1000) * 1000;
+
+      var incomeTax = calcIncomeTax(taxableIncome);
+      var residentTax = calcResidentTax(taxableIncome);
+      var totalTax = incomeTax + residentTax;
+      var takeHome = retirementPay - totalTax;
+
+      return {
+        retirementPay: retirementPay,
+        years: years,
+        isOfficer: isOfficer,
+        isDisability: isDisability,
+        deduction: deduction,
+        taxableIncome: taxableIncome,
+        incomeTax: incomeTax,
+        residentTax: residentTax,
+        totalTax: totalTax,
+        takeHome: takeHome
+      };
+    }
+
+    function formatYen(n) {
+      return Math.floor(n).toLocaleString('ja-JP') + '円';
+    }
+
+    function calculateRetirement() {
+      var pay = parseInt(document.getElementById('retirement-pay').value);
+      var years = parseInt(document.getElementById('years-of-service').value);
+      var isOfficer = document.getElementById('is-officer').checked;
+      var isDisability = document.getElementById('is-disability').checked;
+
+      if (!pay || pay <= 0) {
+        alert('退職金の額面を入力してください。');
+        return;
+      }
+      if (!years || years < 1) {
+        alert('勤続年数を1年以上で入力してください。');
+        return;
+      }
+
+      var r = calcAll(pay, years, isOfficer, isDisability);
+
+      // Result section
+      var resultDiv = document.getElementById('retirement-result');
+      resultDiv.classList.add('show');
+
+      // Highlight
+      document.getElementById('take-home-amount').textContent = formatYen(r.takeHome);
+      document.getElementById('total-tax').textContent = formatYen(r.totalTax);
+      var rate = ((r.takeHome / r.retirementPay) * 100).toFixed(1);
+      document.getElementById('take-home-rate').textContent = '手取り率 ' + rate + '%（税金 ' + ((r.totalTax / r.retirementPay) * 100).toFixed(1) + '%）';
+
+      // Breakdown cards
+      document.getElementById('bd-deduction').textContent = formatYen(r.deduction);
+      document.getElementById('bd-taxable').textContent = formatYen(r.taxableIncome);
+      document.getElementById('bd-income-tax').textContent = formatYen(r.incomeTax);
+      document.getElementById('bd-resident-tax').textContent = formatYen(r.residentTax);
+
+      // Stacked bar
+      var takeHomePct = (r.takeHome / r.retirementPay * 100);
+      var incomeTaxPct = (r.incomeTax / r.retirementPay * 100);
+      var residentTaxPct = (r.residentTax / r.retirementPay * 100);
+      document.getElementById('bar-take-home').style.width = takeHomePct + '%';
+      document.getElementById('bar-income-tax').style.width = incomeTaxPct + '%';
+      document.getElementById('bar-resident-tax').style.width = residentTaxPct + '%';
+
+      // Detail list
+      var detailDiv = document.getElementById('detail-list');
+      var halfNote = '';
+      if (r.isOfficer && r.years <= 5) {
+        halfNote = '（役員・勤続5年以下のため1/2適用なし）';
+      } else {
+        halfNote = '（1/2課税適用）';
+      }
+      detailDiv.innerHTML = '<h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>' +
+        '<div class="detail-row"><span class="row-label">退職金の額面</span><span class="row-value">' + formatYen(r.retirementPay) + '</span></div>' +
+        '<div class="detail-row"><span class="row-label">勤続年数</span><span class="row-value">' + r.years + '年</span></div>' +
+        '<div class="detail-row"><span class="row-label">退職所得控除額' + (r.isDisability ? '（障害退職 +100万円含む）' : '') + '</span><span class="row-value">' + formatYen(r.deduction) + '</span></div>' +
+        '<div class="detail-row"><span class="row-label">退職金 − 控除額</span><span class="row-value">' + formatYen(Math.max(0, r.retirementPay - r.deduction)) + '</span></div>' +
+        '<div class="detail-row"><span class="row-label">課税退職所得金額 ' + halfNote + '</span><span class="row-value">' + formatYen(r.taxableIncome) + '</span></div>' +
+        '<div class="detail-row"><span class="row-label">所得税（復興特別所得税2.1%含む）</span><span class="row-value" style="color:#dc2626;">−' + formatYen(r.incomeTax) + '</span></div>' +
+        '<div class="detail-row"><span class="row-label">住民税（10%）</span><span class="row-value" style="color:#ea580c;">−' + formatYen(r.residentTax) + '</span></div>' +
+        '<div class="detail-row total"><span class="row-label">手取り額</span><span class="row-value" style="color:#16a34a;">' + formatYen(r.takeHome) + '</span></div>';
+
+      // Scroll to result
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function clearForm() {
+      document.getElementById('retirement-pay').value = '';
+      document.getElementById('years-of-service').value = '';
+      document.getElementById('is-officer').checked = false;
+      document.getElementById('is-disability').checked = false;
+      document.getElementById('retirement-result').classList.remove('show');
+    }
+
+    // 退職所得控除額の早見表を生成
+    function buildDeductionTable() {
+      var tbody = document.getElementById('deduction-table-body');
+      if (!tbody) return;
+      var html = '';
+      for (var y = 1; y <= 20; y++) {
+        var d1 = calcDeduction(y, false);
+        var y2 = y + 20;
+        var d2 = (y2 <= 40) ? calcDeduction(y2, false) : null;
+        html += '<tr>';
+        html += '<td>' + y + '年</td>';
+        html += '<td>' + formatYen(d1) + '</td>';
+        if (d2 !== null) {
+          html += '<td>' + y2 + '年</td>';
+          html += '<td>' + formatYen(d2) + '</td>';
+        } else {
+          html += '<td>-</td><td>-</td>';
+        }
+        html += '</tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    // 初期化
+    buildDeductionTable();
+  </script>
+</body>
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>失業保険計算 - 雇用保険の基本手当シミュレーター | Web便利ツール集</title>
+  <meta name="description" content="失業保険（雇用保険の基本手当）を無料で自動計算。年齢・被保険者期間・賃金・離職理由を入力するだけで、基本手当日額・所定給付日数・給付総額の目安を瞬時にシミュレーション。">
+  <meta property="og:title" content="失業保険計算 - 雇用保険の基本手当シミュレーター | Web便利ツール集">
+  <meta property="og:description" content="年齢・被保険者期間・賃金・離職理由を入力するだけで、失業保険（基本手当）の日額・給付日数・総額を瞬時に計算。登録不要・無料。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/unemployment-calc/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/unemployment-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "失業保険計算 - 雇用保険の基本手当シミュレーター",
+    "description": "失業保険（雇用保険の基本手当）を無料で自動計算。年齢・被保険者期間・賃金・離職理由を入力するだけで、基本手当日額・所定給付日数・給付総額の目安を瞬時にシミュレーション。",
+    "url": "https://simpletoolkit.net/tools/unemployment-calc/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "失業保険（基本手当）はいくらもらえますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "基本手当日額は、離職前6ヶ月の賃金合計を180で割った「賃金日額」の50〜80%です。賃金日額が低いほど給付率が高く、年齢別の上限額もあります。例えば、月収30万円（6ヶ月合計180万円）の場合、賃金日額は10,000円、基本手当日額は約5,854円〜6,666円程度です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "失業保険の給付日数は何日ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "所定給付日数は、離職時の年齢、雇用保険の被保険者期間、離職理由（自己都合・会社都合・特定理由）によって90日〜330日の範囲で決まります。自己都合退職の場合は90〜150日、会社都合の場合は90〜330日です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "自己都合退職の場合、いつからもらえますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "自己都合退職の場合、7日間の待期期間の後、原則2ヶ月の給付制限期間があります（5年間で3回目以降の自己都合退職は3ヶ月）。つまり、ハローワークで手続きしてから実際に受給できるのは約2ヶ月半後になります。会社都合退職の場合は、待期期間7日間の後すぐに受給が始まります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "失業保険に税金はかかりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、失業保険（雇用保険の基本手当）は非課税です。所得税・住民税はかかりません。また、確定申告の際に収入として申告する必要もありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。賃金などのデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 160px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input,
+    .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus,
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .calc-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .calc-result.show {
+      display: block;
+    }
+
+    .result-highlight {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    [data-theme="dark"] .result-highlight {
+      background: linear-gradient(135deg, #1e293b 0%, #1a2e1a 100%);
+    }
+    .result-highlight .label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-highlight .amount {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .result-highlight .sub-amount {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .breakdown-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .breakdown-card .bd-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .breakdown-card .bd-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .breakdown-card .bd-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .detail-list {
+      margin: 16px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-row.total {
+      font-weight: 700;
+      font-size: 1rem;
+      border-top: 2px solid var(--text);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .detail-row .row-label {
+      color: var(--text-muted);
+    }
+    .detail-row .row-value {
+      font-weight: 600;
+    }
+
+    .quick-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.85rem;
+    }
+    .quick-table th, .quick-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .quick-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+    [data-theme="dark"] .notice {
+      background: #342a1a;
+      border-color: #5c4b1a;
+      color: #fbbf24;
+    }
+
+    .timeline {
+      margin: 16px 0;
+      padding: 0;
+      list-style: none;
+    }
+    .timeline li {
+      position: relative;
+      padding: 0 0 24px 32px;
+      border-left: 2px solid var(--border);
+    }
+    .timeline li:last-child {
+      border-left: 2px solid transparent;
+      padding-bottom: 0;
+    }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid var(--surface);
+    }
+    .timeline .tl-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .timeline .tl-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .timeline .tl-period {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 2px 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    @media (max-width: 600px) {
+      .result-highlight .amount { font-size: 1.8rem; }
+      .breakdown-grid { grid-template-columns: 1fr; }
+      .quick-table { font-size: 0.75rem; }
+      .quick-table th, .quick-table td { padding: 6px 4px; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>失業保険計算シミュレーター</h1>
+    <h2>雇用保険の基本手当を無料で自動計算</h2>
+    <p class="tool-description">年齢・被保険者期間・賃金・離職理由を入力するだけで、基本手当日額・所定給付日数・給付総額の目安を瞬時にシミュレーションします。待期期間・給付制限期間もあわせて表示。登録不要・無料・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="input-group">
+        <div class="input-field">
+          <label for="age">離職時の年齢</label>
+          <select id="age">
+            <option value="under30">29歳以下</option>
+            <option value="30to34">30〜34歳</option>
+            <option value="35to44" selected>35〜44歳</option>
+            <option value="45to59">45〜59歳</option>
+            <option value="60to64">60〜64歳</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label for="insured-period">雇用保険の被保険者期間</label>
+          <select id="insured-period">
+            <option value="under1">1年未満</option>
+            <option value="1to4">1年以上5年未満</option>
+            <option value="5to9">5年以上10年未満</option>
+            <option value="10to19" selected>10年以上20年未満</option>
+            <option value="20plus">20年以上</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="total-wage">離職前6ヶ月の賃金合計（税引前）</label>
+          <input type="number" id="total-wage" placeholder="1800000" min="0" max="50000000" step="10000">
+          <div class="unit">円（ボーナスを除く額面給与の6ヶ月合計）</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="reason">離職理由</label>
+          <select id="reason">
+            <option value="voluntary">自己都合退職</option>
+            <option value="company">会社都合退職（倒産・解雇等）</option>
+            <option value="specified">特定理由離職者（契約満了・病気等）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">失業保険を計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <div class="calc-result" id="calc-result">
+        <!-- Highlight: Total benefits -->
+        <div class="result-highlight">
+          <div class="label">給付総額の目安</div>
+          <div class="amount" id="total-benefit"></div>
+          <div class="sub-amount">基本手当日額 <strong id="daily-amount"></strong> × 所定給付日数 <strong id="total-days"></strong></div>
+        </div>
+
+        <!-- Breakdown Cards -->
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <div class="bd-label">賃金日額</div>
+            <div class="bd-value" style="color:#0891b2;" id="bd-wage-daily"></div>
+            <div class="bd-sub" id="bd-wage-monthly"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">基本手当日額</div>
+            <div class="bd-value" style="color:#16a34a;" id="bd-daily-allowance"></div>
+            <div class="bd-sub" id="bd-rate"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">所定給付日数</div>
+            <div class="bd-value" style="color:#7c3aed;" id="bd-benefit-days"></div>
+            <div class="bd-sub" id="bd-benefit-months"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">待期期間 + 給付制限</div>
+            <div class="bd-value" style="color:#dc2626;" id="bd-wait-period"></div>
+            <div class="bd-sub" id="bd-wait-desc"></div>
+          </div>
+        </div>
+
+        <!-- Detail Breakdown -->
+        <div class="detail-list" id="detail-list">
+          <h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>
+        </div>
+
+        <div class="notice">
+          <strong>注意：</strong>この計算結果は概算値です。実際の給付額はハローワークが決定します。賃金日額の上限・下限、個別の事情による給付日数の変動、給付制限期間の短縮・延長など、実際とは異なる場合があります。正確な金額はお近くのハローワークにご確認ください。
+        </div>
+      </div>
+    </div>
+
+    <section class="content-section">
+      <h2>失業保険（雇用保険の基本手当）とは？</h2>
+      <p>失業保険（正式名称：雇用保険の基本手当）は、会社を退職して失業状態にある方が、再就職するまでの間の生活を支えるための給付金です。雇用保険に加入していた期間や年齢、離職理由に応じて、離職前の賃金の50〜80%が一定期間支給されます。</p>
+      <p style="margin-top:8px;">受給するためには、以下の条件を満たす必要があります：</p>
+      <ul style="margin-top:8px;padding-left:20px;">
+        <li>離職前2年間に被保険者期間が通算12ヶ月以上あること（会社都合の場合は6ヶ月以上）</li>
+        <li>ハローワークに来所し、求職の申し込みを行っていること</li>
+        <li>働く意思と能力があり、積極的に就職活動を行っていること</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>離職時の年齢</strong>を選択します（年齢により基本手当日額の上限と所定給付日数が変わります）</li>
+        <li><strong>雇用保険の被保険者期間</strong>を選択します（雇用保険に加入していた通算期間です）</li>
+        <li><strong>離職前6ヶ月の賃金合計</strong>を入力します（ボーナスを除く額面給与の合計額です）</li>
+        <li><strong>離職理由</strong>を選択し「失業保険を計算」ボタンをクリックすると、結果が表示されます</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>所定給付日数一覧表</h2>
+
+      <h3 style="font-size:1rem;margin-top:16px;margin-bottom:8px;">自己都合退職の場合</h3>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px;">年齢に関わらず、被保険者期間のみで決定されます。</p>
+      <div style="overflow-x:auto;">
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>被保険者期間</th>
+              <th>1年未満</th>
+              <th>1年以上<br>5年未満</th>
+              <th>5年以上<br>10年未満</th>
+              <th>10年以上<br>20年未満</th>
+              <th>20年以上</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">全年齢共通</td>
+              <td>-</td>
+              <td>90日</td>
+              <td>90日</td>
+              <td>120日</td>
+              <td>150日</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:1rem;margin-top:24px;margin-bottom:8px;">会社都合退職（特定受給資格者）の場合</h3>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px;">年齢と被保険者期間の両方で決定されます。</p>
+      <div style="overflow-x:auto;">
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>年齢＼被保険者期間</th>
+              <th>1年未満</th>
+              <th>1年以上<br>5年未満</th>
+              <th>5年以上<br>10年未満</th>
+              <th>10年以上<br>20年未満</th>
+              <th>20年以上</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">29歳以下</td>
+              <td>90日</td>
+              <td>90日</td>
+              <td>120日</td>
+              <td>180日</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">30〜34歳</td>
+              <td>90日</td>
+              <td>90日</td>
+              <td>180日</td>
+              <td>210日</td>
+              <td>240日</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">35〜44歳</td>
+              <td>90日</td>
+              <td>90日</td>
+              <td>180日</td>
+              <td>240日</td>
+              <td>270日</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">45〜59歳</td>
+              <td>90日</td>
+              <td>180日</td>
+              <td>240日</td>
+              <td>270日</td>
+              <td>330日</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">60〜64歳</td>
+              <td>90日</td>
+              <td>150日</td>
+              <td>180日</td>
+              <td>210日</td>
+              <td>240日</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ 特定理由離職者（契約期間満了で更新を希望したが更新されなかった場合等）も、会社都合と同じ給付日数が適用されます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>基本手当日額の上限額一覧（2025年8月〜）</h2>
+      <div style="overflow-x:auto;">
+        <table class="quick-table">
+          <thead>
+            <tr>
+              <th>年齢区分</th>
+              <th>賃金日額の上限</th>
+              <th>基本手当日額の上限</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;">29歳以下</td>
+              <td>13,890円</td>
+              <td>6,945円</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">30〜44歳</td>
+              <td>15,430円</td>
+              <td>7,715円</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">45〜59歳</td>
+              <td>16,980円</td>
+              <td>8,490円</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;">60〜64歳</td>
+              <td>16,210円</td>
+              <td>7,294円</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ 賃金日額の下限は全年齢共通で2,746円、基本手当日額の下限は2,196円です。</p>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">※ 上限額は毎年8月に改定されます。上記は2025年8月以降の金額です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>受給の流れ</h2>
+      <ul class="timeline">
+        <li>
+          <div class="tl-title">退職・離職票の受け取り</div>
+          <div class="tl-desc">会社から離職票（離職票-1、離職票-2）を受け取ります。通常、退職後10日〜2週間程度で届きます。</div>
+        </li>
+        <li>
+          <div class="tl-title">ハローワークで求職申込み・受給資格決定</div>
+          <div class="tl-desc">離職票、マイナンバーカード（または身元確認書類）、写真2枚、印鑑、通帳を持参してハローワークに行きます。</div>
+        </li>
+        <li>
+          <div class="tl-title">待期期間</div>
+          <div class="tl-desc">求職申込日から7日間は「待期期間」として、給付が行われません。</div>
+          <div class="tl-period">7日間（全員共通）</div>
+        </li>
+        <li>
+          <div class="tl-title">雇用保険受給者初回説明会</div>
+          <div class="tl-desc">待期期間満了後に指定された日時に説明会へ参加し、「雇用保険受給資格者証」と「失業認定申告書」を受け取ります。</div>
+        </li>
+        <li>
+          <div class="tl-title">給付制限期間（自己都合退職の場合）</div>
+          <div class="tl-desc">自己都合退職の場合、待期期間満了後に原則2ヶ月（5年間で3回目以降は3ヶ月）の給付制限があります。会社都合退職の場合はこの制限がありません。</div>
+          <div class="tl-period">自己都合: 原則2ヶ月 / 会社都合: なし</div>
+        </li>
+        <li>
+          <div class="tl-title">失業認定日（4週間ごと）</div>
+          <div class="tl-desc">4週間に1回、ハローワークに出頭して「失業認定」を受けます。求職活動の実績（原則2回以上）が必要です。</div>
+        </li>
+        <li>
+          <div class="tl-title">基本手当の振込</div>
+          <div class="tl-desc">失業認定日から約1週間後に、指定の金融機関口座に振り込まれます。</div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">失業保険（基本手当）はいくらもらえますか？</summary>
+        <p style="margin-top:8px;">基本手当日額は、離職前6ヶ月の賃金合計を180で割った「賃金日額」の50〜80%です。賃金日額が低いほど給付率が高くなります。例えば月収30万円（6ヶ月合計180万円）の場合、賃金日額は10,000円、基本手当日額は約5,854円程度です。上のシミュレーターで簡単に計算できます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">アルバイトやパートでも失業保険はもらえますか？</summary>
+        <p style="margin-top:8px;">はい、雇用保険に加入していれば、雇用形態に関わらず基本手当を受給できます。週20時間以上勤務し、31日以上の雇用見込みがある場合は雇用保険に加入するため、パートやアルバイトでも対象になります。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">失業保険を受給中にアルバイトはできますか？</summary>
+        <p style="margin-top:8px;">一定の条件のもとでアルバイトは可能です。ただし、1日4時間以上働いた日は「就労」とみなされ、その日の基本手当は支給されません（後ろ倒しになります）。4時間未満の場合は「内職・手伝い」として、収入額に応じて基本手当が減額される場合があります。必ずハローワークに申告してください。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">再就職手当とは何ですか？</summary>
+        <p style="margin-top:8px;">再就職手当は、所定給付日数の3分の1以上を残して安定した職業に就いた場合に支給される一時金です。残日数が3分の2以上なら基本手当日額の70%×残日数、3分の1以上なら60%×残日数が支給されます。早期再就職のインセンティブとなる制度です。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">失業保険に税金はかかりますか？</summary>
+        <p style="margin-top:8px;">いいえ、失業保険（雇用保険の基本手当）は非課税です。所得税・住民税はかかりません。確定申告の際に収入として申告する必要もありません。ただし、受給期間中は国民健康保険料や国民年金保険料の支払いが必要になる点にはご注意ください。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../salary-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">手取り計算シミュレーター</h3>
+          <p>年収から手取りを瞬時に自動計算</p>
+        </a>
+        <a href="../resident-tax-calc/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">住民税計算</h3>
+          <p>年収から住民税を自動計算</p>
+        </a>
+        <a href="../pension-simulator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">年金シミュレーター</h3>
+          <p>将来の年金受給額を試算</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // === 失業保険（雇用保険 基本手当）計算ロジック ===
+
+    // 賃金日額の上限・下限（2025年8月〜）
+    var WAGE_DAILY_LIMITS = {
+      under30:  { upper: 13890, dailyUpper: 6945 },
+      '30to34': { upper: 15430, dailyUpper: 7715 },
+      '35to44': { upper: 15430, dailyUpper: 7715 },
+      '45to59': { upper: 16980, dailyUpper: 8490 },
+      '60to64': { upper: 16210, dailyUpper: 7294 }
+    };
+    var WAGE_DAILY_MIN = 2746;
+    var DAILY_ALLOWANCE_MIN = 2196;
+
+    // 基本手当日額の計算（賃金日額から）
+    // 60〜64歳以外: 賃金日額2,746〜5,110円→80%, 5,110〜12,580円→50〜80%（逓減）
+    // 60〜64歳: 賃金日額2,746〜5,110円→80%, 5,110〜11,300円→45〜80%（逓減）
+    function calcDailyAllowance(wageDaily, age) {
+      if (wageDaily < WAGE_DAILY_MIN) wageDaily = WAGE_DAILY_MIN;
+
+      var limits = WAGE_DAILY_LIMITS[age];
+      if (wageDaily > limits.upper) wageDaily = limits.upper;
+
+      var allowance;
+
+      if (age === '60to64') {
+        // 60〜64歳の場合
+        if (wageDaily <= 5110) {
+          allowance = wageDaily * 0.80;
+        } else if (wageDaily <= 11300) {
+          // 逓減: 80%から45%へ
+          // 公式の近似計算式
+          allowance = wageDaily * 0.80 - (wageDaily - 5110) * (0.35 / (11300 - 5110));
+          // 下限チェック: 45%を下回らない
+          if (allowance < wageDaily * 0.45) {
+            allowance = wageDaily * 0.45;
+          }
+        } else {
+          allowance = wageDaily * 0.45;
+          if (allowance > limits.dailyUpper) allowance = limits.dailyUpper;
+        }
+      } else {
+        // 59歳以下の場合
+        if (wageDaily <= 5110) {
+          allowance = wageDaily * 0.80;
+        } else if (wageDaily <= 12580) {
+          // 逓減: 80%から50%へ
+          allowance = wageDaily * 0.80 - (wageDaily - 5110) * (0.30 / (12580 - 5110));
+          // 下限チェック: 50%を下回らない
+          if (allowance < wageDaily * 0.50) {
+            allowance = wageDaily * 0.50;
+          }
+        } else {
+          allowance = wageDaily * 0.50;
+          if (allowance > limits.dailyUpper) allowance = limits.dailyUpper;
+        }
+      }
+
+      // 上限チェック
+      if (allowance > limits.dailyUpper) {
+        allowance = limits.dailyUpper;
+      }
+      // 下限チェック
+      if (allowance < DAILY_ALLOWANCE_MIN) {
+        allowance = DAILY_ALLOWANCE_MIN;
+      }
+
+      return Math.floor(allowance);
+    }
+
+    // 所定給付日数テーブル
+    // 自己都合退職
+    var VOLUNTARY_DAYS = {
+      // 被保険者期間: 日数（年齢は関係なし）
+      'under1': 0,     // 1年未満は受給資格なし（原則）
+      '1to4': 90,
+      '5to9': 90,
+      '10to19': 120,
+      '20plus': 150
+    };
+
+    // 会社都合退職（特定受給資格者）・特定理由離職者
+    var COMPANY_DAYS = {
+      'under30': { 'under1': 90, '1to4': 90, '5to9': 120, '10to19': 180, '20plus': 0 },
+      '30to34': { 'under1': 90, '1to4': 90, '5to9': 180, '10to19': 210, '20plus': 240 },
+      '35to44': { 'under1': 90, '1to4': 90, '5to9': 180, '10to19': 240, '20plus': 270 },
+      '45to59': { 'under1': 90, '1to4': 180, '5to9': 240, '10to19': 270, '20plus': 330 },
+      '60to64': { 'under1': 90, '1to4': 150, '5to9': 180, '10to19': 210, '20plus': 240 }
+    };
+
+    function getBenefitDays(age, insuredPeriod, reason) {
+      if (reason === 'voluntary') {
+        return VOLUNTARY_DAYS[insuredPeriod] || 0;
+      } else {
+        // 会社都合または特定理由離職者
+        var ageTable = COMPANY_DAYS[age];
+        if (!ageTable) return 0;
+        return ageTable[insuredPeriod] || 0;
+      }
+    }
+
+    // 待期期間・給付制限の情報
+    function getWaitInfo(reason) {
+      if (reason === 'voluntary') {
+        return {
+          waitDays: 7,
+          restrictionMonths: 2,
+          label: '7日 + 2ヶ月',
+          desc: '待期7日間 + 給付制限2ヶ月（原則）'
+        };
+      } else if (reason === 'company') {
+        return {
+          waitDays: 7,
+          restrictionMonths: 0,
+          label: '7日のみ',
+          desc: '待期7日間のみ（給付制限なし）'
+        };
+      } else {
+        // 特定理由離職者
+        return {
+          waitDays: 7,
+          restrictionMonths: 0,
+          label: '7日のみ',
+          desc: '待期7日間のみ（給付制限なし）'
+        };
+      }
+    }
+
+    function formatYen(n) {
+      return Math.floor(n).toLocaleString('ja-JP') + '円';
+    }
+
+    function calculate() {
+      var age = document.getElementById('age').value;
+      var insuredPeriod = document.getElementById('insured-period').value;
+      var totalWage = parseInt(document.getElementById('total-wage').value);
+      var reason = document.getElementById('reason').value;
+
+      if (!totalWage || totalWage <= 0) {
+        alert('離職前6ヶ月の賃金合計を正しく入力してください。');
+        return;
+      }
+
+      // 賃金日額
+      var wageDaily = totalWage / 180;
+
+      // クリッピング
+      var limits = WAGE_DAILY_LIMITS[age];
+      var wageDailyActual = wageDaily;
+      if (wageDailyActual < WAGE_DAILY_MIN) wageDailyActual = WAGE_DAILY_MIN;
+      if (wageDailyActual > limits.upper) wageDailyActual = limits.upper;
+
+      // 基本手当日額
+      var dailyAllowance = calcDailyAllowance(wageDaily, age);
+
+      // 給付率
+      var rate = (dailyAllowance / wageDailyActual * 100);
+
+      // 所定給付日数
+      var benefitDays = getBenefitDays(age, insuredPeriod, reason);
+
+      // 受給資格チェック
+      if (benefitDays === 0) {
+        if (reason === 'voluntary' && insuredPeriod === 'under1') {
+          alert('自己都合退職の場合、被保険者期間が1年未満では原則として受給資格がありません。');
+        } else if (age === 'under30' && insuredPeriod === '20plus') {
+          alert('29歳以下で被保険者期間20年以上の該当データはありません。');
+        } else {
+          alert('入力条件では給付日数を算出できません。条件をご確認ください。');
+        }
+        return;
+      }
+
+      // 給付総額
+      var totalBenefit = dailyAllowance * benefitDays;
+
+      // 待期期間・給付制限
+      var waitInfo = getWaitInfo(reason);
+
+      // --- 結果表示 ---
+      document.getElementById('total-benefit').textContent = formatYen(totalBenefit);
+      document.getElementById('daily-amount').textContent = formatYen(dailyAllowance);
+      document.getElementById('total-days').textContent = benefitDays + '日';
+
+      // Breakdown cards
+      document.getElementById('bd-wage-daily').textContent = formatYen(wageDailyActual);
+      document.getElementById('bd-wage-monthly').textContent = '月額換算: 約' + formatYen(wageDailyActual * 30);
+      document.getElementById('bd-daily-allowance').textContent = formatYen(dailyAllowance);
+      document.getElementById('bd-rate').textContent = '給付率: ' + rate.toFixed(1) + '%';
+      document.getElementById('bd-benefit-days').textContent = benefitDays + '日';
+      document.getElementById('bd-benefit-months').textContent = '約' + (benefitDays / 30).toFixed(1) + 'ヶ月分';
+      document.getElementById('bd-wait-period').textContent = waitInfo.label;
+      document.getElementById('bd-wait-desc').textContent = waitInfo.desc;
+
+      // Detail list
+      var dl = document.getElementById('detail-list');
+      dl.innerHTML = '<h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>';
+      var rows = [
+        ['離職前6ヶ月の賃金合計', formatYen(totalWage)],
+        ['賃金日額（÷180）', formatYen(wageDaily)],
+        ['賃金日額（上限・下限適用後）', formatYen(wageDailyActual)],
+        ['給付率', rate.toFixed(1) + '%'],
+        ['基本手当日額', formatYen(dailyAllowance)],
+        ['所定給付日数', benefitDays + '日'],
+        ['待期期間', waitInfo.waitDays + '日'],
+      ];
+      if (waitInfo.restrictionMonths > 0) {
+        rows.push(['給付制限期間', waitInfo.restrictionMonths + 'ヶ月']);
+      }
+
+      for (var i = 0; i < rows.length; i++) {
+        var div = document.createElement('div');
+        div.className = 'detail-row';
+        div.innerHTML = '<span class="row-label">' + rows[i][0] + '</span><span class="row-value">' + rows[i][1] + '</span>';
+        dl.appendChild(div);
+      }
+      var totalDiv = document.createElement('div');
+      totalDiv.className = 'detail-row total';
+      totalDiv.innerHTML = '<span class="row-label">給付総額の目安</span><span class="row-value" style="color:var(--primary);">' + formatYen(totalBenefit) + '</span>';
+      dl.appendChild(totalDiv);
+
+      document.getElementById('calc-result').classList.add('show');
+
+      // スムーズスクロール
+      document.getElementById('calc-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function clearForm() {
+      document.getElementById('age').value = '35to44';
+      document.getElementById('insured-period').value = '10to19';
+      document.getElementById('total-wage').value = '';
+      document.getElementById('reason').value = 'voluntary';
+      document.getElementById('calc-result').classList.remove('show');
+    }
+
+    // Enter key support
+    document.getElementById('total-wage').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+  </script>
+</body>
+</html>
