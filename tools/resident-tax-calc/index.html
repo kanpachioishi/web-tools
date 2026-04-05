@@ -337,6 +337,30 @@
       </div>
       <div class="input-group">
         <div class="input-field">
+          <label for="region">お住まいの地域</label>
+          <select id="region">
+            <option value="standard">標準（特別な増減税なし）</option>
+            <optgroup label="── 均等割が高い地域 ──">
+              <option value="yokohama">横浜市（+900円 横浜みどり税）</option>
+              <option value="kobe">神戸市（+1,200円 県民緑税+神戸モデル）</option>
+              <option value="miyagi">宮城県（+1,200円 みやぎ環境税）</option>
+              <option value="iwate">岩手県（+1,000円 いわての森林づくり県民税）</option>
+              <option value="yamagata">山形県（+1,000円 やまがた緑環境税）</option>
+              <option value="fukushima">福島県（+1,000円 森林環境税）</option>
+              <option value="hyogo">兵庫県（+800円 県民緑税）※神戸市以外</option>
+              <option value="pref500">府県の森林環境税（+500円）※愛知・福岡・広島等20県</option>
+              <option value="kanagawa">神奈川県（+300円 水源環境保全税）※横浜市以外</option>
+              <option value="osaka">大阪府（+300円 大阪府森林環境税）</option>
+            </optgroup>
+            <optgroup label="── 所得割が安い地域 ──">
+              <option value="nagoya">名古屋市（所得割 -0.3% 市民税減税）</option>
+            </optgroup>
+          </select>
+          <div class="unit">超過課税・減税は地域で異なります</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
           <label for="age-group">年齢区分</label>
           <select id="age-group">
             <option value="under40">39歳以下</option>
@@ -699,20 +723,53 @@
       return Math.floor(tax);
     }
 
-    // 住民税（所得割10% + 均等割5,000円）
-    function calcResidentTax(taxableIncomeResident) {
-      if (taxableIncomeResident <= 0) return 5000; // 均等割のみ
-      var shotokuwari = Math.floor(taxableIncomeResident * 0.10);
-      var kintouwari = 5000;
+    // 地域別データ（均等割超過課税額、所得割税率の調整）
+    var REGION_DATA = {
+      standard:  { name: '標準',           extraKintou: 0,    rateAdj: 0 },
+      yokohama:  { name: '横浜市',         extraKintou: 900,  rateAdj: 0 },
+      kobe:      { name: '神戸市',         extraKintou: 1200, rateAdj: 0 },
+      miyagi:    { name: '宮城県',         extraKintou: 1200, rateAdj: 0 },
+      iwate:     { name: '岩手県',         extraKintou: 1000, rateAdj: 0 },
+      yamagata:  { name: '山形県',         extraKintou: 1000, rateAdj: 0 },
+      fukushima: { name: '福島県',         extraKintou: 1000, rateAdj: 0 },
+      hyogo:     { name: '兵庫県',         extraKintou: 800,  rateAdj: 0 },
+      pref500:   { name: '森林環境税+500円', extraKintou: 500, rateAdj: 0 },
+      kanagawa:  { name: '神奈川県',       extraKintou: 300,  rateAdj: 0 },
+      osaka:     { name: '大阪府',         extraKintou: 300,  rateAdj: 0 },
+      nagoya:    { name: '名古屋市',       extraKintou: 0,    rateAdj: -0.003 }
+    };
+
+    // 住民税（所得割 + 均等割 + 地域別超過課税）
+    function calcResidentTax(taxableIncomeResident, region) {
+      var rd = REGION_DATA[region] || REGION_DATA.standard;
+      var baseRate = 0.10 + rd.rateAdj;
+      var baseKintou = 5000;
+      var extraKintou = rd.extraKintou;
+
+      if (taxableIncomeResident <= 0) {
+        return {
+          shotokuwari: 0,
+          kintouwari: baseKintou + extraKintou,
+          extraKintou: extraKintou,
+          rateAdj: rd.rateAdj,
+          regionName: rd.name,
+          total: baseKintou + extraKintou
+        };
+      }
+      var shotokuwari = Math.floor(taxableIncomeResident * baseRate);
+      var kintouwari = baseKintou + extraKintou;
       return {
         shotokuwari: shotokuwari,
         kintouwari: kintouwari,
+        extraKintou: extraKintou,
+        rateAdj: rd.rateAdj,
+        regionName: rd.name,
         total: shotokuwari + kintouwari
       };
     }
 
     // メイン計算
-    function calcAll(income, ageGroup, spouse, dependents, specificDependents) {
+    function calcAll(income, ageGroup, spouse, dependents, specificDependents, region) {
       var employmentDeduction = calcEmploymentDeduction(income);
       var social = calcSocialInsurance(income, ageGroup);
 
@@ -738,7 +795,11 @@
       var taxableIncomeRT = income - employmentDeduction - social.total - basicDeductionResident - spouseDeductionResident - dependentDeductionResident;
       if (taxableIncomeRT < 0) taxableIncomeRT = 0;
 
-      var residentTax = calcResidentTax(taxableIncomeRT);
+      var residentTax = calcResidentTax(taxableIncomeRT, region);
+
+      // 全国標準との差額を計算
+      var standardTax = calcResidentTax(taxableIncomeRT, 'standard');
+      var regionDiff = residentTax.total - standardTax.total;
 
       var takeHome = income - social.total - incomeTax - residentTax.total;
       if (takeHome < 0) takeHome = 0;
@@ -759,6 +820,7 @@
         dependentDeductionResident: dependentDeductionResident,
         taxableIncomeRT: taxableIncomeRT,
         residentTax: residentTax,
+        regionDiff: regionDiff,
         // 手取り
         takeHome: takeHome
       };
@@ -849,13 +911,37 @@
         return;
       }
 
-      var r = calcAll(income, ageGroup, spouse, dependents, specificDependents);
+      var region = document.getElementById('region').value;
+      var r = calcAll(income, ageGroup, spouse, dependents, specificDependents, region);
 
       // メイン結果: 住民税
       document.getElementById('res-resident-tax').textContent = formatYen(r.residentTax.total);
       document.getElementById('res-resident-tax-monthly').textContent = formatYen(Math.floor(r.residentTax.total / 12));
-      document.getElementById('res-resident-detail').textContent =
-        '所得割 ' + formatYen(r.residentTax.shotokuwari) + ' + 均等割 ' + formatYen(r.residentTax.kintouwari);
+      var detailText = '所得割 ' + formatYen(r.residentTax.shotokuwari) + ' + 均等割 ' + formatYen(r.residentTax.kintouwari);
+      if (r.residentTax.extraKintou > 0) {
+        detailText += '（うち超過課税 ' + formatYen(r.residentTax.extraKintou) + '）';
+      }
+      if (r.residentTax.rateAdj !== 0) {
+        detailText += '（所得割' + (r.residentTax.rateAdj > 0 ? '+' : '') + (r.residentTax.rateAdj * 100).toFixed(1) + '%）';
+      }
+      document.getElementById('res-resident-detail').textContent = detailText;
+
+      // 地域差表示
+      var regionNote = document.getElementById('region-diff-note');
+      if (regionNote) regionNote.remove();
+      if (r.regionDiff !== 0) {
+        var note = document.createElement('div');
+        note.id = 'region-diff-note';
+        note.style.cssText = 'text-align:center;margin-top:8px;font-size:0.9rem;font-weight:600;';
+        if (r.regionDiff > 0) {
+          note.style.color = '#dc2626';
+          note.textContent = r.residentTax.regionName + 'は全国標準より年間 +' + formatYen(r.regionDiff) + ' 高い';
+        } else {
+          note.style.color = '#16a34a';
+          note.textContent = r.residentTax.regionName + 'は全国標準より年間 ' + formatYen(Math.abs(r.regionDiff)) + ' 安い';
+        }
+        document.getElementById('res-resident-detail').after(note);
+      }
 
       // 3カード
       document.getElementById('rc-resident').textContent = formatYen(r.residentTax.total);
