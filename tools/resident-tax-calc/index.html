@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>住民税計算シミュレーター - 年収から住民税・所得税を自動計算 | Web便利ツール集</title>
+  <meta name="description" content="年収と家族構成を入力するだけで住民税・所得税・手取り額を自動計算。所得割・均等割の内訳や控除の詳細もわかる無料オンラインツール。">
+  <meta property="og:title" content="住民税計算シミュレーター - 年収から住民税・所得税を自動計算 | Web便利ツール集">
+  <meta property="og:description" content="年収と家族構成を入力するだけで住民税・所得税・手取り額を瞬時に計算。内訳グラフ付きの無料オンラインツール。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/resident-tax-calc/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/resident-tax-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "住民税計算シミュレーター - 年収から住民税・所得税を自動計算",
+    "description": "年収と家族構成を入力するだけで住民税・所得税・手取り額を自動計算。所得割・均等割の内訳もわかる無料オンラインツール。",
+    "url": "https://simpletoolkit.net/tools/resident-tax-calc/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "住民税はいくらですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "住民税は課税所得の10%（所得割）に均等割5,000円を加えた金額です。年収400万円・独身の場合、住民税は約18万円程度になります。年収や控除の内容によって大きく変わります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "住民税と所得税の違いは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "所得税は国に納める国税で累進課税（5%〜45%）、住民税は都道府県・市区町村に納める地方税で税率は一律10%です。また、基礎控除額が異なり、所得税は48万円、住民税は43万円です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "住民税はいつ払いますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "住民税は前年の所得に基づいて翌年6月から翌々年5月にかけて支払います。会社員は毎月の給与から天引き（特別徴収）され、自営業者は年4回（6月・8月・10月・翌1月）の納付（普通徴収）です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "住民税が非課税になる条件は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "住民税が非課税になる条件は自治体によって異なりますが、一般的に単身者の場合は給与収入が約100万円以下（合計所得45万円以下）で非課税となります。扶養親族がいる場合は基準が緩和されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。年収や家族構成などのデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 160px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input,
+    .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus,
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .tax-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .tax-result.show {
+      display: block;
+    }
+
+    .result-highlight {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    [data-theme="dark"] .result-highlight {
+      background: linear-gradient(135deg, #1e293b 0%, #1a2e1a 100%);
+    }
+    .result-highlight .label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-highlight .amount {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+    .result-highlight .sub-amount {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .result-highlight .rate {
+      font-size: 0.9rem;
+      color: #16a34a;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .result-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .result-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .result-card .rc-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-card .rc-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .result-card .rc-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .rc-resident { color: #ea580c; }
+    .rc-income { color: #dc2626; }
+    .rc-takehome { color: #16a34a; }
+
+    /* Canvas chart */
+    .chart-container {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .chart-container canvas {
+      max-width: 320px;
+      max-height: 320px;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Breakdown grid */
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .breakdown-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .breakdown-card .bd-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .breakdown-card .bd-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .breakdown-card .bd-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Detail Breakdown List */
+    .detail-list {
+      margin: 16px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-row.total {
+      font-weight: 700;
+      font-size: 1rem;
+      border-top: 2px solid var(--text);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .detail-row .row-label {
+      color: var(--text-muted);
+    }
+    .detail-row .row-value {
+      font-weight: 600;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+    [data-theme="dark"] .notice {
+      background: #2d2305;
+      border-color: #5c4a10;
+      color: #fbbf24;
+    }
+
+    /* Tax rate table */
+    .tax-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+    .tax-table th, .tax-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+    }
+    .tax-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+    .tax-table td:first-child {
+      text-align: left;
+    }
+    .tax-table td:not(:first-child) {
+      text-align: center;
+    }
+
+    /* Deduction table */
+    .deduction-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+    .deduction-table th, .deduction-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+    }
+    .deduction-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .result-highlight .amount { font-size: 1.8rem; }
+      .result-cards { grid-template-columns: 1fr; }
+      .breakdown-grid { grid-template-columns: 1fr; }
+      .tax-table, .deduction-table { font-size: 0.75rem; }
+      .tax-table th, .tax-table td,
+      .deduction-table th, .deduction-table td { padding: 6px 4px; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>住民税計算シミュレーター</h1>
+    <h2>年収から住民税・所得税を無料で自動計算</h2>
+    <p class="tool-description">年収（給与所得）と家族構成を入力するだけで、住民税・所得税・社会保険料・手取り額を自動計算。所得割・均等割の内訳や控除の詳細を円グラフ付きで表示します。登録不要・無料・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <!-- 入力フォーム -->
+      <div class="input-group">
+        <div class="input-field">
+          <label for="annual-income">年収（額面・給与所得）</label>
+          <input type="number" id="annual-income" placeholder="5000000" min="0" max="100000000" step="10000">
+          <div class="unit">円（ボーナス含む）</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="age-group">年齢区分</label>
+          <select id="age-group">
+            <option value="under40">39歳以下</option>
+            <option value="40to64">40〜64歳（介護保険あり）</option>
+            <option value="over65">65歳以上</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label for="spouse">配偶者</label>
+          <select id="spouse">
+            <option value="none">なし</option>
+            <option value="general">あり（配偶者控除対象）</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="dependents">扶養親族の人数（16歳以上）</label>
+          <input type="number" id="dependents" placeholder="0" min="0" max="20" step="1" value="0">
+          <div class="unit">人</div>
+        </div>
+        <div class="input-field">
+          <label for="specific-dependents">特定扶養親族の人数（19〜22歳）</label>
+          <input type="number" id="specific-dependents" placeholder="0" min="0" max="10" step="1" value="0">
+          <div class="unit">人（上記の内数）</div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">住民税・所得税を計算</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <!-- 計算結果 -->
+      <div class="tax-result" id="tax-result">
+        <!-- メイン結果: 住民税 -->
+        <div class="result-highlight">
+          <div class="label">住民税（年額）</div>
+          <div class="amount" id="res-resident-tax"></div>
+          <div class="sub-amount">月額 <strong id="res-resident-tax-monthly"></strong></div>
+          <div class="rate" id="res-resident-detail"></div>
+        </div>
+
+        <!-- 3カード: 住民税・所得税・手取り -->
+        <div class="result-cards">
+          <div class="result-card">
+            <div class="rc-label">住民税</div>
+            <div class="rc-value rc-resident" id="rc-resident"></div>
+            <div class="rc-sub" id="rc-resident-sub"></div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">所得税</div>
+            <div class="rc-value rc-income" id="rc-income"></div>
+            <div class="rc-sub" id="rc-income-sub"></div>
+          </div>
+          <div class="result-card">
+            <div class="rc-label">手取り年収</div>
+            <div class="rc-value rc-takehome" id="rc-takehome"></div>
+            <div class="rc-sub" id="rc-takehome-sub"></div>
+          </div>
+        </div>
+
+        <!-- 円グラフ -->
+        <div class="chart-container">
+          <h3 style="font-size:1rem;margin-bottom:12px;">年収の内訳</h3>
+          <canvas id="pie-chart" width="320" height="320"></canvas>
+        </div>
+
+        <!-- 控除内訳 -->
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <div class="bd-label">給与所得控除</div>
+            <div class="bd-value" style="color:#7c3aed;" id="bd-employment"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">社会保険料</div>
+            <div class="bd-value" style="color:#0891b2;" id="bd-social"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">基礎控除（所得税/住民税）</div>
+            <div class="bd-value" style="color:#6366f1;" id="bd-basic"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">配偶者控除・扶養控除</div>
+            <div class="bd-value" style="color:#d946ef;" id="bd-family"></div>
+          </div>
+        </div>
+
+        <!-- 詳細計算 -->
+        <div class="detail-list" id="detail-list">
+          <h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>
+        </div>
+
+        <div class="notice">
+          <strong>注意：</strong>この計算結果は概算値です。実際の住民税は、お住まいの自治体の税率、勤務先の健康保険組合の保険料率、その他の控除（医療費控除・iDeCo・ふるさと納税など）により異なります。正確な金額は自治体の税務課や税理士にご確認ください。
+        </div>
+      </div>
+    </div>
+
+    <!-- 住民税とは？ -->
+    <section class="content-section">
+      <h2>住民税とは？</h2>
+      <p>住民税は、都道府県や市区町村に納める地方税で、前年の所得に基づいて課税されます。「所得割」と「均等割」の2つで構成され、会社員の場合は毎月の給与から天引き（特別徴収）されます。所得税と異なり、住民税は翌年の6月から支払いが始まるため、退職後に予想以上の住民税がかかることがあります。</p>
+      <p style="margin-top:8px;">住民税の税率は全国ほぼ一律10%（都道府県民税4%+市区町村民税6%）で、所得税のような累進課税ではありません。ただし、基礎控除額が所得税（48万円）より低い43万円であるなど、控除額に違いがあります。</p>
+    </section>
+
+    <!-- 使い方 -->
+    <section class="content-section">
+      <h2>住民税計算ツールの使い方</h2>
+      <ol>
+        <li><strong>年収（額面）を入力</strong> — ボーナスを含む年間の額面給与を入力します</li>
+        <li><strong>年齢区分を選択</strong> — 40歳以上の場合は介護保険料が加算されます</li>
+        <li><strong>家族構成を入力</strong> — 配偶者の有無、扶養親族の人数を入力します</li>
+        <li><strong>「住民税・所得税を計算」をクリック</strong> — 住民税・所得税・手取り額が円グラフ付きで表示されます</li>
+      </ol>
+    </section>
+
+    <!-- 所得税の税率表 -->
+    <section class="content-section">
+      <h2>所得税の税率表（累進課税7段階）</h2>
+      <p>所得税は累進課税制度で、課税所得が増えるほど高い税率が段階的に適用されます。</p>
+      <table class="tax-table">
+        <thead>
+          <tr>
+            <th>課税所得</th>
+            <th>税率</th>
+            <th>控除額</th>
+            <th>速算式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>195万円以下</td>
+            <td>5%</td>
+            <td>0円</td>
+            <td>課税所得 x 5%</td>
+          </tr>
+          <tr>
+            <td>195万円超〜330万円以下</td>
+            <td>10%</td>
+            <td>97,500円</td>
+            <td>課税所得 x 10% - 97,500円</td>
+          </tr>
+          <tr>
+            <td>330万円超〜695万円以下</td>
+            <td>20%</td>
+            <td>427,500円</td>
+            <td>課税所得 x 20% - 427,500円</td>
+          </tr>
+          <tr>
+            <td>695万円超〜900万円以下</td>
+            <td>23%</td>
+            <td>636,000円</td>
+            <td>課税所得 x 23% - 636,000円</td>
+          </tr>
+          <tr>
+            <td>900万円超〜1,800万円以下</td>
+            <td>33%</td>
+            <td>1,536,000円</td>
+            <td>課税所得 x 33% - 1,536,000円</td>
+          </tr>
+          <tr>
+            <td>1,800万円超〜4,000万円以下</td>
+            <td>40%</td>
+            <td>2,796,000円</td>
+            <td>課税所得 x 40% - 2,796,000円</td>
+          </tr>
+          <tr>
+            <td>4,000万円超</td>
+            <td>45%</td>
+            <td>4,796,000円</td>
+            <td>課税所得 x 45% - 4,796,000円</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">※ 上記に加え、復興特別所得税（所得税額の2.1%）が加算されます。</p>
+    </section>
+
+    <!-- 住民税の計算の仕組み -->
+    <section class="content-section">
+      <h2>住民税の計算の仕組み</h2>
+      <p>住民税は以下の手順で計算されます。</p>
+      <ol style="margin-top:12px;">
+        <li><strong>給与所得を算出</strong>：年収（額面）から給与所得控除を差し引きます</li>
+        <li><strong>課税所得を算出</strong>：給与所得から各種控除（基礎控除43万円、社会保険料控除、配偶者控除、扶養控除など）を差し引きます</li>
+        <li><strong>所得割を計算</strong>：課税所得 x 10%（都道府県民税4% + 市区町村民税6%）</li>
+        <li><strong>均等割を加算</strong>：年額5,000円（都道府県民税1,500円 + 市区町村民税3,500円）</li>
+        <li><strong>住民税 = 所得割 + 均等割</strong></li>
+      </ol>
+      <p style="margin-top:12px;">所得税との大きな違いは、税率が一律10%であること、基礎控除が43万円（所得税は48万円）であること、そして前年の所得に対して課税されることです。</p>
+    </section>
+
+    <!-- 主要な所得控除一覧 -->
+    <section class="content-section">
+      <h2>主要な所得控除一覧</h2>
+      <p>所得税と住民税では控除額が異なるものがあります。主要な控除を比較します。</p>
+      <div style="overflow-x:auto;">
+        <table class="deduction-table">
+          <thead>
+            <tr>
+              <th>控除の種類</th>
+              <th>所得税の控除額</th>
+              <th>住民税の控除額</th>
+              <th>備考</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>基礎控除</td>
+              <td style="text-align:center;">48万円</td>
+              <td style="text-align:center;">43万円</td>
+              <td>合計所得2,400万円以下の場合</td>
+            </tr>
+            <tr>
+              <td>配偶者控除</td>
+              <td style="text-align:center;">38万円</td>
+              <td style="text-align:center;">33万円</td>
+              <td>配偶者の所得48万円以下</td>
+            </tr>
+            <tr>
+              <td>扶養控除（一般）</td>
+              <td style="text-align:center;">38万円</td>
+              <td style="text-align:center;">33万円</td>
+              <td>16歳以上の扶養親族</td>
+            </tr>
+            <tr>
+              <td>扶養控除（特定）</td>
+              <td style="text-align:center;">63万円</td>
+              <td style="text-align:center;">45万円</td>
+              <td>19歳〜22歳の扶養親族</td>
+            </tr>
+            <tr>
+              <td>社会保険料控除</td>
+              <td style="text-align:center;">全額</td>
+              <td style="text-align:center;">全額</td>
+              <td>健康保険・厚生年金・雇用保険</td>
+            </tr>
+            <tr>
+              <td>給与所得控除</td>
+              <td style="text-align:center;" colspan="2">55万〜195万円</td>
+              <td>年収に応じた控除額</td>
+            </tr>
+            <tr>
+              <td>医療費控除</td>
+              <td style="text-align:center;" colspan="2">実額（上限200万円）</td>
+              <td>年間医療費-10万円</td>
+            </tr>
+            <tr>
+              <td>ふるさと納税</td>
+              <td style="text-align:center;" colspan="2">寄附額-2,000円</td>
+              <td>所得税+住民税から控除</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- よくある質問 -->
+    <section class="content-section">
+      <h2>住民税計算に関するよくある質問</h2>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">住民税は年収いくらから課税されますか？</summary>
+        <p style="margin-top:8px;">住民税の非課税限度額は自治体によって異なりますが、一般的に単身者の場合は給与収入が約100万円以下（合計所得45万円以下）で非課税になります。扶養親族がいる場合は「35万円 x（扶養人数+1）+ 32万円」以下で非課税になります。均等割のみ課税される範囲もあります。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">住民税を安くする方法はありますか？</summary>
+        <p style="margin-top:8px;">住民税を合法的に軽減する主な方法は、ふるさと納税（住民税から控除）、iDeCo（掛金全額が所得控除）、医療費控除、生命保険料控除などの各種控除を漏れなく申告することです。また、配偶者控除や扶養控除の適用漏れがないか確認しましょう。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">退職後の住民税はどうなりますか？</summary>
+        <p style="margin-top:8px;">住民税は前年の所得に基づいて課税されるため、退職後も前年の所得に応じた住民税を支払う必要があります。退職時に特別徴収から普通徴収に切り替わり、一括または分割で納付します。収入が減った翌年には住民税も下がります。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">所得割と均等割の違いは何ですか？</summary>
+        <p style="margin-top:8px;">所得割は課税所得に応じて課税される部分で、税率は一律10%（都道府県4%+市区町村6%）です。均等割は所得に関係なく定額で課税される部分で、年額5,000円（都道府県1,500円+市区町村3,500円）です。低所得者は均等割も非課税になる場合があります。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">住民税と所得税で基礎控除が違うのはなぜですか？</summary>
+        <p style="margin-top:8px;">住民税の基礎控除は43万円、所得税は48万円と5万円の差があります。これは歴史的な経緯と制度設計の違いによるものです。住民税は地域の行政サービスを広く負担する趣旨があるため、控除額がやや低く設定されています。この差により、同じ年収でも住民税の課税所得が所得税より5万円多くなります。</p>
+      </details>
+    </section>
+
+    <!-- 他のツール -->
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../salary-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">手取り計算シミュレーター</h3>
+          <p>年収から手取りを瞬時に計算</p>
+        </a>
+        <a href="../furusato-tax/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ふるさと納税控除額計算</h3>
+          <p>ふるさと納税の控除上限額を計算</p>
+        </a>
+        <a href="../loan-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">ローン計算ツール</h3>
+          <p>住宅ローンなどの返済額を計算</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // === 住民税・所得税計算ロジック ===
+
+    // 給与所得控除（国税庁 速算表ベース）
+    function calcEmploymentDeduction(income) {
+      if (income <= 1625000) return 550000;
+      if (income <= 1800000) return income * 0.4 - 100000;
+      if (income <= 3600000) return income * 0.3 + 80000;
+      if (income <= 6600000) return income * 0.2 + 440000;
+      if (income <= 8500000) return income * 0.1 + 1100000;
+      return 1950000; // 上限195万円
+    }
+
+    // 社会保険料（協会けんぽ基準・概算）
+    function calcSocialInsurance(income, ageGroup) {
+      // 健康保険: 約5% (40-64歳は介護保険込み約5.8%)
+      var healthRate = 0.05;
+      if (ageGroup === '40to64') healthRate = 0.058;
+      if (ageGroup === 'over65') healthRate = 0.05;
+      var healthInsurance = income * healthRate;
+
+      // 厚生年金（上限: 標準報酬月額65万円 = 年収約780万円相当）
+      var pensionBase = Math.min(income, 7800000);
+      var pension = pensionBase * 0.0915;
+
+      // 雇用保険
+      var employment = income * 0.006;
+
+      return {
+        health: Math.floor(healthInsurance),
+        pension: Math.floor(pension),
+        employment: Math.floor(employment),
+        total: Math.floor(healthInsurance + pension + employment)
+      };
+    }
+
+    // 所得税（累進課税 + 復興特別所得税）
+    function calcIncomeTax(taxableIncome) {
+      if (taxableIncome <= 0) return 0;
+      var tax = 0;
+      var brackets = [
+        { limit: 1950000, rate: 0.05, deduction: 0 },
+        { limit: 3300000, rate: 0.10, deduction: 97500 },
+        { limit: 6950000, rate: 0.20, deduction: 427500 },
+        { limit: 9000000, rate: 0.23, deduction: 636000 },
+        { limit: 18000000, rate: 0.33, deduction: 1536000 },
+        { limit: 40000000, rate: 0.40, deduction: 2796000 },
+        { limit: Infinity, rate: 0.45, deduction: 4796000 }
+      ];
+      for (var i = 0; i < brackets.length; i++) {
+        if (taxableIncome <= brackets[i].limit) {
+          tax = taxableIncome * brackets[i].rate - brackets[i].deduction;
+          break;
+        }
+      }
+      // 復興特別所得税（2.1%）
+      tax = tax * 1.021;
+      return Math.floor(tax);
+    }
+
+    // 住民税（所得割10% + 均等割5,000円）
+    function calcResidentTax(taxableIncomeResident) {
+      if (taxableIncomeResident <= 0) return 5000; // 均等割のみ
+      var shotokuwari = Math.floor(taxableIncomeResident * 0.10);
+      var kintouwari = 5000;
+      return {
+        shotokuwari: shotokuwari,
+        kintouwari: kintouwari,
+        total: shotokuwari + kintouwari
+      };
+    }
+
+    // メイン計算
+    function calcAll(income, ageGroup, spouse, dependents, specificDependents) {
+      var employmentDeduction = calcEmploymentDeduction(income);
+      var social = calcSocialInsurance(income, ageGroup);
+
+      // --- 所得税用の控除 ---
+      var basicDeductionIncome = 480000; // 基礎控除（所得税）
+      var spouseDeductionIncome = (spouse === 'general') ? 380000 : 0; // 配偶者控除（所得税）
+      // 一般扶養: 38万円、特定扶養: 63万円（差額25万円を加算）
+      var generalDependents = dependents - specificDependents;
+      if (generalDependents < 0) generalDependents = 0;
+      var dependentDeductionIncome = generalDependents * 380000 + specificDependents * 630000;
+
+      var taxableIncomeIT = income - employmentDeduction - social.total - basicDeductionIncome - spouseDeductionIncome - dependentDeductionIncome;
+      if (taxableIncomeIT < 0) taxableIncomeIT = 0;
+
+      var incomeTax = calcIncomeTax(taxableIncomeIT);
+
+      // --- 住民税用の控除 ---
+      var basicDeductionResident = 430000; // 基礎控除（住民税）
+      var spouseDeductionResident = (spouse === 'general') ? 330000 : 0; // 配偶者控除（住民税）
+      // 一般扶養: 33万円、特定扶養: 45万円
+      var dependentDeductionResident = generalDependents * 330000 + specificDependents * 450000;
+
+      var taxableIncomeRT = income - employmentDeduction - social.total - basicDeductionResident - spouseDeductionResident - dependentDeductionResident;
+      if (taxableIncomeRT < 0) taxableIncomeRT = 0;
+
+      var residentTax = calcResidentTax(taxableIncomeRT);
+
+      var takeHome = income - social.total - incomeTax - residentTax.total;
+      if (takeHome < 0) takeHome = 0;
+
+      return {
+        income: income,
+        employmentDeduction: employmentDeduction,
+        social: social,
+        // 所得税
+        basicDeductionIncome: basicDeductionIncome,
+        spouseDeductionIncome: spouseDeductionIncome,
+        dependentDeductionIncome: dependentDeductionIncome,
+        taxableIncomeIT: taxableIncomeIT,
+        incomeTax: incomeTax,
+        // 住民税
+        basicDeductionResident: basicDeductionResident,
+        spouseDeductionResident: spouseDeductionResident,
+        dependentDeductionResident: dependentDeductionResident,
+        taxableIncomeRT: taxableIncomeRT,
+        residentTax: residentTax,
+        // 手取り
+        takeHome: takeHome
+      };
+    }
+
+    function formatYen(n) {
+      return Math.floor(n).toLocaleString('ja-JP') + '円';
+    }
+
+    // 円グラフ描画（Canvas API）
+    function drawPieChart(canvas, data) {
+      var ctx = canvas.getContext('2d');
+      var width = canvas.width;
+      var height = canvas.height;
+      var centerX = width / 2;
+      var centerY = height / 2;
+      var radius = Math.min(width, height) / 2 - 40;
+
+      ctx.clearRect(0, 0, width, height);
+
+      var total = 0;
+      for (var i = 0; i < data.length; i++) {
+        total += data[i].value;
+      }
+
+      var startAngle = -Math.PI / 2;
+      for (var i = 0; i < data.length; i++) {
+        var sliceAngle = (data[i].value / total) * 2 * Math.PI;
+        var endAngle = startAngle + sliceAngle;
+
+        // 扇形を描画
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fillStyle = data[i].color;
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // ラベル描画
+        if (data[i].value / total > 0.03) {
+          var midAngle = startAngle + sliceAngle / 2;
+          var labelRadius = radius * 0.65;
+          var labelX = centerX + Math.cos(midAngle) * labelRadius;
+          var labelY = centerY + Math.sin(midAngle) * labelRadius;
+          var pct = (data[i].value / total * 100).toFixed(1) + '%';
+
+          ctx.fillStyle = '#fff';
+          ctx.font = 'bold 13px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(pct, labelX, labelY);
+        }
+
+        startAngle = endAngle;
+      }
+
+      // 凡例
+      var legendY = height - 20;
+      var legendX = 10;
+      ctx.font = '12px sans-serif';
+      for (var i = 0; i < data.length; i++) {
+        ctx.fillStyle = data[i].color;
+        ctx.fillRect(legendX, legendY - 10, 12, 12);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#333';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(data[i].label, legendX + 16, legendY - 4);
+        legendX += ctx.measureText(data[i].label).width + 32;
+      }
+    }
+
+    function calculate() {
+      var income = parseInt(document.getElementById('annual-income').value);
+      var ageGroup = document.getElementById('age-group').value;
+      var spouse = document.getElementById('spouse').value;
+      var dependents = parseInt(document.getElementById('dependents').value) || 0;
+      var specificDependents = parseInt(document.getElementById('specific-dependents').value) || 0;
+
+      if (!income || income <= 0) {
+        alert('年収を正しく入力してください。');
+        return;
+      }
+      if (specificDependents > dependents) {
+        alert('特定扶養親族の人数は扶養親族の人数以下にしてください。');
+        return;
+      }
+
+      var r = calcAll(income, ageGroup, spouse, dependents, specificDependents);
+
+      // メイン結果: 住民税
+      document.getElementById('res-resident-tax').textContent = formatYen(r.residentTax.total);
+      document.getElementById('res-resident-tax-monthly').textContent = formatYen(Math.floor(r.residentTax.total / 12));
+      document.getElementById('res-resident-detail').textContent =
+        '所得割 ' + formatYen(r.residentTax.shotokuwari) + ' + 均等割 ' + formatYen(r.residentTax.kintouwari);
+
+      // 3カード
+      document.getElementById('rc-resident').textContent = formatYen(r.residentTax.total);
+      document.getElementById('rc-resident-sub').textContent = '年収の' + (r.residentTax.total / r.income * 100).toFixed(1) + '%';
+      document.getElementById('rc-income').textContent = formatYen(r.incomeTax);
+      document.getElementById('rc-income-sub').textContent = '年収の' + (r.incomeTax / r.income * 100).toFixed(1) + '%';
+      document.getElementById('rc-takehome').textContent = formatYen(r.takeHome);
+      document.getElementById('rc-takehome-sub').textContent = '月収 ' + formatYen(Math.floor(r.takeHome / 12));
+
+      // 控除カード
+      document.getElementById('bd-employment').textContent = formatYen(r.employmentDeduction);
+      document.getElementById('bd-social').textContent = formatYen(r.social.total);
+      document.getElementById('bd-basic').textContent = formatYen(r.basicDeductionIncome) + ' / ' + formatYen(r.basicDeductionResident);
+      var familyTotal = r.spouseDeductionIncome + r.dependentDeductionIncome;
+      document.getElementById('bd-family').textContent = familyTotal > 0 ? formatYen(familyTotal) + '（所得税）' : 'なし';
+
+      // 円グラフ
+      var canvas = document.getElementById('pie-chart');
+      // High DPI対応
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width = 320 * dpr;
+      canvas.height = 320 * dpr;
+      canvas.style.width = '320px';
+      canvas.style.height = '320px';
+      canvas.getContext('2d').scale(dpr, dpr);
+
+      drawPieChart(canvas, [
+        { label: '手取り', value: r.takeHome, color: '#22c55e' },
+        { label: '社会保険料', value: r.social.total, color: '#06b6d4' },
+        { label: '所得税', value: r.incomeTax, color: '#ef4444' },
+        { label: '住民税', value: r.residentTax.total, color: '#f97316' }
+      ]);
+
+      // 詳細計算
+      var dl = document.getElementById('detail-list');
+      dl.innerHTML = '<h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>';
+
+      var rows = [
+        ['額面年収', formatYen(r.income)],
+        ['', ''],
+        ['【控除の計算】', ''],
+        ['給与所得控除', '- ' + formatYen(r.employmentDeduction)],
+        ['社会保険料（健康保険）', '- ' + formatYen(r.social.health)],
+        ['社会保険料（厚生年金）', '- ' + formatYen(r.social.pension)],
+        ['社会保険料（雇用保険）', '- ' + formatYen(r.social.employment)],
+        ['', ''],
+        ['【所得税の計算】', ''],
+        ['基礎控除（所得税）', '- ' + formatYen(r.basicDeductionIncome)]
+      ];
+      if (r.spouseDeductionIncome > 0) {
+        rows.push(['配偶者控除（所得税）', '- ' + formatYen(r.spouseDeductionIncome)]);
+      }
+      if (r.dependentDeductionIncome > 0) {
+        rows.push(['扶養控除（所得税）', '- ' + formatYen(r.dependentDeductionIncome)]);
+      }
+      rows.push(['課税所得（所得税用）', formatYen(r.taxableIncomeIT)]);
+      rows.push(['所得税（復興特別所得税込）', formatYen(r.incomeTax)]);
+
+      rows.push(['', '']);
+      rows.push(['【住民税の計算】', '']);
+      rows.push(['基礎控除（住民税）', '- ' + formatYen(r.basicDeductionResident)]);
+      if (r.spouseDeductionResident > 0) {
+        rows.push(['配偶者控除（住民税）', '- ' + formatYen(r.spouseDeductionResident)]);
+      }
+      if (r.dependentDeductionResident > 0) {
+        rows.push(['扶養控除（住民税）', '- ' + formatYen(r.dependentDeductionResident)]);
+      }
+      rows.push(['課税所得（住民税用）', formatYen(r.taxableIncomeRT)]);
+      rows.push(['所得割（10%）', formatYen(r.residentTax.shotokuwari)]);
+      rows.push(['均等割', formatYen(r.residentTax.kintouwari)]);
+      rows.push(['住民税合計', formatYen(r.residentTax.total)]);
+
+      for (var i = 0; i < rows.length; i++) {
+        if (rows[i][0] === '' && rows[i][1] === '') {
+          // 空行（スペーサー）
+          var spacer = document.createElement('div');
+          spacer.style.height = '8px';
+          dl.appendChild(spacer);
+          continue;
+        }
+        if (rows[i][0].startsWith('【')) {
+          // セクション見出し
+          var heading = document.createElement('div');
+          heading.style.fontWeight = '700';
+          heading.style.fontSize = '0.9rem';
+          heading.style.marginTop = '8px';
+          heading.style.color = 'var(--text)';
+          heading.textContent = rows[i][0];
+          dl.appendChild(heading);
+          continue;
+        }
+        var div = document.createElement('div');
+        div.className = 'detail-row';
+        div.innerHTML = '<span class="row-label">' + rows[i][0] + '</span><span class="row-value">' + rows[i][1] + '</span>';
+        dl.appendChild(div);
+      }
+
+      // 合計行
+      var totalDiv = document.createElement('div');
+      totalDiv.className = 'detail-row total';
+      totalDiv.innerHTML = '<span class="row-label">手取り年収</span><span class="row-value" style="color:var(--primary);">' + formatYen(r.takeHome) + '</span>';
+      dl.appendChild(totalDiv);
+
+      document.getElementById('tax-result').classList.add('show');
+    }
+
+    function clearForm() {
+      document.getElementById('annual-income').value = '';
+      document.getElementById('age-group').value = 'under40';
+      document.getElementById('spouse').value = 'none';
+      document.getElementById('dependents').value = '0';
+      document.getElementById('specific-dependents').value = '0';
+      document.getElementById('tax-result').classList.remove('show');
+    }
+
+    // Enterキー対応
+    document.getElementById('annual-income').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+    document.getElementById('dependents').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+    document.getElementById('specific-dependents').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') calculate();
+    });
+  </script>
+</body>
+</html>

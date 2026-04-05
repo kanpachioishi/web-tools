@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>確定申告シミュレーター - 所得税・還付金を自動計算 | Web便利ツール集</title>
+  <meta name="description" content="確定申告の所得税・還付金・住民税を無料で自動計算。給与所得・事業所得・副業収入に対応。各種控除（医療費・iDeCo・ふるさと納税）も入力可能。確定申告が必要かどうかも判定します。">
+  <meta property="og:title" content="確定申告シミュレーター - 所得税・還付金を自動計算 | Web便利ツール集">
+  <meta property="og:description" content="確定申告の所得税・還付金・住民税を無料で自動計算。給与・事業・副業収入に対応し、各種控除も入力可能。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/tax-return-calc/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/tax-return-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "確定申告シミュレーター - 所得税・還付金を自動計算",
+    "description": "確定申告の所得税・還付金・住民税を無料で自動計算。給与所得・事業所得・副業収入に対応。各種控除も入力可能な無料オンラインツール。",
+    "url": "https://simpletoolkit.net/tools/tax-return-calc/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "確定申告が必要な人はどんな人ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "会社員で副業収入が年間20万円を超える人、フリーランス・個人事業主、年収2,000万円を超える給与所得者、2か所以上から給与を受けている人、医療費控除やふるさと納税の還付を受けたい人などが確定申告の対象です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "確定申告の期間はいつですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "確定申告の期間は毎年2月16日から3月15日までです。還付申告の場合は1月1日から5年間提出可能です。期限を過ぎると延滞税や無申告加算税が課される場合があります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "還付金はいつ受け取れますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "e-Taxで申告した場合は約2〜3週間、紙で申告した場合は約1〜2か月で還付金が指定口座に振り込まれます。申告内容に不備がある場合はさらに時間がかかることがあります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "副業の経費にはどんなものが含まれますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "副業の経費には、仕事に必要な消耗品費、通信費、交通費、書籍代、ソフトウェア代、家賃や光熱費の按分（自宅兼事務所の場合）などが含まれます。私的な支出は経費にできません。領収書やレシートの保管が必要です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したデータはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての計算処理はブラウザ内で完結します。収入や経費などのデータが外部に送信されることはありません。安心してご利用ください。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .input-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .input-group .input-field {
+      flex: 1;
+      min-width: 160px;
+    }
+    .input-field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+    }
+    .input-field input,
+    .input-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .input-field input:focus,
+    .input-field select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .input-field .unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .input-field .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .section-label {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 24px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    .section-label:first-of-type {
+      margin-top: 0;
+    }
+
+    .tax-result {
+      display: none;
+      margin-top: 24px;
+    }
+    .tax-result.show {
+      display: block;
+    }
+
+    .result-highlight {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    [data-theme="dark"] .result-highlight {
+      background: linear-gradient(135deg, #1e293b 0%, #1a2e1a 100%);
+    }
+    .result-highlight .label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .result-highlight .amount {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .result-highlight .amount.refund { color: #16a34a; }
+    .result-highlight .amount.payment { color: #dc2626; }
+    .result-highlight .sub-amount {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .filing-judgment {
+      margin-bottom: 24px;
+      padding: 20px;
+      border-radius: var(--radius);
+      border: 2px solid;
+      text-align: center;
+    }
+    .filing-judgment.required {
+      border-color: #dc2626;
+      background: #fef2f2;
+    }
+    .filing-judgment.not-required {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+    .filing-judgment.recommended {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+    [data-theme="dark"] .filing-judgment.required { background: #2d1b1b; }
+    [data-theme="dark"] .filing-judgment.not-required { background: #1a2e1a; }
+    [data-theme="dark"] .filing-judgment.recommended { background: #2d2a1b; }
+    .filing-judgment .judge-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .filing-judgment .judge-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .filing-judgment .judge-reason {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .breakdown-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .breakdown-card .bd-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .breakdown-card .bd-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .breakdown-card .bd-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .detail-list {
+      margin: 16px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-row.total {
+      font-weight: 700;
+      font-size: 1rem;
+      border-top: 2px solid var(--text);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .detail-row .row-label {
+      color: var(--text-muted);
+    }
+    .detail-row .row-value {
+      font-weight: 600;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: #92400e;
+    }
+    [data-theme="dark"] .notice {
+      background: #2d2a1b;
+      border-color: #92400e;
+      color: #fde68a;
+    }
+
+    .check-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+    .check-table th, .check-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .check-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+    .schedule-table th, .schedule-table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .schedule-table th {
+      background: var(--bg);
+      font-weight: 600;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .result-highlight .amount { font-size: 1.8rem; }
+      .breakdown-grid { grid-template-columns: 1fr; }
+      .check-table, .schedule-table { font-size: 0.8rem; }
+      .check-table th, .check-table td,
+      .schedule-table th, .schedule-table td { padding: 6px 8px; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>確定申告シミュレーター</h1>
+    <h2>所得税・還付金・住民税を無料で自動計算</h2>
+    <p class="tool-description">給与所得・事業所得・副業収入を入力し、各種控除を設定するだけで所得税額・還付金額・住民税概算を瞬時に計算します。確定申告が必要かどうかの判定付き。登録不要・無料・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <!-- STEP 1: 収入の種類と金額 -->
+      <div class="section-label">STEP 1: 収入を入力</div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="income-type">収入の種類</label>
+          <select id="income-type" onchange="toggleIncomeFields()">
+            <option value="salary">給与所得（会社員）</option>
+            <option value="business">事業所得（フリーランス）</option>
+            <option value="side">給与＋副業収入</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="salary-fields">
+        <div class="input-group">
+          <div class="input-field">
+            <label for="salary-income">給与収入（年収・額面）</label>
+            <input type="number" id="salary-income" placeholder="5000000" min="0" max="999999999" step="10000">
+            <div class="unit">円</div>
+            <div class="hint">源泉徴収票の「支払金額」欄の数字</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="withheld-tax">源泉徴収済みの所得税額</label>
+            <input type="number" id="withheld-tax" placeholder="0" min="0" max="999999999" step="100" value="0">
+            <div class="unit">円</div>
+            <div class="hint">源泉徴収票の「源泉徴収税額」欄。不明な場合は0でOK（概算計算されます）</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="business-fields" style="display:none;">
+        <div class="input-group">
+          <div class="input-field">
+            <label for="business-revenue">事業収入（売上）</label>
+            <input type="number" id="business-revenue" placeholder="5000000" min="0" max="999999999" step="10000">
+            <div class="unit">円</div>
+          </div>
+          <div class="input-field">
+            <label for="business-expense">必要経費</label>
+            <input type="number" id="business-expense" placeholder="1000000" min="0" max="999999999" step="10000">
+            <div class="unit">円</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="blue-filing">青色申告特別控除</label>
+            <select id="blue-filing">
+              <option value="0">なし（白色申告）</option>
+              <option value="100000">10万円控除（簡易簿記）</option>
+              <option value="550000">55万円控除（複式簿記）</option>
+              <option value="650000">65万円控除（e-Tax）</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="side-fields" style="display:none;">
+        <div class="input-group">
+          <div class="input-field">
+            <label for="side-salary">給与収入（年収・額面）</label>
+            <input type="number" id="side-salary" placeholder="4000000" min="0" max="999999999" step="10000">
+            <div class="unit">円</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="side-withheld">源泉徴収済みの所得税額</label>
+            <input type="number" id="side-withheld" placeholder="0" min="0" max="999999999" step="100" value="0">
+            <div class="unit">円</div>
+            <div class="hint">源泉徴収票の「源泉徴収税額」欄。不明な場合は0でOK</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-field">
+            <label for="side-revenue">副業収入（売上）</label>
+            <input type="number" id="side-revenue" placeholder="500000" min="0" max="999999999" step="10000">
+            <div class="unit">円</div>
+          </div>
+          <div class="input-field">
+            <label for="side-expense">副業の経費</label>
+            <input type="number" id="side-expense" placeholder="100000" min="0" max="999999999" step="10000">
+            <div class="unit">円</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: 控除 -->
+      <div class="section-label">STEP 2: 控除を入力</div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="medical-deduction">医療費控除</label>
+          <input type="number" id="medical-deduction" placeholder="0" min="0" max="999999999" step="1000" value="0">
+          <div class="unit">円</div>
+          <div class="hint">年間医療費から10万円（または所得の5%）を引いた額</div>
+        </div>
+        <div class="input-field">
+          <label for="life-insurance">生命保険料控除</label>
+          <input type="number" id="life-insurance" placeholder="0" min="0" max="120000" step="1000" value="0">
+          <div class="unit">円（上限12万円）</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="ideco">iDeCo（小規模企業共済等掛金控除）</label>
+          <input type="number" id="ideco" placeholder="0" min="0" max="816000" step="1000" value="0">
+          <div class="unit">円（年間掛金の合計）</div>
+        </div>
+        <div class="input-field">
+          <label for="furusato">ふるさと納税（寄附金控除）</label>
+          <input type="number" id="furusato" placeholder="0" min="0" max="999999999" step="1000" value="0">
+          <div class="unit">円（寄附金の合計額）</div>
+          <div class="hint">自己負担2,000円を差し引く前の額を入力</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-field">
+          <label for="dependents">扶養控除対象の人数</label>
+          <input type="number" id="dependents" placeholder="0" min="0" max="20" step="1" value="0">
+          <div class="unit">人</div>
+          <div class="hint">16歳以上の扶養家族の人数（一般扶養38万円/人で計算）</div>
+        </div>
+        <div class="input-field">
+          <label for="spouse-deduction">配偶者控除</label>
+          <select id="spouse-deduction">
+            <option value="0">なし</option>
+            <option value="380000">配偶者控除（38万円）</option>
+            <option value="260000">配偶者特別控除（26万円）</option>
+            <option value="110000">配偶者特別控除（11万円）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="calculate()">確定申告をシミュレーション</button>
+        <button class="btn btn-secondary" onclick="clearForm()">クリア</button>
+      </div>
+
+      <!-- 計算結果 -->
+      <div class="tax-result" id="tax-result">
+        <!-- 確定申告の要否判定 -->
+        <div class="filing-judgment" id="filing-judgment">
+          <div class="judge-icon" id="judge-icon"></div>
+          <div class="judge-title" id="judge-title"></div>
+          <div class="judge-reason" id="judge-reason"></div>
+        </div>
+
+        <!-- 還付/納付額 -->
+        <div class="result-highlight">
+          <div class="label" id="result-label"></div>
+          <div class="amount" id="result-amount"></div>
+          <div class="sub-amount" id="result-sub"></div>
+        </div>
+
+        <!-- 内訳カード -->
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <div class="bd-label">所得税額</div>
+            <div class="bd-value" style="color:#dc2626;" id="bd-income-tax"></div>
+            <div class="bd-sub" id="bd-income-tax-sub"></div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">住民税（概算）</div>
+            <div class="bd-value" style="color:#ea580c;" id="bd-resident-tax"></div>
+            <div class="bd-sub">所得割10%+均等割5,000円</div>
+          </div>
+          <div class="breakdown-card">
+            <div class="bd-label">源泉徴収済み税額</div>
+            <div class="bd-value" style="color:#0891b2;" id="bd-withheld"></div>
+            <div class="bd-sub">既に天引きされた所得税</div>
+          </div>
+        </div>
+
+        <!-- 計算詳細 -->
+        <div class="detail-list" id="detail-list">
+          <h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>
+        </div>
+
+        <div class="notice">
+          <strong>注意：</strong>この計算結果は概算値です。実際の税額は、社会保険料の正確な金額、お住まいの自治体の住民税率、その他の控除項目により異なります。正確な金額は税務署や税理士にご確認ください。
+        </div>
+      </div>
+    </div>
+
+    <!-- 確定申告とは？ -->
+    <section class="content-section">
+      <h2>確定申告とは？</h2>
+      <p>確定申告とは、1月1日から12月31日までの1年間の所得（収入から経費を引いた金額）を計算し、所得税額を確定させて税務署に申告する手続きです。会社員の場合は年末調整で税額が確定するため原則不要ですが、副業収入がある場合やフリーランスの場合、あるいは医療費控除やふるさと納税などの還付を受けたい場合には確定申告が必要になります。</p>
+      <p style="margin-top:8px;">確定申告を行うことで、払いすぎた税金の還付を受けられたり、各種控除を適用して節税したりすることができます。</p>
+    </section>
+
+    <!-- 使い方 -->
+    <section class="content-section">
+      <h2>使い方（4ステップ）</h2>
+      <ol>
+        <li><strong>STEP 1：</strong>収入の種類を選択し、年収（給与収入）や事業収入・経費を入力します</li>
+        <li><strong>STEP 2：</strong>医療費控除・生命保険料控除・iDeCo・ふるさと納税などの控除額を入力します</li>
+        <li><strong>STEP 3：</strong>「確定申告をシミュレーション」ボタンをクリックします</li>
+        <li><strong>STEP 4：</strong>所得税額・還付金額・住民税概算と、確定申告の要否判定が表示されます</li>
+      </ol>
+    </section>
+
+    <!-- 確定申告が必要な人チェックリスト -->
+    <section class="content-section">
+      <h2>確定申告が必要な人チェックリスト</h2>
+      <p>以下に該当する場合は確定申告が必要、または確定申告をした方が有利です。</p>
+      <div style="overflow-x:auto;">
+        <table class="check-table">
+          <thead>
+            <tr>
+              <th style="width:40%;">対象者</th>
+              <th style="width:15%;text-align:center;">申告義務</th>
+              <th>詳細</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>副業所得が年間20万円超の会社員</td>
+              <td style="text-align:center;color:#dc2626;font-weight:700;">必須</td>
+              <td>給与以外の所得（収入-経費）が20万円を超える場合</td>
+            </tr>
+            <tr>
+              <td>フリーランス・個人事業主</td>
+              <td style="text-align:center;color:#dc2626;font-weight:700;">必須</td>
+              <td>事業所得がある場合（所得48万円超で課税）</td>
+            </tr>
+            <tr>
+              <td>年収2,000万円超の会社員</td>
+              <td style="text-align:center;color:#dc2626;font-weight:700;">必須</td>
+              <td>年末調整の対象外のため自分で申告が必要</td>
+            </tr>
+            <tr>
+              <td>2か所以上から給与を受けている人</td>
+              <td style="text-align:center;color:#dc2626;font-weight:700;">必須</td>
+              <td>主たる給与以外の収入が年20万円超の場合</td>
+            </tr>
+            <tr>
+              <td>医療費が年間10万円を超えた人</td>
+              <td style="text-align:center;color:#f59e0b;font-weight:700;">任意（有利）</td>
+              <td>医療費控除で税金が還付される</td>
+            </tr>
+            <tr>
+              <td>ふるさと納税をした人</td>
+              <td style="text-align:center;color:#f59e0b;font-weight:700;">任意（有利）</td>
+              <td>ワンストップ特例を使わない場合は申告が必要</td>
+            </tr>
+            <tr>
+              <td>住宅ローン控除を初めて受ける人</td>
+              <td style="text-align:center;color:#f59e0b;font-weight:700;">任意（有利）</td>
+              <td>初年度のみ確定申告が必要（2年目以降は年末調整）</td>
+            </tr>
+            <tr>
+              <td>年の途中で退職した人</td>
+              <td style="text-align:center;color:#f59e0b;font-weight:700;">任意（有利）</td>
+              <td>年末調整を受けていないため還付の可能性あり</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 主要な所得控除一覧 -->
+    <section class="content-section">
+      <h2>主要な所得控除一覧</h2>
+      <p>確定申告で適用できる主な所得控除の一覧です。控除を活用することで節税につながります。</p>
+      <div style="overflow-x:auto;">
+        <table class="check-table">
+          <thead>
+            <tr>
+              <th style="width:25%;">控除の種類</th>
+              <th style="width:20%;">控除額</th>
+              <th>内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>基礎控除</td>
+              <td>48万円</td>
+              <td>すべての納税者に適用（所得2,400万円以下の場合）</td>
+            </tr>
+            <tr>
+              <td>給与所得控除</td>
+              <td>55万〜195万円</td>
+              <td>給与所得者に自動適用（収入額に応じて計算）</td>
+            </tr>
+            <tr>
+              <td>社会保険料控除</td>
+              <td>支払額全額</td>
+              <td>健康保険料・年金保険料・雇用保険料など</td>
+            </tr>
+            <tr>
+              <td>配偶者控除</td>
+              <td>最大38万円</td>
+              <td>配偶者の所得が48万円以下の場合</td>
+            </tr>
+            <tr>
+              <td>扶養控除</td>
+              <td>38万〜63万円/人</td>
+              <td>16歳以上の扶養親族1人あたり</td>
+            </tr>
+            <tr>
+              <td>医療費控除</td>
+              <td>最大200万円</td>
+              <td>年間医療費が10万円（または所得の5%）を超えた分</td>
+            </tr>
+            <tr>
+              <td>生命保険料控除</td>
+              <td>最大12万円</td>
+              <td>生命保険・介護医療保険・個人年金保険の合計</td>
+            </tr>
+            <tr>
+              <td>小規模企業共済等掛金控除（iDeCo）</td>
+              <td>掛金全額</td>
+              <td>iDeCoや小規模企業共済の年間掛金</td>
+            </tr>
+            <tr>
+              <td>寄附金控除（ふるさと納税）</td>
+              <td>寄附金-2,000円</td>
+              <td>ふるさと納税や特定の寄附金（所得税からの控除）</td>
+            </tr>
+            <tr>
+              <td>青色申告特別控除</td>
+              <td>10万〜65万円</td>
+              <td>個人事業主が青色申告をした場合（e-Taxで最大65万円）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 確定申告のスケジュール -->
+    <section class="content-section">
+      <h2>確定申告のスケジュール</h2>
+      <p>確定申告に関する主な日程です。計画的に準備を進めましょう。</p>
+      <div style="overflow-x:auto;">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th style="width:25%;">時期</th>
+              <th style="width:30%;">内容</th>
+              <th>詳細</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align:center;">1月〜</td>
+              <td>還付申告の受付開始</td>
+              <td>還付申告は1月1日から提出可能。早めの提出で早期還付が期待できます</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">1月下旬</td>
+              <td>源泉徴収票の交付</td>
+              <td>勤務先から前年分の源泉徴収票が届きます。確定申告に必要な書類です</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">2月16日</td>
+              <td>確定申告の受付開始</td>
+              <td>所得税の確定申告期間がスタート。税務署の混雑に注意</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">3月15日</td>
+              <td>確定申告の期限</td>
+              <td>所得税の申告・納付期限。期限後は延滞税・無申告加算税のリスクあり</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">3月15日</td>
+              <td>個人事業税の申告期限</td>
+              <td>個人事業主の事業税申告も同日が期限</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">3月中旬</td>
+              <td>消費税の申告期限</td>
+              <td>課税事業者の消費税申告期限（個人は3月31日）</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">4月〜5月</td>
+              <td>還付金の入金</td>
+              <td>e-Taxなら約2〜3週間、紙申告なら1〜2か月で還付</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;">6月〜</td>
+              <td>住民税の通知</td>
+              <td>確定申告の内容を基に住民税額が決定・通知されます</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- よくある質問 -->
+    <section class="content-section">
+      <h2>確定申告シミュレーターに関するよくある質問</h2>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">確定申告が必要な人はどんな人ですか？</summary>
+        <p style="margin-top:8px;">会社員で副業収入が年間20万円を超える人、フリーランス・個人事業主、年収2,000万円を超える給与所得者、2か所以上から給与を受けている人などが確定申告の対象です。また、医療費控除やふるさと納税の還付を受けたい人も確定申告をした方が有利です。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">確定申告の期間はいつですか？</summary>
+        <p style="margin-top:8px;">確定申告の期間は毎年2月16日から3月15日までです。還付申告の場合は1月1日から5年間提出可能です。期限を過ぎると延滞税や無申告加算税が課される場合があります。e-Taxを利用すれば24時間いつでも申告できます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">還付金はいつ受け取れますか？</summary>
+        <p style="margin-top:8px;">e-Taxで申告した場合は約2〜3週間、紙で申告した場合は約1〜2か月で還付金が指定口座に振り込まれます。1月〜2月中に早めに申告すると、混雑を避けてより早く還付を受けられます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">副業の経費にはどんなものが含まれますか？</summary>
+        <p style="margin-top:8px;">副業の経費には、仕事に必要な消耗品費、通信費（按分）、交通費、書籍代、ソフトウェア代、家賃の按分（自宅兼事務所の場合）、水道光熱費の按分などが含まれます。私的な支出との区別が重要で、領収書やレシートの保管が必要です。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">入力したデータはサーバーに送信されますか？</summary>
+        <p style="margin-top:8px;">いいえ、すべての計算処理はブラウザ内で完結します。収入や経費などのデータが外部に送信されることはありません。安心してご利用ください。</p>
+      </details>
+    </section>
+
+    <!-- 他のツール -->
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../salary-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">手取り計算シミュレーター</h3>
+          <p>年収から手取りを瞬時に自動計算</p>
+        </a>
+        <a href="../unit-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">単位変換ツール</h3>
+          <p>長さ・重さ・温度などの単位を変換</p>
+        </a>
+        <a href="../password-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">パスワード生成ツール</h3>
+          <p>安全なパスワードをワンクリック生成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // === 入力フィールドの表示切替 ===
+    function toggleIncomeFields() {
+      var type = document.getElementById('income-type').value;
+      document.getElementById('salary-fields').style.display = type === 'salary' ? 'block' : 'none';
+      document.getElementById('business-fields').style.display = type === 'business' ? 'block' : 'none';
+      document.getElementById('side-fields').style.display = type === 'side' ? 'block' : 'none';
+    }
+
+    // === 数値フォーマット ===
+    function fmt(n) {
+      return Math.floor(n).toLocaleString('ja-JP');
+    }
+
+    // === 給与所得控除 ===
+    function calcEmploymentDeduction(income) {
+      if (income <= 0) return 0;
+      if (income <= 1625000) return 550000;
+      if (income <= 1800000) return income * 0.4 - 100000;
+      if (income <= 3600000) return income * 0.3 + 80000;
+      if (income <= 6600000) return income * 0.2 + 440000;
+      if (income <= 8500000) return income * 0.1 + 1100000;
+      return 1950000;
+    }
+
+    // === 社会保険料（概算・給与所得者） ===
+    function calcSocialInsurance(salaryIncome) {
+      if (salaryIncome <= 0) return 0;
+      var healthRate = 0.05;
+      var pensionBase = Math.min(salaryIncome, 7800000);
+      var pension = pensionBase * 0.0915;
+      var health = salaryIncome * healthRate;
+      var employment = salaryIncome * 0.006;
+      return Math.floor(health + pension + employment);
+    }
+
+    // === 国民健康保険料 + 国民年金（概算・事業所得者） ===
+    function calcNationalInsurance(totalIncome) {
+      // 国民年金: 月額約16,980円 × 12 = 約203,760円
+      var nationalPension = 203760;
+      // 国民健康保険: 所得割（所得-43万円）× 約10% + 均等割約4万円（概算）
+      var taxableForNHI = Math.max(totalIncome - 430000, 0);
+      var nhiIncome = Math.min(taxableForNHI * 0.10, 1060000); // 上限あり
+      var nhi = nhiIncome + 40000;
+      return Math.floor(nationalPension + nhi);
+    }
+
+    // === 所得税（累進課税 + 復興特別所得税） ===
+    function calcIncomeTax(taxableIncome) {
+      if (taxableIncome <= 0) return 0;
+      var tax = 0;
+      var brackets = [
+        { limit: 1950000, rate: 0.05, deduction: 0 },
+        { limit: 3300000, rate: 0.10, deduction: 97500 },
+        { limit: 6950000, rate: 0.20, deduction: 427500 },
+        { limit: 9000000, rate: 0.23, deduction: 636000 },
+        { limit: 18000000, rate: 0.33, deduction: 1536000 },
+        { limit: 40000000, rate: 0.40, deduction: 2796000 },
+        { limit: Infinity, rate: 0.45, deduction: 4796000 }
+      ];
+      for (var i = 0; i < brackets.length; i++) {
+        if (taxableIncome <= brackets[i].limit) {
+          tax = taxableIncome * brackets[i].rate - brackets[i].deduction;
+          break;
+        }
+      }
+      tax = tax * 1.021; // 復興特別所得税
+      return Math.floor(tax);
+    }
+
+    // === 住民税（概算） ===
+    function calcResidentTax(taxableIncome, furusato) {
+      if (taxableIncome <= 0) return 0;
+      // 住民税の課税所得（基礎控除は所得税48万→住民税43万で5万円差分）
+      var residentTaxable = taxableIncome + 50000;
+      if (residentTaxable <= 0) return 0;
+      var incomePortion = residentTaxable * 0.10;
+      // ふるさと納税の住民税控除（基本分: 寄附金-2000の10%）
+      var furusatoResident = 0;
+      if (furusato > 2000) {
+        furusatoResident = (furusato - 2000) * 0.10;
+      }
+      var tax = incomePortion + 5000 - furusatoResident;
+      return Math.max(Math.floor(tax), 0);
+    }
+
+    // === 源泉徴収税額の概算（withheldが0の場合） ===
+    function estimateWithheld(salaryIncome) {
+      if (salaryIncome <= 0) return 0;
+      var empDeduction = calcEmploymentDeduction(salaryIncome);
+      var socialIns = calcSocialInsurance(salaryIncome);
+      var basicDeduction = 480000;
+      var taxable = Math.max(salaryIncome - empDeduction - socialIns - basicDeduction, 0);
+      return calcIncomeTax(taxable);
+    }
+
+    // === メイン計算 ===
+    function calculate() {
+      var type = document.getElementById('income-type').value;
+
+      var salaryIncome = 0;
+      var businessIncome = 0;
+      var sideIncome = 0;
+      var withheld = 0;
+      var blueDeduction = 0;
+      var businessRevenue = 0;
+      var businessExpense = 0;
+      var sideRevenue = 0;
+      var sideExpense = 0;
+
+      // 収入取得
+      if (type === 'salary') {
+        salaryIncome = parseInt(document.getElementById('salary-income').value) || 0;
+        withheld = parseInt(document.getElementById('withheld-tax').value) || 0;
+      } else if (type === 'business') {
+        businessRevenue = parseInt(document.getElementById('business-revenue').value) || 0;
+        businessExpense = parseInt(document.getElementById('business-expense').value) || 0;
+        blueDeduction = parseInt(document.getElementById('blue-filing').value) || 0;
+        businessIncome = Math.max(businessRevenue - businessExpense, 0);
+      } else if (type === 'side') {
+        salaryIncome = parseInt(document.getElementById('side-salary').value) || 0;
+        withheld = parseInt(document.getElementById('side-withheld').value) || 0;
+        sideRevenue = parseInt(document.getElementById('side-revenue').value) || 0;
+        sideExpense = parseInt(document.getElementById('side-expense').value) || 0;
+        sideIncome = Math.max(sideRevenue - sideExpense, 0);
+      }
+
+      // 控除取得
+      var medicalDed = parseInt(document.getElementById('medical-deduction').value) || 0;
+      var lifeIns = Math.min(parseInt(document.getElementById('life-insurance').value) || 0, 120000);
+      var ideco = parseInt(document.getElementById('ideco').value) || 0;
+      var furusato = parseInt(document.getElementById('furusato').value) || 0;
+      var dependents = parseInt(document.getElementById('dependents').value) || 0;
+      var spouseDed = parseInt(document.getElementById('spouse-deduction').value) || 0;
+
+      // === 所得計算 ===
+      var empDeduction = calcEmploymentDeduction(salaryIncome);
+      var salaryTaxable = Math.max(salaryIncome - empDeduction, 0);
+      var businessTaxable = Math.max(businessIncome - blueDeduction, 0);
+
+      var totalIncome = salaryTaxable + businessTaxable + sideIncome;
+
+      // === 社会保険料 ===
+      var socialIns = 0;
+      if (type === 'salary' || type === 'side') {
+        socialIns = calcSocialInsurance(salaryIncome);
+      } else {
+        socialIns = calcNationalInsurance(totalIncome);
+      }
+
+      // === 所得控除合計 ===
+      var basicDeduction = 480000; // 基礎控除
+      var dependentDed = dependents * 380000; // 扶養控除（一般）
+      var furusatoDed = furusato > 2000 ? furusato - 2000 : 0; // 寄附金控除
+
+      var totalDeductions = basicDeduction + socialIns + dependentDed + spouseDed
+        + medicalDed + lifeIns + ideco + furusatoDed;
+
+      // === 課税所得 ===
+      var taxableIncome = Math.max(totalIncome - totalDeductions, 0);
+
+      // === 所得税 ===
+      var incomeTax = calcIncomeTax(taxableIncome);
+
+      // === 源泉徴収の概算（入力が0の場合） ===
+      if (withheld === 0 && (type === 'salary' || type === 'side')) {
+        withheld = estimateWithheld(salaryIncome);
+      }
+
+      // === 還付/納付額 ===
+      var refundOrPayment = withheld - incomeTax;
+
+      // === 住民税 ===
+      var residentTax = calcResidentTax(taxableIncome, furusato);
+
+      // === 確定申告の要否判定 ===
+      var judgmentEl = document.getElementById('filing-judgment');
+      var iconEl = document.getElementById('judge-icon');
+      var titleEl = document.getElementById('judge-title');
+      var reasonEl = document.getElementById('judge-reason');
+
+      judgmentEl.className = 'filing-judgment';
+
+      if (type === 'business') {
+        judgmentEl.classList.add('required');
+        iconEl.textContent = '!';
+        titleEl.textContent = '確定申告が必要です';
+        reasonEl.textContent = '個人事業主・フリーランスは確定申告が必要です。青色申告で最大65万円の控除が受けられます。';
+      } else if (type === 'side' && sideIncome > 200000) {
+        judgmentEl.classList.add('required');
+        iconEl.textContent = '!';
+        titleEl.textContent = '確定申告が必要です';
+        reasonEl.textContent = '副業所得（収入-経費）が20万円を超えているため、確定申告が必要です。';
+      } else if (salaryIncome > 20000000) {
+        judgmentEl.classList.add('required');
+        iconEl.textContent = '!';
+        titleEl.textContent = '確定申告が必要です';
+        reasonEl.textContent = '年収が2,000万円を超えているため、年末調整の対象外です。確定申告が必要です。';
+      } else if (refundOrPayment > 0 || medicalDed > 0 || furusato > 0) {
+        judgmentEl.classList.add('recommended');
+        iconEl.textContent = '?';
+        titleEl.textContent = '確定申告をおすすめします';
+        var reasons = [];
+        if (refundOrPayment > 0) reasons.push('税金の還付（' + fmt(refundOrPayment) + '円）が見込めます');
+        if (medicalDed > 0) reasons.push('医療費控除が適用できます');
+        if (furusato > 0) reasons.push('ふるさと納税の控除が適用できます');
+        reasonEl.textContent = reasons.join('。') + '。';
+      } else {
+        judgmentEl.classList.add('not-required');
+        iconEl.textContent = 'OK';
+        titleEl.textContent = '確定申告は不要です';
+        reasonEl.textContent = '給与所得のみで、年末調整で税額が確定している場合は原則不要です。';
+      }
+
+      // === 結果表示 ===
+      var resultLabel = document.getElementById('result-label');
+      var resultAmount = document.getElementById('result-amount');
+      var resultSub = document.getElementById('result-sub');
+
+      resultAmount.className = 'amount';
+      if (type === 'salary' || type === 'side') {
+        if (refundOrPayment >= 0) {
+          resultLabel.textContent = '還付金額（税金が戻ってくる）';
+          resultAmount.textContent = fmt(refundOrPayment) + '円';
+          resultAmount.classList.add('refund');
+          resultSub.textContent = '源泉徴収額 ' + fmt(withheld) + '円 − 所得税額 ' + fmt(incomeTax) + '円';
+        } else {
+          resultLabel.textContent = '追加納付額（税金を追加で支払う）';
+          resultAmount.textContent = fmt(Math.abs(refundOrPayment)) + '円';
+          resultAmount.classList.add('payment');
+          resultSub.textContent = '所得税額 ' + fmt(incomeTax) + '円 − 源泉徴収額 ' + fmt(withheld) + '円';
+        }
+      } else {
+        resultLabel.textContent = '所得税の納付額';
+        resultAmount.textContent = fmt(incomeTax) + '円';
+        resultAmount.classList.add('payment');
+        resultSub.textContent = '課税所得 ' + fmt(taxableIncome) + '円 に対する所得税額';
+      }
+
+      // 内訳カード
+      document.getElementById('bd-income-tax').textContent = fmt(incomeTax) + '円';
+      document.getElementById('bd-income-tax-sub').textContent = '復興特別所得税2.1%込み';
+      document.getElementById('bd-resident-tax').textContent = fmt(residentTax) + '円';
+      document.getElementById('bd-withheld').textContent = fmt(withheld) + '円';
+
+      // 計算詳細
+      var detailHtml = '<h3 style="font-size:1rem;margin-bottom:8px;">計算の詳細</h3>';
+
+      if (type === 'salary' || type === 'side') {
+        detailHtml += '<div class="detail-row"><span class="row-label">給与収入</span><span class="row-value">' + fmt(salaryIncome) + '円</span></div>';
+        detailHtml += '<div class="detail-row"><span class="row-label">　給与所得控除</span><span class="row-value">-' + fmt(empDeduction) + '円</span></div>';
+        detailHtml += '<div class="detail-row"><span class="row-label">　給与所得</span><span class="row-value">' + fmt(salaryTaxable) + '円</span></div>';
+      }
+      if (type === 'side') {
+        detailHtml += '<div class="detail-row"><span class="row-label">副業収入</span><span class="row-value">' + fmt(sideRevenue) + '円</span></div>';
+        detailHtml += '<div class="detail-row"><span class="row-label">　副業経費</span><span class="row-value">-' + fmt(sideExpense) + '円</span></div>';
+        detailHtml += '<div class="detail-row"><span class="row-label">　副業所得</span><span class="row-value">' + fmt(sideIncome) + '円</span></div>';
+      }
+      if (type === 'business') {
+        detailHtml += '<div class="detail-row"><span class="row-label">事業収入（売上）</span><span class="row-value">' + fmt(businessRevenue) + '円</span></div>';
+        detailHtml += '<div class="detail-row"><span class="row-label">　必要経費</span><span class="row-value">-' + fmt(businessExpense) + '円</span></div>';
+        detailHtml += '<div class="detail-row"><span class="row-label">　事業所得</span><span class="row-value">' + fmt(businessIncome) + '円</span></div>';
+        if (blueDeduction > 0) {
+          detailHtml += '<div class="detail-row"><span class="row-label">　青色申告特別控除</span><span class="row-value">-' + fmt(blueDeduction) + '円</span></div>';
+        }
+      }
+
+      detailHtml += '<div class="detail-row total"><span class="row-label">合計所得金額</span><span class="row-value">' + fmt(totalIncome) + '円</span></div>';
+      detailHtml += '<div class="detail-row"><span class="row-label">基礎控除</span><span class="row-value">-' + fmt(basicDeduction) + '円</span></div>';
+      detailHtml += '<div class="detail-row"><span class="row-label">社会保険料控除（概算）</span><span class="row-value">-' + fmt(socialIns) + '円</span></div>';
+      if (dependentDed > 0) detailHtml += '<div class="detail-row"><span class="row-label">扶養控除（' + dependents + '人）</span><span class="row-value">-' + fmt(dependentDed) + '円</span></div>';
+      if (spouseDed > 0) detailHtml += '<div class="detail-row"><span class="row-label">配偶者控除</span><span class="row-value">-' + fmt(spouseDed) + '円</span></div>';
+      if (medicalDed > 0) detailHtml += '<div class="detail-row"><span class="row-label">医療費控除</span><span class="row-value">-' + fmt(medicalDed) + '円</span></div>';
+      if (lifeIns > 0) detailHtml += '<div class="detail-row"><span class="row-label">生命保険料控除</span><span class="row-value">-' + fmt(lifeIns) + '円</span></div>';
+      if (ideco > 0) detailHtml += '<div class="detail-row"><span class="row-label">iDeCo（小規模企業共済等掛金控除）</span><span class="row-value">-' + fmt(ideco) + '円</span></div>';
+      if (furusatoDed > 0) detailHtml += '<div class="detail-row"><span class="row-label">寄附金控除（ふるさと納税）</span><span class="row-value">-' + fmt(furusatoDed) + '円</span></div>';
+      detailHtml += '<div class="detail-row total"><span class="row-label">課税所得金額</span><span class="row-value">' + fmt(taxableIncome) + '円</span></div>';
+      detailHtml += '<div class="detail-row"><span class="row-label">所得税額（復興税込み）</span><span class="row-value">' + fmt(incomeTax) + '円</span></div>';
+      detailHtml += '<div class="detail-row"><span class="row-label">住民税額（概算）</span><span class="row-value">' + fmt(residentTax) + '円</span></div>';
+
+      if (type === 'salary' || type === 'side') {
+        detailHtml += '<div class="detail-row"><span class="row-label">源泉徴収済み税額</span><span class="row-value">' + fmt(withheld) + '円</span></div>';
+        if (refundOrPayment >= 0) {
+          detailHtml += '<div class="detail-row total"><span class="row-label">還付金額</span><span class="row-value" style="color:#16a34a;">' + fmt(refundOrPayment) + '円</span></div>';
+        } else {
+          detailHtml += '<div class="detail-row total"><span class="row-label">追加納付額</span><span class="row-value" style="color:#dc2626;">' + fmt(Math.abs(refundOrPayment)) + '円</span></div>';
+        }
+      }
+
+      document.getElementById('detail-list').innerHTML = detailHtml;
+
+      // 表示
+      document.getElementById('tax-result').classList.add('show');
+      document.getElementById('tax-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // === クリア ===
+    function clearForm() {
+      var inputs = document.querySelectorAll('input[type="number"]');
+      for (var i = 0; i < inputs.length; i++) {
+        inputs[i].value = inputs[i].defaultValue || '';
+      }
+      var selects = document.querySelectorAll('select');
+      for (var i = 0; i < selects.length; i++) {
+        selects[i].selectedIndex = 0;
+      }
+      document.getElementById('tax-result').classList.remove('show');
+      toggleIncomeFields();
+    }
+  </script>
+</body>
+</html>

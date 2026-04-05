@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テキスト読み上げ - 無料オンライン音声合成ツール | Web便利ツール集</title>
+  <meta name="description" content="テキスト読み上げ無料ツール。入力したテキストをブラウザだけで音声合成。日本語・英語・中国語など多言語対応。速度・ピッチ調整可能。登録不要でオフラインでも使えます。">
+  <meta property="og:title" content="テキスト読み上げ - 無料オンライン音声合成ツール | Web便利ツール集">
+  <meta property="og:description" content="テキスト読み上げ無料ツール。入力したテキストをブラウザだけで音声合成。多言語対応・速度調整可能。登録不要。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/text-to-speech/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/text-to-speech/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "テキスト読み上げ - 無料オンライン音声合成ツール",
+    "description": "テキスト読み上げ無料ツール。入力したテキストをブラウザだけで音声合成。日本語・英語・中国語など多言語対応。速度・ピッチ調整可能。登録不要。",
+    "url": "https://simpletoolkit.net/tools/text-to-speech/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "テキスト読み上げツールは無料で使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料でご利用いただけます。登録も不要で、ブラウザだけで動作します。Web Speech APIを利用しているため、追加のソフトウェアも不要です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したテキストはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。テキストが外部サーバーに送信されることはありません。プライバシーを気にせず安心してご利用いただけます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どのブラウザで使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Chrome、Edge、Safari、Firefoxなど主要ブラウザで利用可能です。ただし、利用可能な音声の種類はブラウザやOSによって異なります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "日本語以外の言語にも対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、ブラウザがサポートする音声を自動的に取得します。英語、中国語、韓国語、フランス語、ドイツ語など、多くの言語に対応しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "読み上げ速度やピッチは変更できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、速度は0.5倍から2倍まで、ピッチ（声の高さ）は0.5から2まで調整可能です。スライダーで直感的に操作できます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+  <style>
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+    @media (max-width: 600px) {
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .control-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .control-group select,
+    .control-group input[type="range"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .range-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .range-wrapper input[type="range"] {
+      flex: 1;
+    }
+    .range-value {
+      min-width: 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .playback-buttons {
+      display: flex;
+      gap: 8px;
+      margin: 16px 0;
+      flex-wrap: wrap;
+    }
+    .playback-buttons .btn {
+      flex: 1;
+      min-width: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 16px;
+      font-size: 1rem;
+    }
+    .btn-play { background: #16a34a; color: #fff; border: none; }
+    .btn-play:hover { background: #15803d; }
+    .btn-pause { background: #f59e0b; color: #fff; border: none; }
+    .btn-pause:hover { background: #d97706; }
+    .btn-stop { background: #ef4444; color: #fff; border: none; }
+    .btn-stop:hover { background: #dc2626; }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .char-count-display {
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+    }
+    .status-dot.playing {
+      background: #16a34a;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    .status-dot.paused {
+      background: #f59e0b;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    #highlight-area {
+      min-height: 60px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      line-height: 1.8;
+      font-size: 1rem;
+      color: var(--text);
+      display: none;
+      margin-top: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #highlight-area .spoken {
+      color: var(--text-muted);
+    }
+    #highlight-area .current {
+      background: #fef08a;
+      color: #1e293b;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+    [data-theme="dark"] #highlight-area .current {
+      background: #854d0e;
+      color: #fef9c3;
+    }
+    .browser-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+    .browser-table th,
+    .browser-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .browser-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .support-yes { color: #16a34a; font-weight: 600; }
+    .support-partial { color: #f59e0b; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>テキスト読み上げツール</h1>
+    <h2>無料オンライン音声合成（Text-to-Speech）</h2>
+    <p class="tool-description">テキストを入力するだけで、ブラウザが音声で読み上げます。日本語・英語・中国語など多言語対応。速度やピッチも自由に調整可能。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <label for="input-text">読み上げたいテキストを入力</label>
+      <textarea id="input-text" placeholder="ここにテキストを入力してください..." rows="8"></textarea>
+      <div class="char-count-display"><span id="char-count">0</span> 文字</div>
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="voice-select">音声を選択</label>
+          <select id="voice-select">
+            <option value="">読み込み中...</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="rate-range">速度: <span id="rate-value">1.0</span>x</label>
+          <div class="range-wrapper">
+            <span>0.5</span>
+            <input type="range" id="rate-range" min="0.5" max="2" step="0.1" value="1">
+            <span>2.0</span>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="pitch-range">ピッチ: <span id="pitch-value">1.0</span></label>
+          <div class="range-wrapper">
+            <span>0.5</span>
+            <input type="range" id="pitch-range" min="0.5" max="2" step="0.1" value="1">
+            <span>2.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">停止中</span>
+      </div>
+
+      <div class="playback-buttons">
+        <button class="btn btn-play" id="btn-play" onclick="startSpeech()">&#9654; 再生</button>
+        <button class="btn btn-pause" id="btn-pause" onclick="pauseSpeech()" disabled>&#10074;&#10074; 一時停止</button>
+        <button class="btn btn-stop" id="btn-stop" onclick="stopSpeech()" disabled>&#9632; 停止</button>
+      </div>
+
+      <div id="highlight-area"></div>
+
+      <div class="btn-group" style="margin-top: 12px;">
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+    </div>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../text-diff/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト差分比較ツール</h3>
+          <p>2つのテキストの差分をハイライト表示</p>
+        </a>
+        <a href="../zenkaku-hankaku/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">全角半角変換ツール</h3>
+          <p>全角⇔半角をワンクリックで変換</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>テキスト読み上げ（音声合成）とは？</h2>
+      <p>テキスト読み上げ（Text-to-Speech、TTS）とは、コンピュータが文字情報を人間の音声に変換する技術です。画面に表示されたテキストを音声として出力することで、目を使わずに内容を把握できます。</p>
+      <p>近年ではスマートスピーカーやナビゲーションシステム、アクセシビリティ機能など、さまざまな場面で音声合成が活用されています。本ツールでは、ブラウザに標準搭載されている「Web Speech API」を使って、追加ソフト不要で手軽にテキストの読み上げを体験できます。</p>
+      <p>日本語だけでなく、英語・中国語・韓国語・フランス語・ドイツ語など、お使いのブラウザがサポートする多くの言語に対応しています。速度やピッチの調整も可能で、自分に合った聞きやすい設定で読み上げが可能です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>テキストを入力：</strong>テキスト入力欄に、読み上げたいテキストを入力またはペーストします。</li>
+        <li><strong>音声・速度・ピッチを設定：</strong>音声（言語）を選択し、お好みの速度・ピッチに調整します。</li>
+        <li><strong>再生ボタンをクリック：</strong>「再生」ボタンを押すと読み上げが開始されます。一時停止・停止もワンクリックで操作できます。</li>
+        <li><strong>ハイライトを確認：</strong>読み上げ中のテキストがハイライト表示されるので、どこを読んでいるか一目でわかります。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>Web Speech APIの対応ブラウザ一覧</h2>
+      <p>本ツールで使用しているWeb Speech API（SpeechSynthesis）の対応状況は以下のとおりです。</p>
+      <table class="browser-table">
+        <thead>
+          <tr>
+            <th>ブラウザ</th>
+            <th>デスクトップ</th>
+            <th>モバイル</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google Chrome</td>
+            <td class="support-yes">対応</td>
+            <td class="support-yes">対応</td>
+            <td>最も多くの音声を利用可能</td>
+          </tr>
+          <tr>
+            <td>Microsoft Edge</td>
+            <td class="support-yes">対応</td>
+            <td class="support-yes">対応</td>
+            <td>高品質なMicrosoft音声を利用可能</td>
+          </tr>
+          <tr>
+            <td>Safari</td>
+            <td class="support-yes">対応</td>
+            <td class="support-yes">対応</td>
+            <td>macOS/iOS標準の音声を使用</td>
+          </tr>
+          <tr>
+            <td>Firefox</td>
+            <td class="support-yes">対応</td>
+            <td class="support-partial">一部対応</td>
+            <td>OS標準の音声を使用</td>
+          </tr>
+          <tr>
+            <td>Opera</td>
+            <td class="support-yes">対応</td>
+            <td class="support-yes">対応</td>
+            <td>Chromiumベースで安定動作</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>※ 利用可能な音声の種類や品質は、ブラウザ・OS・デバイスによって異なります。最良の体験にはChromeまたはEdgeをおすすめします。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>テキスト読み上げの活用シーン</h2>
+      <ul>
+        <li>長文記事やドキュメントを「ながら聞き」して効率的にインプットしたいとき</li>
+        <li>外国語の発音確認や語学学習の教材として活用したいとき</li>
+        <li>視覚障害のある方や、目が疲れているときのアクセシビリティ手段として</li>
+        <li>自分の書いた文章を音声で確認して、読みやすさや誤字をチェックしたいとき</li>
+        <li>プレゼン原稿を読み上げて、所要時間や聞き取りやすさを確認したいとき</li>
+        <li>子どもへの読み聞かせや教育コンテンツの音声化に活用したいとき</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>テキスト読み上げツールは無料で使えますか？</summary>
+        <p>はい、完全無料でご利用いただけます。登録も不要で、ブラウザだけで動作します。Web Speech APIというブラウザ標準の機能を利用しているため、追加のソフトウェアも不要です。</p>
+      </details>
+      <details>
+        <summary>入力したテキストはサーバーに送信されますか？</summary>
+        <p>いいえ、すべての処理はブラウザ内で完結します。テキストが外部サーバーに送信されることはありません。プライバシーを気にせず安心してご利用いただけます。</p>
+      </details>
+      <details>
+        <summary>日本語以外の言語にも対応していますか？</summary>
+        <p>はい、お使いのブラウザがサポートする音声を自動的に取得して一覧に表示します。英語、中国語、韓国語、フランス語、ドイツ語など、多くの言語に対応しています。ただし、利用可能な言語はブラウザやOSによって異なります。</p>
+      </details>
+      <details>
+        <summary>読み上げ速度やピッチは変更できますか？</summary>
+        <p>はい、速度は0.5倍（ゆっくり）から2倍（速い）まで、ピッチ（声の高さ）は0.5（低い）から2（高い）まで、スライダーで自由に調整できます。語学学習にはゆっくり、速聴には2倍速がおすすめです。</p>
+      </details>
+      <details>
+        <summary>読み上げた音声を保存（録音）できますか？</summary>
+        <p>本ツールではWeb Speech APIを利用しており、直接的な音声ファイルの保存機能はありません。録音が必要な場合は、OS標準の録音機能やサードパーティの録音ソフトを併用してください。</p>
+      </details>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // --- Elements ---
+    var inputText = document.getElementById('input-text');
+    var voiceSelect = document.getElementById('voice-select');
+    var rateRange = document.getElementById('rate-range');
+    var pitchRange = document.getElementById('pitch-range');
+    var rateValue = document.getElementById('rate-value');
+    var pitchValue = document.getElementById('pitch-value');
+    var charCount = document.getElementById('char-count');
+    var btnPlay = document.getElementById('btn-play');
+    var btnPause = document.getElementById('btn-pause');
+    var btnStop = document.getElementById('btn-stop');
+    var statusDot = document.getElementById('status-dot');
+    var statusText = document.getElementById('status-text');
+    var highlightArea = document.getElementById('highlight-area');
+
+    var synth = window.speechSynthesis;
+    var voices = [];
+    var currentUtterance = null;
+    var isPaused = false;
+
+    // --- Character count ---
+    function updateCharCount() {
+      var text = inputText.value;
+      if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+        var segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' });
+        charCount.textContent = [...segmenter.segment(text)].length;
+      } else {
+        charCount.textContent = [...text].length;
+      }
+    }
+    inputText.addEventListener('input', updateCharCount);
+
+    // --- Voice loading ---
+    function loadVoices() {
+      voices = synth.getVoices();
+      if (voices.length === 0) return;
+
+      voiceSelect.innerHTML = '';
+
+      // Group by language
+      var langGroups = {};
+      var langNames = {
+        'ja': '日本語', 'en': '英語', 'zh': '中国語', 'ko': '韓国語',
+        'fr': 'フランス語', 'de': 'ドイツ語', 'es': 'スペイン語',
+        'it': 'イタリア語', 'pt': 'ポルトガル語', 'ru': 'ロシア語',
+        'ar': 'アラビア語', 'hi': 'ヒンディー語', 'th': 'タイ語',
+        'vi': 'ベトナム語', 'nl': 'オランダ語', 'sv': 'スウェーデン語'
+      };
+
+      voices.forEach(function(voice, i) {
+        var langCode = voice.lang.split('-')[0];
+        if (!langGroups[langCode]) {
+          langGroups[langCode] = [];
+        }
+        langGroups[langCode].push({ voice: voice, index: i });
+      });
+
+      // Sort: Japanese first, then English, then others alphabetically
+      var sortedKeys = Object.keys(langGroups).sort(function(a, b) {
+        if (a === 'ja') return -1;
+        if (b === 'ja') return 1;
+        if (a === 'en') return -1;
+        if (b === 'en') return 1;
+        return a.localeCompare(b);
+      });
+
+      sortedKeys.forEach(function(langCode) {
+        var group = langGroups[langCode];
+        var groupLabel = langNames[langCode] || langCode.toUpperCase();
+        var optgroup = document.createElement('optgroup');
+        optgroup.label = groupLabel;
+
+        group.forEach(function(item) {
+          var option = document.createElement('option');
+          option.value = item.index;
+          option.textContent = item.voice.name + ' (' + item.voice.lang + ')';
+          if (item.voice.default) {
+            option.textContent += ' - デフォルト';
+          }
+          optgroup.appendChild(option);
+        });
+
+        voiceSelect.appendChild(optgroup);
+      });
+
+      // Select first Japanese voice by default
+      var jaVoice = voices.findIndex(function(v) { return v.lang.startsWith('ja'); });
+      if (jaVoice !== -1) {
+        voiceSelect.value = jaVoice;
+      }
+    }
+
+    loadVoices();
+    if (synth.onvoiceschanged !== undefined) {
+      synth.onvoiceschanged = loadVoices;
+    }
+
+    // --- Range sliders ---
+    rateRange.addEventListener('input', function() {
+      rateValue.textContent = parseFloat(this.value).toFixed(1);
+    });
+    pitchRange.addEventListener('input', function() {
+      pitchValue.textContent = parseFloat(this.value).toFixed(1);
+    });
+
+    // --- Status update ---
+    function setStatus(state, text) {
+      statusDot.className = 'status-dot';
+      if (state === 'playing') statusDot.classList.add('playing');
+      if (state === 'paused') statusDot.classList.add('paused');
+      statusText.textContent = text;
+    }
+
+    // --- Speech functions ---
+    function startSpeech() {
+      var text = inputText.value.trim();
+      if (!text) {
+        alert('読み上げるテキストを入力してください。');
+        return;
+      }
+
+      // If paused, resume
+      if (isPaused && synth.paused) {
+        synth.resume();
+        isPaused = false;
+        setStatus('playing', '再生中...');
+        btnPlay.disabled = true;
+        btnPause.disabled = false;
+        btnStop.disabled = false;
+        btnPause.innerHTML = '&#10074;&#10074; 一時停止';
+        return;
+      }
+
+      // Cancel any ongoing speech
+      synth.cancel();
+
+      // Show highlight area
+      highlightArea.style.display = 'block';
+      highlightArea.textContent = text;
+
+      var utterance = new SpeechSynthesisUtterance(text);
+      currentUtterance = utterance;
+
+      // Set voice
+      var selectedIndex = parseInt(voiceSelect.value);
+      if (voices[selectedIndex]) {
+        utterance.voice = voices[selectedIndex];
+      }
+
+      utterance.rate = parseFloat(rateRange.value);
+      utterance.pitch = parseFloat(pitchRange.value);
+
+      // Highlight on boundary event
+      utterance.onboundary = function(event) {
+        if (event.name === 'word') {
+          var charIndex = event.charIndex;
+          var charLength = event.charLength || 1;
+          // Try to find the word boundary
+          var before = text.substring(0, charIndex);
+          var word = text.substring(charIndex, charIndex + charLength);
+          var after = text.substring(charIndex + charLength);
+
+          // If charLength is not reliable, find the next word
+          if (charLength <= 1) {
+            var remaining = text.substring(charIndex);
+            var match = remaining.match(/^[\S]+/);
+            if (match) {
+              word = match[0];
+              after = text.substring(charIndex + word.length);
+            }
+          }
+
+          highlightArea.innerHTML = '';
+          var spanBefore = document.createElement('span');
+          spanBefore.className = 'spoken';
+          spanBefore.textContent = before;
+          var spanCurrent = document.createElement('span');
+          spanCurrent.className = 'current';
+          spanCurrent.textContent = word;
+          var spanAfter = document.createTextNode(after);
+          highlightArea.appendChild(spanBefore);
+          highlightArea.appendChild(spanCurrent);
+          highlightArea.appendChild(spanAfter);
+        }
+      };
+
+      utterance.onstart = function() {
+        setStatus('playing', '再生中...');
+        btnPlay.disabled = true;
+        btnPause.disabled = false;
+        btnStop.disabled = false;
+      };
+
+      utterance.onend = function() {
+        resetControls();
+        highlightArea.innerHTML = '';
+        var spanDone = document.createElement('span');
+        spanDone.className = 'spoken';
+        spanDone.textContent = text;
+        highlightArea.appendChild(spanDone);
+      };
+
+      utterance.onerror = function(event) {
+        if (event.error !== 'canceled') {
+          console.error('Speech error:', event.error);
+        }
+        resetControls();
+      };
+
+      synth.speak(utterance);
+      isPaused = false;
+    }
+
+    function pauseSpeech() {
+      if (synth.speaking && !synth.paused) {
+        synth.pause();
+        isPaused = true;
+        setStatus('paused', '一時停止中');
+        btnPlay.disabled = false;
+        btnPause.disabled = true;
+        btnPlay.innerHTML = '&#9654; 再開';
+      }
+    }
+
+    function stopSpeech() {
+      synth.cancel();
+      isPaused = false;
+      resetControls();
+      highlightArea.style.display = 'none';
+    }
+
+    function resetControls() {
+      setStatus('stopped', '停止中');
+      btnPlay.disabled = false;
+      btnPause.disabled = true;
+      btnStop.disabled = true;
+      btnPlay.innerHTML = '&#9654; 再生';
+      isPaused = false;
+    }
+
+    function clearAll() {
+      stopSpeech();
+      inputText.value = '';
+      updateCharCount();
+      highlightArea.style.display = 'none';
+    }
+
+    // Chrome has a bug where long texts stop after ~15 seconds.
+    // Workaround: keep the synth alive with a timer.
+    var keepAliveTimer = null;
+    var origSpeak = synth.speak.bind(synth);
+    synth.speak = function(utterance) {
+      origSpeak(utterance);
+      if (keepAliveTimer) clearInterval(keepAliveTimer);
+      keepAliveTimer = setInterval(function() {
+        if (!synth.speaking) {
+          clearInterval(keepAliveTimer);
+          keepAliveTimer = null;
+        } else if (synth.paused) {
+          // do nothing while paused
+        } else {
+          synth.pause();
+          synth.resume();
+        }
+      }, 10000);
+    };
+  </script>
+</body>
+</html>

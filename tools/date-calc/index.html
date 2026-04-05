@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日付計算・日数計算 - 無料オンライン日数カウントツール | Web便利ツール集</title>
+  <meta name="description" content="2つの日付間の日数計算、N日後・N日前の日付計算、営業日計算（土日祝除外）ができる無料オンラインツール。2026年の日本の祝日対応。登録不要・ブラウザだけで完結。">
+  <meta property="og:title" content="日付計算・日数計算 - 無料オンライン日数カウントツール | Web便利ツール集">
+  <meta property="og:description" content="日付間の日数計算、N日後・N日前の計算、営業日計算が無料でできるオンラインツール。2026年の日本の祝日対応。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/date-calc/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/date-calc/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "日付計算・日数計算ツール - 無料オンライン日数カウント",
+    "description": "2つの日付間の日数計算、N日後・N日前の日付計算、営業日計算（土日祝除外）ができる無料オンラインツール。2026年の日本の祝日対応。",
+    "url": "https://simpletoolkit.net/tools/date-calc/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "2つの日付の間の日数はどうやって計算しますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "「日数計算」タブで開始日と終了日を入力すると、間の日数を年・月・週・日の単位で自動計算します。曜日も表示されるので確認に便利です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "営業日計算では何が除外されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "営業日計算では土曜日・日曜日・日本の祝日（2026年分）が除外されます。振替休日も考慮しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "N日後・N日前の計算はできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、「N日後/N日前」タブで基準日と日数を入力し、「後」か「前」を選ぶだけで結果の日付と曜日が表示されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "このツールは無料で使えますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、完全無料でご利用いただけます。登録不要で、すべての処理はブラウザ内で完結します。データが外部に送信されることはありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "2026年の日本の祝日は何日ありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2026年の日本の祝日は全16日です。元日、成人の日、建国記念の日、天皇誕生日、春分の日、昭和の日、憲法記念日、みどりの日、こどもの日、海の日、山の日、敬老の日、秋分の日、スポーツの日、文化の日、勤労感謝の日です。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 2px solid var(--border);
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    .tab-panel {
+      display: none;
+      padding: 24px 0 0;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .form-row label {
+      font-weight: 600;
+      min-width: 80px;
+      white-space: nowrap;
+    }
+    .form-row input[type="date"],
+    .form-row input[type="number"],
+    .form-row select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      background: var(--surface);
+      color: var(--text);
+    }
+    .form-row input[type="date"] {
+      min-width: 160px;
+    }
+    .form-row input[type="number"] {
+      width: 100px;
+    }
+    .today-btn {
+      padding: 6px 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .today-btn:hover {
+      background: var(--primary-hover);
+    }
+    .calc-btn {
+      display: inline-block;
+      padding: 10px 28px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .calc-btn:hover {
+      background: var(--primary-hover);
+    }
+    .result-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: none;
+    }
+    .result-box.show {
+      display: block;
+    }
+    .result-main {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .result-detail {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+    .result-detail span {
+      display: inline-block;
+      margin-right: 16px;
+    }
+    .holiday-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 12px;
+    }
+    .holiday-table th, .holiday-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .holiday-table th {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+    }
+    .holiday-table tbody tr:nth-child(even) {
+      background: #f1f5f9;
+    }
+    [data-theme="dark"] .holiday-table tbody tr:nth-child(even) {
+      background: #1e293b;
+    }
+    .info-section {
+      margin-top: 32px;
+    }
+    .info-section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+    .info-section p, .info-section li {
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+    .info-section ol {
+      padding-left: 1.5em;
+    }
+    @media (max-width: 600px) {
+      .tab-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+      }
+      .form-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .form-row label {
+        min-width: unset;
+      }
+      .form-row input[type="date"],
+      .form-row input[type="number"],
+      .form-row select {
+        width: 100%;
+      }
+      .result-main {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>日付計算・日数計算ツール</h1>
+    <p class="tool-description">2つの日付間の日数計算、N日後・N日前の日付計算、営業日計算（土日祝除外）ができる無料オンラインツールです。2026年の日本の祝日に対応。登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="days-between">日数計算</button>
+        <button class="tab-btn" data-tab="add-days">N日後/N日前</button>
+        <button class="tab-btn" data-tab="business-days">営業日計算</button>
+      </div>
+
+      <!-- 日数計算タブ -->
+      <div id="days-between" class="tab-panel active">
+        <div class="form-row">
+          <label for="db-start">開始日：</label>
+          <input type="date" id="db-start">
+          <button class="today-btn" onclick="setToday('db-start')">今日</button>
+        </div>
+        <div class="form-row">
+          <label for="db-end">終了日：</label>
+          <input type="date" id="db-end">
+          <button class="today-btn" onclick="setToday('db-end')">今日</button>
+        </div>
+        <button class="calc-btn" onclick="calcDaysBetween()">計算する</button>
+        <div id="db-result" class="result-box"></div>
+      </div>
+
+      <!-- N日後/N日前タブ -->
+      <div id="add-days" class="tab-panel">
+        <div class="form-row">
+          <label for="ad-base">基準日：</label>
+          <input type="date" id="ad-base">
+          <button class="today-btn" onclick="setToday('ad-base')">今日</button>
+        </div>
+        <div class="form-row">
+          <label for="ad-num">日数：</label>
+          <input type="number" id="ad-num" min="0" value="30">
+          <select id="ad-dir">
+            <option value="after">日後</option>
+            <option value="before">日前</option>
+          </select>
+        </div>
+        <button class="calc-btn" onclick="calcAddDays()">計算する</button>
+        <div id="ad-result" class="result-box"></div>
+      </div>
+
+      <!-- 営業日計算タブ -->
+      <div id="business-days" class="tab-panel">
+        <div class="form-row">
+          <label for="bd-start">開始日：</label>
+          <input type="date" id="bd-start">
+          <button class="today-btn" onclick="setToday('bd-start')">今日</button>
+        </div>
+        <div class="form-row">
+          <label for="bd-end">終了日：</label>
+          <input type="date" id="bd-end">
+          <button class="today-btn" onclick="setToday('bd-end')">今日</button>
+        </div>
+        <button class="calc-btn" onclick="calcBusinessDays()">計算する</button>
+        <div id="bd-result" class="result-box"></div>
+      </div>
+    </div>
+
+    <section class="content-section">
+      <h2>日付計算ツールとは？</h2>
+      <p>日付計算ツールは、日付に関するさまざまな計算をオンラインで簡単に行えるツールです。「あと何日？」「100日後は何日？」「営業日で何日かかる？」といった日常やビジネスで頻繁に発生する疑問を、瞬時に解決できます。納期計算、イベントまでのカウントダウン、プロジェクトのスケジュール管理などに便利です。すべての処理はブラウザ内で完結し、入力されたデータは外部に送信されません。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>計算モードを選ぶ</strong> - 「日数計算」「N日後/N日前」「営業日計算」の3つのタブから目的に合ったモードを選びます。</li>
+        <li><strong>日付を入力する</strong> - カレンダーから日付を選ぶか、「今日」ボタンで本日の日付をワンクリック入力できます。</li>
+        <li><strong>計算ボタンを押す</strong> - 「計算する」をクリックすると、結果がすぐに表示されます。</li>
+        <li><strong>結果を確認する</strong> - 日数・年月日・曜日などの詳細な結果が表示されます。営業日計算では土日祝を除いた日数が表示されます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>2026年の日本の祝日一覧</h2>
+      <p>営業日計算で除外される2026年の日本の祝日です。振替休日も含みます。</p>
+      <table class="holiday-table">
+        <thead>
+          <tr>
+            <th>日付</th>
+            <th>曜日</th>
+            <th>祝日名</th>
+          </tr>
+        </thead>
+        <tbody id="holiday-tbody"></tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">2つの日付の間の日数はどうやって計算しますか？</summary>
+        <p style="margin-top:8px;">「日数計算」タブで開始日と終了日を入力し、「計算する」をクリックしてください。日数が年・月・週・日の単位で表示されます。開始日と終了日それぞれの曜日も確認できます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">営業日計算では何が除外されますか？</summary>
+        <p style="margin-top:8px;">土曜日・日曜日・日本の祝日（2026年分）が除外されます。振替休日も考慮しています。祝日一覧は本ページ下部で確認できます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">「日数計算」の結果に開始日・終了日は含まれますか？</summary>
+        <p style="margin-top:8px;">開始日から終了日までの差分（終了日 - 開始日）を計算しています。例えば1月1日から1月3日の場合は2日間です。開始日を含めた日数が必要な場合は、結果に1を足してください。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">うるう年は考慮されていますか？</summary>
+        <p style="margin-top:8px;">はい、うるう年を含むすべてのカレンダー計算はブラウザのDateオブジェクトを使用しており、正確に計算されます。2月29日を含む期間も正しく計算されます。</p>
+      </details>
+      <details style="margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">このツールは無料で使えますか？</summary>
+        <p style="margin-top:8px;">はい、完全無料でご利用いただけます。登録不要で、すべての処理はブラウザ内で完結します。データが外部に送信されることはありません。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">関連ツール</h2>
+      <div class="tool-grid">
+        <a href="../age-calculator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">年齢早見表</h3>
+          <p>生まれ年から年齢・干支・学年がわかる</p>
+        </a>
+        <a href="../wareki-converter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">和暦西暦変換</h3>
+          <p>和暦（令和・平成・昭和）と西暦を相互変換</p>
+        </a>
+        <a href="../unix-timestamp/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Unixタイムスタンプ変換</h3>
+          <p>Unixタイムスタンプと日時を相互変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    // 2026年の日本の祝日
+    const HOLIDAYS_2026 = [
+      { date: '2026-01-01', name: '元日' },
+      { date: '2026-01-12', name: '成人の日' },
+      { date: '2026-02-11', name: '建国記念の日' },
+      { date: '2026-02-23', name: '天皇誕生日' },
+      { date: '2026-03-20', name: '春分の日' },
+      { date: '2026-04-29', name: '昭和の日' },
+      { date: '2026-05-03', name: '憲法記念日' },
+      { date: '2026-05-04', name: 'みどりの日' },
+      { date: '2026-05-05', name: 'こどもの日' },
+      { date: '2026-05-06', name: '振替休日' },
+      { date: '2026-07-20', name: '海の日' },
+      { date: '2026-08-11', name: '山の日' },
+      { date: '2026-09-21', name: '敬老の日' },
+      { date: '2026-09-22', name: '国民の休日' },
+      { date: '2026-09-23', name: '秋分の日' },
+      { date: '2026-10-12', name: 'スポーツの日' },
+      { date: '2026-11-03', name: '文化の日' },
+      { date: '2026-11-23', name: '勤労感謝の日' }
+    ];
+
+    const HOLIDAY_SET = new Set(HOLIDAYS_2026.map(h => h.date));
+
+    const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土'];
+
+    function getWeekday(dateStr) {
+      var d = new Date(dateStr + 'T00:00:00');
+      return WEEKDAYS[d.getDay()];
+    }
+
+    function formatDate(d) {
+      var y = d.getFullYear();
+      var m = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return y + '-' + m + '-' + day;
+    }
+
+    function formatDateJP(d) {
+      return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日（' + WEEKDAYS[d.getDay()] + '）';
+    }
+
+    // 今日ボタン
+    function setToday(id) {
+      var today = formatDate(new Date());
+      document.getElementById(id).value = today;
+    }
+
+    // タブ切り替え
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+        btn.classList.add('active');
+        document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+      });
+    });
+
+    // 日数計算
+    function calcDaysBetween() {
+      var startVal = document.getElementById('db-start').value;
+      var endVal = document.getElementById('db-end').value;
+      var box = document.getElementById('db-result');
+
+      if (!startVal || !endVal) {
+        box.innerHTML = '<p style="color:#dc2626;">開始日と終了日を入力してください。</p>';
+        box.classList.add('show');
+        return;
+      }
+
+      var start = new Date(startVal + 'T00:00:00');
+      var end = new Date(endVal + 'T00:00:00');
+      var diffMs = end.getTime() - start.getTime();
+      var totalDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+      var absDays = Math.abs(totalDays);
+
+      var years = Math.floor(absDays / 365);
+      var months = Math.floor(absDays / 30);
+      var weeks = Math.floor(absDays / 7);
+      var remainDays = absDays % 7;
+
+      var direction = totalDays >= 0 ? '' : '（終了日が開始日より前です）';
+
+      box.innerHTML = '<div class="result-main">' + absDays + '日間' + direction + '</div>' +
+        '<div class="result-detail">' +
+        '<span>' + formatDateJP(start) + '</span> から <span>' + formatDateJP(end) + '</span><br>' +
+        '<span>約 ' + years + '年</span>' +
+        '<span>約 ' + months + 'ヶ月</span>' +
+        '<span>' + weeks + '週 ' + remainDays + '日</span>' +
+        '<span>' + absDays + '日</span>' +
+        '<span>（' + (absDays * 24) + '時間）</span>' +
+        '</div>';
+      box.classList.add('show');
+    }
+
+    // N日後/N日前計算
+    function calcAddDays() {
+      var baseVal = document.getElementById('ad-base').value;
+      var num = parseInt(document.getElementById('ad-num').value, 10);
+      var dir = document.getElementById('ad-dir').value;
+      var box = document.getElementById('ad-result');
+
+      if (!baseVal || isNaN(num)) {
+        box.innerHTML = '<p style="color:#dc2626;">基準日と日数を入力してください。</p>';
+        box.classList.add('show');
+        return;
+      }
+
+      var base = new Date(baseVal + 'T00:00:00');
+      var result = new Date(base);
+      if (dir === 'after') {
+        result.setDate(result.getDate() + num);
+      } else {
+        result.setDate(result.getDate() - num);
+      }
+
+      var label = dir === 'after' ? num + '日後' : num + '日前';
+
+      box.innerHTML = '<div class="result-main">' + formatDateJP(result) + '</div>' +
+        '<div class="result-detail">' +
+        '<span>' + formatDateJP(base) + ' の ' + label + '</span>' +
+        '</div>';
+      box.classList.add('show');
+    }
+
+    // 営業日計算
+    function isHoliday(dateStr) {
+      return HOLIDAY_SET.has(dateStr);
+    }
+
+    function isBusinessDay(d) {
+      var dow = d.getDay();
+      if (dow === 0 || dow === 6) return false;
+      if (isHoliday(formatDate(d))) return false;
+      return true;
+    }
+
+    function calcBusinessDays() {
+      var startVal = document.getElementById('bd-start').value;
+      var endVal = document.getElementById('bd-end').value;
+      var box = document.getElementById('bd-result');
+
+      if (!startVal || !endVal) {
+        box.innerHTML = '<p style="color:#dc2626;">開始日と終了日を入力してください。</p>';
+        box.classList.add('show');
+        return;
+      }
+
+      var start = new Date(startVal + 'T00:00:00');
+      var end = new Date(endVal + 'T00:00:00');
+
+      var s = start;
+      var e = end;
+      if (start > end) {
+        s = end;
+        e = start;
+      }
+
+      var businessDays = 0;
+      var totalDays = 0;
+      var holidays = 0;
+      var weekends = 0;
+      var current = new Date(s);
+
+      while (current < e) {
+        current.setDate(current.getDate() + 1);
+        totalDays++;
+        var dow = current.getDay();
+        var dateStr = formatDate(current);
+
+        if (dow === 0 || dow === 6) {
+          weekends++;
+        } else if (isHoliday(dateStr)) {
+          holidays++;
+        } else {
+          businessDays++;
+        }
+      }
+
+      var direction = start <= end ? '' : '（終了日が開始日より前です）';
+
+      box.innerHTML = '<div class="result-main">営業日: ' + businessDays + '日' + direction + '</div>' +
+        '<div class="result-detail">' +
+        '<span>' + formatDateJP(start) + '</span> から <span>' + formatDateJP(end) + '</span><br>' +
+        '<span>総日数: ' + totalDays + '日</span>' +
+        '<span>土日: ' + weekends + '日</span>' +
+        '<span>祝日: ' + holidays + '日</span>' +
+        '<span>営業日: ' + businessDays + '日</span>' +
+        '</div>';
+      box.classList.add('show');
+    }
+
+    // 祝日テーブル生成
+    function renderHolidayTable() {
+      var tbody = document.getElementById('holiday-tbody');
+      var html = '';
+      HOLIDAYS_2026.forEach(function(h) {
+        var weekday = getWeekday(h.date);
+        var parts = h.date.split('-');
+        var dateJP = parseInt(parts[1], 10) + '月' + parseInt(parts[2], 10) + '日';
+        html += '<tr><td>' + parts[0] + '年' + dateJP + '</td><td>' + weekday + '曜日</td><td>' + h.name + '</td></tr>';
+      });
+      tbody.innerHTML = html;
+    }
+
+    // 初期化
+    (function() {
+      var today = formatDate(new Date());
+      document.getElementById('db-start').value = today;
+      document.getElementById('ad-base').value = today;
+      document.getElementById('bd-start').value = today;
+      renderHolidayTable();
+    })();
+  </script>
+</body>
+</html>

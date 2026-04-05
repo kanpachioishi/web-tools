@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNS文字数チェッカー - X/Instagram/TikTok文字数制限確認ツール | Web便利ツール集</title>
+  <meta name="description" content="SNS投稿の文字数をリアルタイムでチェック。X(Twitter)・Instagram・TikTok・YouTube・LINE・Threadsなど主要SNSの文字数制限を一目で確認。URL自動検出・超過警告付き。無料・登録不要。">
+  <meta property="og:title" content="SNS文字数チェッカー - X/Instagram/TikTok文字数制限確認ツール | Web便利ツール集">
+  <meta property="og:description" content="SNS投稿の文字数をリアルタイムでチェック。主要SNSの文字数制限を一目で確認。無料・登録不要。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/sns-char-limit/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/sns-char-limit/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SNS文字数チェッカー - X/Instagram/TikTok文字数制限確認ツール",
+    "description": "SNS投稿の文字数をリアルタイムでチェック。X(Twitter)・Instagram・TikTok・YouTube・LINE・Threadsなど主要SNSの文字数制限を一目で確認。URL自動検出・超過警告付き。無料・登録不要。",
+    "url": "https://simpletoolkit.net/tools/sns-char-limit/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "X（Twitter）の文字数制限は何文字ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "X（Twitter）の通常投稿は140文字までです。URLは短縮されて23文字としてカウントされます。X Premium（有料プラン）では最大25,000文字まで投稿可能です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Instagramのキャプションは何文字まで入力できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Instagramのキャプションは最大2,200文字まで入力できます。ただし、フィードに表示されるのは最初の125文字程度で、それ以降は「続きを読む」をタップして表示されます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "URLはX（Twitter）で何文字としてカウントされますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "X（Twitter）ではURLの長さに関係なく、すべてのURLが23文字としてカウントされます（t.co短縮）。本ツールではこのURL換算を自動で行い、正確な残り文字数を表示します。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "入力したテキストはサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての処理はブラウザ内で完結します。入力されたテキストが外部サーバーに送信されることは一切ありません。安心してご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "絵文字は何文字としてカウントされますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "本ツールでは絵文字を1文字としてカウントします。ただし、X（Twitter）では一部の絵文字が2文字としてカウントされる場合があります。実際の投稿時に微差が出る可能性があるため、余裕を持たせることをおすすめします。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+  <style>
+    .sns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .sns-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .sns-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .sns-card-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .sns-card-count {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .sns-card-count .remaining {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .sns-card-count.over .remaining {
+      color: #ef4444;
+    }
+    .sns-card-count.ok .remaining {
+      color: #22c55e;
+    }
+    .sns-card-count.warn .remaining {
+      color: #f59e0b;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.2s ease, background-color 0.2s ease;
+    }
+    .progress-bar-fill.ok { background: #22c55e; }
+    .progress-bar-fill.warn { background: #f59e0b; }
+    .progress-bar-fill.over { background: #ef4444; }
+    .sns-card.no-limit .progress-bar-bg { display: none; }
+    .url-notice {
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .url-notice strong { color: var(--text); }
+    .optimize-btn {
+      margin-top: 8px;
+    }
+    .content-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+    .content-table th,
+    .content-table td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    .content-table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .tips-table td:first-child {
+      white-space: nowrap;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>SNS文字数チェッカー</h1>
+    <h2>X / Instagram / TikTok / YouTube 文字数制限をリアルタイム確認</h2>
+    <p class="tool-description">SNS投稿の文字数を入力するだけでリアルタイムにチェック。X（Twitter）・Instagram・TikTok・YouTube・LINE・Threads・Facebookなど主要SNSの文字数制限と残り文字数を一目で確認できます。URL自動検出・超過警告付き。無料・登録不要・ブラウザだけで完結します。</p>
+
+    <div class="tool-area">
+      <label for="input-text">SNS投稿テキストを入力</label>
+      <textarea id="input-text" placeholder="ここにSNS投稿文を入力してください..." rows="8"></textarea>
+
+      <div id="url-notice" class="url-notice" style="display:none;">
+        <strong>URL検出:</strong> <span id="url-count">0</span>個のURLを検出しました（X向けに各URLを23文字として換算）
+      </div>
+
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-secondary" onclick="document.getElementById('input-text').value=''; updateAll();">クリア</button>
+        <button class="btn optimize-btn" onclick="optimizeForX();">X用に最適化（140文字にカット）</button>
+      </div>
+
+      <div class="sns-grid" id="sns-grid"></div>
+    </div>
+
+    <section class="content-section">
+      <h2>SNS文字数チェッカーとは？</h2>
+      <p>SNS文字数チェッカーは、主要なSNSプラットフォームの文字数制限に対して、入力テキストの残り文字数をリアルタイムで表示するツールです。</p>
+      <p>X（Twitter）の140文字制限、Instagramのキャプション2,200文字制限など、SNSごとに異なる文字数制限を意識しながら投稿文を作成するのは手間がかかります。このツールを使えば、1つのテキスト入力で全SNSの制限状況を一度に確認できます。</p>
+      <p>X向けにはURLの自動検出機能も搭載しています。Xでは投稿内のURLが長さに関係なく23文字としてカウントされるため、この換算を自動で行い正確な残り文字数を表示します。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>テキストを入力：</strong>テキスト入力欄にSNSに投稿したい文章を入力またはペーストします。</li>
+        <li><strong>リアルタイム確認：</strong>入力と同時に、各SNSの残り文字数とプログレスバーが自動で更新されます。</li>
+        <li><strong>超過チェック：</strong>制限を超えたSNSは赤色で警告表示されます。黄色は残り20%以下の警告です。</li>
+        <li><strong>最適化：</strong>「X用に最適化」ボタンで140文字に収まるよう末尾を自動カットできます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>主要SNSの文字数制限一覧</h2>
+      <p>主要SNSプラットフォームの文字数制限を投稿タイプ別にまとめました。</p>
+      <h3>投稿・キャプション</h3>
+      <table class="content-table">
+        <thead>
+          <tr><th>SNS</th><th>対象</th><th>文字数制限</th><th>備考</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>X（Twitter）</td><td>通常投稿</td><td>140文字</td><td>URLは23文字換算。Premium は25,000文字</td></tr>
+          <tr><td>Instagram</td><td>キャプション</td><td>2,200文字</td><td>最初の125文字が重要（折りたたみ表示）</td></tr>
+          <tr><td>Facebook</td><td>投稿</td><td>63,206文字</td><td>実質無制限に近い</td></tr>
+          <tr><td>TikTok</td><td>キャプション</td><td>4,000文字</td><td>2024年に300文字から拡大</td></tr>
+          <tr><td>YouTube</td><td>タイトル</td><td>100文字</td><td>検索表示は60文字程度</td></tr>
+          <tr><td>YouTube</td><td>説明欄</td><td>5,000文字</td><td>最初の100文字が折りたたみ前に表示</td></tr>
+          <tr><td>LINE</td><td>メッセージ</td><td>10,000文字</td><td>1メッセージあたり</td></tr>
+          <tr><td>Threads</td><td>投稿</td><td>500文字</td><td>Meta提供のテキストSNS</td></tr>
+          <tr><td>note</td><td>記事</td><td>制限なし</td><td>テキスト記事は実質無制限</td></tr>
+        </tbody>
+      </table>
+
+      <h3>プロフィール</h3>
+      <table class="content-table">
+        <thead>
+          <tr><th>SNS</th><th>対象</th><th>文字数制限</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>X（Twitter）</td><td>プロフィール（自己紹介）</td><td>160文字</td></tr>
+          <tr><td>X（Twitter）</td><td>表示名</td><td>50文字</td></tr>
+          <tr><td>Instagram</td><td>プロフィール</td><td>150文字</td></tr>
+          <tr><td>TikTok</td><td>プロフィール</td><td>80文字</td></tr>
+          <tr><td>YouTube</td><td>チャンネル説明</td><td>1,000文字</td></tr>
+          <tr><td>Facebook</td><td>自己紹介</td><td>101文字</td></tr>
+        </tbody>
+      </table>
+
+      <h3>コメント</h3>
+      <table class="content-table">
+        <thead>
+          <tr><th>SNS</th><th>対象</th><th>文字数制限</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Instagram</td><td>コメント</td><td>2,200文字</td></tr>
+          <tr><td>YouTube</td><td>コメント</td><td>10,000文字</td></tr>
+          <tr><td>TikTok</td><td>コメント</td><td>150文字</td></tr>
+          <tr><td>Facebook</td><td>コメント</td><td>8,000文字</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>SNS投稿のコツ</h2>
+      <table class="content-table tips-table">
+        <thead>
+          <tr><th>コツ</th><th>詳細</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>冒頭で惹きつける</td><td>SNSのタイムラインでは最初の1〜2行しか見えません。結論やインパクトのある一文を冒頭に置きましょう。</td></tr>
+          <tr><td>改行・空白行を活用</td><td>長文は読まれにくいため、適度に改行を入れて視認性を高めましょう。特にInstagramでは改行テクニックが重要です。</td></tr>
+          <tr><td>ハッシュタグは適量に</td><td>Instagramは5〜10個、Xは1〜2個が最適とされています。多すぎるとスパム判定されるリスクがあります。</td></tr>
+          <tr><td>CTAを入れる</td><td>「いいねお願いします」「保存してね」などの行動喚起（CTA）を文末に入れると、エンゲージメントが向上します。</td></tr>
+          <tr><td>URLは短縮を意識</td><td>Xでは全URLが23文字換算ですが、他のSNSでは長いURLが表示を圧迫します。短縮URLサービスの活用も検討しましょう。</td></tr>
+          <tr><td>絵文字で視認性UP</td><td>適度な絵文字はスクロール中の目に留まりやすくなります。ただし使いすぎは逆効果です。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>X（Twitter）の文字数制限は何文字ですか？</summary>
+        <p>X（Twitter）の通常投稿は140文字までです。URLは短縮されて23文字としてカウントされます。X Premium（有料プラン）では最大25,000文字まで投稿可能です。</p>
+      </details>
+      <details>
+        <summary>URLはX（Twitter）で何文字としてカウントされますか？</summary>
+        <p>X（Twitter）ではURLの長さに関係なく、すべてのURLが23文字としてカウントされます（t.co短縮）。本ツールではこのURL換算を自動で行い、正確な残り文字数を表示します。</p>
+      </details>
+      <details>
+        <summary>絵文字は何文字としてカウントされますか？</summary>
+        <p>本ツールでは絵文字を1文字としてカウントします。ただし、X（Twitter）では一部の絵文字が2文字としてカウントされる場合があります。実際の投稿時に微差が出る可能性があるため、余裕を持たせることをおすすめします。</p>
+      </details>
+      <details>
+        <summary>入力したテキストはサーバーに送信されますか？</summary>
+        <p>いいえ、すべての処理はブラウザ内で完結します。入力されたテキストが外部サーバーに送信されることは一切ありません。安心してご利用ください。</p>
+      </details>
+      <details>
+        <summary>Instagramのキャプションで表示される文字数は？</summary>
+        <p>Instagramのキャプションは最大2,200文字まで入力できますが、フィードに表示されるのは最初の125文字程度です。それ以降は「続きを読む」をタップして表示されます。重要な情報やCTAは冒頭に配置しましょう。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・行数・バイト数をリアルタイム表示</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+        <a href="../zenkaku-hankaku/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">全角半角変換ツール</h3>
+          <p>全角と半角をワンクリックで変換</p>
+        </a>
+        <a href="../url-encode/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">URLエンコード・デコード</h3>
+          <p>URLの特殊文字をエンコード・デコード</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var input = document.getElementById('input-text');
+    var snsGrid = document.getElementById('sns-grid');
+    var urlNotice = document.getElementById('url-notice');
+    var urlCountEl = document.getElementById('url-count');
+
+    var URL_REGEX = /https?:\/\/[^\s\u3000]+/g;
+    var X_URL_LENGTH = 23;
+
+    var snsList = [
+      { id: 'x', name: 'X（Twitter）', limit: 140, urlAdjust: true },
+      { id: 'instagram', name: 'Instagram キャプション', limit: 2200, urlAdjust: false },
+      { id: 'facebook', name: 'Facebook', limit: 63206, urlAdjust: false },
+      { id: 'tiktok', name: 'TikTok キャプション', limit: 4000, urlAdjust: false },
+      { id: 'youtube-title', name: 'YouTube タイトル', limit: 100, urlAdjust: false },
+      { id: 'youtube-desc', name: 'YouTube 説明欄', limit: 5000, urlAdjust: false },
+      { id: 'line', name: 'LINE', limit: 10000, urlAdjust: false },
+      { id: 'threads', name: 'Threads', limit: 500, urlAdjust: false },
+      { id: 'note', name: 'note', limit: null, urlAdjust: false }
+    ];
+
+    function countGraphemes(text) {
+      if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+        var segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' });
+        return Array.from(segmenter.segment(text)).length;
+      }
+      return Array.from(text).length;
+    }
+
+    function countForX(text) {
+      var urls = text.match(URL_REGEX) || [];
+      var urlCharCount = 0;
+      for (var i = 0; i < urls.length; i++) {
+        urlCharCount += countGraphemes(urls[i]);
+      }
+      var baseCount = countGraphemes(text);
+      var adjusted = baseCount - urlCharCount + (urls.length * X_URL_LENGTH);
+      return { count: adjusted, urlCount: urls.length };
+    }
+
+    function buildCards() {
+      snsGrid.innerHTML = '';
+      for (var i = 0; i < snsList.length; i++) {
+        var sns = snsList[i];
+        var card = document.createElement('div');
+        card.className = 'sns-card' + (sns.limit === null ? ' no-limit' : '');
+        card.id = 'card-' + sns.id;
+        card.innerHTML =
+          '<div class="sns-card-header">' +
+            '<span class="sns-card-name">' + sns.name + '</span>' +
+            '<span class="sns-card-count ok" id="count-' + sns.id + '">' +
+              '<span class="remaining" id="remaining-' + sns.id + '">' + (sns.limit !== null ? sns.limit : '-') + '</span>' +
+              (sns.limit !== null ? ' / ' + sns.limit.toLocaleString() : ' (制限なし)') +
+            '</span>' +
+          '</div>' +
+          '<div class="progress-bar-bg">' +
+            '<div class="progress-bar-fill ok" id="bar-' + sns.id + '" style="width:0%"></div>' +
+          '</div>';
+        snsGrid.appendChild(card);
+      }
+    }
+
+    function updateAll() {
+      var text = input.value;
+      var plainCount = countGraphemes(text);
+      var xResult = countForX(text);
+
+      if (xResult.urlCount > 0) {
+        urlNotice.style.display = 'block';
+        urlCountEl.textContent = xResult.urlCount;
+      } else {
+        urlNotice.style.display = 'none';
+      }
+
+      for (var i = 0; i < snsList.length; i++) {
+        var sns = snsList[i];
+        var charCount = sns.urlAdjust ? xResult.count : plainCount;
+        var remainingEl = document.getElementById('remaining-' + sns.id);
+        var countEl = document.getElementById('count-' + sns.id);
+        var barEl = document.getElementById('bar-' + sns.id);
+
+        if (sns.limit === null) {
+          remainingEl.textContent = plainCount.toLocaleString();
+          countEl.className = 'sns-card-count ok';
+          continue;
+        }
+
+        var remaining = sns.limit - charCount;
+        remainingEl.textContent = remaining.toLocaleString();
+
+        var pct = Math.min((charCount / sns.limit) * 100, 100);
+        barEl.style.width = pct + '%';
+
+        var status;
+        if (remaining < 0) {
+          status = 'over';
+        } else if (charCount / sns.limit > 0.8) {
+          status = 'warn';
+        } else {
+          status = 'ok';
+        }
+        countEl.className = 'sns-card-count ' + status;
+        barEl.className = 'progress-bar-fill ' + status;
+      }
+    }
+
+    function optimizeForX() {
+      var text = input.value;
+      if (!text) return;
+
+      var xResult = countForX(text);
+      if (xResult.count <= 140) return;
+
+      var urls = text.match(URL_REGEX) || [];
+      var urlTotalGraphemes = 0;
+      for (var i = 0; i < urls.length; i++) {
+        urlTotalGraphemes += countGraphemes(urls[i]);
+      }
+      var urlAdjusted = urls.length * X_URL_LENGTH;
+      var nonUrlBudget = 140 - urlAdjusted;
+
+      if (nonUrlBudget <= 0) {
+        alert('URLだけで140文字を超えています。URLの数を減らしてください。');
+        return;
+      }
+
+      var segments;
+      if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+        var segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' });
+        segments = Array.from(segmenter.segment(text)).map(function(s) { return s.segment; });
+      } else {
+        segments = Array.from(text);
+      }
+
+      var result = '';
+      var currentCount = 0;
+      var inUrl = false;
+      var urlStart = -1;
+
+      for (var j = 0; j < segments.length; j++) {
+        result += segments[j];
+        var partial = result;
+        var partialUrls = partial.match(URL_REGEX) || [];
+        var partialUrlGraphemes = 0;
+        for (var k = 0; k < partialUrls.length; k++) {
+          partialUrlGraphemes += countGraphemes(partialUrls[k]);
+        }
+        var partialAdjusted = countGraphemes(partial) - partialUrlGraphemes + (partialUrls.length * X_URL_LENGTH);
+
+        if (partialAdjusted > 140) {
+          result = result.slice(0, result.length - segments[j].length);
+          break;
+        }
+      }
+
+      input.value = result;
+      updateAll();
+    }
+
+    buildCards();
+    input.addEventListener('input', updateAll);
+  </script>
+</body>
+</html>

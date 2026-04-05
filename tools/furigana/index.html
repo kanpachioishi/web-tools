@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ふりがな変換 - 漢字にルビを振る無料オンラインツール | Web便利ツール集</title>
+  <meta name="description" content="漢字にふりがなを自動で付与する無料オンラインツール。ルビ形式・括弧形式・カタカナ形式に対応。HTMLルビタグのコピーも可能。">
+  <meta property="og:title" content="ふりがな変換 - 漢字にルビを振る無料オンラインツール | Web便利ツール集">
+  <meta property="og:description" content="漢字にふりがなを自動付与。ルビ・括弧・カタカナ形式に対応。ルビ付きHTMLコードもコピー可能。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/furigana/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/furigana/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ふりがな変換ツール",
+    "description": "漢字にふりがなを自動で付与する無料オンラインツール。ルビ形式・括弧形式・カタカナ形式に対応。HTMLルビタグのコピーも可能。",
+    "url": "https://simpletoolkit.net/tools/furigana/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "すべての漢字にふりがなが付きますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "常用漢字約2,100字と頻出熟語に対応しています。一般的な文章であればほとんどの漢字にふりがなが付きますが、専門用語や人名など一部対応していない漢字もあります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "ふりがなの表示形式は選べますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、3つの形式から選択できます。ルビ形式（漢字の上に小さく表示）、括弧形式（漢字の後ろに括弧付き）、カタカナ形式（カタカナで読みを表示）の3種類です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "HTMLのルビタグとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "HTMLのrubyタグは、漢字の上にふりがな（ルビ）を表示するためのHTMLタグです。<ruby>漢字<rp>(</rp><rt>かんじ</rt><rp>)</rp></ruby>のように記述します。Webページやブログでふりがな付きテキストを表示する際に使われます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "データがサーバーに送信されることはありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、このツールはすべての処理をブラウザ内で完結させています。入力されたテキストは一切サーバーに送信されないため、安心してご利用いただけます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "熟語の読みには対応していますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、約300以上の頻出熟語・複合語に対応しています。「今日（きょう）」「明日（あした）」「東京（とうきょう）」など、一文字ずつでは正しく読めない熟語も正確にふりがなを付与します。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+  <style>
+    .format-selector {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+    .format-selector label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: normal;
+      cursor: pointer;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .format-selector input[type="radio"] {
+      width: auto;
+    }
+    .format-selector label:has(input:checked) {
+      border-color: var(--primary);
+      background: color-mix(in srgb, var(--primary) 8%, transparent);
+    }
+    .furigana-preview {
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 60px;
+      font-size: 1.1rem;
+      line-height: 2.2;
+    }
+    .furigana-preview ruby {
+      ruby-position: over;
+    }
+    .furigana-preview rt {
+      font-size: 0.55em;
+      color: var(--primary);
+    }
+    .copy-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .copy-msg {
+      display: inline-block;
+      margin-left: 8px;
+      color: var(--primary);
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .copy-msg.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>ふりがな変換ツール</h1>
+    <p class="tool-description">日本語テキストの漢字にふりがな（ルビ）を自動で付与します。ルビ形式・括弧形式・カタカナ形式に対応。</p>
+
+    <div class="tool-area">
+      <label for="input-text">変換するテキスト</label>
+      <textarea id="input-text" placeholder="ここに日本語テキストを入力してください...&#10;例: 東京都の天気は晴れです。" rows="6"></textarea>
+
+      <div class="format-selector">
+        <label><input type="radio" name="format" value="ruby" checked> ルビ形式（漢字の上に表示）</label>
+        <label><input type="radio" name="format" value="paren"> 括弧形式（漢字（かんじ））</label>
+        <label><input type="radio" name="format" value="katakana"> カタカナ形式</label>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="convertFurigana()">ふりがなを付ける</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+      </div>
+
+      <label style="margin-top: 16px;">変換結果</label>
+      <div class="furigana-preview" id="preview"></div>
+
+      <div class="copy-buttons">
+        <button class="btn btn-secondary" onclick="copyRubyHTML()">ルビ付きHTMLをコピー</button>
+        <button class="btn btn-secondary" onclick="copyPlainText()">プレーンテキストをコピー</button>
+        <span class="copy-msg" id="copy-msg">コピーしました！</span>
+      </div>
+    </div>
+
+    <section class="content-section">
+      <h2>ふりがな変換とは？</h2>
+      <p>ふりがな変換とは、日本語テキスト中の漢字に対して読み仮名（ふりがな）を自動的に付与する処理のことです。ふりがなは「ルビ」とも呼ばれ、漢字の読み方を示すために漢字の上や横に小さく表記されます。</p>
+      <p>このツールは、常用漢字約2,100字と300以上の頻出熟語・複合語の読みデータを内蔵しており、入力されたテキストの漢字にふりがなを付与します。子ども向けの文書作成、日本語学習者向けのテキスト準備、Webページでのルビ表示など、さまざまな用途に活用できます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>テキストを入力する</strong> — テキストエリアにふりがなを付けたい日本語テキストを入力するか、コピー＆ペーストで貼り付けます。</li>
+        <li><strong>表示形式を選択する</strong> — ルビ形式（漢字の上に小さく表示）、括弧形式（漢字の後ろに括弧付きで表示）、カタカナ形式の3種類から選択できます。</li>
+        <li><strong>「ふりがなを付ける」ボタンをクリック</strong> — 漢字にふりがなが付与された結果がプレビュー領域に表示されます。</li>
+        <li><strong>結果をコピーする</strong> — 「ルビ付きHTMLをコピー」でHTMLタグ付きコードを、「プレーンテキストをコピー」で括弧形式のテキストをクリップボードにコピーできます。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>HTMLルビタグの書き方</h2>
+      <p>HTMLでふりがなを表示するには、<code>&lt;ruby&gt;</code>タグを使います。以下が基本的な構文です。</p>
+      <table>
+        <thead>
+          <tr><th>要素</th><th>役割</th><th>例</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>&lt;ruby&gt;</code></td><td>ルビの親要素。漢字とふりがなを囲む</td><td><code>&lt;ruby&gt;漢字&lt;rt&gt;かんじ&lt;/rt&gt;&lt;/ruby&gt;</code></td></tr>
+          <tr><td><code>&lt;rt&gt;</code></td><td>ルビテキスト。ふりがなの内容を記述</td><td><code>&lt;rt&gt;かんじ&lt;/rt&gt;</code></td></tr>
+          <tr><td><code>&lt;rp&gt;</code></td><td>ルビ非対応ブラウザ向けの括弧（省略可）</td><td><code>&lt;rp&gt;(&lt;/rp&gt;&lt;rt&gt;かんじ&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <p>完全な記述例：</p>
+      <p><code>&lt;ruby&gt;東京&lt;rp&gt;(&lt;/rp&gt;&lt;rt&gt;とうきょう&lt;/rt&gt;&lt;rp&gt;)&lt;/rp&gt;&lt;/ruby&gt;に行きます。</code></p>
+      <p><code>&lt;rp&gt;</code>タグを入れることで、rubyタグに対応していない古いブラウザでも「東京(とうきょう)」のように括弧付きで表示されるフォールバックが実現できます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details><summary>すべての漢字にふりがなが付きますか？</summary><p>常用漢字約2,100字と頻出熟語に対応しています。一般的な文章であればほとんどの漢字にふりがなが付きますが、専門用語や人名など一部対応していない漢字もあります。対応していない漢字はそのまま表示されます。</p></details>
+      <details><summary>熟語の読みには対応していますか？</summary><p>はい、約300以上の頻出熟語・複合語に対応しています。「今日（きょう）」「明日（あした）」「東京（とうきょう）」など、一文字ずつでは正しく読めない熟語も正確にふりがなを付与します。最長一致方式で熟語を優先的にマッチさせています。</p></details>
+      <details><summary>漢字の読みが間違っている場合はどうすればいいですか？</summary><p>漢字には複数の読み方（音読み・訓読み）があるため、文脈によっては意図した読みと異なる場合があります。その場合は、変換結果のテキストをコピーした後、手動で修正してください。</p></details>
+      <details><summary>データがサーバーに送信されることはありますか？</summary><p>いいえ、このツールはすべての処理をブラウザ内（クライアントサイド）で完結しています。入力されたテキストがサーバーに送信されることは一切ないため、安心してご利用いただけます。</p></details>
+      <details><summary>ルビ付きHTMLはどこで使えますか？</summary><p>ルビ付きHTMLは、Webサイト、ブログ記事、HTMLメール、電子書籍（EPUB）など、HTMLが使える場所であればどこでも利用できます。主要なモダンブラウザ（Chrome, Firefox, Safari, Edge）はすべてrubyタグに対応しています。</p></details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../zenkaku-hankaku/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">全角半角変換</h3>
+          <p>全角⇔半角をワンクリックで変換</p>
+        </a>
+        <a href="../char-counter/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">文字数カウンター</h3>
+          <p>文字数・単語数・バイト数をリアルタイムカウント</p>
+        </a>
+        <a href="../text-replace/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">テキスト置換ツール</h3>
+          <p>テキストの一括置換（正規表現対応）</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script src="furigana-dict.js"></script>
+  <script>
+    let currentSegments = [];
+
+    function convertFurigana() {
+      const text = document.getElementById('input-text').value;
+      if (!text.trim()) {
+        document.getElementById('preview').innerHTML = '<span style="color:var(--text-muted)">テキストを入力してください</span>';
+        return;
+      }
+
+      currentSegments = addFurigana(text);
+      renderPreview();
+    }
+
+    function renderPreview() {
+      const format = document.querySelector('input[name="format"]:checked').value;
+      const preview = document.getElementById('preview');
+
+      if (currentSegments.length === 0) {
+        preview.innerHTML = '';
+        return;
+      }
+
+      switch (format) {
+        case 'ruby':
+          preview.innerHTML = toRubyHTML(currentSegments);
+          break;
+        case 'paren':
+          preview.textContent = toParenText(currentSegments);
+          break;
+        case 'katakana':
+          preview.textContent = toKatakanaText(currentSegments);
+          break;
+      }
+    }
+
+    // 形式切り替え時に再レンダリング
+    document.querySelectorAll('input[name="format"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (currentSegments.length > 0) renderPreview();
+      });
+    });
+
+    function copyRubyHTML() {
+      if (currentSegments.length === 0) return;
+      const html = toRubyHTML(currentSegments);
+      navigator.clipboard.writeText(html);
+      showCopyMsg();
+    }
+
+    function copyPlainText() {
+      if (currentSegments.length === 0) return;
+      const text = toParenText(currentSegments);
+      navigator.clipboard.writeText(text);
+      showCopyMsg();
+    }
+
+    function showCopyMsg() {
+      const msg = document.getElementById('copy-msg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 2000);
+    }
+
+    function clearAll() {
+      document.getElementById('input-text').value = '';
+      document.getElementById('preview').innerHTML = '';
+      currentSegments = [];
+    }
+  </script>
+</body>
+</html>

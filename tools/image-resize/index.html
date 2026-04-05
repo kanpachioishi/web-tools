@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>画像リサイズ - 無料オンライン画像サイズ変更ツール | Web便利ツール集</title>
+  <meta name="description" content="ブラウザだけで画像をリサイズ。ピクセル指定・パーセント指定・アスペクト比ロック対応。複数画像の一括リサイズも可能。サーバー送信なし・無料・登録不要。">
+  <meta property="og:title" content="画像リサイズ - 無料オンライン画像サイズ変更ツール | Web便利ツール集">
+  <meta property="og:description" content="ブラウザだけで画像をリサイズ。ピクセル・パーセント指定、アスペクト比ロック、複数一括リサイズ対応。サーバー送信なし・無料。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/image-resize/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/image-resize/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "画像リサイズ - 無料オンライン画像サイズ変更ツール",
+    "description": "ブラウザだけで画像をリサイズ。ピクセル指定・パーセント指定・アスペクト比ロック対応。複数画像の一括リサイズも可能。サーバー送信なし・無料・登録不要。",
+    "url": "https://simpletoolkit.net/tools/image-resize/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "画像はサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべてのリサイズ処理はブラウザ内で完結します。画像データが外部サーバーに送信されることはありません。安心してご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "リサイズで画質は劣化しますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "縮小の場合、Canvas APIの高品質補間により画質の劣化は最小限に抑えられます。拡大の場合は元画像の解像度以上にはできないため、多少のぼやけが生じることがあります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "アスペクト比を維持したままリサイズできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、アスペクト比ロック機能をオンにすると、幅または高さの一方を変更すると自動的にもう一方が計算されます。デフォルトでオンになっています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "複数の画像を一度にリサイズできますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、複数の画像を同時にアップロードして同じ設定で一括リサイズできます。リサイズ後は個別にダウンロードするか、ZIPファイルとしてまとめてダウンロードできます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "対応している画像形式は？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "JPEG、PNG、WebP、GIF、BMP、SVGなど、ブラウザが表示できる画像形式に対応しています。出力形式はJPEG、WebP、PNGから選択できます。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .privacy-notice {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .privacy-notice::before {
+      content: '\1F512';
+      font-size: 1.2rem;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 20px;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .drop-zone-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .drop-zone-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .drop-zone-text strong {
+      color: var(--primary);
+    }
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .control-group {
+      flex: 1;
+      min-width: 140px;
+    }
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .control-group input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      box-sizing: border-box;
+    }
+    .control-group select {
+      width: 100%;
+    }
+
+    .resize-mode-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .resize-mode-tabs button {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: var(--bg);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: background 0.2s, color 0.2s;
+    }
+    .resize-mode-tabs button.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .resize-mode-tabs button:hover:not(.active) {
+      background: #f1f5f9;
+    }
+
+    .pixel-controls {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .pixel-controls .control-group {
+      min-width: 100px;
+      flex: 1;
+    }
+    .lock-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: background 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+      margin-bottom: 0;
+    }
+    .lock-btn.locked {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .lock-btn:hover {
+      opacity: 0.85;
+    }
+
+    .percent-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .percent-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .percent-btn:hover, .percent-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .percent-custom {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .percent-custom input {
+      width: 70px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .image-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .image-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .image-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .image-item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+    .image-item-stats {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .size-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .size-original {
+      color: var(--text-muted);
+    }
+    .size-arrow {
+      color: var(--text-muted);
+    }
+    .size-resized {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .preview-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .preview-box {
+      text-align: center;
+    }
+    .preview-box .preview-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .preview-box img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+    }
+
+    .image-item .btn-group {
+      margin-top: 8px;
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.85rem;
+    }
+    .btn-danger {
+      background: #ef4444;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .batch-actions {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .batch-actions.show {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .batch-summary {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .batch-summary strong {
+      color: var(--text);
+    }
+
+    .processing-overlay {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+    }
+    .processing-overlay.show {
+      display: block;
+    }
+
+    .resize-settings {
+      display: none;
+      margin-bottom: 20px;
+    }
+    .resize-settings.show {
+      display: block;
+    }
+
+    .size-table {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .size-table table {
+      min-width: 600px;
+    }
+
+    @media (max-width: 600px) {
+      .preview-container {
+        grid-template-columns: 1fr;
+      }
+      .controls-row {
+        flex-direction: column;
+      }
+      .pixel-controls {
+        flex-direction: column;
+      }
+      .image-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .drop-zone {
+        padding: 24px 16px;
+      }
+      .lock-btn {
+        align-self: center;
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>画像リサイズツール</h1>
+    <h2>ブラウザで画像サイズを変更 - 無料オンラインツール</h2>
+    <p class="tool-description">ドラッグ&ドロップで画像をアップロードし、ピクセル指定またはパーセント指定で簡単にリサイズ。アスペクト比ロック機能付き。PNG/JPEG/WebPで出力可能。すべての処理はブラウザ内で完結し、画像がサーバーに送信されることはありません。</p>
+
+    <div class="tool-area">
+      <div class="privacy-notice">
+        すべての処理はブラウザ内で完結します。画像がサーバーに送信されることはありません。
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <span class="drop-zone-icon">&#128444;</span>
+        <div class="drop-zone-text">
+          ここに画像をドラッグ&ドロップ<br>
+          または <strong>クリックしてファイルを選択</strong>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple>
+      </div>
+
+      <div class="resize-settings" id="resizeSettings">
+        <div class="resize-mode-tabs">
+          <button class="active" id="tabPixel" onclick="switchMode('pixel')">ピクセル指定</button>
+          <button id="tabPercent" onclick="switchMode('percent')">パーセント指定</button>
+        </div>
+
+        <div id="pixelMode">
+          <div class="pixel-controls">
+            <div class="control-group">
+              <label for="resizeWidth">幅 (px)</label>
+              <input type="number" id="resizeWidth" min="1" max="10000" placeholder="幅">
+            </div>
+            <button class="lock-btn locked" id="lockBtn" onclick="toggleLock()" title="アスペクト比ロック">&#128279;</button>
+            <div class="control-group">
+              <label for="resizeHeight">高さ (px)</label>
+              <input type="number" id="resizeHeight" min="1" max="10000" placeholder="高さ">
+            </div>
+          </div>
+        </div>
+
+        <div id="percentMode" style="display:none;">
+          <div class="percent-controls">
+            <button class="percent-btn" onclick="setPercent(25)">25%</button>
+            <button class="percent-btn" onclick="setPercent(50)">50%</button>
+            <button class="percent-btn active" onclick="setPercent(75)">75%</button>
+            <button class="percent-btn" onclick="setPercent(100)">100%</button>
+            <button class="percent-btn" onclick="setPercent(150)">150%</button>
+            <button class="percent-btn" onclick="setPercent(200)">200%</button>
+            <div class="percent-custom">
+              <input type="number" id="customPercent" min="1" max="1000" value="75" placeholder="カスタム">
+              <span>%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-row" style="margin-top:16px;">
+          <div class="control-group" style="flex:0 0 auto; min-width:140px;">
+            <label for="outputFormat">出力形式</label>
+            <select id="outputFormat">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+          <div class="control-group" style="flex:0 0 auto; min-width:140px;">
+            <label for="qualitySlider">品質（JPEG/WebP）</label>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="range" id="qualitySlider" min="1" max="100" value="90" style="flex:1;">
+              <span id="qualityValue" style="font-weight:700;color:var(--primary);min-width:40px;text-align:right;">90%</span>
+            </div>
+          </div>
+          <div class="control-group" style="flex:0 0 auto;">
+            <label>&nbsp;</label>
+            <button class="btn" id="resizeBtn" onclick="resizeAll()">リサイズ実行</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="processing-overlay" id="processing">
+        処理中...
+      </div>
+
+      <div class="image-list" id="imageList"></div>
+
+      <div class="batch-actions" id="batchActions">
+        <div class="batch-summary" id="batchSummary"></div>
+        <div class="btn-group" style="margin-top:0;">
+          <button class="btn btn-sm" onclick="downloadAll()">すべてダウンロード</button>
+          <button class="btn btn-sm" onclick="downloadAllZip()">ZIPでまとめてダウンロード</button>
+          <button class="btn btn-secondary btn-sm" onclick="clearAll()">すべてクリア</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="content-section">
+      <h2>画像リサイズとは？</h2>
+      <p>画像リサイズとは、画像の幅と高さ（ピクセル数）を変更する処理です。Webサイトへの掲載、SNSへの投稿、メール添付など、用途に応じた適切なサイズに画像を調整することで、表示の最適化やファイルサイズの削減が可能になります。このツールではブラウザのCanvas APIを使用して高品質なリサイズを行い、すべての処理がクライアントサイドで完結するため、プライバシーも安全です。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>画像をアップロード</strong> — ドラッグ&ドロップまたはクリックで画像ファイルを選択します。複数の画像を一度にアップロードできます。</li>
+        <li><strong>リサイズ方法を選択</strong> — 「ピクセル指定」で幅・高さを直接入力するか、「パーセント指定」で元のサイズに対する倍率を選びます。アスペクト比ロックで縦横比を維持できます。</li>
+        <li><strong>出力形式を選択</strong> — PNG、JPEG、WebPから出力形式を選びます。JPEG/WebPの場合は品質スライダーで画質を調整できます。</li>
+        <li><strong>リサイズ実行&ダウンロード</strong> — 「リサイズ実行」ボタンを押し、Before/Afterのプレビューで確認後、個別またはZIPでまとめてダウンロードします。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>SNS・Webサービスの推奨画像サイズ一覧</h2>
+      <div class="size-table">
+        <table>
+          <thead>
+            <tr>
+              <th>サービス</th>
+              <th>用途</th>
+              <th>推奨サイズ (px)</th>
+              <th>アスペクト比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>X (Twitter)</td>
+              <td>投稿画像</td>
+              <td>1200 x 675</td>
+              <td>16:9</td>
+            </tr>
+            <tr>
+              <td>X (Twitter)</td>
+              <td>ヘッダー画像</td>
+              <td>1500 x 500</td>
+              <td>3:1</td>
+            </tr>
+            <tr>
+              <td>Instagram</td>
+              <td>フィード投稿（正方形）</td>
+              <td>1080 x 1080</td>
+              <td>1:1</td>
+            </tr>
+            <tr>
+              <td>Instagram</td>
+              <td>ストーリーズ / リール</td>
+              <td>1080 x 1920</td>
+              <td>9:16</td>
+            </tr>
+            <tr>
+              <td>Facebook</td>
+              <td>投稿画像</td>
+              <td>1200 x 630</td>
+              <td>1.91:1</td>
+            </tr>
+            <tr>
+              <td>Facebook</td>
+              <td>カバー画像</td>
+              <td>820 x 312</td>
+              <td>2.63:1</td>
+            </tr>
+            <tr>
+              <td>YouTube</td>
+              <td>サムネイル</td>
+              <td>1280 x 720</td>
+              <td>16:9</td>
+            </tr>
+            <tr>
+              <td>YouTube</td>
+              <td>チャンネルアート</td>
+              <td>2560 x 1440</td>
+              <td>16:9</td>
+            </tr>
+            <tr>
+              <td>LINE</td>
+              <td>リッチメッセージ</td>
+              <td>1040 x 1040</td>
+              <td>1:1</td>
+            </tr>
+            <tr>
+              <td>note</td>
+              <td>見出し画像</td>
+              <td>1280 x 670</td>
+              <td>1.91:1</td>
+            </tr>
+            <tr>
+              <td>はてなブログ</td>
+              <td>アイキャッチ</td>
+              <td>1200 x 630</td>
+              <td>1.91:1</td>
+            </tr>
+            <tr>
+              <td>OGP画像</td>
+              <td>SNSシェア用</td>
+              <td>1200 x 630</td>
+              <td>1.91:1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>画像フォーマット別の特徴比較</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>フォーマット</th>
+            <th>拡張子</th>
+            <th>圧縮方式</th>
+            <th>透過</th>
+            <th>圧縮効率</th>
+            <th>適した用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>JPEG</td>
+            <td>.jpg / .jpeg</td>
+            <td>非可逆</td>
+            <td>非対応</td>
+            <td>高い</td>
+            <td>写真、グラデーション画像</td>
+          </tr>
+          <tr>
+            <td>PNG</td>
+            <td>.png</td>
+            <td>可逆</td>
+            <td>対応</td>
+            <td>中程度</td>
+            <td>ロゴ、スクリーンショット、透過画像</td>
+          </tr>
+          <tr>
+            <td>WebP</td>
+            <td>.webp</td>
+            <td>可逆/非可逆</td>
+            <td>対応</td>
+            <td>非常に高い</td>
+            <td>Web全般（次世代フォーマット）</td>
+          </tr>
+          <tr>
+            <td>GIF</td>
+            <td>.gif</td>
+            <td>可逆</td>
+            <td>対応（1色）</td>
+            <td>低い</td>
+            <td>簡単なアニメーション</td>
+          </tr>
+          <tr>
+            <td>SVG</td>
+            <td>.svg</td>
+            <td>ベクター</td>
+            <td>対応</td>
+            <td>-</td>
+            <td>アイコン、ロゴ、図形</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>画像はサーバーに送信されますか？</summary>
+        <p>いいえ、すべてのリサイズ処理はブラウザ内で完結します。Canvas APIを使用してローカルで処理するため、画像データが外部サーバーに送信されることは一切ありません。機密性の高い画像も安心してご利用ください。</p>
+      </details>
+      <details>
+        <summary>リサイズで画質は劣化しますか？</summary>
+        <p>縮小の場合はCanvas APIの補間処理により、画質の劣化はほとんどありません。拡大の場合は元画像のピクセル数以上にはできないため、多少のぼやけが生じることがあります。大幅な拡大が必要な場合は、元の高解像度画像を使用することをおすすめします。</p>
+      </details>
+      <details>
+        <summary>アスペクト比を維持したままリサイズできますか？</summary>
+        <p>はい、ピクセル指定モードでアスペクト比ロック（鎖アイコン）をオンにすると、幅または高さの一方を変更した際に、もう一方が自動で計算されます。デフォルトでオンになっています。</p>
+      </details>
+      <details>
+        <summary>PNG画像をリサイズしても透過は維持されますか？</summary>
+        <p>出力形式にPNGまたはWebPを選択すれば、透過情報は維持されます。JPEG形式で出力した場合は透過部分が白色に変換されます。透過画像にはPNGまたはWebP形式を選択してください。</p>
+      </details>
+      <details>
+        <summary>複数の画像を一度にリサイズできますか？</summary>
+        <p>はい、複数の画像をまとめてアップロードし、同じ設定で一括リサイズできます。リサイズ後は個別にダウンロードするか、ZIPファイルとしてまとめてダウンロードできます。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../image-compress/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">画像圧縮ツール</h3>
+          <p>ブラウザで画像を軽量化・品質調整</p>
+        </a>
+        <a href="../pdf-tools/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">PDF変換ツール</h3>
+          <p>PDFの結合・分割・変換</p>
+        </a>
+        <a href="../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QRコード生成</h3>
+          <p>テキストやURLからQRコードを作成</p>
+        </a>
+        <a href="../base64/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">Base64エンコード・デコード</h3>
+          <p>テキストやファイルをBase64に変換</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    var images = [];
+    var resizeMode = 'pixel';
+    var aspectLocked = true;
+    var currentPercent = 75;
+
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var resizeSettings = document.getElementById('resizeSettings');
+    var resizeWidth = document.getElementById('resizeWidth');
+    var resizeHeight = document.getElementById('resizeHeight');
+    var lockBtn = document.getElementById('lockBtn');
+    var outputFormat = document.getElementById('outputFormat');
+    var qualitySlider = document.getElementById('qualitySlider');
+    var qualityValue = document.getElementById('qualityValue');
+    var imageList = document.getElementById('imageList');
+    var batchActions = document.getElementById('batchActions');
+    var batchSummary = document.getElementById('batchSummary');
+    var processing = document.getElementById('processing');
+    var customPercent = document.getElementById('customPercent');
+
+    // Drop zone events
+    dropZone.addEventListener('click', function() {
+      fileInput.click();
+    });
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      handleFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', function() {
+      handleFiles(fileInput.files);
+      fileInput.value = '';
+    });
+
+    qualitySlider.addEventListener('input', function() {
+      qualityValue.textContent = qualitySlider.value + '%';
+    });
+
+    // Aspect ratio lock with width/height inputs
+    resizeWidth.addEventListener('input', function() {
+      if (aspectLocked && images.length > 0) {
+        var first = images[0];
+        var ratio = first.height / first.width;
+        var w = parseInt(resizeWidth.value);
+        if (w > 0) {
+          resizeHeight.value = Math.round(w * ratio);
+        }
+      }
+    });
+    resizeHeight.addEventListener('input', function() {
+      if (aspectLocked && images.length > 0) {
+        var first = images[0];
+        var ratio = first.width / first.height;
+        var h = parseInt(resizeHeight.value);
+        if (h > 0) {
+          resizeWidth.value = Math.round(h * ratio);
+        }
+      }
+    });
+
+    customPercent.addEventListener('input', function() {
+      currentPercent = parseInt(customPercent.value) || 75;
+      updatePercentButtons();
+    });
+
+    function switchMode(mode) {
+      resizeMode = mode;
+      document.getElementById('tabPixel').classList.toggle('active', mode === 'pixel');
+      document.getElementById('tabPercent').classList.toggle('active', mode === 'percent');
+      document.getElementById('pixelMode').style.display = mode === 'pixel' ? 'block' : 'none';
+      document.getElementById('percentMode').style.display = mode === 'percent' ? 'block' : 'none';
+    }
+
+    function toggleLock() {
+      aspectLocked = !aspectLocked;
+      lockBtn.classList.toggle('locked', aspectLocked);
+      lockBtn.innerHTML = aspectLocked ? '&#128279;' : '&#128280;';
+      lockBtn.title = aspectLocked ? 'アスペクト比ロック中' : 'アスペクト比フリー';
+      if (aspectLocked && images.length > 0) {
+        var first = images[0];
+        var ratio = first.height / first.width;
+        var w = parseInt(resizeWidth.value);
+        if (w > 0) {
+          resizeHeight.value = Math.round(w * ratio);
+        }
+      }
+    }
+
+    function setPercent(p) {
+      currentPercent = p;
+      customPercent.value = p;
+      updatePercentButtons();
+    }
+
+    function updatePercentButtons() {
+      var btns = document.querySelectorAll('.percent-btn');
+      btns.forEach(function(btn) {
+        var val = parseInt(btn.textContent);
+        btn.classList.toggle('active', val === currentPercent);
+      });
+    }
+
+    function handleFiles(files) {
+      var imageFiles = [];
+      for (var i = 0; i < files.length; i++) {
+        if (files[i].type.startsWith('image/')) {
+          imageFiles.push(files[i]);
+        }
+      }
+      if (imageFiles.length === 0) return;
+
+      processing.classList.add('show');
+      var processed = 0;
+
+      imageFiles.forEach(function(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            var entry = {
+              id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+              name: file.name,
+              originalSize: file.size,
+              originalDataUrl: e.target.result,
+              width: img.width,
+              height: img.height,
+              imgElement: img,
+              resizedBlob: null,
+              resizedDataUrl: null,
+              resizedWidth: img.width,
+              resizedHeight: img.height
+            };
+            images.push(entry);
+            processed++;
+            if (processed === imageFiles.length) {
+              processing.classList.remove('show');
+              resizeSettings.classList.add('show');
+              // Set default dimensions from first image
+              if (images.length > 0) {
+                var first = images[0];
+                resizeWidth.value = first.width;
+                resizeHeight.value = first.height;
+              }
+              renderUploadedList();
+            }
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderUploadedList() {
+      imageList.innerHTML = '';
+      images.forEach(function(entry) {
+        var div = document.createElement('div');
+        div.className = 'image-item';
+        if (entry.resizedDataUrl) {
+          var sizeText = entry.width + 'x' + entry.height + ' &rarr; ' + entry.resizedWidth + 'x' + entry.resizedHeight;
+          div.innerHTML =
+            '<div class="image-item-header">' +
+              '<div class="image-item-name">' + escapeHtml(entry.name) + '</div>' +
+              '<div class="image-item-stats">' +
+                '<div class="size-info">' +
+                  '<span class="size-original">' + entry.width + 'x' + entry.height + ' (' + formatSize(entry.originalSize) + ')</span>' +
+                  '<span class="size-arrow">&rarr;</span>' +
+                  '<span class="size-resized">' + entry.resizedWidth + 'x' + entry.resizedHeight + ' (' + formatSize(entry.resizedBlob.size) + ')</span>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="preview-container">' +
+              '<div class="preview-box">' +
+                '<div class="preview-label">Before</div>' +
+                '<img src="' + entry.originalDataUrl + '" alt="元画像">' +
+              '</div>' +
+              '<div class="preview-box">' +
+                '<div class="preview-label">After</div>' +
+                '<img src="' + entry.resizedDataUrl + '" alt="リサイズ後">' +
+              '</div>' +
+            '</div>' +
+            '<div class="btn-group">' +
+              '<button class="btn btn-sm" onclick="downloadOne(\'' + entry.id + '\')">ダウンロード</button>' +
+              '<button class="btn btn-secondary btn-sm btn-danger" onclick="removeOne(\'' + entry.id + '\')">削除</button>' +
+            '</div>';
+        } else {
+          div.innerHTML =
+            '<div class="image-item-header">' +
+              '<div class="image-item-name">' + escapeHtml(entry.name) + '</div>' +
+              '<div class="image-item-stats">' +
+                '<span class="size-original">' + entry.width + 'x' + entry.height + ' (' + formatSize(entry.originalSize) + ')</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="preview-container" style="grid-template-columns:1fr;">' +
+              '<div class="preview-box">' +
+                '<div class="preview-label">Original</div>' +
+                '<img src="' + entry.originalDataUrl + '" alt="元画像">' +
+              '</div>' +
+            '</div>' +
+            '<div class="btn-group">' +
+              '<button class="btn btn-secondary btn-sm btn-danger" onclick="removeOne(\'' + entry.id + '\')">削除</button>' +
+            '</div>';
+        }
+        imageList.appendChild(div);
+      });
+
+      var hasResized = images.some(function(e) { return e.resizedBlob; });
+      if (hasResized && images.length > 0) {
+        batchSummary.innerHTML = '<strong>' + images.length + '</strong> 枚リサイズ完了';
+        batchActions.classList.add('show');
+      } else {
+        batchActions.classList.remove('show');
+      }
+    }
+
+    function resizeAll() {
+      if (images.length === 0) return;
+      processing.classList.add('show');
+      var done = 0;
+
+      images.forEach(function(entry) {
+        var targetW, targetH;
+
+        if (resizeMode === 'pixel') {
+          targetW = parseInt(resizeWidth.value) || entry.width;
+          targetH = parseInt(resizeHeight.value) || entry.height;
+        } else {
+          var pct = currentPercent / 100;
+          targetW = Math.round(entry.width * pct);
+          targetH = Math.round(entry.height * pct);
+        }
+
+        if (targetW < 1) targetW = 1;
+        if (targetH < 1) targetH = 1;
+
+        entry.resizedWidth = targetW;
+        entry.resizedHeight = targetH;
+
+        resizeImage(entry, targetW, targetH, function() {
+          done++;
+          if (done === images.length) {
+            processing.classList.remove('show');
+            renderUploadedList();
+          }
+        });
+      });
+    }
+
+    function resizeImage(entry, targetW, targetH, callback) {
+      var canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      var ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(entry.imgElement, 0, 0, targetW, targetH);
+
+      var format = outputFormat.value;
+      var quality = parseInt(qualitySlider.value) / 100;
+
+      canvas.toBlob(function(blob) {
+        entry.resizedBlob = blob;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          entry.resizedDataUrl = e.target.result;
+          if (callback) callback();
+        };
+        reader.readAsDataURL(blob);
+      }, format, quality);
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function getExtension() {
+      var format = outputFormat.value;
+      if (format === 'image/jpeg') return '.jpg';
+      if (format === 'image/webp') return '.webp';
+      return '.png';
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function downloadOne(id) {
+      var entry = images.find(function(e) { return e.id === id; });
+      if (!entry || !entry.resizedBlob) return;
+      var ext = getExtension();
+      var baseName = entry.name.replace(/\.[^.]+$/, '');
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(entry.resizedBlob);
+      a.download = baseName + '_resized_' + entry.resizedWidth + 'x' + entry.resizedHeight + ext;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function removeOne(id) {
+      images = images.filter(function(e) { return e.id !== id; });
+      if (images.length === 0) {
+        resizeSettings.classList.remove('show');
+      }
+      renderUploadedList();
+    }
+
+    function downloadAll() {
+      images.forEach(function(entry) {
+        if (entry.resizedBlob) downloadOne(entry.id);
+      });
+    }
+
+    function downloadAllZip() {
+      if (typeof JSZip === 'undefined') {
+        alert('ZIPライブラリの読み込み中です。少し待ってからもう一度お試しください。');
+        return;
+      }
+      var zip = new JSZip();
+      var ext = getExtension();
+      images.forEach(function(entry) {
+        if (entry.resizedBlob) {
+          var baseName = entry.name.replace(/\.[^.]+$/, '');
+          zip.file(baseName + '_resized_' + entry.resizedWidth + 'x' + entry.resizedHeight + ext, entry.resizedBlob);
+        }
+      });
+      zip.generateAsync({ type: 'blob' }).then(function(blob) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'resized_images.zip';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    }
+
+    function clearAll() {
+      images = [];
+      imageList.innerHTML = '';
+      batchActions.classList.remove('show');
+      resizeSettings.classList.remove('show');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>画像変換 - PNG/JPG/WebP無料オンライン変換ツール | Web便利ツール集</title>
+  <meta name="description" content="画像をPNG・JPEG・WebP・BMP・ICOに無料で変換。ブラウザだけで完結、サーバー送信なし。複数画像の一括変換にも対応。登録不要ですぐ使えるオンライン画像フォーマット変換ツール。">
+  <meta property="og:title" content="画像変換 - PNG/JPG/WebP無料オンライン変換ツール | Web便利ツール集">
+  <meta property="og:description" content="画像をPNG・JPEG・WebP・BMP・ICOに無料で変換。ブラウザだけで完結、サーバー送信なし。複数画像の一括変換対応。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simpletoolkit.net/tools/image-convert/">
+  <link rel="canonical" href="https://simpletoolkit.net/tools/image-convert/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "画像変換 - PNG/JPG/WebP無料オンライン変換ツール",
+    "description": "画像をPNG・JPEG・WebP・BMP・ICOに無料で変換。ブラウザだけで完結、サーバー送信なし。複数画像の一括変換にも対応。",
+    "url": "https://simpletoolkit.net/tools/image-convert/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "画像はサーバーに送信されますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "いいえ、すべての変換処理はブラウザ内で完結します。画像データが外部サーバーに送信されることはありません。安心してご利用ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "どの画像フォーマットに変換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PNG、JPEG、WebP、BMP、ICOの5つのフォーマットに変換できます。入力はブラウザが表示できるすべての画像形式（JPEG、PNG、WebP、GIF、BMP、SVGなど）に対応しています。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "JPEG品質を調整できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、JPEG形式で出力する場合は品質スライダーで1%〜100%まで自由に調整できます。品質を下げるほどファイルサイズが小さくなります。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "複数の画像を一度に変換できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい、複数の画像を同時にアップロードして一括変換できます。変換後は個別にダウンロードするか、すべてまとめてダウンロードできます。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "変換後に画質は劣化しますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PNG・BMP・ICOへの変換は可逆変換のため画質は劣化しません。JPEG・WebPは非可逆圧縮のため、品質設定によっては多少画質が低下しますが、高品質設定であれば肉眼ではほぼ分かりません。"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../../common/style.css">
+  <style>
+    .privacy-notice {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .privacy-notice::before {
+      content: '\1F512';
+      font-size: 1.2rem;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 20px;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+    .drop-zone-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .drop-zone-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .drop-zone-text strong {
+      color: var(--primary);
+    }
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .control-group {
+      flex: 1;
+      min-width: 160px;
+    }
+    .control-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .slider-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .slider-wrapper input[type="range"] {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--border);
+      border-radius: 3px;
+      outline: none;
+    }
+    .slider-wrapper input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+    }
+    .slider-wrapper input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      border: none;
+    }
+    .quality-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      min-width: 45px;
+      text-align: right;
+      color: var(--primary);
+    }
+    .quality-row {
+      transition: opacity 0.2s;
+    }
+    .quality-row.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .image-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .image-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .image-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .image-item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      word-break: break-all;
+    }
+    .image-item-stats {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .size-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .size-original {
+      color: var(--text-muted);
+    }
+    .size-arrow {
+      color: var(--text-muted);
+    }
+    .size-converted {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .size-reduction {
+      background: #dcfce7;
+      color: #166534;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .size-increase {
+      background: #fef2f2;
+      color: #991b1b;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .preview-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .preview-box {
+      text-align: center;
+    }
+    .preview-box .preview-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .preview-box img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+      background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 20px 20px;
+    }
+
+    .image-item .btn-group {
+      margin-top: 8px;
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.85rem;
+    }
+    .btn-danger {
+      background: #ef4444;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .batch-actions {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .batch-actions.show {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .batch-summary {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .batch-summary strong {
+      color: var(--text);
+    }
+
+    .processing-overlay {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+    }
+    .processing-overlay.show {
+      display: block;
+    }
+
+    .format-table {
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+    }
+    .format-table table {
+      min-width: 700px;
+    }
+
+    @media (max-width: 600px) {
+      .preview-container {
+        grid-template-columns: 1fr;
+      }
+      .controls-row {
+        flex-direction: column;
+      }
+      .image-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .drop-zone {
+        padding: 24px 16px;
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7333797273224249" crossorigin="anonymous"></script>
+</head>
+<body>
+  <script src="../../common/header.js"></script>
+  <script src="../../common/breadcrumb.js"></script>
+  <main>
+    <h1>画像フォーマット変換ツール</h1>
+    <h2>PNG/JPG/WebP/BMP/ICO - 無料オンライン変換</h2>
+    <p class="tool-description">画像をドラッグ&ドロップでアップロードし、好きなフォーマットに変換できます。PNG、JPEG、WebP、BMP、ICOに対応。すべての処理はブラウザ内で完結し、画像がサーバーに送信されることはありません。</p>
+
+    <div class="tool-area">
+      <div class="privacy-notice">
+        すべての処理はブラウザ内で完結します。画像がサーバーに送信されることはありません。
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <span class="drop-zone-icon">&#128247;</span>
+        <div class="drop-zone-text">
+          ここに画像をドラッグ&ドロップ<br>
+          または <strong>クリックしてファイルを選択</strong>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" multiple>
+      </div>
+
+      <div class="controls-row">
+        <div class="control-group" style="flex:0 0 auto; min-width:160px;">
+          <label for="outputFormat">変換先フォーマット</label>
+          <select id="outputFormat">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+            <option value="image/bmp">BMP</option>
+            <option value="image/x-icon">ICO</option>
+          </select>
+        </div>
+        <div class="control-group quality-row" id="qualityRow">
+          <label for="qualitySlider">JPEG品質</label>
+          <div class="slider-wrapper">
+            <input type="range" id="qualitySlider" min="1" max="100" value="90">
+            <span class="quality-value" id="qualityValue">90%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="processing-overlay" id="processing">
+        変換中...
+      </div>
+
+      <div class="image-list" id="imageList"></div>
+
+      <div class="batch-actions" id="batchActions">
+        <div class="batch-summary" id="batchSummary"></div>
+        <div class="btn-group" style="margin-top:0;">
+          <button class="btn btn-sm" onclick="downloadAll()">すべてダウンロード</button>
+          <button class="btn btn-secondary btn-sm" onclick="clearAll()">すべてクリア</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="content-section">
+      <h2>画像フォーマット変換とは？</h2>
+      <p>画像フォーマット変換とは、画像ファイルの保存形式（JPEG、PNG、WebPなど）を別の形式に変更する処理です。用途や目的に応じて最適なフォーマットに変換することで、ファイルサイズの削減、透過対応、互換性の確保などが可能になります。例えば、写真をWebに掲載する場合はWebPに変換してファイルサイズを削減したり、ロゴに透過背景を使いたい場合はPNGに変換するといった使い方ができます。</p>
+    </section>
+
+    <section class="content-section">
+      <h2>使い方</h2>
+      <ol>
+        <li><strong>画像をアップロード</strong> — ドラッグ&ドロップまたはクリックで画像ファイルを選択します。複数の画像を一度にアップロードできます。</li>
+        <li><strong>変換先フォーマットを選択</strong> — PNG、JPEG、WebP、BMP、ICOから変換先のフォーマットを選びます。</li>
+        <li><strong>品質を調整（JPEG/WebPのみ）</strong> — JPEG・WebP形式の場合は品質スライダーで画質を設定します（1%〜100%）。</li>
+        <li><strong>ダウンロード</strong> — 変換後のファイルサイズを確認し、個別ダウンロードまたはまとめてダウンロードします。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>画像フォーマット詳細比較表</h2>
+      <div class="format-table">
+        <table>
+          <thead>
+            <tr>
+              <th>フォーマット</th>
+              <th>拡張子</th>
+              <th>圧縮方式</th>
+              <th>透過</th>
+              <th>アニメーション</th>
+              <th>圧縮効率</th>
+              <th>適した用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PNG</td>
+              <td>.png</td>
+              <td>可逆</td>
+              <td>対応</td>
+              <td>非対応</td>
+              <td>中程度</td>
+              <td>ロゴ、スクリーンショット、透過画像</td>
+            </tr>
+            <tr>
+              <td>JPEG</td>
+              <td>.jpg / .jpeg</td>
+              <td>非可逆</td>
+              <td>非対応</td>
+              <td>非対応</td>
+              <td>高い</td>
+              <td>写真、グラデーション画像</td>
+            </tr>
+            <tr>
+              <td>WebP</td>
+              <td>.webp</td>
+              <td>可逆/非可逆</td>
+              <td>対応</td>
+              <td>対応</td>
+              <td>非常に高い</td>
+              <td>Web全般（次世代フォーマット）</td>
+            </tr>
+            <tr>
+              <td>BMP</td>
+              <td>.bmp</td>
+              <td>無圧縮</td>
+              <td>一部対応</td>
+              <td>非対応</td>
+              <td>なし（大容量）</td>
+              <td>印刷原稿、高品質保存</td>
+            </tr>
+            <tr>
+              <td>GIF</td>
+              <td>.gif</td>
+              <td>可逆（256色）</td>
+              <td>対応（1色）</td>
+              <td>対応</td>
+              <td>低い</td>
+              <td>簡単なアニメーション</td>
+            </tr>
+            <tr>
+              <td>AVIF</td>
+              <td>.avif</td>
+              <td>可逆/非可逆</td>
+              <td>対応</td>
+              <td>対応</td>
+              <td>最も高い</td>
+              <td>Web全般（最新フォーマット）</td>
+            </tr>
+            <tr>
+              <td>SVG</td>
+              <td>.svg</td>
+              <td>ベクター</td>
+              <td>対応</td>
+              <td>対応</td>
+              <td>-</td>
+              <td>アイコン、ロゴ、図形</td>
+            </tr>
+            <tr>
+              <td>ICO</td>
+              <td>.ico</td>
+              <td>無圧縮/PNG</td>
+              <td>対応</td>
+              <td>非対応</td>
+              <td>低い</td>
+              <td>ファビコン、Windowsアイコン</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>画像はサーバーに送信されますか？</summary>
+        <p>いいえ、すべての変換処理はブラウザ内のCanvas APIを使って行われます。画像データが外部サーバーに送信されることは一切ありません。機密性の高い画像も安心してご利用ください。</p>
+      </details>
+      <details>
+        <summary>変換で画質は劣化しますか？</summary>
+        <p>PNG・BMP・ICOへの変換は可逆（ロスレス）なので画質の劣化はありません。JPEG・WebPは非可逆圧縮のため、品質設定によっては若干の劣化がありますが、90%以上の品質設定であれば肉眼ではほぼ分かりません。</p>
+      </details>
+      <details>
+        <summary>PNGからJPEGに変換すると透過部分はどうなりますか？</summary>
+        <p>JPEGは透過をサポートしていないため、透過部分は白色の背景に変換されます。透過を維持したい場合は、PNG・WebP・ICO形式を選択してください。</p>
+      </details>
+      <details>
+        <summary>ICO形式はどんなときに使いますか？</summary>
+        <p>ICOはWebサイトのファビコン（ブラウザのタブに表示される小さなアイコン）やWindowsのアプリケーションアイコンに使用されます。このツールでは画像を32x32ピクセルにリサイズしてICO形式で出力します。</p>
+      </details>
+      <details>
+        <summary>対応している入力フォーマットは？</summary>
+        <p>ブラウザが表示できるすべての画像形式に対応しています。JPEG、PNG、WebP、GIF、BMP、SVG、AVIFなど、一般的な画像フォーマットはすべてアップロード可能です。</p>
+      </details>
+    </section>
+
+    <section style="margin-top:40px;">
+      <h2 style="font-size:1.2rem;margin-top:24px;margin-bottom:12px;">他のツール</h2>
+      <div class="tool-grid">
+        <a href="../image-compress/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">画像圧縮</h3>
+          <p>ブラウザで画像を軽量化・圧縮</p>
+        </a>
+        <a href="../image-resize/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">画像リサイズ</h3>
+          <p>画像のサイズを自由に変更</p>
+        </a>
+        <a href="../qr-generator/" class="tool-card">
+          <h3 style="font-size:1rem;margin:0;">QRコード生成</h3>
+          <p>テキストやURLからQRコードを作成</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <script src="../../common/footer.js"></script>
+  <script>
+    var images = [];
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+    var qualitySlider = document.getElementById('qualitySlider');
+    var qualityValue = document.getElementById('qualityValue');
+    var qualityRow = document.getElementById('qualityRow');
+    var outputFormat = document.getElementById('outputFormat');
+    var imageList = document.getElementById('imageList');
+    var batchActions = document.getElementById('batchActions');
+    var batchSummary = document.getElementById('batchSummary');
+    var processing = document.getElementById('processing');
+
+    function updateQualityVisibility() {
+      var format = outputFormat.value;
+      if (format === 'image/jpeg' || format === 'image/webp') {
+        qualityRow.classList.remove('disabled');
+        qualityRow.querySelector('label').textContent = format === 'image/jpeg' ? 'JPEG品質' : 'WebP品質';
+      } else {
+        qualityRow.classList.add('disabled');
+      }
+    }
+    updateQualityVisibility();
+
+    // Drop zone events
+    dropZone.addEventListener('click', function() {
+      fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      handleFiles(e.dataTransfer.files);
+    });
+
+    fileInput.addEventListener('change', function() {
+      handleFiles(fileInput.files);
+      fileInput.value = '';
+    });
+
+    qualitySlider.addEventListener('input', function() {
+      qualityValue.textContent = qualitySlider.value + '%';
+      reconvertAll();
+    });
+
+    outputFormat.addEventListener('change', function() {
+      updateQualityVisibility();
+      reconvertAll();
+    });
+
+    function handleFiles(files) {
+      var imageFiles = [];
+      for (var i = 0; i < files.length; i++) {
+        if (files[i].type.startsWith('image/')) {
+          imageFiles.push(files[i]);
+        }
+      }
+      if (imageFiles.length === 0) return;
+
+      processing.classList.add('show');
+      var processed = 0;
+
+      imageFiles.forEach(function(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            var entry = {
+              id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+              name: file.name,
+              originalSize: file.size,
+              originalDataUrl: e.target.result,
+              width: img.width,
+              height: img.height,
+              imgElement: img,
+              convertedBlob: null,
+              convertedDataUrl: null,
+              convertedSize: 0
+            };
+            images.push(entry);
+            convertImage(entry, function() {
+              processed++;
+              if (processed === imageFiles.length) {
+                processing.classList.remove('show');
+                renderAll();
+              }
+            });
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function convertImage(entry, callback) {
+      var format = outputFormat.value;
+      var quality = parseInt(qualitySlider.value) / 100;
+
+      // ICO: resize to 32x32
+      if (format === 'image/x-icon') {
+        convertToIco(entry, callback);
+        return;
+      }
+
+      var canvas = document.createElement('canvas');
+      canvas.width = entry.width;
+      canvas.height = entry.height;
+      var ctx = canvas.getContext('2d');
+
+      // JPEG/BMP don't support transparency - fill white background
+      if (format === 'image/jpeg' || format === 'image/bmp') {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      ctx.drawImage(entry.imgElement, 0, 0);
+
+      var useQuality = (format === 'image/jpeg' || format === 'image/webp') ? quality : undefined;
+
+      canvas.toBlob(function(blob) {
+        if (!blob) {
+          // Fallback for BMP if browser doesn't support it natively
+          if (format === 'image/bmp') {
+            blob = canvasToBmpBlob(canvas);
+          }
+          if (!blob) {
+            // Last resort: export as PNG
+            canvas.toBlob(function(pngBlob) {
+              finishConvert(entry, pngBlob, callback);
+            }, 'image/png');
+            return;
+          }
+        }
+        finishConvert(entry, blob, callback);
+      }, format, useQuality);
+    }
+
+    function convertToIco(entry, callback) {
+      var size = 32;
+      var canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(entry.imgElement, 0, 0, size, size);
+
+      // Build ICO file from PNG data
+      canvas.toBlob(function(pngBlob) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var pngData = new Uint8Array(e.target.result);
+          // ICO header: 6 bytes header + 16 bytes entry + PNG data
+          var icoHeader = new ArrayBuffer(6 + 16 + pngData.length);
+          var view = new DataView(icoHeader);
+          // ICO header
+          view.setUint16(0, 0, true); // reserved
+          view.setUint16(2, 1, true); // type: 1 = ICO
+          view.setUint16(4, 1, true); // count: 1 image
+          // ICO entry
+          view.setUint8(6, size);     // width
+          view.setUint8(7, size);     // height
+          view.setUint8(8, 0);        // color palette
+          view.setUint8(9, 0);        // reserved
+          view.setUint16(10, 1, true); // color planes
+          view.setUint16(12, 32, true); // bits per pixel
+          view.setUint32(14, pngData.length, true); // image size
+          view.setUint32(18, 22, true); // offset (6 + 16 = 22)
+          // Copy PNG data
+          var icoArray = new Uint8Array(icoHeader);
+          icoArray.set(pngData, 22);
+
+          var blob = new Blob([icoArray], { type: 'image/x-icon' });
+          finishConvert(entry, blob, callback);
+        };
+        reader.readAsArrayBuffer(pngBlob);
+      }, 'image/png');
+    }
+
+    function canvasToBmpBlob(canvas) {
+      var ctx = canvas.getContext('2d');
+      var w = canvas.width;
+      var h = canvas.height;
+      var imageData = ctx.getImageData(0, 0, w, h);
+      var data = imageData.data;
+
+      var rowSize = Math.ceil((w * 3) / 4) * 4;
+      var pixelDataSize = rowSize * h;
+      var fileSize = 54 + pixelDataSize;
+
+      var buffer = new ArrayBuffer(fileSize);
+      var view = new DataView(buffer);
+
+      // BMP header
+      view.setUint8(0, 0x42); // 'B'
+      view.setUint8(1, 0x4D); // 'M'
+      view.setUint32(2, fileSize, true);
+      view.setUint32(10, 54, true); // pixel data offset
+
+      // DIB header
+      view.setUint32(14, 40, true); // header size
+      view.setInt32(18, w, true);
+      view.setInt32(22, h, true);
+      view.setUint16(26, 1, true); // planes
+      view.setUint16(28, 24, true); // bits per pixel
+      view.setUint32(34, pixelDataSize, true);
+
+      // Pixel data (bottom-up, BGR)
+      var offset = 54;
+      for (var y = h - 1; y >= 0; y--) {
+        for (var x = 0; x < w; x++) {
+          var i = (y * w + x) * 4;
+          view.setUint8(offset++, data[i + 2]); // B
+          view.setUint8(offset++, data[i + 1]); // G
+          view.setUint8(offset++, data[i]);     // R
+        }
+        // Row padding to 4-byte boundary
+        var padding = rowSize - w * 3;
+        for (var p = 0; p < padding; p++) {
+          view.setUint8(offset++, 0);
+        }
+      }
+
+      return new Blob([buffer], { type: 'image/bmp' });
+    }
+
+    function finishConvert(entry, blob, callback) {
+      entry.convertedBlob = blob;
+      entry.convertedSize = blob.size;
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        entry.convertedDataUrl = e.target.result;
+        if (callback) callback();
+      };
+      reader.readAsDataURL(blob);
+    }
+
+    function reconvertAll() {
+      if (images.length === 0) return;
+      var done = 0;
+      images.forEach(function(entry) {
+        convertImage(entry, function() {
+          done++;
+          if (done === images.length) {
+            renderAll();
+          }
+        });
+      });
+    }
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    function getExtension() {
+      var format = outputFormat.value;
+      if (format === 'image/jpeg') return '.jpg';
+      if (format === 'image/webp') return '.webp';
+      if (format === 'image/bmp') return '.bmp';
+      if (format === 'image/x-icon') return '.ico';
+      return '.png';
+    }
+
+    function renderAll() {
+      imageList.innerHTML = '';
+      var totalOriginal = 0;
+      var totalConverted = 0;
+
+      images.forEach(function(entry) {
+        totalOriginal += entry.originalSize;
+        totalConverted += entry.convertedSize;
+
+        var change = ((1 - entry.convertedSize / entry.originalSize) * 100);
+        var isReduction = change >= 0;
+        var changeText = isReduction
+          ? change.toFixed(1) + '% 削減'
+          : Math.abs(change).toFixed(1) + '% 増加';
+        var changeClass = isReduction ? 'size-reduction' : 'size-increase';
+
+        var div = document.createElement('div');
+        div.className = 'image-item';
+        div.innerHTML =
+          '<div class="image-item-header">' +
+            '<div class="image-item-name">' + escapeHtml(entry.name) + '</div>' +
+            '<div class="image-item-stats">' +
+              '<div class="size-info">' +
+                '<span class="size-original">' + formatSize(entry.originalSize) + '</span>' +
+                '<span class="size-arrow">&rarr;</span>' +
+                '<span class="size-converted">' + formatSize(entry.convertedSize) + '</span>' +
+              '</div>' +
+              '<span class="' + changeClass + '">' + changeText + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="preview-container">' +
+            '<div class="preview-box">' +
+              '<div class="preview-label">変換前</div>' +
+              '<img src="' + entry.originalDataUrl + '" alt="元画像">' +
+            '</div>' +
+            '<div class="preview-box">' +
+              '<div class="preview-label">変換後</div>' +
+              '<img src="' + entry.convertedDataUrl + '" alt="変換後">' +
+            '</div>' +
+          '</div>' +
+          '<div class="btn-group">' +
+            '<button class="btn btn-sm" onclick="downloadOne(\'' + entry.id + '\')">ダウンロード</button>' +
+            '<button class="btn btn-secondary btn-sm btn-danger" onclick="removeOne(\'' + entry.id + '\')">削除</button>' +
+          '</div>';
+        imageList.appendChild(div);
+      });
+
+      if (images.length > 0) {
+        batchSummary.innerHTML = '<strong>' + images.length + '</strong> 枚 | 合計: ' + formatSize(totalOriginal) + ' &rarr; ' + formatSize(totalConverted);
+        batchActions.classList.add('show');
+      } else {
+        batchActions.classList.remove('show');
+      }
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function downloadOne(id) {
+      var entry = images.find(function(e) { return e.id === id; });
+      if (!entry) return;
+      var ext = getExtension();
+      var baseName = entry.name.replace(/\.[^.]+$/, '');
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(entry.convertedBlob);
+      a.download = baseName + '_converted' + ext;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function removeOne(id) {
+      images = images.filter(function(e) { return e.id !== id; });
+      renderAll();
+    }
+
+    function downloadAll() {
+      images.forEach(function(entry) {
+        downloadOne(entry.id);
+      });
+    }
+
+    function clearAll() {
+      images = [];
+      imageList.innerHTML = '';
+      batchActions.classList.remove('show');
+    }
+  </script>
+</body>
+</html>
