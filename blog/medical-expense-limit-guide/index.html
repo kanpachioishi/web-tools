@@ -57,6 +57,43 @@
         <p>たとえば、医療費の総額が100万円かかった場合を考えてみましょう。通常であれば3割負担で30万円を窓口で支払いますが、高額療養費制度を使えば、年収に応じた自己負担限度額（たとえば約9万円）を超えた分が払い戻されます。つまり、実質的な負担は約9万円で済むということです。</p>
         <p>この制度は国民健康保険、協会けんぽ、健康保険組合、共済組合など、すべての公的医療保険で利用可能です。入院・外来を問わず適用されるため、高額な医療を受ける際には必ず知っておきたい制度です。</p>
 
+        <svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="width:100%;max-width:620px;display:block;margin:16px auto;" role="img" aria-label="高額療養費制度の仕組み図">
+          <title>高額療養費制度の仕組み（医療費100万円の場合）</title>
+          <!-- 背景 -->
+          <rect x="0" y="0" width="620" height="280" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+          <!-- タイトル -->
+          <text x="310" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#333">医療費100万円の場合（年収500万・区分ウ）</text>
+          <!-- 医療費全体バー -->
+          <text x="20" y="62" font-size="12" fill="#666">医療費総額 100万円</text>
+          <rect x="20" y="70" width="580" height="32" rx="4" fill="#e9ecef" stroke="#ced4da" stroke-width="1"/>
+          <!-- 保険負担 -->
+          <rect x="20" y="70" width="406" height="32" rx="4" fill="#4dabf7" opacity="0.8"/>
+          <text x="223" y="91" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">健康保険が負担（7割）: 70万円</text>
+          <!-- 窓口負担 -->
+          <rect x="426" y="70" width="174" height="32" rx="4" fill="#ff8787" opacity="0.85"/>
+          <text x="513" y="91" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">窓口負担（3割）: 30万円</text>
+          <!-- 矢印と説明 -->
+          <line x1="513" y1="102" x2="513" y2="125" stroke="#868e96" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="310" y="142" text-anchor="middle" font-size="13" fill="#495057">窓口で支払った30万円の内訳は？</text>
+          <!-- 内訳バー -->
+          <rect x="130" y="155" width="460" height="40" rx="4" fill="#e9ecef" stroke="#ced4da" stroke-width="1"/>
+          <!-- 実質負担（自己負担限度額） -->
+          <rect x="130" y="155" width="88" height="40" rx="4" fill="#ff6b6b"/>
+          <text x="174" y="178" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">実質負担</text>
+          <text x="174" y="191" text-anchor="middle" font-size="9" fill="#fff">87,430円</text>
+          <!-- 高額療養費として戻る -->
+          <rect x="218" y="155" width="372" height="40" rx="4" fill="#51cf66"/>
+          <text x="404" y="178" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">高額療養費として戻る: 212,570円</text>
+          <!-- ラベル -->
+          <text x="20" y="178" font-size="11" fill="#495057" font-weight="bold">30万円</text>
+          <!-- 下の補足 -->
+          <rect x="130" y="210" width="88" height="8" rx="2" fill="#ff6b6b"/>
+          <text x="228" y="218" font-size="11" fill="#495057">= 自己負担限度額（これ以上は払わなくてOK）</text>
+          <rect x="130" y="230" width="88" height="8" rx="2" fill="#51cf66"/>
+          <text x="228" y="238" font-size="11" fill="#495057">= 申請すれば後から戻ってくるお金</text>
+          <text x="310" y="268" text-anchor="middle" font-size="11" fill="#868e96">※ 限度額は80,100円＋（医療費−267,000円）×1% で計算</text>
+        </svg>
+
         <h2 id="limit-system">自己負担限度額の仕組み</h2>
         <p>自己負担限度額は、年齢と所得区分によって決まります。大きく分けると「70歳未満」と「70歳以上」で計算方法が異なります。</p>
         <p>計算の基本的な流れは以下のとおりです。</p>
@@ -119,6 +156,60 @@
 
         <h2 id="how-to-apply">申請方法</h2>
         <p>高額療養費制度の利用方法は、主に3つあります。それぞれの特徴を理解して、自分に合った方法を選びましょう。</p>
+
+        <svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="width:100%;max-width:620px;display:block;margin:16px auto;" role="img" aria-label="申請方法の3パターン比較フロー">
+          <title>高額療養費 申請方法の3パターン比較</title>
+          <rect x="0" y="0" width="620" height="300" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+          <text x="310" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">申請方法の3パターン比較</text>
+          <!-- パターン1: 事後申請 -->
+          <rect x="15" y="40" width="590" height="72" rx="6" fill="#fff" stroke="#ffa94d" stroke-width="1.5"/>
+          <rect x="15" y="40" width="120" height="72" rx="6" fill="#fff3e0"/>
+          <rect x="15" y="40" width="120" height="72" rx="6" fill="#ffa94d" opacity="0.15" stroke="#ffa94d" stroke-width="1.5"/>
+          <text x="75" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#e8590c">パターン1</text>
+          <text x="75" y="78" text-anchor="middle" font-size="12" font-weight="bold" fill="#d9480f">事後申請</text>
+          <text x="75" y="98" text-anchor="middle" font-size="16" fill="#e8590c">&#9733;</text>
+          <!-- フロー矢印 -->
+          <rect x="148" y="56" width="105" height="28" rx="14" fill="#ffd8a8"/>
+          <text x="200" y="74" text-anchor="middle" font-size="10" fill="#d9480f">窓口で3割払う</text>
+          <text x="260" y="74" font-size="13" fill="#adb5bd">&#9654;</text>
+          <rect x="274" y="56" width="105" height="28" rx="14" fill="#ffd8a8"/>
+          <text x="326" y="74" text-anchor="middle" font-size="10" fill="#d9480f">後日申請する</text>
+          <text x="386" y="74" font-size="13" fill="#adb5bd">&#9654;</text>
+          <rect x="400" y="56" width="120" height="28" rx="14" fill="#ffd8a8"/>
+          <text x="460" y="74" text-anchor="middle" font-size="10" fill="#d9480f">差額が振込</text>
+          <text x="535" y="74" font-size="10" fill="#868e96">（2〜3か月後）</text>
+          <!-- パターン2: 限度額適用認定証 -->
+          <rect x="15" y="122" width="590" height="72" rx="6" fill="#fff" stroke="#4dabf7" stroke-width="1.5"/>
+          <rect x="15" y="122" width="120" height="72" rx="6" fill="#e7f5ff"/>
+          <rect x="15" y="122" width="120" height="72" rx="6" fill="#4dabf7" opacity="0.15" stroke="#4dabf7" stroke-width="1.5"/>
+          <text x="75" y="144" text-anchor="middle" font-size="11" font-weight="bold" fill="#1971c2">パターン2</text>
+          <text x="75" y="160" text-anchor="middle" font-size="11" font-weight="bold" fill="#1864ab">限度額適用</text>
+          <text x="75" y="174" text-anchor="middle" font-size="11" font-weight="bold" fill="#1864ab">認定証</text>
+          <text x="75" y="188" text-anchor="middle" font-size="14" fill="#1971c2">&#9733;&#9733;</text>
+          <!-- フロー -->
+          <rect x="148" y="140" width="115" height="28" rx="14" fill="#a5d8ff"/>
+          <text x="205" y="158" text-anchor="middle" font-size="10" fill="#1864ab">事前に認定証を取得</text>
+          <text x="270" y="158" font-size="13" fill="#adb5bd">&#9654;</text>
+          <rect x="284" y="140" width="160" height="28" rx="14" fill="#a5d8ff"/>
+          <text x="364" y="158" text-anchor="middle" font-size="10" fill="#1864ab">窓口で限度額だけ払う</text>
+          <text x="455" y="158" font-size="10" fill="#868e96">（立替不要!）</text>
+          <!-- パターン3: マイナ保険証 -->
+          <rect x="15" y="204" width="590" height="72" rx="6" fill="#fff" stroke="#51cf66" stroke-width="1.5"/>
+          <rect x="15" y="204" width="120" height="72" rx="6" fill="#ebfbee"/>
+          <rect x="15" y="204" width="120" height="72" rx="6" fill="#51cf66" opacity="0.15" stroke="#51cf66" stroke-width="1.5"/>
+          <text x="75" y="226" text-anchor="middle" font-size="11" font-weight="bold" fill="#2b8a3e">パターン3</text>
+          <text x="75" y="242" text-anchor="middle" font-size="11" font-weight="bold" fill="#1b7a30">マイナ保険証</text>
+          <text x="75" y="262" text-anchor="middle" font-size="14" fill="#2b8a3e">&#9733;&#9733;&#9733;</text>
+          <!-- フロー -->
+          <rect x="148" y="222" width="150" height="28" rx="14" fill="#b2f2bb"/>
+          <text x="223" y="240" text-anchor="middle" font-size="10" fill="#1b7a30">マイナンバーカードを提示</text>
+          <text x="305" y="240" font-size="13" fill="#adb5bd">&#9654;</text>
+          <rect x="319" y="222" width="150" height="28" rx="14" fill="#b2f2bb"/>
+          <text x="394" y="240" text-anchor="middle" font-size="10" fill="#1b7a30">自動で限度額適用</text>
+          <text x="480" y="240" font-size="10" fill="#2b8a3e" font-weight="bold">おすすめ!</text>
+          <!-- 凡例 -->
+          <text x="310" y="293" text-anchor="middle" font-size="11" fill="#868e96">★が多いほどおすすめ（手続きの簡単さ・立替負担の少なさ）</text>
+        </svg>
 
         <h3>方法1: 事後申請（払い戻し）</h3>
         <p>いったん窓口で自己負担額を全額支払い、後から超過分の払い戻しを受ける方法です。</p>
