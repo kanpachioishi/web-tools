@@ -117,11 +117,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/word-counter-en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/markdown-preview/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -223,11 +218,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/roulette/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/radix-converter/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -238,32 +228,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/reaction-test/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/english-score/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/bmi-calculator/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/roulette/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/pdf-tools/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/reaction-test/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -323,11 +293,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/bingo/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/chmod-calc/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -375,16 +340,6 @@
   </url>
   <url>
     <loc>https://simpletoolkit.net/tools/alarm-clock/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/tdee-calculator/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/typing-test/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -439,17 +394,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://simpletoolkit.net/tools/tdee-calculator/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://simpletoolkit.net/tools/age-calculator/en/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://simpletoolkit.net/tools/bingo/en/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
