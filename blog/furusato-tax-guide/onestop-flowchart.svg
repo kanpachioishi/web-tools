@@ -1,0 +1,34 @@
+<svg viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <!-- 質問1 -->
+          <rect x="170" y="10" width="280" height="40" rx="20" fill="#2563eb"/>
+          <text x="310" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">確定申告する予定はありますか？</text>
+          <!-- はい -->
+          <line x1="450" y1="30" x2="530" y2="30" stroke="#dc2626" stroke-width="2"/>
+          <text x="490" y="23" text-anchor="middle" font-size="12" font-weight="600" fill="#dc2626">はい</text>
+          <rect x="530" y="10" width="80" height="40" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+          <text x="570" y="35" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">確定申告</text>
+          <!-- いいえ -->
+          <line x1="310" y1="50" x2="310" y2="80" stroke="#94a3b8" stroke-width="2"/>
+          <text x="330" y="68" text-anchor="start" font-size="12" fill="#64748b">いいえ</text>
+          <!-- 質問2 -->
+          <rect x="170" y="80" width="280" height="40" rx="20" fill="#2563eb"/>
+          <text x="310" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">寄附先は5自治体以内ですか？</text>
+          <!-- いいえ -->
+          <line x1="450" y1="100" x2="530" y2="100" stroke="#dc2626" stroke-width="2"/>
+          <text x="490" y="93" text-anchor="middle" font-size="12" font-weight="600" fill="#dc2626">いいえ</text>
+          <rect x="530" y="80" width="80" height="40" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+          <text x="570" y="105" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">確定申告</text>
+          <!-- はい -->
+          <line x1="310" y1="120" x2="310" y2="155" stroke="#94a3b8" stroke-width="2"/>
+          <text x="330" y="140" text-anchor="start" font-size="12" fill="#64748b">はい</text>
+          <!-- 結果: ワンストップ -->
+          <rect x="190" y="155" width="240" height="45" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+          <text x="310" y="175" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a">ワンストップ特例制度でOK</text>
+          <text x="310" y="193" text-anchor="middle" font-size="11" fill="#166534">申請書を各自治体に送るだけ</text>
+          <!-- 注意書き -->
+          <rect x="30" y="220" width="560" height="90" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="310" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">どちらを選んでも控除の合計額は同じです</text>
+          <text x="310" y="268" text-anchor="middle" font-size="12" fill="#78350f">ワンストップ特例 → 住民税から全額控除（翌年6月〜の住民税が減る）</text>
+          <text x="310" y="288" text-anchor="middle" font-size="12" fill="#78350f">確定申告 → 所得税の還付（口座に振込）+ 住民税の控除</text>
+          <text x="310" y="305" text-anchor="middle" font-size="11" fill="#92400e">※還付のタイミングが違うだけで、お得さは変わりません</text>
+        </svg>

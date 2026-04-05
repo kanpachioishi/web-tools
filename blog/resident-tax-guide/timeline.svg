@@ -1,0 +1,19 @@
+<svg viewBox="0 0 620 140" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <!-- 時間軸 -->
+          <line x1="30" y1="70" x2="590" y2="70" stroke="#cbd5e1" stroke-width="2"/>
+          <!-- 2025年 -->
+          <rect x="40" y="30" width="200" height="35" rx="6" fill="#2563eb"/>
+          <text x="140" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2025年の所得（1〜12月）</text>
+          <text x="140" y="90" text-anchor="middle" font-size="11" fill="#64748b">この年の収入をもとに計算</text>
+          <!-- 矢印 -->
+          <line x1="250" y1="47" x2="330" y2="47" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
+          <text x="290" y="40" text-anchor="middle" font-size="10" fill="#94a3b8">確定</text>
+          <!-- 2026年 -->
+          <rect x="340" y="30" width="240" height="35" rx="6" fill="#16a34a"/>
+          <text x="460" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2026年6月〜2027年5月に支払い</text>
+          <text x="460" y="90" text-anchor="middle" font-size="11" fill="#64748b">毎月の給与から天引き（特別徴収）</text>
+          <!-- 年ラベル -->
+          <text x="140" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="#334155">2025年</text>
+          <text x="460" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="#334155">2026〜2027年</text>
+        </svg>

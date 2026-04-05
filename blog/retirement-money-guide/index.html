@@ -86,43 +86,7 @@
           <li>障害者になったことが直接の原因で退職した場合は、控除額に100万円が加算される</li>
         </ul>
 
-        <svg viewBox="0 0 620 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="width:100%;max-width:620px;display:block;margin:16px auto;">
-          <defs>
-            <marker id="arrow-ret" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
-            </marker>
-          </defs>
-          <!-- ステップ1: 退職金（額面） -->
-          <rect x="200" y="10" width="220" height="42" rx="8" fill="#2563eb"/>
-          <text x="310" y="36" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">退職金（額面）</text>
-          <line x1="310" y1="52" x2="310" y2="75" stroke="#334155" stroke-width="2" marker-end="url(#arrow-ret)"/>
-          <!-- ステップ2: 退職所得控除を引く -->
-          <rect x="200" y="75" width="220" height="42" rx="8" fill="#0891b2"/>
-          <text x="310" y="101" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">退職所得控除を引く</text>
-          <text x="470" y="101" fill="#64748b" font-size="11">退職金 − 控除額</text>
-          <line x1="310" y1="117" x2="310" y2="140" stroke="#334155" stroke-width="2" marker-end="url(#arrow-ret)"/>
-          <!-- ステップ3: 1/2にする -->
-          <rect x="200" y="140" width="220" height="42" rx="8" fill="#7c3aed"/>
-          <text x="310" y="166" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">1/2 にする</text>
-          <text x="470" y="166" fill="#64748b" font-size="11">（退職金−控除額）× 1/2</text>
-          <line x1="310" y1="182" x2="310" y2="205" stroke="#334155" stroke-width="2" marker-end="url(#arrow-ret)"/>
-          <!-- ステップ4: 課税退職所得 -->
-          <rect x="200" y="205" width="220" height="42" rx="8" fill="#2563eb"/>
-          <text x="310" y="231" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">課税退職所得</text>
-          <line x1="310" y1="247" x2="310" y2="270" stroke="#334155" stroke-width="2" marker-end="url(#arrow-ret)"/>
-          <!-- ステップ5: 所得税 + 住民税 -->
-          <rect x="130" y="270" width="160" height="42" rx="8" fill="#dc2626"/>
-          <text x="210" y="296" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">所得税（累進税率）</text>
-          <rect x="330" y="270" width="160" height="42" rx="8" fill="#dc2626"/>
-          <text x="410" y="296" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">住民税（10%）</text>
-          <text x="470" y="296" fill="#64748b" font-size="11"></text>
-          <line x1="210" y1="312" x2="310" y2="335" stroke="#334155" stroke-width="2"/>
-          <line x1="410" y1="312" x2="310" y2="335" stroke="#334155" stroke-width="2"/>
-          <line x1="310" y1="335" x2="310" y2="340" stroke="#334155" stroke-width="2" marker-end="url(#arrow-ret)"/>
-          <!-- 手取り額 -->
-          <rect x="200" y="340" width="220" height="36" rx="8" fill="#16a34a"/>
-          <text x="310" y="364" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">手取り額</text>
-        </svg>
+        <img src="calc-flow.svg" alt="退職金の税金計算フロー" style="width:100%;max-width:620px;display:block;margin:16px auto;">
 
         <h2 id="deduction-table">勤続年数別の退職所得控除額</h2>
         <p>代表的な勤続年数に対する退職所得控除額を一覧にまとめました。</p>
@@ -144,55 +108,7 @@
         </table>
         <p>例えば、大学卒業後に定年まで38年間勤務した場合、退職所得控除額は2,060万円です。つまり、退職金が2,060万円以下であれば税金はゼロになります。</p>
 
-        <svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif" style="width:100%;max-width:620px;display:block;margin:16px auto;">
-          <!-- 軸 -->
-          <line x1="70" y1="210" x2="590" y2="210" stroke="#334155" stroke-width="1.5"/>
-          <line x1="70" y1="210" x2="70" y2="20" stroke="#334155" stroke-width="1.5"/>
-          <!-- Y軸ラベル -->
-          <text x="15" y="215" fill="#64748b" font-size="10">0万円</text>
-          <line x1="65" y1="210" x2="70" y2="210" stroke="#94a3b8" stroke-width="1"/>
-          <text x="5" y="170" fill="#64748b" font-size="10">500万円</text>
-          <line x1="65" y1="167" x2="590" y2="167" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="4"/>
-          <text x="0" y="125" fill="#64748b" font-size="10">1000万円</text>
-          <line x1="65" y1="124" x2="590" y2="124" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="4"/>
-          <text x="0" y="80" fill="#64748b" font-size="10">1500万円</text>
-          <line x1="65" y1="81" x2="590" y2="81" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="4"/>
-          <text x="0" y="40" fill="#64748b" font-size="10">2000万円</text>
-          <line x1="65" y1="38" x2="590" y2="38" stroke="#e2e8f0" stroke-width="0.5" stroke-dasharray="4"/>
-          <!-- 棒グラフ: 各勤続年数 -->
-          <!-- 5年: 200万 → 高さ = 200/2000 * 172 = 17.2 -->
-          <rect x="90" y="192.8" width="50" height="17.2" rx="3" fill="#2563eb"/>
-          <text x="115" y="187" text-anchor="middle" fill="#2563eb" font-size="10" font-weight="bold">200万</text>
-          <text x="115" y="228" text-anchor="middle" fill="#334155" font-size="11">5年</text>
-          <!-- 10年: 400万 → 34.4 -->
-          <rect x="160" y="175.6" width="50" height="34.4" rx="3" fill="#2563eb"/>
-          <text x="185" y="170" text-anchor="middle" fill="#2563eb" font-size="10" font-weight="bold">400万</text>
-          <text x="185" y="228" text-anchor="middle" fill="#334155" font-size="11">10年</text>
-          <!-- 15年: 600万 → 51.6 -->
-          <rect x="230" y="158.4" width="50" height="51.6" rx="3" fill="#2563eb"/>
-          <text x="255" y="153" text-anchor="middle" fill="#2563eb" font-size="10" font-weight="bold">600万</text>
-          <text x="255" y="228" text-anchor="middle" fill="#334155" font-size="11">15年</text>
-          <!-- 20年: 800万 → 68.8 -->
-          <rect x="300" y="141.2" width="50" height="68.8" rx="3" fill="#2563eb"/>
-          <text x="325" y="136" text-anchor="middle" fill="#2563eb" font-size="10" font-weight="bold">800万</text>
-          <text x="325" y="228" text-anchor="middle" fill="#334155" font-size="11">20年</text>
-          <!-- 25年: 1150万 → 98.9 -->
-          <rect x="370" y="111.1" width="50" height="98.9" rx="3" fill="#7c3aed"/>
-          <text x="395" y="106" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="bold">1150万</text>
-          <text x="395" y="228" text-anchor="middle" fill="#334155" font-size="11">25年</text>
-          <!-- 30年: 1500万 → 129 -->
-          <rect x="440" y="81" width="50" height="129" rx="3" fill="#7c3aed"/>
-          <text x="465" y="76" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="bold">1500万</text>
-          <text x="465" y="228" text-anchor="middle" fill="#334155" font-size="11">30年</text>
-          <!-- 35年: 1850万 → 159.1 -->
-          <rect x="510" y="50.9" width="50" height="159.1" rx="3" fill="#7c3aed"/>
-          <text x="535" y="46" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="bold">1850万</text>
-          <text x="535" y="228" text-anchor="middle" fill="#334155" font-size="11">35年</text>
-          <!-- 20年の境界注記 -->
-          <line x1="345" y1="240" x2="345" y2="255" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4"/>
-          <text x="220" y="268" fill="#dc2626" font-size="11" font-weight="bold">← 40万円/年</text>
-          <text x="390" y="268" fill="#dc2626" font-size="11" font-weight="bold">70万円/年に増加 →</text>
-        </svg>
+        <img src="deduction-chart.svg" alt="勤続年数別の退職所得控除額グラフ" style="width:100%;max-width:620px;display:block;margin:16px auto;">
 
         <h2 id="tax-calculation">所得税・住民税の計算手順</h2>
         <p>退職金にかかる税金は、以下の手順で計算します。</p>

@@ -1,0 +1,33 @@
+<svg viewBox="0 0 620 250" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <title>年金の2階建て構造</title>
+          <rect x="0" y="0" width="620" height="250" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+          <text x="310" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">年金の「2階建て」構造</text>
+          <!-- 自営業者ラベル -->
+          <text x="165" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#495057">自営業・フリーランス</text>
+          <!-- 会社員ラベル -->
+          <text x="455" y="50" text-anchor="middle" font-size="12" font-weight="bold" fill="#495057">会社員・公務員</text>
+          <!-- 自営業: 1階のみ -->
+          <!-- 1階: 国民年金 -->
+          <rect x="40" y="110" width="250" height="80" rx="6" fill="#4dabf7" stroke="#339af0" stroke-width="1.5"/>
+          <text x="165" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">1階: 国民年金（基礎年金）</text>
+          <text x="165" y="163" text-anchor="middle" font-size="11" fill="#e7f5ff">全国民が加入</text>
+          <text x="165" y="180" text-anchor="middle" font-size="11" fill="#e7f5ff">満額 約816,000円/年</text>
+          <!-- 会社員: 1階 + 2階 -->
+          <!-- 2階: 厚生年金 -->
+          <rect x="330" y="62" width="250" height="48" rx="6" fill="#ff922b" stroke="#f76707" stroke-width="1.5"/>
+          <text x="455" y="84" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">2階: 厚生年金</text>
+          <text x="455" y="100" text-anchor="middle" font-size="10" fill="#fff4e6">年収に応じて加算</text>
+          <!-- 1階: 国民年金 -->
+          <rect x="330" y="110" width="250" height="80" rx="6" fill="#4dabf7" stroke="#339af0" stroke-width="1.5"/>
+          <text x="455" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">1階: 国民年金（基礎年金）</text>
+          <text x="455" y="163" text-anchor="middle" font-size="11" fill="#e7f5ff">全国民が加入</text>
+          <text x="455" y="180" text-anchor="middle" font-size="11" fill="#e7f5ff">満額 約816,000円/年</text>
+          <!-- 地面線 -->
+          <line x1="30" y1="190" x2="590" y2="190" stroke="#ced4da" stroke-width="1"/>
+          <!-- 補足 -->
+          <rect x="40" y="205" width="14" height="14" rx="2" fill="#4dabf7"/>
+          <text x="62" y="217" font-size="11" fill="#495057">国民年金（全員加入）</text>
+          <rect x="200" y="205" width="14" height="14" rx="2" fill="#ff922b"/>
+          <text x="222" y="217" font-size="11" fill="#495057">厚生年金（会社員・公務員のみ）</text>
+          <text x="310" y="242" text-anchor="middle" font-size="11" fill="#868e96">※ 自営業者は1階のみ。iDeCoや国民年金基金で上乗せ可能</text>
+        </svg>

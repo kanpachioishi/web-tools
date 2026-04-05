@@ -1,0 +1,52 @@
+<svg viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <title>繰上げ・繰下げ受給の累計受給額比較</title>
+          <rect x="0" y="0" width="620" height="300" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+          <text x="310" y="24" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">累計受給額の比較（国民年金満額の場合）</text>
+          <!-- 軸 -->
+          <line x1="80" y1="250" x2="580" y2="250" stroke="#adb5bd" stroke-width="1.5"/>
+          <line x1="80" y1="40" x2="80" y2="250" stroke="#adb5bd" stroke-width="1.5"/>
+          <!-- Y軸ラベル -->
+          <text x="12" y="150" font-size="11" fill="#868e96" transform="rotate(-90,12,150)">累計受給額</text>
+          <!-- Y軸目盛り -->
+          <text x="75" y="254" text-anchor="end" font-size="9" fill="#adb5bd">0</text>
+          <line x1="78" y1="180" x2="580" y2="180" stroke="#e9ecef" stroke-width="0.5"/>
+          <line x1="78" y1="110" x2="580" y2="110" stroke="#e9ecef" stroke-width="0.5"/>
+          <!-- X軸ラベル -->
+          <text x="310" y="275" text-anchor="middle" font-size="11" fill="#868e96">年齢</text>
+          <!-- X軸目盛り -->
+          <text x="80" y="265" text-anchor="middle" font-size="9" fill="#adb5bd">60歳</text>
+          <text x="163" y="265" text-anchor="middle" font-size="9" fill="#adb5bd">65歳</text>
+          <text x="247" y="265" text-anchor="middle" font-size="9" fill="#adb5bd">70歳</text>
+          <text x="330" y="265" text-anchor="middle" font-size="9" fill="#adb5bd">75歳</text>
+          <text x="413" y="265" text-anchor="middle" font-size="9" fill="#adb5bd">80歳</text>
+          <text x="497" y="265" text-anchor="middle" font-size="9" fill="#adb5bd">85歳</text>
+          <text x="580" y="265" text-anchor="middle" font-size="9" fill="#adb5bd">90歳</text>
+          <!-- グリッド線（縦） -->
+          <line x1="163" y1="245" x2="163" y2="250" stroke="#adb5bd" stroke-width="1"/>
+          <line x1="247" y1="245" x2="247" y2="250" stroke="#adb5bd" stroke-width="1"/>
+          <line x1="330" y1="245" x2="330" y2="250" stroke="#adb5bd" stroke-width="1"/>
+          <line x1="413" y1="245" x2="413" y2="250" stroke="#adb5bd" stroke-width="1"/>
+          <line x1="497" y1="245" x2="497" y2="250" stroke="#adb5bd" stroke-width="1"/>
+          <line x1="580" y1="245" x2="580" y2="250" stroke="#adb5bd" stroke-width="1"/>
+          <!-- 60歳開始（繰上げ -24%）: 年62万、60歳から -->
+          <!-- 60: 0, 65: 310万, 70: 620万, 75: 930万, 80: 1240万, 85: 1550万, 90: 1860万 -->
+          <polyline points="80,250 163,200 247,150 330,100 413,63 497,47 580,38" fill="none" stroke="#ff6b6b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- 65歳開始（通常）: 年81.6万、65歳から -->
+          <!-- 65: 0, 70: 408万, 75: 816万, 80: 1224万, 85: 1632万, 90: 2040万 -->
+          <polyline points="163,250 247,185 330,120 413,68 497,45 580,35" fill="none" stroke="#4dabf7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- 70歳開始（繰下げ +42%）: 年115.9万、70歳から -->
+          <!-- 70: 0, 75: 579万, 80: 1159万, 85: 1738万, 90: 2318万 -->
+          <polyline points="247,250 330,145 413,70 497,40 580,28" fill="none" stroke="#51cf66" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- 損益分岐点マーク（約81歳） -->
+          <line x1="425" y1="40" x2="425" y2="250" stroke="#868e96" stroke-width="1" stroke-dasharray="4,3"/>
+          <rect x="385" y="42" width="80" height="20" rx="3" fill="#fff" stroke="#868e96" stroke-width="0.5"/>
+          <text x="425" y="56" text-anchor="middle" font-size="10" font-weight="bold" fill="#e8590c">損益分岐点</text>
+          <text x="425" y="42" text-anchor="middle" font-size="9" fill="#868e96">約81歳</text>
+          <!-- 凡例 -->
+          <line x1="100" y1="288" x2="125" y2="288" stroke="#ff6b6b" stroke-width="2.5"/>
+          <text x="130" y="292" font-size="10" fill="#495057">60歳開始（-24%）</text>
+          <line x1="250" y1="288" x2="275" y2="288" stroke="#4dabf7" stroke-width="2.5"/>
+          <text x="280" y="292" font-size="10" fill="#495057">65歳開始（通常）</text>
+          <line x1="400" y1="288" x2="425" y2="288" stroke="#51cf66" stroke-width="2.5"/>
+          <text x="430" y="292" font-size="10" fill="#495057">70歳開始（+42%）</text>
+        </svg>

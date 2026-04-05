@@ -1,0 +1,35 @@
+<svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+          <!-- 外枠 -->
+          <rect x="10" y="10" width="600" height="260" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+          <text x="310" y="38" text-anchor="middle" font-size="18" font-weight="800" fill="#1e40af">住民税 = 所得割 + 均等割</text>
+          <!-- 所得割 -->
+          <rect x="25" y="55" width="350" height="200" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="200" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4ed8">所得割（課税所得 x 10%）</text>
+          <text x="200" y="100" text-anchor="middle" font-size="12" fill="#3b82f6">住民税の大部分を占める</text>
+          <!-- 都道府県民税 -->
+          <rect x="40" y="115" width="155" height="70" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+          <text x="117" y="140" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">都道府県民税</text>
+          <text x="117" y="165" text-anchor="middle" font-size="22" font-weight="800" fill="#1e40af">4%</text>
+          <!-- 市区町村民税 -->
+          <rect x="205" y="115" width="155" height="70" rx="6" fill="#bfdbfe" stroke="#60a5fa" stroke-width="1"/>
+          <text x="282" y="140" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">市区町村民税</text>
+          <text x="282" y="165" text-anchor="middle" font-size="22" font-weight="800" fill="#1e40af">6%</text>
+          <!-- 名古屋市注記 -->
+          <text x="200" y="210" text-anchor="middle" font-size="11" fill="#6b7280">※名古屋市は合計9.7%（市民税5%減税）</text>
+          <text x="200" y="228" text-anchor="middle" font-size="11" fill="#6b7280">※政令指定都市は都道府県2%+市8%（合計は同じ10%）</text>
+          <text x="200" y="245" text-anchor="middle" font-size="11" fill="#dc2626">※所得税と違い、累進税率ではなく一律10%</text>
+          <!-- プラス -->
+          <text x="393" y="165" text-anchor="middle" font-size="28" font-weight="700" fill="#94a3b8">+</text>
+          <!-- 均等割 -->
+          <rect x="410" y="55" width="185" height="200" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="502" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#92400e">均等割（定額）</text>
+          <text x="502" y="100" text-anchor="middle" font-size="12" fill="#b45309">所得に関係なく定額課税</text>
+          <rect x="425" y="115" width="155" height="105" rx="6" fill="#fde68a" stroke="#fbbf24" stroke-width="1"/>
+          <text x="502" y="140" text-anchor="middle" font-size="12" fill="#92400e">都道府県民税 1,000円</text>
+          <text x="502" y="160" text-anchor="middle" font-size="12" fill="#92400e">市区町村民税 3,000円</text>
+          <text x="502" y="180" text-anchor="middle" font-size="12" fill="#92400e">森林環境税 1,000円</text>
+          <line x1="440" y1="190" x2="565" y2="190" stroke="#d97706" stroke-width="1"/>
+          <text x="502" y="210" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">合計 5,000円/年</text>
+          <text x="502" y="240" text-anchor="middle" font-size="11" fill="#6b7280">※横浜市+900円</text>
+          <text x="502" y="253" text-anchor="middle" font-size="11" fill="#6b7280">※宮城県+1,200円 等</text>
+        </svg>
